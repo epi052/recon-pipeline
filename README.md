@@ -5,7 +5,7 @@
 ### PYTHONPATH
 To run the pipelines, you need to set your `PYTHONPATH` environment variable to the path of this project on disk.  This can be accomplished in a few ways, two solutions are offered.  
 
-1. Prepend PYTHONPATH=/path/to/recon-pipline to any luigi pipeline command being run.
+1. Prepend `PYTHONPATH=/path/to/recon-pipline` to any luigi pipeline command being run.
 2. Add `export PYTHONPATH=/path/to/recon-pipeline` to your `.bashrc`   
 
 ### Scheduler
@@ -34,7 +34,7 @@ The pipeline expects a file that describes the project scope to be in the curren
 
 ### luigi command structure
 
-With the PYTHONPATH setup, luigi commands take on the following structure (prepend PYTHONPATH if not exported from .bashrc):
+With the `PYTHONPATH` setup, luigi commands take on the following structure (prepend `PYTHONPATH` if not exported from `.bashrc`):
 
 `luigi --module PACKAGENAME.MODULENAME CLASSNAME *args`
 
@@ -62,7 +62,7 @@ optional arguments:
   --target-file TARGET_FILE
 ```
 
-example scope file command where `tesla` is the name of the file and it is located in the current directory. 
+An example scope file command, where `tesla` is the name of the file and it is located in the current directory. 
 
 `PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.targets TargetList --target-file tesla`
 
