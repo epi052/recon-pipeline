@@ -1,9 +1,11 @@
-# recon-pipeline
+# Automated Reconnaissance Pipeline 
+
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 ## Command Execution
 
 ### PYTHONPATH
-To run the pipelines, you need to set your `PYTHONPATH` environment variable to the path of this project on disk.  This can be accomplished in a few ways, two solutions are offered.  
+To run the pipelines, you need to set your `PYTHONPATH` environment variable to the path of this project on disk.  This can be accomplished in a few ways; two solutions are offered.  
 
 1. Prepend `PYTHONPATH=/path/to/recon-pipline` to any luigi pipeline command being run.
 2. Add `export PYTHONPATH=/path/to/recon-pipeline` to your `.bashrc`   
