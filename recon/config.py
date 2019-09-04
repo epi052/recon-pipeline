@@ -4,5 +4,5 @@ top_udp_ports = [631,161,137,123,138,1434,445,135,67,53,139,500,68,520,1900,4500
 masscan_config = {
     'iface': 'tun0',
     'rate': '1000',
-    'top_ports': '5000'
+    'top_ports': 5000
 }

@@ -12,7 +12,9 @@ from recon.config import top_tcp_ports, top_udp_ports, masscan_config
 class Masscan(ExternalProgramTask):
     rate = luigi.Parameter(default=masscan_config.get("rate"))
     interface = luigi.Parameter(default=masscan_config.get("iface"))
-    top_ports = luigi.Parameter(default=masscan_config.get("top_ports"))
+    top_ports = luigi.IntParameter(
+        default=masscan_config.get("top_ports")  # IntParameter -> top_ports expected as int
+    )
     ports = luigi.Parameter(default="")
 
     def __init__(self, *args, **kwargs):
@@ -30,10 +32,14 @@ class Masscan(ExternalProgramTask):
             logging.error("Only --ports or --top-ports is permitted, not both.")
             raise SystemExit
 
+        if self.top_ports <= 0:
+            logging.error("--top-ports must be greater than 0")
+            raise SystemExit
+
         if self.top_ports:
             # if --top-ports used, format the top_*_ports lists as strings and then into a proper masscan --ports option
-            top_tcp_ports_str = ",".join(str(x) for x in top_tcp_ports)
-            top_udp_ports_str = ",".join(str(x) for x in top_udp_ports)
+            top_tcp_ports_str = ",".join(str(x) for x in top_tcp_ports[: self.top_ports])
+            top_udp_ports_str = ",".join(str(x) for x in top_udp_ports[: self.top_ports])
 
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = ""
