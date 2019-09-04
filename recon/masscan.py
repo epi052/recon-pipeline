@@ -5,14 +5,14 @@ from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
 from recon.targets import TargetList
-from recon.config import top_tcp_ports, top_udp_ports
+from recon.config import top_tcp_ports, top_udp_ports, masscan_config
 
 
 @inherits(TargetList)
 class Masscan(ExternalProgramTask):
-    rate = luigi.Parameter(default="1000")
-    interface = luigi.Parameter(default="tun0")
-    top_ports = luigi.Parameter(default="")
+    rate = luigi.Parameter(default=masscan_config.get("rate"))
+    interface = luigi.Parameter(default=masscan_config.get("iface"))
+    top_ports = luigi.Parameter(default=masscan_config.get("top_ports"))
     ports = luigi.Parameter(default="")
 
     def __init__(self, *args, **kwargs):
