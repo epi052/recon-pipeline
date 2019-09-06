@@ -10,6 +10,24 @@ from recon.config import top_tcp_ports, top_udp_ports, masscan_config
 
 @inherits(TargetList)
 class Masscan(ExternalProgramTask):
+    """ Run masscan against a target specified via the TargetList Task.
+
+    Masscan commands are structured like the example below.  When specified, --top_ports is processed and
+    then ultimately passed to --ports.
+
+    masscan -v --open-only --banners --rate 1000 -e tun0 -oJ masscan.tesla.json --ports 80,443,22,21 -iL tesla.ips
+
+    The corresponding luigi command is shown below.
+
+    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.masscan Masscan --target-file tesla --ports 80,443,22,21
+
+    Args:
+        rate: desired rate for transmitting packets (packets per second)
+        interface: use the named raw network interface, such as "eth0"
+        top_ports: Scan top N most popular ports
+        ports: specifies the port(s) to be scanned
+    """
+
     rate = luigi.Parameter(default=masscan_config.get("rate"))
     interface = luigi.Parameter(default=masscan_config.get("iface"))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
@@ -20,12 +38,31 @@ class Masscan(ExternalProgramTask):
         self.masscan_output = f"masscan.{self.target_file}.json"
 
     def requires(self):
+        """ Masscan depends on TargetList to run.
+
+        TargetList expects target_file as a parameter.
+
+        Returns:
+            dict(str: TargetList)
+        """
         return {"target_list": TargetList(target_file=self.target_file)}
 
     def output(self):
+        """ Returns the target output for this task.
+
+        Naming convention for the output file is masscan.TARGET_FILE.json.
+
+        Returns:
+            luigi.local_target.LocalTarget
+        """
         return luigi.LocalTarget(self.masscan_output)
 
     def program_args(self):
+        """ Defines the options/arguments sent to masscan after processing.
+
+        Returns:
+            list: list of options/arguments, beginning with the name of the executable to run
+        """
         if self.ports and self.top_ports:
             # can't have both
             logging.error("Only --ports or --top-ports is permitted, not both.")

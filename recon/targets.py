@@ -22,7 +22,7 @@ class TargetList(luigi.ExternalTask):
         is written to disk.
 
         Returns:
-            luigi.target.Target
+            luigi.local_target.LocalTarget
         """
         try:
             with open(self.target_file) as f:
