@@ -47,9 +47,9 @@ class Masscan(ExternalProgramTask):
         TargetList expects target_file as a parameter.
 
         Returns:
-            dict(str: TargetList)
+            luigi.ExternalTask - TargetList
         """
-        return {"target_list": TargetList(target_file=self.target_file)}
+        return TargetList(target_file=self.target_file)
 
     def output(self):
         """ Returns the target output for this task.
@@ -104,7 +104,7 @@ class Masscan(ExternalProgramTask):
             "--ports",
             self.ports,
             "-iL",
-            self.input().get("target_list").path,
+            self.input().path,
         ]
 
         return command
