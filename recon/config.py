@@ -5,3 +5,5 @@ masscan_config = {
     'iface': 'tun0',
     'rate': '1000',
 }
+
+web_ports = {'80', '443', '8080', '8000', '8443'}
