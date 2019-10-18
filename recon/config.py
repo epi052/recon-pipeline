@@ -7,3 +7,7 @@ masscan_config = {
 }
 
 web_ports = {'80', '443', '8080', '8000', '8443'}
+
+tool_paths = {
+    'aquatone': '/opt/aquatone'
+}

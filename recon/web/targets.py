@@ -28,7 +28,7 @@ class GatherWebTargets(luigi.Task):
         ParseAmassOutput accepts exempt_list and expects target_file
 
         Returns:
-            luigi.Task - [ParseMasscanOutput, ParseAmassOutput]
+            dict(str: ParseMasscanOutput, str: ParseAmassOutput)
         """
         args = {
             "rate": self.rate,
