@@ -51,6 +51,9 @@ class AmassScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        if not self.input().path.endswith("domains"):
+            return f"touch {self.output().path}".split()
+
         command = [
             "amass",
             "enum",
@@ -149,9 +152,7 @@ class ParseAmassOutput(luigi.Task):
                     ipaddr = address.get("ip")
                     if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
                         unique_ips.add(ipaddr)
-                    elif isinstance(
-                        ipaddress.ip_address(ipaddr), ipaddress.IPv6Address
-                    ):  # ipv6 addr
+                    elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
                         unique_ip6s.add(ipaddr)
 
             # send gathered results to their appropriate destination
