@@ -1,28 +1,24 @@
-import subprocess
-from pathlib import Path
-
 import luigi
 from luigi.util import inherits
+from luigi.contrib.external_program import ExternalProgramTask
 
 from recon.config import tool_paths
 from recon.web.targets import GatherWebTargets
 
 
 @inherits(GatherWebTargets)
-class AquatoneScan(luigi.Task):
-    """ Screenshot all web targets and generate HTML report.
+class TKOSubsScan(ExternalProgramTask):
+    """ Use tko-subs to scan for potential subdomain takeovers.
 
-    aquatone commands are structured like the example below.
+    tko-subs commands are structured like the example below.
 
-    aquatone --open -sT -sC -T 4 -sV -Pn -p 43,25,21,53,22 -oA htb-targets-nmap-results/nmap.10.10.10.155-tcp 10.10.10.155
+    tko-subs -domains=tesla.subdomains -data=/root/go/src/github.com/anshumanbh/tko-subs/providers-data.csv -output=tkosubs.tesla.csv
 
     An example of the corresponding luigi command is shown below.
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.aquatone AquatoneScan --target-file tesla --top-ports 1000
+    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover TKOSubsScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
-        threads: number of threads for parallel aquatone command execution
-        scan_timeout: timeout in miliseconds for aquatone port scans
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
         top_ports: Scan top N most popular ports *--* Required by upstream Task
         ports: specifies the port(s) to be scanned *--* Required by upstream Task
@@ -31,11 +27,8 @@ class AquatoneScan(luigi.Task):
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
     """
 
-    threads = luigi.Parameter(default="10")
-    scan_timeout = luigi.Parameter(default="900")
-
     def requires(self):
-        """ AquatoneScan depends on GatherWebTargets to run.
+        """ TKOSubsScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -61,9 +54,9 @@ class AquatoneScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"aquatone-{self.target_file}-results")
+        return luigi.LocalTarget(f"tkosubs.{self.target_file}.csv")
 
-    def run(self):
+    def program_args(self):
         """ Defines the options/arguments sent to aquatone after processing.
 
         /opt/aquatone -scan-timeout 900 -threads 20
@@ -71,18 +64,12 @@ class AquatoneScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
         command = [
-            tool_paths.get("aquatone"),
-            "-scan-timeout",
-            self.scan_timeout,
-            "-threads",
-            self.threads,
-            "-silent",
-            "-out",
-            self.output().path,
+            tool_paths.get("tko-subs"),
+            f"-domains={self.input().path}",
+            f"-data={tool_paths.get('tko-subs-dir')}/providers-data.csv",
+            f"-output={self.output().path}",
         ]
 
-        with self.input().open() as target_list:
-            subprocess.run(command, stdin=target_list)
+        return command

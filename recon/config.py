@@ -9,5 +9,7 @@ masscan_config = {
 web_ports = {'80', '443', '8080', '8000', '8443'}
 
 tool_paths = {
-    'aquatone': '/opt/aquatone'
+    'aquatone': '/opt/aquatone',
+    'tko-subs': '/root/go/bin/tko-subs',
+    'tko-subs-dir': '/root/go/src/github.com/anshumanbh/tko-subs',
 }
