@@ -12,4 +12,6 @@ tool_paths = {
     'aquatone': '/opt/aquatone',
     'tko-subs': '/root/go/bin/tko-subs',
     'tko-subs-dir': '/root/go/src/github.com/anshumanbh/tko-subs',
+    'subjack': '/root/go/bin/subjack',
+    'subjack-fingerprints': '/root/go/src/github.com/haccer/subjack/fingerprints.json'
 }

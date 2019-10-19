@@ -64,7 +64,7 @@ class ThreadedNmap(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.target_file}-nmap-results")
+        return luigi.LocalTarget(f"nmap-{self.target_file}-results")
 
     def run(self):
         """ Parses pickled target info dictionary and runs targeted nmap scans against only open ports. """
