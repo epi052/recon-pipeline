@@ -3,9 +3,11 @@ from luigi.util import inherits
 
 from recon.nmap import Searchsploit
 from recon.web.aquatone import AquatoneScan
+from recon.web.corscanner import CORScannerScan
+from recon.web.subdomain_takeover import TKOSubsScan, SubjackScan
 
 
-@inherits(Searchsploit, AquatoneScan)
+@inherits(Searchsploit, AquatoneScan, TKOSubsScan, SubjackScan, CORScannerScan)
 class FullScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time. """
 
@@ -25,4 +27,10 @@ class FullScan(luigi.WrapperTask):
 
         del args["scan_timeout"]
 
+        yield SubjackScan(**args)
         yield Searchsploit(**args)
+        yield CORScannerScan(**args)
+
+        del args["threads"]
+
+        yield TKOSubsScan(**args)

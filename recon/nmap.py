@@ -102,16 +102,12 @@ class ThreadedNmap(luigi.Task):
         """
         for target, protocol_dict in ip_dict.items():
             for protocol, ports in protocol_dict.items():
-                non_web_ports = ",".join(ports.difference(web_ports))
-
-                if not non_web_ports:
-                    continue
 
                 tmp_cmd = nmap_command[:]
                 tmp_cmd[2] = "-sT" if protocol == "tcp" else "-sU"
 
                 # arg to -oA, will drop into subdir off curdir
-                tmp_cmd[9] = non_web_ports
+                tmp_cmd[9] = ",".join(ports)
                 tmp_cmd.append(f"{self.output().path}/nmap.{target}-{protocol}")
 
                 tmp_cmd.append(target)  # target as final arg to nmap
@@ -177,7 +173,7 @@ class Searchsploit(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.target_file}-searchsploit-results")
+        return luigi.LocalTarget(f"searchsploit-{self.target_file}-results")
 
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """

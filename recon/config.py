@@ -13,5 +13,6 @@ tool_paths = {
     'tko-subs': '/root/go/bin/tko-subs',
     'tko-subs-dir': '/root/go/src/github.com/anshumanbh/tko-subs',
     'subjack': '/root/go/bin/subjack',
-    'subjack-fingerprints': '/root/go/src/github.com/haccer/subjack/fingerprints.json'
+    'subjack-fingerprints': '/root/go/src/github.com/haccer/subjack/fingerprints.json',
+    'CORScanner': '/opt/CORScanner/cors_scan.py',
 }
