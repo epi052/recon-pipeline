@@ -4,7 +4,7 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
-from recon.config import tool_paths
+from recon.config import tool_paths, defaults
 from recon.web.targets import GatherWebTargets
 
 
@@ -31,8 +31,8 @@ class AquatoneScan(luigi.Task):
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
     """
 
-    threads = luigi.Parameter(default="10")
-    scan_timeout = luigi.Parameter(default="900")
+    threads = luigi.Parameter(default=defaults.get("threads", ""))
+    scan_timeout = luigi.Parameter(default=defaults.get("aquatone-scan-timeout", ""))
 
     def requires(self):
         """ AquatoneScan depends on GatherWebTargets to run.

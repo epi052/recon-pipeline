@@ -2,7 +2,7 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
-from recon.config import tool_paths
+from recon.config import tool_paths, defaults
 from recon.web.targets import GatherWebTargets
 
 
@@ -34,7 +34,7 @@ class CORScannerScan(ExternalProgramTask):
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
     """
 
-    threads = luigi.Parameter(default="10")
+    threads = luigi.Parameter(default=defaults.get("threads", ""))
 
     def requires(self):
         """ CORScannerScan depends on GatherWebTargets to run.

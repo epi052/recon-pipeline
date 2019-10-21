@@ -9,7 +9,7 @@ from luigi.util import inherits
 
 from recon.targets import TargetList
 from recon.amass import ParseAmassOutput
-from recon.config import top_tcp_ports, top_udp_ports, masscan_config
+from recon.config import top_tcp_ports, top_udp_ports, defaults
 
 
 @inherits(TargetList, ParseAmassOutput)
@@ -34,8 +34,8 @@ class Masscan(luigi.Task):
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
     """
 
-    rate = luigi.Parameter(default=masscan_config.get("rate"))
-    interface = luigi.Parameter(default=masscan_config.get("iface"))
+    rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
+    interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
