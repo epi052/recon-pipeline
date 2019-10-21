@@ -62,8 +62,11 @@ class GatherWebTargets(luigi.Task):
 
         for target, protocol_dict in ip_dict.items():
             for protocol, ports in protocol_dict.items():
-                if ports.intersection(web_ports):  # found a web port from masscan's results
-                    targets.add(target)
+                for port in ports:
+                    if port == "80":
+                        targets.add(target)
+                    elif port in web_ports:
+                        targets.add(f"{target}:{port}")
 
         for amass_result in self.input().get("amass-output").values():
             with amass_result.open() as f:

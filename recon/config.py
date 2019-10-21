@@ -6,6 +6,15 @@ masscan_config = {
     'rate': '1000',
 }
 
+defaults = {
+    'proxy': '',
+    'threads': '10',
+    'iface': 'tun0',
+    'rate': '1000',
+    'gobuster-extensions': "",
+    'gobuster-wordlist': '/usr/share/seclists/Discovery/Web-Content/common.txt',
+}
+
 web_ports = {'80', '443', '8080', '8000', '8443'}
 
 tool_paths = {
@@ -15,4 +24,6 @@ tool_paths = {
     'subjack': '/root/go/bin/subjack',
     'subjack-fingerprints': '/root/go/src/github.com/haccer/subjack/fingerprints.json',
     'CORScanner': '/opt/CORScanner/cors_scan.py',
+    'gobuster': '/usr/local/go/bin/gobuster',
+    'recursive-gobuster': '/usr/local/bin/recursive-gobuster.pyz',
 }
