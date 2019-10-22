@@ -14,7 +14,7 @@ from recon.web.targets import GatherWebTargets
 
 @inherits(GatherWebTargets)
 class GobusterScan(luigi.Task):
-    """ Use gobuster to scan perform forced browsing.
+    """ Use gobuster to perform forced browsing.
 
     gobuster commands are structured like the example below.
 

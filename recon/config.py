@@ -22,4 +22,5 @@ tool_paths = {
     'CORScanner': '/opt/CORScanner/cors_scan.py',
     'gobuster': '/usr/local/go/bin/gobuster',
     'recursive-gobuster': '/usr/local/bin/recursive-gobuster.pyz',
+    'webanalyze': '/root/go/bin/webanalyze'
 }

@@ -6,9 +6,18 @@ from recon.web.aquatone import AquatoneScan
 from recon.web.corscanner import CORScannerScan
 from recon.web.subdomain_takeover import TKOSubsScan, SubjackScan
 from recon.web.gobuster import GobusterScan
+from recon.web.webanalyze import WebanalyzeScan
 
 
-@inherits(Searchsploit, AquatoneScan, TKOSubsScan, SubjackScan, CORScannerScan, GobusterScan)
+@inherits(
+    Searchsploit,
+    AquatoneScan,
+    TKOSubsScan,
+    SubjackScan,
+    CORScannerScan,
+    GobusterScan,
+    WebanalyzeScan,
+)
 class FullScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time. """
 
@@ -42,6 +51,7 @@ class FullScan(luigi.WrapperTask):
         yield SubjackScan(**args)
         yield Searchsploit(**args)
         yield CORScannerScan(**args)
+        yield WebanalyzeScan(**args)
 
         del args["threads"]
 
