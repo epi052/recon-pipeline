@@ -60,9 +60,20 @@ class GatherWebTargets(luigi.Task):
 
         ip_dict = pickle.load(open(self.input().get("masscan-output").path, "rb"))
 
+        """
+        structure over which we're looping
+        {
+            "IP_ADDRESS":
+                {'udp': {"161", "5000", ... },
+                ...
+                i.e. {protocol: set(ports) }
+        }
+        """
         for target, protocol_dict in ip_dict.items():
             for protocol, ports in protocol_dict.items():
                 for port in ports:
+                    if protocol == "udp":
+                        continue
                     if port == "80":
                         targets.add(target)
                     elif port in web_ports:
