@@ -55,7 +55,7 @@ tools = {
         "dependencies": None,
         "commands": [
             f"cp {str(Path(__file__).parent / 'luigid.service')} /lib/systemd/system/luigid.service",
-            f"cp $(which luigi) /usr/local/bin/luigid",
+            f"cp $(which luigid) /usr/local/bin",
             "systemctl daemon-reload",
             "systemctl start luigid.service",
             "systemctl enable luigid.service",
