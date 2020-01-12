@@ -119,7 +119,7 @@ class SubjackScan(ExternalProgramTask):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is amass.TARGET_FILE.json.
+        Naming convention for the output file is subjack.TARGET_FILE.txt.
 
         Returns:
             luigi.local_target.LocalTarget

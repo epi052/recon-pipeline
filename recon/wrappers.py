@@ -1,7 +1,7 @@
 import luigi
 from luigi.util import inherits
 
-from recon.nmap import Searchsploit
+from recon.nmap import SearchsploitScan
 from recon.web.aquatone import AquatoneScan
 from recon.web.corscanner import CORScannerScan
 from recon.web.subdomain_takeover import TKOSubsScan, SubjackScan
@@ -10,7 +10,7 @@ from recon.web.webanalyze import WebanalyzeScan
 
 
 @inherits(
-    Searchsploit,
+    SearchsploitScan,
     AquatoneScan,
     TKOSubsScan,
     SubjackScan,
@@ -49,7 +49,7 @@ class FullScan(luigi.WrapperTask):
         del args["scan_timeout"]
 
         yield SubjackScan(**args)
-        yield Searchsploit(**args)
+        yield SearchsploitScan(**args)
         yield CORScannerScan(**args)
         yield WebanalyzeScan(**args)
 

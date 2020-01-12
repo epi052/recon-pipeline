@@ -15,12 +15,12 @@ web_ports = {'80', '443', '8080', '8000', '8443'}
 
 tool_paths = {
     'aquatone': '/opt/aquatone',
-    'tko-subs': '/root/go/bin/tko-subs',
-    'tko-subs-dir': '/root/go/src/github.com/anshumanbh/tko-subs',
-    'subjack': '/root/go/bin/subjack',
-    'subjack-fingerprints': '/root/go/src/github.com/haccer/subjack/fingerprints.json',
+    'tko-subs': '~/go/bin/tko-subs',
+    'tko-subs-dir': '~/go/src/github.com/anshumanbh/tko-subs',
+    'subjack': '~/go/bin/subjack',
+    'subjack-fingerprints': '~/go/src/github.com/haccer/subjack/fingerprints.json',
     'CORScanner': '/opt/CORScanner/cors_scan.py',
-    'gobuster': '/usr/local/go/bin/gobuster',
+    'gobuster': '~/go/bin/gobuster',
     'recursive-gobuster': '/usr/local/bin/recursive-gobuster.pyz',
-    'webanalyze': '/root/go/bin/webanalyze'
+    'webanalyze': '~/go/bin/webanalyze'
 }

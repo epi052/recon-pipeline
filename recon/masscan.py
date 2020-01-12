@@ -13,7 +13,7 @@ from recon.config import top_tcp_ports, top_udp_ports, defaults
 
 
 @inherits(TargetList, ParseAmassOutput)
-class Masscan(luigi.Task):
+class MasscanScan(luigi.Task):
     """ Run masscan against a target specified via the TargetList Task.
 
     Masscan commands are structured like the example below.  When specified, --top_ports is processed and
@@ -40,7 +40,7 @@ class Masscan(luigi.Task):
     ports = luigi.Parameter(default="")
 
     def __init__(self, *args, **kwargs):
-        super(Masscan, self).__init__(*args, **kwargs)
+        super(MasscanScan, self).__init__(*args, **kwargs)
         self.masscan_output = f"masscan.{self.target_file}.json"
 
     def output(self):
@@ -107,7 +107,7 @@ class Masscan(luigi.Task):
         subprocess.run(command)
 
 
-@inherits(Masscan)
+@inherits(MasscanScan)
 class ParseMasscanOutput(luigi.Task):
     """ Read masscan JSON results and create a pickled dictionary of pertinent information for processing.
 
@@ -134,7 +134,7 @@ class ParseMasscanOutput(luigi.Task):
             "interface": self.interface,
             "ports": self.ports,
         }
-        return Masscan(**args)
+        return MasscanScan(**args)
 
     def output(self):
         """ Returns the target output for this task.

@@ -14,7 +14,7 @@ class AquatoneScan(luigi.Task):
 
     aquatone commands are structured like the example below.
 
-    aquatone --open -sT -sC -T 4 -sV -Pn -p 43,25,21,53,22 -oA htb-targets-nmap-results/nmap.10.10.10.155-tcp 10.10.10.155
+    cat webtargets.tesla.txt | /opt/aquatone -scan-timeout 900 -threads 20
 
     An example of the corresponding luigi command is shown below.
 
@@ -66,7 +66,7 @@ class AquatoneScan(luigi.Task):
     def run(self):
         """ Defines the options/arguments sent to aquatone after processing.
 
-        /opt/aquatone -scan-timeout 900 -threads 20
+        cat webtargets.tesla.txt | /opt/aquatone -scan-timeout 900 -threads 20
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run

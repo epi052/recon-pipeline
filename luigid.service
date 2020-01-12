@@ -1,0 +1,10 @@
+[Unit]
+Description=Spotify Luigi server
+Documentation=https://luigi.readthedocs.io/en/stable/
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/luigid --background --pidfile /var/run/luigid.pid --logdir /var/log/luigi
+[Install]
+WantedBy=multi-user.target

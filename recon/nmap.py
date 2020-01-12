@@ -12,7 +12,7 @@ from recon.masscan import ParseMasscanOutput
 
 
 @inherits(ParseMasscanOutput)
-class ThreadedNmap(luigi.Task):
+class ThreadedNmapScan(luigi.Task):
     """ Run nmap against specific targets and ports gained from the ParseMasscanOutput Task.
 
     nmap commands are structured like the example below.
@@ -121,8 +121,8 @@ class ThreadedNmap(luigi.Task):
             executor.map(subprocess.run, commands)
 
 
-@inherits(ThreadedNmap)
-class Searchsploit(luigi.Task):
+@inherits(ThreadedNmapScan)
+class SearchsploitScan(luigi.Task):
     """ Run searchcploit against each nmap*.xml file in the TARGET-nmap-results directory and write results to disk.
 
     searchsploit commands are structured like the example below.
@@ -160,7 +160,7 @@ class Searchsploit(luigi.Task):
             "interface": self.interface,
             "target_file": self.target_file,
         }
-        return ThreadedNmap(**args)
+        return ThreadedNmapScan(**args)
 
     def output(self):
         """ Returns the target output for this task.
