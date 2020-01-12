@@ -71,7 +71,11 @@ tools = {
             "rm -rf /tmp/masscan",
         ],
     },
-    "amass": {"installed": False, "dependencies": None, "commands": "apt-get install -y -q amass"},
+    "amass": {
+        "installed": False,
+        "dependencies": None,
+        "commands": ["apt-get install -y -q amass"],
+    },
     "aquatone": {
         "installed": False,
         "dependencies": None,
