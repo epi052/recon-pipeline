@@ -1,3 +1,4 @@
+import os
 import sys
 import shlex
 import pickle
@@ -7,6 +8,8 @@ import pkgutil
 import subprocess
 from pathlib import Path
 from collections import defaultdict
+
+os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"
 
 import cmd2
 from cmd2.ansi import style
@@ -52,9 +55,12 @@ tools = {
         "dependencies": None,
         "commands": [
             f"cp {str(Path(__file__).parent / 'luigid.service')} /lib/systemd/system/luigid.service",
+            f"cp $(which luigi) /usr/local/bin/luigid",
+            "systemctl daemon-reload",
             "systemctl start luigid.service",
             "systemctl enable luigid.service",
         ],
+        "shell": True,
     },
     "pipenv": {
         "installed": False,
@@ -67,7 +73,7 @@ tools = {
         "commands": [
             "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
             "make -s -j -C /tmp/masscan",
-            "mv /tmp/bin/masscan /usr/bin/masscan",
+            "mv /tmp/masscan/bin/masscan /usr/local/bin/masscan",
             "rm -rf /tmp/masscan",
         ],
     },
@@ -83,7 +89,7 @@ tools = {
             "mkdir /tmp/aquatone",
             "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
             "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-            "mv /tmp/aquatone/aquatone /usr/bin/aquatone",
+            "mv /tmp/aquatone/aquatone /usr/local/bin/aquatone",
             "rm -rf /tmp/aquatone",
         ],
     },

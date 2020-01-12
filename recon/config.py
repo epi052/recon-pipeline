@@ -14,7 +14,7 @@ defaults = {
 web_ports = {'80', '443', '8080', '8000', '8443'}
 
 tool_paths = {
-    'aquatone': '/opt/aquatone',
+    'aquatone': '/usr/local/bin/aquatone',
     'tko-subs': '~/go/bin/tko-subs',
     'tko-subs-dir': '~/go/src/github.com/anshumanbh/tko-subs',
     'subjack': '~/go/bin/subjack',
