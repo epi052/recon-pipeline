@@ -306,9 +306,7 @@ class ReconShell(cmd2.Cmd):
             self.poutput(style(f"Installing {args.tool}...", fg="blue", bold=True))
 
             for command in tools.get(args.tool).get("commands"):
-                if tools.get(args.tool).get("shell") and command.startswith(
-                    "("
-                ):  # go installs use subshells (...)
+                if tools.get(args.tool).get("shell"):  # go installs use subshells (...)
                     subprocess.run(command, shell=True)
                 else:
                     subprocess.run(shlex.split(command))
