@@ -45,14 +45,10 @@ def get_scans():
 # tool definitions for the auto-installer
 tools = {
     "go": {"installed": False, "dependencies": None, "commands": ["apt-get install -y -q golang"]},
-    "luigi": {
-        "installed": False,
-        "dependencies": ["pipenv", "luigi-service"],
-        "commands": ["pipenv install luigi"],
-    },
+    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
     "luigi-service": {
         "installed": False,
-        "dependencies": None,
+        "dependencies": ["luigi"],
         "commands": [
             f"cp {str(Path(__file__).parent / 'luigid.service')} /lib/systemd/system/luigid.service",
             f"cp $(which luigid) /usr/local/bin",
@@ -244,17 +240,17 @@ class ReconShell(cmd2.Cmd):
                 # block below used for printing status messages
                 if sentry:
                     self.poutput(style(output.strip(), fg="bright_blue"))
-                elif output.startswith("INFO") and output.split()[-1] == "PENDING":
+                elif output.startswith("INFO: Informed") and output.strip().endswith("PENDING"):
                     words = output.split()
                     self.poutput(style(f"[-] {words[5].split('_')[0]} queued", fg="bright_white"))
-                elif output.startswith("INFO") and "running" in output:
+                elif output.startswith("INFO: ") and "running" in output:
                     words = output.split()
                     # output looks similar to , pid=3938074) running   MasscanScan(
                     # want to grab the index of the luigi task running
                     scantypeidx = words.index("running") + 1
                     scantype = words[scantypeidx].split("(", 1)[0]
                     self.poutput(style(f"[*] {scantype} running...", fg="bright_yellow"))
-                elif output.startswith("INFO") and output.split()[-1] == "DONE":
+                elif output.startswith("INFO: Informed") and output.strip().endswith("DONE"):
                     words = output.split()
                     self.poutput(
                         style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green")

@@ -1,70 +1,72 @@
-# Automated Reconnaissance Pipeline 
+# Automated Reconnaissance Pipeline
 
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
+There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
+
+## Installation
+
+> Automatic installation only tested on kali 2019.4
+
+There are two primary phases for installation: 
+
+1. prior to [cmd2](https://github.com/python-cmd2/cmd2) being installed
+2. everything else
+
+First, the manual steps are as follows (and shown below)
+
+```bash
+apt install pipenv
+git clone https://github.com/epi052/recon-pipeline.git
+cd recon-pipeline
+pipenv install cmd2
+```
+
+[![asciicast](https://asciinema.org/a/AxFd1SaLVx7mQdxqQBLfh6aqj.svg)](https://asciinema.org/a/AxFd1SaLVx7mQdxqQBLfh6aqj)
+
+Once manual installation of [cmd2](https://github.com/python-cmd2/cmd2) is complete, the `recon-pipeline` shell provides its own `install` command (seen below).  A simple `install all` will handle all installation steps (as long as you're running a newer version of kali; all other OS's are untested, good luck!)
+
+ [![asciicast](https://asciinema.org/a/293305.svg)](https://asciinema.org/a/293305)
+
 ## Command Execution
 
-### PYTHONPATH
-To run the pipelines, you need to set your `PYTHONPATH` environment variable to the path of this project on disk.  This can be accomplished in a few ways; two solutions are offered.  
+Command execution is handled through the `recon-pipeline` shell (seen below).    
 
-1. Prepend `PYTHONPATH=/path/to/recon-pipline` to any luigi pipeline command being run.
-2. Add `export PYTHONPATH=/path/to/recon-pipeline` to your `.bashrc`   
+[![asciicast](https://asciinema.org/a/293302.svg)](https://asciinema.org/a/293302)
 
-### Scheduler
+### Target File and Exempt List File (defining scope) 
 
-Either add `--local-scheduler` to your `luigi` command on the command line or run `systemctl start luigid` before attempting to run any `luigi` commands.
-
-#### Systemd service file for luigid
-``` 
-cat >> /lib/systemd/system/luigid.service << EOF 
-[Unit]
-Description=Spotify Luigi server
-Documentation=https://luigi.readthedocs.io/en/stable/
-Requires=network.target remote-fs.target
-After=network.target remote-fs.target
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/luigid --background --pidfile /var/run/luigid.pid --logdir /var/log/luigi
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-
-### scope file 
-
-The pipeline expects a file that describes the project scope to be in the current working directory.  By convention, TARGET_NAME should be something like tesla or some other target identifier.
-
-### luigi command structure
-
-With the `PYTHONPATH` setup, luigi commands take on the following structure (prepend `PYTHONPATH` if not exported from `.bashrc`):
-
-`luigi --module PACKAGENAME.MODULENAME CLASSNAME *args`
-
-You can get options for each module by running `luigi --module PACKAGENAME.MODULENAME CLASSNAME --help`
-
-example help statement
-`luigi --module recon.targets TargetList --help`
+The pipeline expects a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
 
 ```text
-usage: luigi [--local-scheduler] [--module CORE_MODULE] [--help] [--help-all]
-             [--TargetList-target-file TARGETLIST_TARGET_FILE]
-             [--target-file TARGET_FILE]
-             [Required root task]
-
-positional arguments:
-  Required root task    Task family to run. Is not optional.
-
-optional arguments:
-  --local-scheduler     Use an in-memory central scheduler. Useful for
-                        testing.
-  --module CORE_MODULE  Used for dynamic loading of modules
-  --help                Show most common flags and all task-specific flags
-  --help-all            Show all command line flags
-  --TargetList-target-file TARGETLIST_TARGET_FILE
-  --target-file TARGET_FILE
+tesla.com
+tesla.cn
+teslamotors.com
+...
 ```
 
-An example scope file command, where `tesla` is the name of the file and it is located in the current directory. 
+Some bug bounty scopes have expressly verboten subdomains and/or top-level domains, for that there is the `--exempt-list` option.  The exempt list follows the same rules as the target file.
 
-`PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.targets TargetList --target-file tesla`
+```text
+shop.eu.teslamotors.com
+energysupport.tesla.com
+feedback.tesla.com
+...
+```
+
+### Using a Scheduler
+
+The backbone of this pipeline is spotify's [luigi](https://github.com/spotify/luigi) batch process management framework.  Luigi uses the concept of a scheduler in order to manage task execution.  Two types of scheduler are available, a local scheduler and a central scheduler.  The local scheduler is useful for development and debugging while the central scheduler provides the following two benefits:
+
+- Make sure two instances of the same task are not running simultaneously
+- Provide visualization of everything that’s going on
+
+While in the `recon-pipeline` shell, running `install luigi-service` will copy the `luigid.service` file provided in the 
+repo to its appropriate systemd location and start/enable the service.  The result is that the central scheduler is up
+and running easily.
+
+The other option is to add `--local-scheduler` to your `scan` command from within the `recon-pipeline` shell.
+
+
+
 
