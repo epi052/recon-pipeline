@@ -1,317 +1,287 @@
+#!/usr/bin/env python
+# stdlib imports
 import os
 import sys
 import shlex
 import pickle
-import socket
-import inspect
-import pkgutil
+import selectors
+import threading
 import subprocess
 from pathlib import Path
-from collections import defaultdict
 
+# fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
 os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"
 
+# suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
+os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
+
+# third party imports
 import cmd2
 from cmd2.ansi import style
 
-import recon
+# project's module imports
+from recon import get_scans, tools, scan_parser, install_parser
+
+# select loop, handles async stdout/stderr processing of subprocesses
+selector = selectors.DefaultSelector()
 
 
-def get_scans():
-    """ Iterates over the recon package and its modules to find all of the *Scan classes.
+class SelectorThread(threading.Thread):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._stop_event = threading.Event()
 
-    * A contract exists here that says any scans need to end with the word scan in order to be found by this function.
+    def stop(self):
+        """ Helper to set the SelectorThread's Event and cleanup the selector's fds """
+        self._stop_event.set()
 
-    Returns:
-        dict() containing mapping of {modulename: classname} for all potential recon-pipeline commands
-    """
-    scans = defaultdict(list)
+        # close any fds that were registered and still haven't been unregistered
+        for key in selector.get_map():
+            selector.get_key(key).fileobj.close()
 
-    # recursively walk packages; import each module in each package
-    for loader, module_name, is_pkg in pkgutil.walk_packages(recon.__path__, prefix="recon."):
-        _module = loader.find_module(module_name).load_module(module_name)
-        globals()[module_name] = _module
+    def stopped(self):
+        """ Helper to determine whether the SelectorThread's Event is set or not. """
+        return self._stop_event.is_set()
 
-    # walk all modules, grabbing classes that we've written and add them to the classlist set
-    for name, obj in inspect.getmembers(sys.modules[__name__]):
-        if inspect.ismodule(obj) and not name.startswith("_"):
-            for subname, subobj in inspect.getmembers(obj):
-                if inspect.isclass(subobj) and subname.lower().endswith("scan"):
-                    scans[subname].append(name)
-
-    return scans
-
-
-# tool definitions for the auto-installer
-tools = {
-    "go": {"installed": False, "dependencies": None, "commands": ["apt-get install -y -q golang"]},
-    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
-    "luigi-service": {
-        "installed": False,
-        "dependencies": ["luigi"],
-        "commands": [
-            f"cp {str(Path(__file__).parent / 'luigid.service')} /lib/systemd/system/luigid.service",
-            f"cp $(which luigid) /usr/local/bin",
-            "systemctl daemon-reload",
-            "systemctl start luigid.service",
-            "systemctl enable luigid.service",
-        ],
-        "shell": True,
-    },
-    "pipenv": {
-        "installed": False,
-        "dependencies": None,
-        "commands": ["apt-get install -y -q pipenv"],
-    },
-    "masscan": {
-        "installed": False,
-        "dependencies": None,
-        "commands": [
-            "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
-            "make -s -j -C /tmp/masscan",
-            "mv /tmp/masscan/bin/masscan /usr/local/bin/masscan",
-            "rm -rf /tmp/masscan",
-        ],
-    },
-    "amass": {
-        "installed": False,
-        "dependencies": None,
-        "commands": ["apt-get install -y -q amass"],
-    },
-    "aquatone": {
-        "installed": False,
-        "dependencies": None,
-        "commands": [
-            "mkdir /tmp/aquatone",
-            "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
-            "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-            "mv /tmp/aquatone/aquatone /usr/local/bin/aquatone",
-            "rm -rf /tmp/aquatone",
-        ],
-    },
-    "corscanner": {
-        "installed": False,
-        "dependencies": None,
-        "commands": [
-            "git clone https://github.com/chenjj/CORScanner.git /opt/CORScanner",
-            "pip install -r /opt/CORScanner/requirements.txt",
-            "pip install future",
-        ],
-    },
-    "gobuster": {
-        "installed": False,
-        "dependencies": ["go"],
-        "commands": [
-            "go get github.com/OJ/gobuster",
-            "(cd ~/go/src/github.com/OJ/gobuster && go build && go install)",
-        ],
-        "shell": True,
-    },
-    "tko-subs": {
-        "installed": False,
-        "dependencies": ["go"],
-        "commands": [
-            "go get github.com/anshumanbh/tko-subs",
-            "(cd ~/go/src/github.com/anshumanbh/tko-subs && go build && go install)",
-        ],
-        "shell": True,
-    },
-    "subjack": {
-        "installed": False,
-        "dependencies": ["go"],
-        "commands": [
-            "go get github.com/haccer/subjack",
-            "(cd ~/go/src/github.com/haccer/subjack && go build && go install)",
-        ],
-        "shell": True,
-    },
-    "webanalyze": {
-        "installed": False,
-        "dependencies": ["go"],
-        "commands": [
-            "go get github.com/rverton/webanalyze",
-            "(cd ~/go/src/github.com/rverton/webanalyze && go build && go install)",
-        ],
-        "shell": True,
-    },
-    "recursive-gobuster": {
-        "installed": False,
-        "dependencies": None,
-        "commands": [
-            "git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster",
-            "ln -s /opt/recursive-gobuster/recursive-gobuster.pyz /usr/local/bin",
-        ],
-    },
-}
-
-# options for ReconShell's 'scan' command
-scan_parser = cmd2.Cmd2ArgumentParser()
-scan_parser.add_argument("scantype", choices_function=get_scans)
-scan_parser.add_argument(
-    "--target-file",
-    completer_method=cmd2.Cmd.path_complete,
-    help="file created by the user that defines the target's scope; list of ips/domains",
-)
-scan_parser.add_argument(
-    "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains"
-)
-scan_parser.add_argument(
-    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster"
-)
-scan_parser.add_argument(
-    "--interface",
-    choices_function=lambda: [x[1] for x in socket.if_nameindex()],
-    help="which interface masscan should use",
-)
-scan_parser.add_argument(
-    "--recursive", action="store_true", help="whether or not to recursively gobust"
-)
-scan_parser.add_argument("--rate", help="rate at which masscan should scan")
-scan_parser.add_argument(
-    "--top-ports",
-    help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
-)
-scan_parser.add_argument(
-    "--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)"
-)
-scan_parser.add_argument(
-    "--threads", help="number of threads for all of the threaded applications to use"
-)
-scan_parser.add_argument("--scan-timeout", help="scan timeout for aquatone")
-scan_parser.add_argument("--proxy", help="proxy for gobuster if desired (ex. 127.0.0.1:8080)")
-scan_parser.add_argument("--extensions", help="list of extensions for gobuster (ex. asp,html,aspx)")
-scan_parser.add_argument(
-    "--local-scheduler",
-    action="store_true",
-    help="use the local scheduler instead of the central scheduler (luigid)",
-)
-scan_parser.add_argument(
-    "--verbose",
-    action="store_true",
-    help="shows debug messages from luigi, useful for troubleshooting",
-)
-
-# options for ReconShell's 'install' command
-install_parser = cmd2.Cmd2ArgumentParser()
-install_parser.add_argument(
-    "tool", help="which tool to install", choices=list(tools.keys()) + ["all"]
-)
+    def run(self):
+        """ Run thread that executes a select loop; handles async stdout/stderr processing of subprocesses. """
+        while not self.stopped():
+            for k, mask in selector.select():
+                callback = k.data
+                callback(k.fileobj)
 
 
 class ReconShell(cmd2.Cmd):
-    prompt = "recon-pipeline> "
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sentry = False
+        self.prompt = "recon-pipeline> "
+        self.selectorloop = None
+
+        # register hooks to handle selector loop start and cleanup
+        self.register_preloop_hook(self._preloop_hook)
+        self.register_postloop_hook(self._postloop_hook)
+
+    def _preloop_hook(self) -> None:
+        """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
+        self.selectorloop = SelectorThread(daemon=True)
+        self.selectorloop.start()
+
+    def _postloop_hook(self) -> None:
+        """ Hook function that runs after the cmdloop function stops; stops the selector loop. """
+        if self.selectorloop.is_alive():
+            self.selectorloop.stop()
+
+        selector.close()
+
+    def _install_error_reporter(self, stderr):
+        """ Helper to print errors that crop up during any tool installation commands. """
+
+        output = stderr.readline()
+
+        if not output:
+            return
+
+        output = output.decode().strip()
+
+        if self.terminal_lock.acquire(blocking=True):
+            self.async_alert(style(f"[!] {output}", fg="bright_red"))
+
+        self.terminal_lock.release()
+
+    def _luigi_pretty_printer(self, stderr):
+        """ Helper to clean up the VERY verbose luigi log messages that are normally spewed to the terminal. """
+
+        output = stderr.readline()
+
+        if not output:
+            return
+
+        output = output.decode()
+
+        if "===== Luigi Execution Summary =====" in output:
+            # header that begins the summary of all luigi tasks that have executed/failed
+            self.async_alert("")
+            self.sentry = True
+
+        # block below used for printing status messages
+        if self.sentry:
+
+            # only set once the Luigi Execution Summary is seen
+            self.async_alert(cmd2.utils.align_center(style(output.strip(), fg="bright_blue")))
+        elif output.startswith("INFO: Informed") and output.strip().endswith("PENDING"):
+            # luigi Task has been queued for execution
+
+            words = output.split()
+
+            self.async_alert(style(f"[-] {words[5].split('_')[0]} queued", fg="bright_white"))
+        elif output.startswith("INFO: ") and "running" in output:
+            # luigi Task is currently running
+
+            words = output.split()
+
+            # output looks similar to , pid=3938074) running   MasscanScan(
+            # want to grab the index of the luigi task running and use it to find the name of the scan (i.e. MassScan)
+            scantypeidx = words.index("running") + 1
+            scantype = words[scantypeidx].split("(", 1)[0]
+
+            self.async_alert(style(f"[*] {scantype} running...", fg="bright_yellow"))
+        elif output.startswith("INFO: Informed") and output.strip().endswith("DONE"):
+            # luigi Task has completed
+
+            words = output.split()
+
+            self.async_alert(style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green"))
 
     @cmd2.with_argparser(scan_parser)
     def do_scan(self, args):
-        """ Scan something. 
-        
-        Possible scans include 
+        """ Scan something.
+
+        Possible scans include
             AmassScan           CORScannerScan      GobusterScan        SearchsploitScan
             ThreadedNmapScan    WebanalyzeScan      AquatoneScan        FullScan
             MasscanScan         SubjackScan         TKOSubsScan
         """
-        scans = get_scans()
-        command = ["luigi", "--module", scans.get(args.scantype)[0]]
-
-        command.extend(args.__statement__.arg_list)
-
-        sentry = False
-        if args.verbose:
-            command.pop(
-                command.index("--verbose")
-            )  # verbose is not a luigi option, need to remove it
-            subprocess.run(command)
-        else:
-            # suppress luigi messages in favor of less verbose/cleaner output
-            proc = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-
-            while True:
-                output = proc.stderr.readline()
-                if not output and proc.poll() is not None:
-                    break
-                if not output:
-                    continue
-
-                output = output.decode()
-                if "===== Luigi Execution Summary =====" in output:
-                    self.poutput()
-                    sentry = True
-
-                # block below used for printing status messages
-                if sentry:
-                    self.poutput(style(output.strip(), fg="bright_blue"))
-                elif output.startswith("INFO: Informed") and output.strip().endswith("PENDING"):
-                    words = output.split()
-                    self.poutput(style(f"[-] {words[5].split('_')[0]} queued", fg="bright_white"))
-                elif output.startswith("INFO: ") and "running" in output:
-                    words = output.split()
-                    # output looks similar to , pid=3938074) running   MasscanScan(
-                    # want to grab the index of the luigi task running
-                    scantypeidx = words.index("running") + 1
-                    scantype = words[scantypeidx].split("(", 1)[0]
-                    self.poutput(style(f"[*] {scantype} running...", fg="bright_yellow"))
-                elif output.startswith("INFO: Informed") and output.strip().endswith("DONE"):
-                    words = output.split()
-                    self.poutput(
-                        style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green")
-                    )
         self.async_alert(
             style(
-                "If anything went wrong, rerun your command with --verbose to enable debug statements.",
+                "If anything goes wrong, rerun your command with --verbose to enable debug statements.",
                 fg="cyan",
                 dim=True,
             )
         )
 
+        # get_scans() returns mapping of {modulename: classname} in the recon module
+        # each classname corresponds to a potential recon-pipeline command, i.e. AmassScan, CORScannerScan ...
+        scans = get_scans()
+
+        # command is a list that will end up looking something like what's below
+        # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
+        command = ["luigi", "--module", scans.get(args.scantype)[0]]
+        command.extend(args.__statement__.arg_list)
+
+        if args.verbose:
+            # verbose is not a luigi option, need to remove it
+            command.pop(command.index("--verbose"))
+
+            subprocess.run(command)
+        else:
+            # suppress luigi messages in favor of less verbose/cleaner output
+            proc = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+
+            # add stderr to the selector loop for processing when there's something to read from the fd
+            selector.register(proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer)
+
     @cmd2.with_argparser(install_parser)
     def do_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
+
+        # imported tools variable is in global scope, and we reassign over it later
         global tools
 
+        # create .cache dir in the home directory, on the off chance it doesn't exist
         cachedir = Path.home() / ".cache/"
-
         cachedir.mkdir(parents=True, exist_ok=True)
 
         persistent_tool_dict = cachedir / ".tool-dict.pkl"
 
         if args.tool == "all":
+            # show all tools have been queued for installation
+            [
+                self.async_alert(style(f"[-] {x} queued", fg="bright_white"))
+                for x in tools.keys()
+                if not tools.get(x).get("installed")
+            ]
+
             for tool in tools.keys():
                 self.do_install(tool)
+
             return
 
         if persistent_tool_dict.exists():
             tools = pickle.loads(persistent_tool_dict.read_bytes())
 
         if tools.get(args.tool).get("dependencies"):
+            # get all of the requested tools dependencies
+
             for dependency in tools.get(args.tool).get("dependencies"):
                 if tools.get(dependency).get("installed"):
+                    # already installed, skip it
                     continue
 
-                self.poutput(
+                self.async_alert(
                     style(
-                        f"{args.tool} has an unmet dependency; installing {dependency}",
-                        fg="blue",
+                        f"[!] {args.tool} has an unmet dependency; installing {dependency}",
+                        fg="yellow",
                         bold=True,
                     )
                 )
+
+                # install the dependency before continuing with installation
                 self.do_install(dependency)
 
         if tools.get(args.tool).get("installed"):
-            return self.poutput(style(f"{args.tool} is already installed.", fg="yellow"))
+            return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
-            self.poutput(style(f"Installing {args.tool}...", fg="blue", bold=True))
+
+            # list of return values from commands run during each tool installation
+            # used to determine whether the tool installed correctly or not
+            retvals = list()
+
+            self.async_alert(style(f"[*] Installing {args.tool}...", fg="blue", bold=True))
 
             for command in tools.get(args.tool).get("commands"):
-                if tools.get(args.tool).get("shell"):  # go installs use subshells (...)
-                    subprocess.run(command, shell=True)
-                else:
-                    subprocess.run(shlex.split(command))
-            tools[args.tool]["installed"] = True
+                # run all commands required to install the tool
 
-        self.poutput(style(f"{args.tool} installed!", fg="green", bold=True))
+                # print each command being run
+                self.async_alert(style(f"[-] {command}", fg="cyan"))
+
+                if tools.get(args.tool).get("shell"):
+
+                    # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
+                    proc = subprocess.Popen(
+                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                    )
+                else:
+
+                    # "normal" command, split up the string as usual and run it
+                    proc = subprocess.Popen(
+                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                    )
+
+                # register stderr for more visually pleasing output on failed commands
+                # selector.register(proc.stderr, selectors.EVENT_READ, self._install_error_reporter)
+                out, err = proc.communicate()
+
+                if err:
+                    self.async_alert(style(f"[!] {err.decode().strip()}", fg="bright_red"))
+
+                retvals.append(proc.returncode)
+
+        if all(x == 0 for x in retvals):
+            # all return values in retvals are 0, i.e. all exec'd successfully; tool has been installed
+
+            self.async_alert(style(f"[+] {args.tool} installed!", fg="bright_green", bold=True))
+
+            tools[args.tool]["installed"] = True
+        else:
+            # unsuccessful tool install
+
+            tools[args.tool]["installed"] = False
+
+            self.async_alert(
+                style(
+                    f"[!!] one (or more) of {args.tool}'s commands failed and may have not installed properly; check output from the offending command above...",
+                    fg="bright_red",
+                    bold=True,
+                )
+            )
+
+        # store any tool installs/failures (back) to disk
         pickle.dump(tools, persistent_tool_dict.open("wb"))
 
 
 if __name__ == "__main__":
-    rs = ReconShell(persistent_history_file="~/.reconshell_history")
+    rs = ReconShell(
+        persistent_history_file="~/.reconshell_history", persistent_history_length=10000
+    )
     sys.exit(rs.cmdloop())
