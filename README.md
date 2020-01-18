@@ -13,7 +13,7 @@ There are two primary phases for installation:
 1. prior to [cmd2](https://github.com/python-cmd2/cmd2) being installed
 2. everything else
 
-First, the manual steps are as follows (and shown below)
+First, the manual steps to get cmd2 installed in a virtual environment are as follows (and shown below)
 
 ```bash
 apt install pipenv
@@ -26,7 +26,7 @@ pipenv install cmd2
 
 Once manual installation of [cmd2](https://github.com/python-cmd2/cmd2) is complete, the `recon-pipeline` shell provides its own `install` command (seen below).  A simple `install all` will handle all installation steps (as long as you're running a newer version of kali; all other OS's are untested, good luck!)
 
- [![asciicast](https://asciinema.org/a/293305.svg)](https://asciinema.org/a/293305)
+[![asciicast](https://asciinema.org/a/294414.svg)](https://asciinema.org/a/294414)
 
 ## Command Execution
 
