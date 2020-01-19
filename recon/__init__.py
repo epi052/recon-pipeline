@@ -8,6 +8,7 @@ from collections import defaultdict
 import cmd2
 
 import recon
+from recon.config import tool_paths
 
 # tool definitions for recon-pipeline's auto-installer
 tools = {
@@ -35,7 +36,7 @@ tools = {
         "commands": [
             "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
             "make -s -j -C /tmp/masscan",
-            "mv /tmp/masscan/bin/masscan /usr/local/bin/masscan",
+            f"mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
             "rm -rf /tmp/masscan",
         ],
     },
@@ -52,7 +53,7 @@ tools = {
             "mkdir /tmp/aquatone",
             "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
             "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-            "mv /tmp/aquatone/aquatone /usr/local/bin/aquatone",
+            f"mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
             "rm -rf /tmp/aquatone",
         ],
     },
@@ -61,8 +62,8 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            "bash -c 'if [[ -d /opt/CORScanner/ ]] ; then cd /opt/CORScanner/ && git pull; else git clone https://github.com/chenjj/CORScanner.git /opt/CORScanner; fi'",
-            "pip install -q -r /opt/CORScanner/requirements.txt",
+            f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
+            f"pip install -q -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
             "pip install -q future",
         ],
     },
@@ -107,8 +108,8 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            "bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
-            "ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz /usr/local/bin",
+            f"bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
+            f"ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz {tool_paths.get('recursive-gobuster')}",
         ],
     },
     "go": {"installed": False, "dependencies": None, "commands": ["apt-get install -y -q golang"]},
