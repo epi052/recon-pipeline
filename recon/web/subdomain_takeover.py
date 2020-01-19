@@ -25,6 +25,7 @@ class TKOSubsScan(ExternalProgramTask):
         interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
         rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     def requires(self):
@@ -37,6 +38,7 @@ class TKOSubsScan(ExternalProgramTask):
             luigi.Task - GatherWebTargets
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -54,7 +56,7 @@ class TKOSubsScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"tkosubs.{self.target_file}.csv")
+        return luigi.LocalTarget(f"{self.results_dir}/tkosubs.{self.target_file}.csv")
 
     def program_args(self):
         """ Defines the options/arguments sent to tko-subs after processing.
@@ -93,6 +95,7 @@ class SubjackScan(ExternalProgramTask):
         interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
         rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
@@ -107,6 +110,7 @@ class SubjackScan(ExternalProgramTask):
             luigi.Task - GatherWebTargets
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -124,7 +128,7 @@ class SubjackScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"subjack.{self.target_file}.txt")
+        return luigi.LocalTarget(f"{self.results_dir}/subjack.{self.target_file}.txt")
 
     def program_args(self):
         """ Defines the options/arguments sent to subjack after processing.

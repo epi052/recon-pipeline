@@ -39,6 +39,7 @@ class WebanalyzeScan(luigi.Task):
         interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
         rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
@@ -53,6 +54,7 @@ class WebanalyzeScan(luigi.Task):
             luigi.Task - GatherWebTargets
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -72,7 +74,7 @@ class WebanalyzeScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"webanalyze-{self.target_file}-results")
+        return luigi.LocalTarget(f"{self.results_dir}/webanalyze-{self.target_file}-results")
 
     def _wrapped_subprocess(self, cmd):
         with open(f"webanalyze.{cmd[2].replace('//', '_').replace(':', '')}.txt", "wb") as f:

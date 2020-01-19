@@ -21,6 +21,7 @@ class AmassScan(ExternalProgramTask):
     Args:
         exempt_list: Path to a file providing blacklisted subdomains, one per line.
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     exempt_list = luigi.Parameter(default="")
@@ -33,7 +34,8 @@ class AmassScan(ExternalProgramTask):
         Returns:
             luigi.ExternalTask - TargetList
         """
-        return TargetList(self.target_file)
+        args = {"target_file": self.target_file, "results_dir": self.results_dir}
+        return TargetList(**args)
 
     def output(self):
         """ Returns the target output for this task.
@@ -43,7 +45,7 @@ class AmassScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"amass.{self.target_file}.json")
+        return luigi.LocalTarget(f"{self.results_dir}/amass.{self.target_file}.json")
 
     def program_args(self):
         """ Defines the options/arguments sent to amass after processing.
@@ -51,6 +53,7 @@ class AmassScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        print(f"debug-epi: amass {self.results_dir}")
         if not self.input().path.endswith("domains"):
             return f"touch {self.output().path}".split()
 
@@ -65,7 +68,7 @@ class AmassScan(ExternalProgramTask):
             "-df",
             self.input().path,
             "-json",
-            f"amass.{self.target_file}.json",
+            self.output().path,
         ]
 
         if self.exempt_list:
@@ -82,6 +85,7 @@ class ParseAmassOutput(luigi.Task):
     Args:
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     def requires(self):
@@ -94,7 +98,11 @@ class ParseAmassOutput(luigi.Task):
             luigi.ExternalTask - TargetList
         """
 
-        args = {"target_file": self.target_file, "exempt_list": self.exempt_list}
+        args = {
+            "target_file": self.target_file,
+            "exempt_list": self.exempt_list,
+            "results_dir": self.results_dir,
+        }
         return AmassScan(**args)
 
     def output(self):
@@ -109,9 +117,11 @@ class ParseAmassOutput(luigi.Task):
             dict(str: luigi.local_target.LocalTarget)
         """
         return {
-            "target-ips": luigi.LocalTarget(f"{self.target_file}.ips"),
-            "target-ip6s": luigi.LocalTarget(f"{self.target_file}.ip6s"),
-            "target-subdomains": luigi.LocalTarget(f"{self.target_file}.subdomains"),
+            "target-ips": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ips"),
+            "target-ip6s": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ip6s"),
+            "target-subdomains": luigi.LocalTarget(
+                f"{self.results_dir}/{self.target_file}.subdomains"
+            ),
         }
 
     def run(self):

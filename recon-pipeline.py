@@ -108,7 +108,7 @@ class ReconShell(cmd2.Cmd):
         if self.sentry:
 
             # only set once the Luigi Execution Summary is seen
-            self.async_alert(cmd2.utils.align_center(style(output.strip(), fg="bright_blue")))
+            self.async_alert(style(output.strip(), fg="bright_blue"))
         elif output.startswith("INFO: Informed") and output.strip().endswith("PENDING"):
             # luigi Task has been queued for execution
 
@@ -140,7 +140,7 @@ class ReconShell(cmd2.Cmd):
         Possible scans include
             AmassScan           CORScannerScan      GobusterScan        SearchsploitScan
             ThreadedNmapScan    WebanalyzeScan      AquatoneScan        FullScan
-            MasscanScan         SubjackScan         TKOSubsScan
+            MasscanScan         SubjackScan         TKOSubsScan         HTBScan
         """
         self.async_alert(
             style(
@@ -158,7 +158,7 @@ class ReconShell(cmd2.Cmd):
         # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
         command = ["luigi", "--module", scans.get(args.scantype)[0]]
         command.extend(args.__statement__.arg_list)
-
+        self.async_alert(" ".join(command))
         if args.verbose:
             # verbose is not a luigi option, need to remove it
             command.pop(command.index("--verbose"))
@@ -227,13 +227,13 @@ class ReconShell(cmd2.Cmd):
             # used to determine whether the tool installed correctly or not
             retvals = list()
 
-            self.async_alert(style(f"[*] Installing {args.tool}...", fg="blue", bold=True))
+            self.async_alert(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
 
             for command in tools.get(args.tool).get("commands"):
                 # run all commands required to install the tool
 
                 # print each command being run
-                self.async_alert(style(f"[-] {command}", fg="cyan"))
+                self.async_alert(style(f"[=] {command}", fg="cyan"))
 
                 if tools.get(args.tool).get("shell"):
 
@@ -260,7 +260,7 @@ class ReconShell(cmd2.Cmd):
         if all(x == 0 for x in retvals):
             # all return values in retvals are 0, i.e. all exec'd successfully; tool has been installed
 
-            self.async_alert(style(f"[+] {args.tool} installed!", fg="bright_green", bold=True))
+            self.async_alert(style(f"[+] {args.tool} installed!", fg="bright_green"))
 
             tools[args.tool]["installed"] = True
         else:

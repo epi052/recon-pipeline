@@ -3,9 +3,9 @@ import pickle
 import luigi
 from luigi.util import inherits
 
-from recon.config import web_ports
 from recon.amass import ParseAmassOutput
 from recon.masscan import ParseMasscanOutput
+from recon.config import web_ports
 
 
 @inherits(ParseMasscanOutput, ParseAmassOutput)
@@ -19,6 +19,7 @@ class GatherWebTargets(luigi.Task):
         interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
         rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     def requires(self):
@@ -31,6 +32,7 @@ class GatherWebTargets(luigi.Task):
             dict(str: ParseMasscanOutput, str: ParseAmassOutput)
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -40,7 +42,9 @@ class GatherWebTargets(luigi.Task):
         return {
             "masscan-output": ParseMasscanOutput(**args),
             "amass-output": ParseAmassOutput(
-                exempt_list=self.exempt_list, target_file=self.target_file
+                exempt_list=self.exempt_list,
+                target_file=self.target_file,
+                results_dir=self.results_dir,
             ),
         }
 
@@ -52,7 +56,7 @@ class GatherWebTargets(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"webtargets.{self.target_file}.txt")
+        return luigi.LocalTarget(f"{self.results_dir}/webtargets.{self.target_file}.txt")
 
     def run(self):
         """ Gather all potential web targets into a single file to pass farther down the pipeline. """

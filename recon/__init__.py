@@ -160,6 +160,11 @@ scan_parser.add_argument(
     "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains"
 )
 scan_parser.add_argument(
+    "--results-dir",
+    completer_method=cmd2.Cmd.path_complete,
+    help="directory in which to save scan results",
+)
+scan_parser.add_argument(
     "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster"
 )
 scan_parser.add_argument(

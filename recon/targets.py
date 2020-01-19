@@ -1,14 +1,22 @@
 import shutil
 import logging
 import ipaddress
+from pathlib import Path
 
 import luigi
 
+from recon.config import defaults
+
 
 class TargetList(luigi.ExternalTask):
-    """ External task.  `TARGET_FILE` is generated manually by the user from target's scope. """
+    """ External task.  `TARGET_FILE` is generated manually by the user from target's scope.
+
+    Args:
+        results_dir: specifies the directory on disk to which all Task results are written
+    """
 
     target_file = luigi.Parameter()
+    results_dir = luigi.Parameter(default=defaults.get("results-dir", ""))
 
     def output(self):
         """ Returns the target output for this task. target_file.ips || target_file.domains
@@ -24,8 +32,9 @@ class TargetList(luigi.ExternalTask):
         Returns:
             luigi.local_target.LocalTarget
         """
+        print(f"debug-epi: targets {self.results_dir}")
         try:
-            with open(self.target_file) as f:
+            with open(str(self.target_file)) as f:
                 first_line = f.readline()
                 ipaddress.ip_interface(first_line.strip())  # is it a valid ip/network?
         except OSError as e:
@@ -39,5 +48,10 @@ class TargetList(luigi.ExternalTask):
             # no exception thrown; ip address found
             with_suffix = f"{self.target_file}.ips"
 
-        shutil.copy(self.target_file, with_suffix)  # copy file with new extension
+        Path(str(self.results_dir)).mkdir(parents=True, exist_ok=True)
+
+        with_suffix = f"{self.results_dir}/{with_suffix}"
+
+        # copy file with new extension
+        shutil.copy(str(self.target_file), with_suffix)
         return luigi.LocalTarget(with_suffix)

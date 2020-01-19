@@ -32,16 +32,13 @@ class MasscanScan(luigi.Task):
         ports: specifies the port(s) to be scanned
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
+        results_dir: specifies the directory on disk to which all Task results are written *--* Optional for upstream Task
     """
 
     rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
     interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
-
-    def __init__(self, *args, **kwargs):
-        super(MasscanScan, self).__init__(*args, **kwargs)
-        self.masscan_output = f"masscan.{self.target_file}.json"
 
     def output(self):
         """ Returns the target output for this task.
@@ -51,7 +48,7 @@ class MasscanScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(self.masscan_output)
+        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.json")
 
     def run(self):
         """ Defines the options/arguments sent to masscan after processing.
@@ -59,6 +56,7 @@ class MasscanScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        print(f"debug-epi: masscan {self.results_dir}")
         if self.ports and self.top_ports:
             # can't have both
             logging.error("Only --ports or --top-ports is permitted, not both.")
@@ -82,10 +80,14 @@ class MasscanScan(luigi.Task):
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(target_file=self.target_file)
+        target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
 
         if target_list.path.endswith("domains"):
-            yield ParseAmassOutput(target_file=self.target_file, exempt_list=self.exempt_list)
+            yield ParseAmassOutput(
+                target_file=self.target_file,
+                exempt_list=self.exempt_list,
+                results_dir=self.results_dir,
+            )
 
         command = [
             "masscan",
@@ -97,7 +99,7 @@ class MasscanScan(luigi.Task):
             "-e",
             self.interface,
             "-oJ",
-            self.masscan_output,
+            self.output().path,
             "--ports",
             self.ports,
             "-iL",
@@ -117,6 +119,7 @@ class ParseMasscanOutput(luigi.Task):
         interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
         rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     def requires(self):
@@ -128,6 +131,7 @@ class ParseMasscanOutput(luigi.Task):
             luigi.Task - Masscan
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -144,7 +148,7 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"masscan.{self.target_file}.parsed.pickle")
+        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.parsed.pickle")
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """

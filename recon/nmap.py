@@ -30,6 +30,7 @@ class ThreadedNmapScan(luigi.Task):
         top_ports: Scan top N most popular ports *--* Required by upstream Task
         ports: specifies the port(s) to be scanned *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
@@ -44,6 +45,7 @@ class ThreadedNmapScan(luigi.Task):
             luigi.Task - ParseMasscanOutput
         """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -64,7 +66,7 @@ class ThreadedNmapScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"nmap-{self.target_file}-results")
+        return luigi.LocalTarget(f"{self.results_dir}/nmap-{self.target_file}-results")
 
     def run(self):
         """ Parses pickled target info dictionary and runs targeted nmap scans against only open ports. """
@@ -78,7 +80,8 @@ class ThreadedNmapScan(luigi.Task):
         nmap_command = [  # placeholders will be overwritten with appropriate info in loop below
             "nmap",
             "--open",
-            "PLACEHOLDER-IDX-2" "-n",
+            "PLACEHOLDER-IDX-2",
+            "-n",
             "-sC",
             "-T",
             "4",
@@ -140,6 +143,7 @@ class SearchsploitScan(luigi.Task):
         top_ports: Scan top N most popular ports *--* Required by upstream Task
         ports: specifies the port(s) to be scanned *--* Required by upstream Task
         target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifies the directory on disk to which all Task results are written *--* Required by upstream Task
     """
 
     def requires(self):
@@ -159,6 +163,7 @@ class SearchsploitScan(luigi.Task):
             "top_ports": self.top_ports,
             "interface": self.interface,
             "target_file": self.target_file,
+            "results_dir": self.results_dir,
         }
         return ThreadedNmapScan(**args)
 
@@ -173,7 +178,7 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"searchsploit-{self.target_file}-results")
+        return luigi.LocalTarget(f"{self.results_dir}/searchsploit-{self.target_file}-results")
 
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """

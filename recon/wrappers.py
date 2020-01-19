@@ -24,6 +24,7 @@ class FullScan(luigi.WrapperTask):
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
         args = {
+            "results_dir": self.results_dir,
             "rate": self.rate,
             "target_file": self.target_file,
             "top_ports": self.top_ports,
@@ -39,9 +40,11 @@ class FullScan(luigi.WrapperTask):
 
         yield GobusterScan(**args)
 
+        # remove options that are gobuster specific; if left dictionary unpacking to other scans throws an exception
         for gobuster_opt in ("proxy", "wordlist", "extensions", "recursive"):
             del args[gobuster_opt]
 
+        # add aquatone scan specific option
         args.update({"scan_timeout": self.scan_timeout})
 
         yield AquatoneScan(**args)
@@ -56,3 +59,41 @@ class FullScan(luigi.WrapperTask):
         del args["threads"]
 
         yield TKOSubsScan(**args)
+
+
+@inherits(SearchsploitScan, AquatoneScan, GobusterScan, WebanalyzeScan)
+class HTBScan(luigi.WrapperTask):
+    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time. """
+
+    def requires(self):
+        """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
+        args = {
+            "results_dir": self.results_dir,
+            "rate": self.rate,
+            "target_file": self.target_file,
+            "top_ports": self.top_ports,
+            "interface": self.interface,
+            "ports": self.ports,
+            "exempt_list": self.exempt_list,
+            "threads": self.threads,
+            "proxy": self.proxy,
+            "wordlist": self.wordlist,
+            "extensions": self.extensions,
+            "recursive": self.recursive,
+        }
+
+        yield GobusterScan(**args)
+
+        # remove options that are gobuster specific; if left dictionary unpacking to other scans throws an exception
+        for gobuster_opt in ("proxy", "wordlist", "extensions", "recursive"):
+            del args[gobuster_opt]
+
+        # add aquatone scan specific option
+        args.update({"scan_timeout": self.scan_timeout})
+
+        yield AquatoneScan(**args)
+
+        del args["scan_timeout"]
+
+        yield SearchsploitScan(**args)
+        yield WebanalyzeScan(**args)
