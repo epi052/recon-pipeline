@@ -16,11 +16,11 @@ os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
 
 # third party imports
-import cmd2
-from cmd2.ansi import style
+import cmd2  # noqa: E402
+from cmd2.ansi import style  # noqa: E402
 
 # project's module imports
-from recon import get_scans, tools, scan_parser, install_parser
+from recon import get_scans, tools, scan_parser, install_parser  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -150,15 +150,16 @@ class ReconShell(cmd2.Cmd):
             )
         )
 
-        # get_scans() returns mapping of {modulename: classname} in the recon module
+        # get_scans() returns mapping of {classname: [modulename, ...]} in the recon module
         # each classname corresponds to a potential recon-pipeline command, i.e. AmassScan, CORScannerScan ...
         scans = get_scans()
 
         # command is a list that will end up looking something like what's below
         # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
         command = ["luigi", "--module", scans.get(args.scantype)[0]]
+
         command.extend(args.__statement__.arg_list)
-        self.async_alert(" ".join(command))
+
         if args.verbose:
             # verbose is not a luigi option, need to remove it
             command.pop(command.index("--verbose"))
@@ -209,11 +210,7 @@ class ReconShell(cmd2.Cmd):
                     continue
 
                 self.async_alert(
-                    style(
-                        f"[!] {args.tool} has an unmet dependency; installing {dependency}",
-                        fg="yellow",
-                        bold=True,
-                    )
+                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True,)
                 )
 
                 # install the dependency before continuing with installation
@@ -238,18 +235,12 @@ class ReconShell(cmd2.Cmd):
                 if tools.get(args.tool).get("shell"):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
-                    proc = subprocess.Popen(
-                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-                    )
+                    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 else:
 
                     # "normal" command, split up the string as usual and run it
-                    proc = subprocess.Popen(
-                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE
-                    )
+                    proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-                # register stderr for more visually pleasing output on failed commands
-                # selector.register(proc.stderr, selectors.EVENT_READ, self._install_error_reporter)
                 out, err = proc.communicate()
 
                 if err:
@@ -281,7 +272,5 @@ class ReconShell(cmd2.Cmd):
 
 
 if __name__ == "__main__":
-    rs = ReconShell(
-        persistent_history_file="~/.reconshell_history", persistent_history_length=10000
-    )
+    rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
     sys.exit(rs.cmdloop())

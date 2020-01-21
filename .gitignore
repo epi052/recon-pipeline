@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.idea
+.flake8
+.pre-commit-config.yaml
+pyproject.toml
