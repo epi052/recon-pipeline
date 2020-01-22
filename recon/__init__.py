@@ -133,7 +133,7 @@ def get_scans():
             for subname, subobj in inspect.getmembers(obj):
                 if inspect.isclass(subobj) and subname.lower().endswith("scan"):
                     # now we only care about classes that end in [Ss]can
-                    scans[subname].append(name)
+                    scans[subname].append(f"recon.{name}")
 
     return scans
 
