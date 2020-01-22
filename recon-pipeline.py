@@ -84,10 +84,7 @@ class ReconShell(cmd2.Cmd):
 
         output = output.decode().strip()
 
-        if self.terminal_lock.acquire(blocking=True):
-            self.async_alert(style(f"[!] {output}", fg="bright_red"))
-
-        self.terminal_lock.release()
+        self.async_alert(style(f"[!] {output}", fg="bright_red"))
 
     def _luigi_pretty_printer(self, stderr):
         """ Helper to clean up the VERY verbose luigi log messages that are normally spewed to the terminal. """
