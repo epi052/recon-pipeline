@@ -74,8 +74,8 @@ The other option is to add `--local-scheduler` to your `scan` command from withi
 
 ## Special Thanks
 
-- @aringo for his help on the precursor to this tool
-- @kernelsndrs for identifying a few bugs after initial launch
+- [@aringo](https://github.com/aringo) for his help on the precursor to this tool
+- [@kernelsndrs](https://github.com/kernelsndrs) for identifying a few bugs after initial launch
 
 
 
