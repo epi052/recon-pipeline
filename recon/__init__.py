@@ -89,7 +89,7 @@ tools = {
         "installed": False,
         "dependencies": ["go"],
         "commands": [
-            "go get github.com/rverton/webanalyze",
+            "go get github.com/rverton/webanalyze/...",
             "(cd ~/go/src/github.com/rverton/webanalyze && go build && go install)",
         ],
         "shell": True,
