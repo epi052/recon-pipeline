@@ -18,8 +18,6 @@ def test_install_masscan():
 
     script_out, script_err = utils.run_cmd(rs, "install masscan")
 
-    print(f"{masscan.parent} exists {masscan.parent.exists()}")
-
     assert masscan.exists() is True
 
 
@@ -29,7 +27,8 @@ def test_install_amass():
     if not utils.is_kali():
         return True
 
-    subprocess.run("sudo apt remove amass -y".split())
+    if shutil.which("amass") is not None:
+        subprocess.run("sudo apt remove amass -y".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -44,10 +43,81 @@ def test_install_pipenv():
     if not utils.is_kali():
         return True
 
-    subprocess.run("sudo apt remove amass -y".split())
+    if shutil.which("pipenv") is not None:
+        subprocess.run("sudo apt remove pipenv -y".split())
 
     rs = recon_pipeline.ReconShell()
 
     script_out, script_err = utils.run_cmd(rs, "install pipenv")
 
     assert shutil.which("pipenv") is not None
+
+
+def test_install_luigi():
+    utils.setup_install_test()
+
+    if shutil.which("luigi") is not None:
+        subprocess.run("pipenv uninstall luigi".split())
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install luigi")
+
+    assert shutil.which("luigi") is not None
+
+
+def test_install_aquatone():
+    aquatone = Path(tool_paths.get("aquatone"))
+
+    utils.setup_install_test(aquatone)
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install aquatone")
+
+    assert aquatone.exists() is True
+
+
+def test_install_gobuster():
+    gobuster = Path(tool_paths.get("gobuster"))
+
+    utils.setup_install_test(gobuster)
+
+    if shutil.which("go") is None:
+        subprocess.run("sudo apt-get install -y -q golang".split())
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install gobuster")
+
+    assert gobuster.exists() is True
+
+
+def test_install_tkosubs():
+    tkosubs = Path(tool_paths.get("tko-subs"))
+
+    utils.setup_install_test(tkosubs)
+
+    if shutil.which("go") is None:
+        subprocess.run("sudo apt-get install -y -q golang".split())
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install tko-subs")
+
+    assert tkosubs.exists() is True
+
+
+def test_install_subjack():
+    subjack = Path(tool_paths.get("subjack"))
+
+    utils.setup_install_test(subjack)
+
+    if shutil.which("go") is None:
+        subprocess.run("sudo apt-get install -y -q golang".split())
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install subjack")
+
+    assert subjack.exists() is True
