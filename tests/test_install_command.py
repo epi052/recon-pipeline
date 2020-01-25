@@ -16,7 +16,10 @@ def test_install_masscan():
 
     rs = recon_pipeline.ReconShell()
 
-    utils.run_cmd(rs, "install masscan")
+    script_out, script_err = utils.run_cmd(rs, "install masscan")
+
+    print(script_out)
+    print(script_err)
 
     assert masscan.exists() is True
 
@@ -31,6 +34,6 @@ def test_install_amass():
 
     rs = recon_pipeline.ReconShell()
 
-    utils.run_cmd(rs, "install amass")
+    script_out, script_err = utils.run_cmd(rs, "install amass")
 
     assert shutil.which("amass") is not None
