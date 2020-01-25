@@ -1,6 +1,6 @@
 # Automated Reconnaissance Pipeline
 
-![version](https://img.shields.io/badge/version-0.7.3-informational?style=for-the-badge)
+![version](https://img.shields.io/github/v/release/epi052/recon-pipeline?style=for-the-badge)
 ![Python application](https://img.shields.io/github/workflow/status/epi052/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
 ![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
 ![luigi](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/luigi?style=for-the-badge)

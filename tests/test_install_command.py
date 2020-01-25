@@ -96,7 +96,14 @@ def test_install_gobuster():
     script_out, script_err = utils.run_cmd(rs, "install gobuster")
 
     print(f"{gobuster.parent} exists? {gobuster.parent.exists()}")
-
+    print(f"{gobuster.parent.parent} exists? {gobuster.parent.parent.exists()}")
+    print(f"{gobuster.parent.parent/'src'} exists? {(gobuster.parent.parent/'src').exists()}")
+    print(
+        f"{gobuster.parent.parent/'src'/'github.com'} exists? {(gobuster.parent.parent/'src'/'github.com').exists()}"
+    )
+    print(
+        f"{gobuster.parent.parent / 'src' / 'github.com' / 'OJ' } exists? {(gobuster.parent.parent / 'src' / 'github.com'/'OJ').exists()}"
+    )
     assert gobuster.exists() is True
 
 
