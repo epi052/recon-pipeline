@@ -84,7 +84,10 @@ def test_install_gobuster():
     utils.setup_install_test(gobuster)
 
     if shutil.which("go") is None:
-        subprocess.run("sudo apt-get install -y -q golang".split())
+        if utils.is_kali():
+            subprocess.run("sudo apt-get install -y -q golang".split())
+        else:
+            subprocess.run("sudo snap install -y go".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -99,7 +102,10 @@ def test_install_tkosubs():
     utils.setup_install_test(tkosubs)
 
     if shutil.which("go") is None:
-        subprocess.run("sudo apt-get install -y -q golang".split())
+        if utils.is_kali():
+            subprocess.run("sudo apt-get install -y -q golang".split())
+        else:
+            subprocess.run("sudo snap install -y go".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -114,7 +120,10 @@ def test_install_subjack():
     utils.setup_install_test(subjack)
 
     if shutil.which("go") is None:
-        subprocess.run("sudo apt-get install -y -q golang".split())
+        if utils.is_kali():
+            subprocess.run("sudo apt-get install -y -q golang".split())
+        else:
+            subprocess.run("snap install -y go".split())
 
     rs = recon_pipeline.ReconShell()
 

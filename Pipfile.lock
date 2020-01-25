@@ -25,11 +25,11 @@
         },
         "cmd2": {
             "hashes": [
-                "sha256:208812035933cdb5c1c254cf266ffd7f560ca3a075569f3a39fc4e4a4427c2a0",
-                "sha256:8ad12ef3cc46d03073c545b6e80a3f84a5921f6653073a60e7d9a7ff3b352c9e"
+                "sha256:a07b165603e6cdf6730c95007160036f13b83415f9074dcb475e91f897ec324d",
+                "sha256:bdb4d7a56023c800c4428abf8e198e28d6a566f23fa172208763c30e298be4ee"
             ],
             "index": "pypi",
-            "version": "==0.9.23"
+            "version": "==0.9.24"
         },
         "colorama": {
             "hashes": [
