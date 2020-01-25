@@ -16,7 +16,7 @@ jobs:
     - name: Black Code Formatter
       uses: lgeiger/black-action@master
       with:
-        args: ". --check"
+        args: ". --check -l 100"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
