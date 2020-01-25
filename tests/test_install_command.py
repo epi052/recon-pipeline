@@ -93,9 +93,9 @@ def test_install_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
-    script_out, script_err = utils.run_cmd(rs, "install gobuster")
-    print(script_out)
-    print(script_err)
+    # script_out, script_err = utils.run_cmd(rs, "install gobuster")
+
+    rs.onecmd_plus_hooks("install gobuster")
 
     assert gobuster.exists() is True
 
