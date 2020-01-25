@@ -18,8 +18,7 @@ def test_install_masscan():
 
     script_out, script_err = utils.run_cmd(rs, "install masscan")
 
-    print(script_out)
-    print(script_err)
+    print(f"{masscan.parent} exists {masscan.parent.exists()}")
 
     assert masscan.exists() is True
 
