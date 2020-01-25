@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-go@v1
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -22,9 +23,7 @@ jobs:
       run: |
         pipenv install flake8
         # stop the build if there are Python syntax errors or undefined names
-        pipenv run flake8 . --count --select=C,E,F,W,B,B950 --ignore=E203,E501,W503 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        pipenv run flake8 . --count --exit-zero --max-complexity=13 --max-line-length=100 --statistics
+        pipenv run flake8 . --count
     - name: Test with pytest
       run: |
         pipenv install pytest
