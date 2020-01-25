@@ -38,7 +38,7 @@ tools = {
         "commands": [
             "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
             "make -s -j -C /tmp/masscan",
-            f"mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
+            f"sudo mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
             "rm -rf /tmp/masscan",
         ],
     },
