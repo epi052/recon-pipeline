@@ -18,11 +18,11 @@ tools = {
         "installed": False,
         "dependencies": ["luigi"],
         "commands": [
-            f"cp {str(Path(__file__).parent.parent / 'luigid.service')} /lib/systemd/system/luigid.service",
-            f"cp $(which luigid) /usr/local/bin",
-            "systemctl daemon-reload",
-            "systemctl start luigid.service",
-            "systemctl enable luigid.service",
+            f"sudo cp {str(Path(__file__).parent.parent / 'luigid.service')} /lib/systemd/system/luigid.service",
+            f"sudo cp $(which luigid) /usr/local/bin",
+            "sudo systemctl daemon-reload",
+            "sudo systemctl start luigid.service",
+            "sudo systemctl enable luigid.service",
         ],
         "shell": True,
     },
@@ -30,7 +30,7 @@ tools = {
     "pipenv": {
         "installed": False,
         "dependencies": None,
-        "commands": ["apt-get install -y -q pipenv"],
+        "commands": ["sudo apt-get install -y -q pipenv"],
     },
     "masscan": {
         "installed": False,
@@ -45,7 +45,7 @@ tools = {
     "amass": {
         "installed": False,
         "dependencies": None,
-        "commands": ["apt-get install -y -q amass"],
+        "commands": ["sudo apt-get install -y -q amass"],
     },
     "aquatone": {
         "installed": False,
@@ -55,7 +55,7 @@ tools = {
             "mkdir /tmp/aquatone",
             "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
             "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-            f"mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
+            f"sudo mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
             "rm -rf /tmp/aquatone",
         ],
     },
@@ -111,10 +111,14 @@ tools = {
         "shell": True,
         "commands": [
             f"bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
-            f"ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz {tool_paths.get('recursive-gobuster')}",
+            f"sudo ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz {tool_paths.get('recursive-gobuster')}",
         ],
     },
-    "go": {"installed": False, "dependencies": None, "commands": ["apt-get install -y -q golang"]},
+    "go": {
+        "installed": False,
+        "dependencies": None,
+        "commands": ["sudo apt-get install -y -q golang"],
+    },
 }
 
 

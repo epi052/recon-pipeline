@@ -24,7 +24,7 @@ def test_install_masscan():
 def test_install_amass():
     utils.setup_install_test()
 
-    subprocess.run("apt remove amass -y".split())
+    subprocess.run("sudo apt remove amass -y".split())
 
     rs = recon_pipeline.ReconShell()
 
