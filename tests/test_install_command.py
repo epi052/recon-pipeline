@@ -152,7 +152,7 @@ def test_install_corscanner():
 def test_update_corscanner():
     corscanner = Path(tool_paths.get("CORScanner"))
 
-    utils.setup_install_test(corscanner)
+    utils.setup_install_test()
 
     if not corscanner.parent.exists():
         subprocess.run(
