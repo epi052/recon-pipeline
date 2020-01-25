@@ -36,3 +36,18 @@ def test_install_amass():
     script_out, script_err = utils.run_cmd(rs, "install amass")
 
     assert shutil.which("amass") is not None
+
+
+def test_install_pipenv():
+    utils.setup_install_test()
+
+    if not utils.is_kali():
+        return True
+
+    subprocess.run("sudo apt remove amass -y".split())
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install pipenv")
+
+    assert shutil.which("pipenv") is not None
