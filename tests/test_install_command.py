@@ -83,28 +83,12 @@ def test_install_gobuster():
 
     utils.setup_install_test(gobuster)
 
-    if shutil.which("go") is None:
-        if utils.is_kali():
-            subprocess.run("sudo apt-get install -y -q golang".split())
-        else:
-            subprocess.run("sudo snap install go".split())
-
     assert shutil.which("go") is not None
 
     rs = recon_pipeline.ReconShell()
 
     script_out, script_err = utils.run_cmd(rs, "install gobuster")
-    print(script_err)
-    print(script_out)
-    print(f"{gobuster.parent} exists? {gobuster.parent.exists()}")
-    print(f"{gobuster.parent.parent} exists? {gobuster.parent.parent.exists()}")
-    print(f"{gobuster.parent.parent/'src'} exists? {(gobuster.parent.parent/'src').exists()}")
-    print(
-        f"{gobuster.parent.parent/'src'/'github.com'} exists? {(gobuster.parent.parent/'src'/'github.com').exists()}"
-    )
-    print(
-        f"{gobuster.parent.parent / 'src' / 'github.com' / 'OJ' } exists? {(gobuster.parent.parent / 'src' / 'github.com'/'OJ').exists()}"
-    )
+
     assert gobuster.exists() is True
 
 
@@ -113,11 +97,7 @@ def test_install_tkosubs():
 
     utils.setup_install_test(tkosubs)
 
-    if shutil.which("go") is None:
-        if utils.is_kali():
-            subprocess.run("sudo apt-get install -y -q golang".split())
-        else:
-            subprocess.run("sudo snap install go".split())
+    assert shutil.which("go") is not None
 
     rs = recon_pipeline.ReconShell()
 
@@ -131,14 +111,39 @@ def test_install_subjack():
 
     utils.setup_install_test(subjack)
 
-    if shutil.which("go") is None:
-        if utils.is_kali():
-            subprocess.run("sudo apt-get install -y -q golang".split())
-        else:
-            subprocess.run("sudo snap install go".split())
+    assert shutil.which("go") is not None
 
     rs = recon_pipeline.ReconShell()
 
     script_out, script_err = utils.run_cmd(rs, "install subjack")
 
     assert subjack.exists() is True
+
+
+def test_install_webanalyze():
+    webanalyze = Path(tool_paths.get("webanalyze"))
+
+    utils.setup_install_test(webanalyze)
+
+    assert shutil.which("go") is not None
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install webanalyze")
+
+    assert webanalyze.exists() is True
+
+
+def test_install_corscanner():
+    corscanner = Path(tool_paths.get("CORScanner"))
+
+    utils.setup_install_test(corscanner)
+
+    if corscanner.parent.exists():
+        shutil.rmtree(corscanner.parent)
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install corscanner")
+
+    assert corscanner.exists() is True
