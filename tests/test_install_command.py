@@ -89,6 +89,8 @@ def test_install_gobuster():
         else:
             subprocess.run("sudo snap install go".split())
 
+    assert shutil.which("go") is not None
+
     rs = recon_pipeline.ReconShell()
 
     script_out, script_err = utils.run_cmd(rs, "install gobuster")
