@@ -110,7 +110,7 @@ class ThreadedNmapScan(luigi.Task):
                 tmp_cmd[2] = "-sT" if protocol == "tcp" else "-sU"
 
                 # arg to -oA, will drop into subdir off curdir
-                tmp_cmd[9] = ",".join(ports)
+                tmp_cmd[10] = ",".join(ports)
                 tmp_cmd.append(f"{self.output().path}/nmap.{target}-{protocol}")
 
                 tmp_cmd.append(target)  # target as final arg to nmap
@@ -121,6 +121,7 @@ class ThreadedNmapScan(luigi.Task):
         Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.threads) as executor:
+
             executor.map(subprocess.run, commands)
 
 

@@ -32,9 +32,11 @@ class TargetList(luigi.ExternalTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        print(f"debug-epi: targets {self.results_dir}")
+        self.results_dir = Path(self.results_dir)
+        self.target_file = Path(self.target_file)
+
         try:
-            with open(str(self.target_file)) as f:
+            with open(self.target_file) as f:
                 first_line = f.readline()
                 ipaddress.ip_interface(first_line.strip())  # is it a valid ip/network?
         except OSError as e:
@@ -43,15 +45,16 @@ class TargetList(luigi.ExternalTask):
         except ValueError as e:
             # exception thrown by ip_interface; domain name assumed
             logging.debug(e)
-            with_suffix = f"{self.target_file}.domains"
+            with_suffix = self.target_file.with_suffix(".domains")
         else:
             # no exception thrown; ip address found
-            with_suffix = f"{self.target_file}.ips"
+            with_suffix = self.target_file.with_suffix(".ips")
 
-        Path(str(self.results_dir)).mkdir(parents=True, exist_ok=True)
+        self.results_dir.mkdir(parents=True, exist_ok=True)
 
-        with_suffix = f"{self.results_dir}/{with_suffix}"
+        with_suffix = (Path(self.results_dir) / with_suffix).resolve()
 
         # copy file with new extension
-        shutil.copy(str(self.target_file), with_suffix)
+        shutil.copy(self.target_file, with_suffix)
+
         return luigi.LocalTarget(with_suffix)

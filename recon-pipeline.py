@@ -9,7 +9,7 @@ import threading
 import subprocess
 from pathlib import Path
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
 os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"

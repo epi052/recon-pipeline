@@ -1,6 +1,6 @@
 # Automated Reconnaissance Pipeline
 
-![version](https://img.shields.io/badge/version-0.7.2-informational?style=for-the-badge)
+![version](https://img.shields.io/badge/version-0.7.3-informational?style=for-the-badge)
 ![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
 ![luigi](https://img.shields.io/badge/luigi-2.8.11-yellowgreen?style=for-the-badge)
 ![cmd2](https://img.shields.io/badge/cmd2-0.9.23-yellowgreen?style=for-the-badge)
