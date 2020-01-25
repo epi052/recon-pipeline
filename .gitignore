@@ -106,4 +106,3 @@ venv.bak/
 .idea
 .flake8
 .pre-commit-config.yaml
-pyproject.toml

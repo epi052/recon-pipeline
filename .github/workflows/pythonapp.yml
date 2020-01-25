@@ -22,15 +22,22 @@ jobs:
       run: |
         pipenv install flake8
         # stop the build if there are Python syntax errors or undefined names
-        pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        pipenv run flake8 . --count --select=C,E,F,W,B,B950 --ignore=E203,E501,W503 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pipenv install pytest
-        pipenv run pytest
-    - name: Black Code Formatter
-      uses: lgeiger/black-action@master
-      with:
-        args: ". --check -l 100 --py36 --exclude config.py"
+        pipenv run flake8 . --count --exit-zero --max-complexity=13 --max-line-length=88 --statistics --show-source
+     - name: Test with pytest
+       run: |
+         pipenv install pytest
+         pipenv run pytest
+#     - name: Black Code Formatter
+#       uses: lgeiger/black-action@master
+#       with:
+#         args: ". --check"
 
+#  test-install:
+#    runs-on: [ubuntu-latest]
+#    needs: [build]
+#    steps:
+#      - name: test masscan install
+#        run: |
+#
