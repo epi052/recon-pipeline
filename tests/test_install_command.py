@@ -87,7 +87,7 @@ def test_install_gobuster():
         if utils.is_kali():
             subprocess.run("sudo apt-get install -y -q golang".split())
         else:
-            subprocess.run("sudo snap install -y go".split())
+            subprocess.run("sudo snap install go".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -105,7 +105,7 @@ def test_install_tkosubs():
         if utils.is_kali():
             subprocess.run("sudo apt-get install -y -q golang".split())
         else:
-            subprocess.run("sudo snap install -y go".split())
+            subprocess.run("sudo snap install go".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -123,7 +123,7 @@ def test_install_subjack():
         if utils.is_kali():
             subprocess.run("sudo apt-get install -y -q golang".split())
         else:
-            subprocess.run("snap install -y go".split())
+            subprocess.run("sudo snap install go".split())
 
     rs = recon_pipeline.ReconShell()
 
