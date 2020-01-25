@@ -64,7 +64,7 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
+            f"sudo bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
             f"pip install -q -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
             "pip install -q future",
         ],
@@ -110,7 +110,7 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            f"bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
+            f"sudo bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
             f"sudo ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz {tool_paths.get('recursive-gobuster')}",
         ],
     },

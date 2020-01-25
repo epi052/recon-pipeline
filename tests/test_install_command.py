@@ -147,3 +147,52 @@ def test_install_corscanner():
     script_out, script_err = utils.run_cmd(rs, "install corscanner")
 
     assert corscanner.exists() is True
+
+
+def test_update_corscanner():
+    corscanner = Path(tool_paths.get("CORScanner"))
+
+    utils.setup_install_test(corscanner)
+
+    if not corscanner.parent.exists():
+        subprocess.run(
+            f"sudo git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split()
+        )
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install corscanner")
+
+    assert corscanner.exists() is True
+
+
+def test_install_recursive_gobuster():
+    recursive_gobuster = Path(tool_paths.get("recursive-gobuster"))
+
+    utils.setup_install_test(recursive_gobuster)
+
+    if recursive_gobuster.parent.exists():
+        shutil.rmtree(recursive_gobuster.parent)
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install recursive-gobuster")
+
+    assert recursive_gobuster.exists() is True
+
+
+def test_update_recursive_gobuster():
+    recursive_gobuster = Path(tool_paths.get("recursive-gobuster"))
+
+    utils.setup_install_test(recursive_gobuster)
+
+    if not recursive_gobuster.parent.exists():
+        subprocess.run(
+            f"sudo git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
+        )
+
+    rs = recon_pipeline.ReconShell()
+
+    script_out, script_err = utils.run_cmd(rs, "install recursive-gobuster")
+
+    assert recursive_gobuster.exists() is True
