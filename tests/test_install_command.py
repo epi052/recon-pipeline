@@ -24,6 +24,9 @@ def test_install_masscan():
 def test_install_amass():
     utils.setup_install_test()
 
+    if not utils.is_kali():
+        return True
+
     subprocess.run("sudo apt remove amass -y".split())
 
     rs = recon_pipeline.ReconShell()

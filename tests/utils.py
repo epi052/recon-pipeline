@@ -1,8 +1,20 @@
 import sys
+import subprocess
 from pathlib import Path
 from contextlib import redirect_stdout, redirect_stderr
 
 from cmd2.utils import StdSim
+
+
+def is_kali():
+    return any(
+        [
+            "kali" in x
+            for x in subprocess.run("cat /etc/lsb-release".split(), stdout=subprocess.PIPE)
+            .stdout.decode()
+            .split()
+        ]
+    )
 
 
 def normalize(block):
