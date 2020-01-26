@@ -6,8 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-luigi = "*"
 cmd2 = "*"
+luigi = "*"
 
 [requires]
 python_version = "3.7"

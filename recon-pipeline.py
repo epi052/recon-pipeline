@@ -251,7 +251,7 @@ class ReconShell(cmd2.Cmd):
                 out, err = proc.communicate()
 
                 if err:
-                    self.async_alert(style(f"[!] {err.decode().strip()}", fg="bright_red"))
+                    self.poutput(style(f"[!] {err.decode().strip()}", fg="bright_red"))
 
                 retvals.append(proc.returncode)
 
