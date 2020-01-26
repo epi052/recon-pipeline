@@ -161,7 +161,7 @@ def test_update_corscanner():
 
     rs = recon_pipeline.ReconShell()
 
-    script_out, script_err = utils.run_cmd(rs, "install corscanner")
+    utils.run_cmd(rs, "install corscanner")
 
     assert corscanner.exists() is True
 
@@ -176,7 +176,7 @@ def test_install_recursive_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
-    script_out, script_err = utils.run_cmd(rs, "install recursive-gobuster")
+    utils.run_cmd(rs, "install recursive-gobuster")
 
     assert recursive_gobuster.exists() is True
 
@@ -184,7 +184,7 @@ def test_install_recursive_gobuster():
 def test_update_recursive_gobuster():
     recursive_gobuster = Path(tool_paths.get("recursive-gobuster"))
 
-    utils.setup_install_test(recursive_gobuster)
+    utils.setup_install_test()
 
     if not recursive_gobuster.parent.exists():
         subprocess.run(
@@ -193,6 +193,39 @@ def test_update_recursive_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
-    script_out, script_err = utils.run_cmd(rs, "install recursive-gobuster")
+    utils.run_cmd(rs, "install recursive-gobuster")
 
     assert recursive_gobuster.exists() is True
+
+
+def test_install_luigi_service():
+    luigi_service = Path("/lib/systemd/system/luigid.service")
+
+    utils.setup_install_test(luigi_service)
+
+    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+
+    if proc.stdout.decode().strip() == "enabled":
+        subprocess.run("systemctl disable luigid.service".split())
+
+    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+
+    if proc.stdout.decode().strip() == "active":
+        subprocess.run("systemctl stop luigid.service".split())
+
+    if Path("/usr/local/bin/luigid").exists():
+        Path("/usr/local/bin/luigid").unlink()
+
+    rs = recon_pipeline.ReconShell()
+
+    utils.run_cmd(rs, "install luigi-service")
+
+    assert Path("/lib/systemd/system/luigid.service").exists()
+
+    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    assert proc.stdout.decode().strip() == "enabled"
+
+    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    assert proc.stdout.decode().strip() == "active"
+
+    assert Path("/usr/local/bin/luigid").exists()

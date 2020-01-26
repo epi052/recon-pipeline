@@ -22,7 +22,7 @@ tool_paths = {
     "subjack-fingerprints": f"{Path.home()}/go/src/github.com/haccer/subjack/fingerprints.json",
     "CORScanner": "/opt/CORScanner/cors_scan.py",
     "gobuster": f"{Path.home()}/go/bin/gobuster",
-    "recursive-gobuster": "/usr/local/bin/recursive-gobuster.pyz",
+    "recursive-gobuster": "/opt/recursive-gobuster/recursive-gobuster.pyz",
     "webanalyze": f"{Path.home()}/go/bin/webanalyze",
     "masscan": "/usr/local/bin/masscan",
 }

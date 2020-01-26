@@ -110,8 +110,7 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            f"sudo bash -c 'if [[ -d /opt/recursive-gobuster ]] ; then cd /opt/recursive-gobuster && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /opt/recursive-gobuster; fi'",
-            f"sudo ln -fs /opt/recursive-gobuster/recursive-gobuster.pyz {tool_paths.get('recursive-gobuster')}",
+            f"sudo bash -c 'if [[ -d {Path(tool_paths.get('recursive-gobuster')).parent} ]] ; then cd {Path(tool_paths.get('recursive-gobuster')).parent} && git pull; else git clone https://github.com/epi052/recursive-gobuster.git {Path(tool_paths.get('recursive-gobuster')).parent}; fi'",
         ],
     },
     "go": {
