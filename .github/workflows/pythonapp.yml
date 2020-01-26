@@ -28,7 +28,7 @@ jobs:
       with:
         args: ". --check"
 
-  test install:
+  test-install:
 
     runs-on: ubuntu-latest
 
@@ -50,7 +50,7 @@ jobs:
         pipenv install pytest
         pipenv run python -m pytest tests/test_install
 
-  test recon:
+  test-recon:
 
     runs-on: ubuntu-latest
 
