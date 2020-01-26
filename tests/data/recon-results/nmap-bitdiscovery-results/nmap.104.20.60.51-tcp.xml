@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Sun Jan 26 13:30:15 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 2086,443,8443,80,2087 -oA recon-results/nmap-bitdiscovery-results/nmap.104.20.60.51-tcp 104.20.60.51 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 2086,443,8443,80,2087 -oA recon-results/nmap-bitdiscovery-results/nmap.104.20.60.51-tcp 104.20.60.51" start="1580067015" startstr="Sun Jan 26 13:30:15 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="5" services="80,443,2086-2087,8443"/>

@@ -203,12 +203,16 @@ def test_install_luigi_service():
 
     setup_install_test(luigi_service)
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run(
+        "systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE
+    )
 
     if proc.stdout.decode().strip() == "enabled":
         subprocess.run("systemctl disable luigid.service".split())
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run(
+        "systemctl is-active luigid.service".split(), stdout=subprocess.PIPE
+    )
 
     if proc.stdout.decode().strip() == "active":
         subprocess.run("systemctl stop luigid.service".split())
@@ -222,10 +226,14 @@ def test_install_luigi_service():
 
     assert Path("/lib/systemd/system/luigid.service").exists()
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run(
+        "systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE
+    )
     assert proc.stdout.decode().strip() == "enabled"
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run(
+        "systemctl is-active luigid.service".split(), stdout=subprocess.PIPE
+    )
     assert proc.stdout.decode().strip() == "active"
 
     assert Path("/usr/local/bin/luigid").exists()

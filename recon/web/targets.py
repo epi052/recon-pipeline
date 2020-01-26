@@ -56,7 +56,9 @@ class GatherWebTargets(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/webtargets.{self.target_file}.txt")
+        return luigi.LocalTarget(
+            f"{self.results_dir}/webtargets.{self.target_file}.txt"
+        )
 
     def run(self):
         """ Gather all potential web targets into a single file to pass farther down the pipeline. """

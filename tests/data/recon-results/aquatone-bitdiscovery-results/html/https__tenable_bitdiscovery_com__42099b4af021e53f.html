@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html class="ws-html">
+
+<head>
+    <title>Tenable - Asset Inventory</title>
+    <meta name="description" content="Tenable - Asset Inventory">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico">
+    
+    
+    <script>
+        var returnTo = sessionStorage.getItem('returnTo');
+        if (returnTo) {
+            sessionStorage.removeItem('returnTo');
+            window.location.href = returnTo;
+        }
+    </script>
+    
+    <link rel="stylesheet" type="text/css" href="/dist/vendor.min.css" />
+    <link rel="stylesheet" type="text/css" href="/dist/main.min.css" />
+    
+    <script>
+        var _rollbarConfig = {
+            accessToken: "e731fea3266e4465a99e2394a9813a16",
+            captureUncaught: true,
+            payload: {
+                environment: window.location.host
+            }
+        };
+        var intercomid = 'ixppexec';
+    </script>
+    
+</head>
+
+<body class="ws-body" data-page="homepage_workspace">
+    <script>
+        if (window.location.search.indexOf("?to=") !== -1) {
+            window.sessionStorage.setItem("to", window.location.search.substring(4));
+        }
+    </script>
+
+    <div class="ws-homepage" style="border-left-color: #00a5b5">
+        <div class="ws-homepage-inner">
+            <div class="ws-logo-block" style="border-right-color: #00a5b5">
+                <img src="https://static.tenable.com/press/logos/TenableLogo_FullColor_RGB.svg" alt="Tenable - Asset Inventory" />
+                <h2>Asset Inventory</h2>
+            </div>
+            <div class="ws-cta-block">
+                
+                <a class="ws-login-cta" data-testid="signInButton" href="/login">Sign In</a>
+                
+
+            </div>
+        </div>
+        <footer class="ws-footer"><a href="https://bitdiscovery.com">Powered by <img src="/images/bitdiscovery_logo.svg"
+                    alt="Powered by Bit Discovery" /></a>
+        </footer>
+    </div>
+
+    
+    <script src="/dist/vendor.min.js"></script>
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114279261-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-114279261-1');
+    </script>
+</body>
+
+</html>

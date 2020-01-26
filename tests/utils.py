@@ -10,7 +10,9 @@ def is_kali():
     return any(
         [
             "kali" in x
-            for x in subprocess.run("cat /etc/lsb-release".split(), stdout=subprocess.PIPE)
+            for x in subprocess.run(
+                "cat /etc/lsb-release".split(), stdout=subprocess.PIPE
+            )
             .stdout.decode()
             .split()
         ]

@@ -81,7 +81,9 @@ class GobusterScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/gobuster-{self.target_file}-results")
+        return luigi.LocalTarget(
+            f"{self.results_dir}/gobuster-{self.target_file}-results"
+        )
 
     def run(self):
         """ Defines the options/arguments sent to gobuster after processing.
@@ -92,7 +94,9 @@ class GobusterScan(luigi.Task):
         try:
             self.threads = abs(int(self.threads))
         except TypeError:
-            return logging.error("The value supplied to --threads must be a non-negative integer.")
+            return logging.error(
+                "The value supplied to --threads must be a non-negative integer."
+            )
 
         commands = list()
 
@@ -101,7 +105,9 @@ class GobusterScan(luigi.Task):
                 target = target.strip()
 
                 try:
-                    if isinstance(ipaddress.ip_address(target), ipaddress.IPv6Address):  # ipv6
+                    if isinstance(
+                        ipaddress.ip_address(target), ipaddress.IPv6Address
+                    ):  # ipv6
                         target = f"[{target}]"
                 except ValueError:
                     # domain names raise ValueErrors, just assume we have a domain and keep on keepin on

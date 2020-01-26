@@ -34,7 +34,8 @@ def test_results_dir_relative(tmp_path):
     targetfile.write_text("stuff.com")
 
     tl = TargetList(
-        target_file=str(targetfile), results_dir=str((tmp_path / ".." / tmp_path / "results"))
+        target_file=str(targetfile),
+        results_dir=str((tmp_path / ".." / tmp_path / "results")),
     )
     out = tl.output()
 
@@ -45,7 +46,9 @@ def test_results_dir_absolute(tmp_path):
     targetfile = tmp_path / "test_targetlist"
     targetfile.write_text("stuff.com")
 
-    tl = TargetList(target_file=str(targetfile), results_dir=str((tmp_path / "results").resolve()))
+    tl = TargetList(
+        target_file=str(targetfile), results_dir=str((tmp_path / "results").resolve())
+    )
     out = tl.output()
 
     assert out.path == str((tmp_path / "test_targetlist.domains").resolve())

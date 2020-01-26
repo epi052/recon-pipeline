@@ -1,5 +1,6 @@
 import json
 import ipaddress
+from pathlib import Path
 
 import luigi
 from luigi.util import inherits
@@ -117,10 +118,20 @@ class ParseAmassOutput(luigi.Task):
             dict(str: luigi.local_target.LocalTarget)
         """
         return {
-            "target-ips": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ips"),
-            "target-ip6s": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ip6s"),
+            "target-ips": luigi.LocalTarget(
+                (Path(self.results_dir) / self.target_file)
+                .with_suffix(".ips")
+                .resolve()
+            ),
+            "target-ip6s": luigi.LocalTarget(
+                (Path(self.results_dir) / self.target_file)
+                .with_suffix(".ip6s")
+                .resolve()
+            ),
             "target-subdomains": luigi.LocalTarget(
-                f"{self.results_dir}/{self.target_file}.subdomains"
+                (Path(self.results_dir) / self.target_file)
+                .with_suffix(".subdomains")
+                .resolve()
             ),
         }
 
@@ -160,9 +171,13 @@ class ParseAmassOutput(luigi.Task):
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
-                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+                    if isinstance(
+                        ipaddress.ip_address(ipaddr), ipaddress.IPv4Address
+                    ):  # ipv4 addr
                         unique_ips.add(ipaddr)
-                    elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
+                    elif isinstance(
+                        ipaddress.ip_address(ipaddr), ipaddress.IPv6Address
+                    ):  # ipv6
                         unique_ip6s.add(ipaddr)
 
             # send gathered results to their appropriate destination

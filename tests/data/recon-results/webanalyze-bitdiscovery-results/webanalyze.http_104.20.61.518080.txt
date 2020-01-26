@@ -1,0 +1,4 @@
+2020/01/26 13:29:40 Scanning with 4 workers.
+2020/01/26 13:29:40 [+] http://104.20.61.51:8080 (245.927752ms):
+2020/01/26 13:29:40 	- CloudFlare,  (CDN)
+2020/01/26 13:29:40 	- Zepto,  (JavaScript Libraries)

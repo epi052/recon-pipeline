@@ -65,7 +65,9 @@ class CORScannerScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/corscanner.{self.target_file}.json")
+        return luigi.LocalTarget(
+            f"{self.results_dir}/corscanner.{self.target_file}.json"
+        )
 
     def program_args(self):
         """ Defines the options/arguments sent to tko-subs after processing.

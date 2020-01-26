@@ -1,0 +1,12 @@
+200 OK
+Content-Type: text/html
+Retry-Count: 0
+Date: Thu, 23 Jan 2020 15:51:21 GMT
+Via: 1.1 d0d7b8bbb3461a6cde78c9ba2a057ed7.cloudfront.net (CloudFront)
+Age: 63
+X-Amz-Cf-Id: XPk0jXyvPuousXLkkcikYSwmOyDz8Nq8jX-4Sxlb9kp-Xc1C9fJoVA==
+Last-Modified: Tue, 07 Jan 2020 23:08:55 GMT
+Server: AmazonS3
+Vary: Accept-Encoding
+X-Cache: Hit from cloudfront
+X-Amz-Cf-Pop: DFW3-C1

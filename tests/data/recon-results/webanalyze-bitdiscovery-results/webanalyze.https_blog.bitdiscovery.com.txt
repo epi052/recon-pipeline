@@ -1,0 +1,13 @@
+2020/01/26 13:29:42 Scanning with 4 workers.
+2020/01/26 13:29:43 [+] https://blog.bitdiscovery.com (807.62717ms):
+2020/01/26 13:29:43 	- WordPress,  (CMS, Blogs)
+2020/01/26 13:29:43 	- PHP,  (Programming Languages)
+2020/01/26 13:29:43 	- MySQL,  (Databases)
+2020/01/26 13:29:43 	- jQuery Migrate,  (JavaScript Libraries)
+2020/01/26 13:29:43 	- jQuery,  (JavaScript Libraries)
+2020/01/26 13:29:43 	- Amazon Cloudfront,  (CDN)
+2020/01/26 13:29:43 	- Amazon Web Services,  (PaaS)
+2020/01/26 13:29:43 	- jQuery,  (JavaScript Libraries)
+2020/01/26 13:29:43 	- Google Font API,  (Font Scripts)
+2020/01/26 13:29:43 	- Amazon S3,  (Miscellaneous)
+2020/01/26 13:29:43 	- Amazon Web Services,  (PaaS)

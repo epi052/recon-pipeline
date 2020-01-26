@@ -63,7 +63,9 @@ class AquatoneScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/aquatone-{self.target_file}-results")
+        return luigi.LocalTarget(
+            f"{self.results_dir}/aquatone-{self.target_file}-results"
+        )
 
     def run(self):
         """ Defines the options/arguments sent to aquatone after processing.

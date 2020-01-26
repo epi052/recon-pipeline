@@ -37,7 +37,9 @@ class MasscanScan(luigi.Task):
 
     rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
     interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
-    top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
+    top_ports = luigi.IntParameter(
+        default=0
+    )  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
     def output(self):
@@ -74,13 +76,19 @@ class MasscanScan(luigi.Task):
 
         if self.top_ports:
             # if --top-ports used, format the top_*_ports lists as strings and then into a proper masscan --ports option
-            top_tcp_ports_str = ",".join(str(x) for x in top_tcp_ports[: self.top_ports])
-            top_udp_ports_str = ",".join(str(x) for x in top_udp_ports[: self.top_ports])
+            top_tcp_ports_str = ",".join(
+                str(x) for x in top_tcp_ports[: self.top_ports]
+            )
+            top_udp_ports_str = ",".join(
+                str(x) for x in top_udp_ports[: self.top_ports]
+            )
 
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
+        target_list = yield TargetList(
+            target_file=self.target_file, results_dir=self.results_dir
+        )
 
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
@@ -148,14 +156,18 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.parsed.pickle")
+        return luigi.LocalTarget(
+            f"{self.results_dir}/masscan.{self.target_file}.parsed.pickle"
+        )
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
         ip_dict = defaultdict(lambda: defaultdict(set))  # nested defaultdict
 
         try:
-            entries = json.load(self.input().open())  # load masscan results from Masscan Task
+            entries = json.load(
+                self.input().open()
+            )  # load masscan results from Masscan Task
         except json.decoder.JSONDecodeError as e:
             # return on exception; no output file created; pipeline should start again from
             # this task if restarted because we never hit pickle.dump
