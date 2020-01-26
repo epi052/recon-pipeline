@@ -9,12 +9,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-go@v1
+    - name: Set up Golang
+      - uses: actions/setup-go@v1
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Install dependencies
+    - name: Set up pipenv
       run: |
         python -m pip install --upgrade pip
         pip install pipenv
@@ -28,3 +29,7 @@ jobs:
       run: |
         pipenv install pytest
         pipenv run python -m pytest tests/
+    - name: Check code formatting with black
+      uses: lgeiger/black-action@master
+      with:
+        args: ". --check"
