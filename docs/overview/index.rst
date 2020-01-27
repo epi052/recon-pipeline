@@ -2,9 +2,12 @@ Getting Started
 ===============
 
 .. toctree::
-   :maxdepth: 1
-   :hidden:
+    :maxdepth: 1
+    :hidden:
 
-   installation
+    installation
+    running_scans
+    scheduler
+    scope
 
 .. include:: summary.rst

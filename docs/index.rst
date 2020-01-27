@@ -2,7 +2,9 @@
 recon-pipeline
 ==============
 
-There are an `accompanying set of blog posts <https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/>`_ detailing the development process and underpinnings of the pipeline. Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
+``recon-pipeline`` was designed to chain together multiple security tools as part of a Flow-Based Programming paradigm.
+Each component is part of a network of "black box" processes.  These components exchange data between each other and
+can be reconnected in different ways to form different applications without any internal changes.
 
 Getting Started
 ===============
@@ -10,19 +12,26 @@ Getting Started
 .. include:: overview/summary.rst
 
 .. toctree::
-   :maxdepth: 1
-   :hidden:
+    :maxdepth: 2
+    :hidden:
 
-   overview/index
+    overview/index
 
+Changing the Code
+=================
 
+.. toctree::
+    :maxdepth: 1
 
+    modifications/index
 
-.. automodule:: recon
-    :members:
-    :undoc-members:
-    :show-inheritance:
+API Reference
+=============
 
+.. toctree::
+    :maxdepth: 2
+
+    api/index
 
 Indices and tables
 ==================

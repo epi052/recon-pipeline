@@ -239,13 +239,13 @@ class ReconShell(cmd2.Cmd):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
                     proc = subprocess.Popen(
-                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     )
                 else:
 
                     # "normal" command, split up the string as usual and run it
                     proc = subprocess.Popen(
-                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     )
 
                 out, err = proc.communicate()
