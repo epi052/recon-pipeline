@@ -30,6 +30,7 @@ rst_epilog = """
     versionnum=release
 )
 
+master_doc = "index"
 
 # -- General configuration ---------------------------------------------------
 
