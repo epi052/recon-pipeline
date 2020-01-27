@@ -18,23 +18,29 @@ class GobusterScan(luigi.Task):
 
     gobuster commands are structured like the example below.
 
-    gobuster dir -q -e -k -t 20 -u www.tesla.com -w /usr/share/seclists/Discovery/Web-Content/common.txt -p http://127.0.0.1:8080 -o gobuster.tesla.txt -x php,html
+    .. code-block::
+
+        gobuster dir -q -e -k -t 20 -u www.tesla.com -w /usr/share/seclists/Discovery/Web-Content/common.txt -p http://127.0.0.1:8080 -o gobuster.tesla.txt -x php,html
 
     An example of the corresponding luigi command is shown below.
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.gobuster GobusterScan --target-file tesla --top-ports 1000 \
-                            --interface eth0 --proxy http://127.0.0.1:8080 --extensions php,html \
-                            --wordlist /usr/share/seclists/Discovery/Web-Content/common.txt --threads 20
+    Example:
+        .. code-block::
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.gobuster GobusterScan --target-file tesla --top-ports 1000 --interface eth0 --proxy http://127.0.0.1:8080 --extensions php,html --wordlist /usr/share/seclists/Discovery/Web-Content/common.txt --threads 20
 
     Install:
-        go get github.com/OJ/gobuster
-        git clone https://github.com/epi052/recursive-gobuster.git
+        .. code-block::
+
+            go get github.com/OJ/gobuster
+            git clone https://github.com/epi052/recursive-gobuster.git
 
     Args:
         threads: number of threads for parallel gobuster command execution
         wordlist: wordlist used for forced browsing
         extensions: additional extensions to apply to each item in the wordlist
         recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
+        proxy: protocol://ip:port proxy specification for gobuster
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
         top_ports: Scan top N most popular ports *--* Required by upstream Task
         ports: specifies the port(s) to be scanned *--* Required by upstream Task

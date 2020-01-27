@@ -26,7 +26,11 @@ tools = {
         ],
         "shell": True,
     },
-    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
+    "luigi": {
+        "installed": False,
+        "dependencies": ["pipenv"],
+        "commands": ["pipenv install luigi"],
+    },
     "pipenv": {
         "installed": False,
         "dependencies": None,
@@ -122,13 +126,15 @@ tools = {
 
 
 def get_scans():
-    """ Iterates over the recon package and its modules to find all of the *Scan classes.
+    """ Iterates over the recon package and its modules to find all of the \*Scan classes.
 
-    *** A contract exists here that says any scans need to end with the word scan in order to be found by this function.
+    **A contract exists here that says any scans need to end with the word scan in order to be found by this function.**
+
+    Example:
+        ``defaultdict(<class 'list'>, {'AmassScan': ['recon.amass'], 'MasscanScan': ['recon.masscan'], ... })``
 
     Returns:
-        dict() containing mapping of {classname: [modulename, ...]} for all potential recon-pipeline commands
-        ex:  defaultdict(<class 'list'>, {'AmassScan': ['recon.amass'], 'MasscanScan': ['recon.masscan'], ... })
+        dict containing mapping of ``classname -> [modulename, ...]`` for all potential recon-pipeline commands
     """
     scans = defaultdict(list)
 
@@ -168,7 +174,9 @@ scan_parser.add_argument(
     help="file created by the user that defines the target's scope; list of ips/domains",
 )
 scan_parser.add_argument(
-    "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains"
+    "--exempt-list",
+    completer_method=cmd2.Cmd.path_complete,
+    help="list of blacklisted ips/domains",
 )
 scan_parser.add_argument(
     "--results-dir",
@@ -176,7 +184,7 @@ scan_parser.add_argument(
     help="directory in which to save scan results",
 )
 scan_parser.add_argument(
-    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster"
+    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster",
 )
 scan_parser.add_argument(
     "--interface",
@@ -192,7 +200,7 @@ scan_parser.add_argument(
     help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
 )
 scan_parser.add_argument(
-    "--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)"
+    "--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)",
 )
 scan_parser.add_argument(
     "--threads", help="number of threads for all of the threaded applications to use"

@@ -19,7 +19,22 @@ from recon.web.webanalyze import WebanalyzeScan
     WebanalyzeScan,
 )
 class FullScan(luigi.WrapperTask):
-    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time. """
+    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
+
+    Args:
+        threads: number of threads for parallel gobuster command execution
+        wordlist: wordlist used for forced browsing
+        extensions: additional extensions to apply to each item in the wordlist
+        recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
+        proxy: protocol://ip:port proxy specification for gobuster
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
+        top_ports: Scan top N most popular ports *--* Required by upstream Task
+        ports: specifies the port(s) to be scanned *--* Required by upstream Task
+        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
+        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
+        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+    """
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
@@ -63,7 +78,22 @@ class FullScan(luigi.WrapperTask):
 
 @inherits(SearchsploitScan, AquatoneScan, GobusterScan, WebanalyzeScan)
 class HTBScan(luigi.WrapperTask):
-    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time. """
+    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
+
+    Args:
+        threads: number of threads for parallel gobuster command execution
+        wordlist: wordlist used for forced browsing
+        extensions: additional extensions to apply to each item in the wordlist
+        recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
+        proxy: protocol://ip:port proxy specification for gobuster
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
+        top_ports: Scan top N most popular ports *--* Required by upstream Task
+        ports: specifies the port(s) to be scanned *--* Required by upstream Task
+        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
+        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
+        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
+        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+    """
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
