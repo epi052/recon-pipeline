@@ -4,9 +4,9 @@ Creating a New Wrapper Scan
 If for whatever reason you want something other than FullScan, the process for defining a new scan is relatively simple.
 The ``HTBScan`` is a good example.
 
-1. Define your new class, inheriting from :class:`luigi.WrapperTask` and use the ``inherits`` decorator to include any scan you want to utilize
+1. Define your new class, inheriting from **luigi.WrapperTask** and use the ``inherits`` decorator to include any scan you want to utilize
 
-.. code-block::
+.. code-block:: python
 
     @inherits(SearchsploitScan, AquatoneScan, GobusterScan, WebanalyzeScan)
     class HTBScan(luigi.WrapperTask):
@@ -14,7 +14,7 @@ The ``HTBScan`` is a good example.
 
 2. Include all parameters needed by any of the scans passed to ``inherits``
 
-.. code-block::
+.. code-block:: python
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
@@ -36,7 +36,7 @@ The ``HTBScan`` is a good example.
 
 3. ``yield`` from each scan, keeping in mind that some of the parameters won't be universal (i.e. need to be removed/added)
 
-.. code-block::
+.. code-block:: python
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """

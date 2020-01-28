@@ -7,7 +7,7 @@ The pipeline expects a file that describes the target's scope to be provided as 
 ``--target-file`` option. The target file can consist of domains, ip addresses, and ip ranges, one per line.  Ip
 addresses and ip ranges can be mixed/matched, but domains cannot.
 
-.. code-block::
+.. code-block:: console
 
     tesla.com
     tesla.cn
@@ -17,7 +17,7 @@ addresses and ip ranges can be mixed/matched, but domains cannot.
 Some bug bounty scopes have expressly verboten subdomains and/or top-level domains, for that there is the
 ``--exempt-list`` option. The exempt list follows the same rules as the target file.
 
-.. code-block::
+.. code-block:: console
 
     shop.eu.teslamotors.com
     energysupport.tesla.com

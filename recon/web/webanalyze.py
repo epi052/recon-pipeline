@@ -16,20 +16,23 @@ from recon.web.targets import GatherWebTargets
 class WebanalyzeScan(luigi.Task):
     """ Use webanalyze to determine the technology stack on the given target(s).
 
-    webanalyze commands are structured like the example below.
-
-    webanalyze -host www.tesla.com -output json
-
-    An example of the corresponding luigi command is shown below.
-
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
-
     Install:
+        .. code-block:: console
 
-        go get -u github.com/rverton/webanalyze
+            go get -u github.com/rverton/webanalyze
 
-        # loads new apps.json file from wappalyzer project
-        webanalyze -update
+            # loads new apps.json file from wappalyzer project
+            webanalyze -update
+
+    Basic Example:
+        .. code-block:: console
+
+            webanalyze -host www.tesla.com -output json
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
         threads: number of threads for parallel webanalyze command execution
@@ -105,7 +108,11 @@ class WebanalyzeScan(luigi.Task):
                     pass
 
                 for url_scheme in ("https://", "http://"):
-                    command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}"]
+                    command = [
+                        tool_paths.get("webanalyze"),
+                        "-host",
+                        f"{url_scheme}{target}",
+                    ]
                     commands.append(command)
 
         Path(self.output().path).mkdir(parents=True, exist_ok=True)
