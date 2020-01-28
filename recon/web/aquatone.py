@@ -12,24 +12,35 @@ from recon.web.targets import GatherWebTargets
 class AquatoneScan(luigi.Task):
     """ Screenshot all web targets and generate HTML report.
 
-    aquatone commands are structured like the example below.
+    Install:
+        .. code-block:: console
 
-    cat webtargets.tesla.txt | /opt/aquatone -scan-timeout 900 -threads 20
+            mkdir /tmp/aquatone
+            wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip
+            unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone
+            sudo mv /tmp/aquatone/aquatone /usr/local/bin/aquatone
+            rm -rf /tmp/aquatone
 
-    An example of the corresponding luigi command is shown below.
+    Basic Example:
+        ``aquatone`` commands are structured like the example below.
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.aquatone AquatoneScan --target-file tesla --top-ports 1000
+        ``cat webtargets.tesla.txt | /opt/aquatone -scan-timeout 900 -threads 20``
+
+    Luigi Example:
+        .. code-block:: python
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.aquatone AquatoneScan --target-file tesla --top-ports 1000
 
     Args:
         threads: number of threads for parallel aquatone command execution
         scan_timeout: timeout in miliseconds for aquatone port scans
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))

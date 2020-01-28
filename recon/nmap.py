@@ -13,24 +13,30 @@ from recon.masscan import ParseMasscanOutput
 
 @inherits(ParseMasscanOutput)
 class ThreadedNmapScan(luigi.Task):
-    """ Run nmap against specific targets and ports gained from the ParseMasscanOutput Task.
+    """ Run ``nmap`` against specific targets and ports gained from the ParseMasscanOutput Task.
 
-    nmap commands are structured like the example below.
+    Install:
+        ``nmap`` is already on your system if you're using kali.  If you're not using kali, refer to your own
+        distributions instructions for installing ``nmap``.
 
-    nmap --open -sT -sC -T 4 -sV -Pn -p 43,25,21,53,22 -oA htb-targets-nmap-results/nmap.10.10.10.155-tcp 10.10.10.155
+    Basic Example:
+        .. code-block:: console
 
-    The corresponding luigi command is shown below.
+            nmap --open -sT -sC -T 4 -sV -Pn -p 43,25,21,53,22 -oA htb-targets-nmap-results/nmap.10.10.10.155-tcp 10.10.10.155
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.nmap ThreadedNmap --target-file htb-targets --top-ports 5000
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.nmap ThreadedNmap --target-file htb-targets --top-ports 5000
 
     Args:
         threads: number of threads for parallel nmap command execution
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
@@ -131,24 +137,30 @@ class ThreadedNmapScan(luigi.Task):
 
 @inherits(ThreadedNmapScan)
 class SearchsploitScan(luigi.Task):
-    """ Run searchcploit against each nmap*.xml file in the TARGET-nmap-results directory and write results to disk.
+    """ Run ``searchcploit`` against each ``nmap*.xml`` file in the **TARGET-nmap-results** directory and write results to disk.
 
-    searchsploit commands are structured like the example below.
+    Install:
+        ``searchcploit`` is already on your system if you're using kali.  If you're not using kali, refer to your own
+        distributions instructions for installing ``searchcploit``.
 
-    searchsploit --nmap htb-targets-nmap-results/nmap.10.10.10.155-tcp.xml
+    Basic Example:
+        .. code-block:: console
 
-    The corresponding luigi command is shown below.
+            searchsploit --nmap htb-targets-nmap-results/nmap.10.10.10.155-tcp.xml
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.nmap Searchsploit --target-file htb-targets --top-ports 5000
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.nmap Searchsploit --target-file htb-targets --top-ports 5000
 
     Args:
-        threads: number of threads for parallel nmap command execution *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifies the directory on disk to which all Task results are written *--* Required by upstream Task
+        threads: number of threads for parallel nmap command execution *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifies the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     def requires(self):

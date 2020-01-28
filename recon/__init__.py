@@ -126,13 +126,15 @@ tools = {
 
 
 def get_scans():
-    """ Iterates over the recon package and its modules to find all of the *Scan classes.
+    """ Iterates over the recon package and its modules to find all of the \*Scan classes.
 
-    *** A contract exists here that says any scans need to end with the word scan in order to be found by this function.
+    **A contract exists here that says any scans need to end with the word scan in order to be found by this function.**
+
+    Example:
+        ``defaultdict(<class 'list'>, {'AmassScan': ['recon.amass'], 'MasscanScan': ['recon.masscan'], ... })``
 
     Returns:
-        dict() containing mapping of {classname: [modulename, ...]} for all potential recon-pipeline commands
-        ex:  defaultdict(<class 'list'>, {'AmassScan': ['recon.amass'], 'MasscanScan': ['recon.masscan'], ... })
+        dict containing mapping of ``classname -> [modulename, ...]`` for all potential recon-pipeline commands
     """
     scans = defaultdict(list)
 

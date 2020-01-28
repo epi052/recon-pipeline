@@ -9,6 +9,8 @@
 
 There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
 
+Check out [recon-pipeline's readthedocs entry](https://recon-pipeline.readthedocs.io/) for some more in depth information than what this README provides.
+
 ## Installation
 
 > Automatic installation only tested on kali 2019.4

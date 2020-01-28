@@ -11,18 +11,30 @@ from recon.targets import TargetList
 
 @inherits(TargetList)
 class AmassScan(ExternalProgramTask):
-    """ Run amass scan to perform subdomain enumeration of given domain(s).
+    """ Run ``amass`` scan to perform subdomain enumeration of given domain(s).
 
-    Expects TARGET_FILE.domains file to be a text file with one top-level domain per line.
+    Note:
+        Expects **TARGET_FILE.domains** file to be a text file with one top-level domain per line.
 
-    Commands are similar to the following
+    Install:
+        .. code-block:: console
 
-    amass enum -ip -brute -active -min-for-recursive 3 -df tesla -json amass.tesla.json
+            sudo apt-get install -y -q amass
+
+    Basic Example:
+        .. code-block:: console
+
+            amass enum -ip -brute -active -min-for-recursive 3 -df tesla -json amass.tesla.json
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.amass AmassScan --target-file tesla
 
     Args:
         exempt_list: Path to a file providing blacklisted subdomains, one per line.
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     exempt_list = luigi.Parameter(default="")
@@ -84,9 +96,9 @@ class ParseAmassOutput(luigi.Task):
     """ Read amass JSON results and create categorized entries into ip|subdomain files.
 
     Args:
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     def requires(self):

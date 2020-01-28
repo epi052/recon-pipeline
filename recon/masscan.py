@@ -14,25 +14,37 @@ from recon.config import top_tcp_ports, top_udp_ports, defaults
 
 @inherits(TargetList, ParseAmassOutput)
 class MasscanScan(luigi.Task):
-    """ Run masscan against a target specified via the TargetList Task.
+    """ Run ``masscan`` against a target specified via the TargetList Task.
 
-    Masscan commands are structured like the example below.  When specified, --top_ports is processed and
-    then ultimately passed to --ports.
+    Note:
+        When specified, ``--top_ports`` is processed and then ultimately passed to ``--ports``.
 
-    masscan -v --open-only --banners --rate 1000 -e tun0 -oJ masscan.tesla.json --ports 80,443,22,21 -iL tesla.ips
+    Install:
+        .. code-block:: console
 
-    The corresponding luigi command is shown below.
+            git clone https://github.com/robertdavidgraham/masscan /tmp/masscan
+            make -s -j -C /tmp/masscan
+            sudo mv /tmp/masscan/bin/masscan /usr/local/bin/masscan
+            rm -rf /tmp/masscan
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.masscan Masscan --target-file tesla --ports 80,443,22,21
+    Basic Example:
+        .. code-block:: console
+
+            masscan -v --open-only --banners --rate 1000 -e tun0 -oJ masscan.tesla.json --ports 80,443,22,21 -iL tesla.ips
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.masscan Masscan --target-file tesla --ports 80,443,22,21
 
     Args:
         rate: desired rate for transmitting packets (packets per second)
         interface: use the named raw network interface, such as "eth0"
         top_ports: Scan top N most popular ports
         ports: specifies the port(s) to be scanned
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        results_dir: specifies the directory on disk to which all Task results are written *--* Optional for upstream Task
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
     """
 
     rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
@@ -122,12 +134,12 @@ class ParseMasscanOutput(luigi.Task):
     """ Read masscan JSON results and create a pickled dictionary of pertinent information for processing.
 
     Args:
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     def requires(self):

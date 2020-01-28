@@ -14,34 +14,37 @@ from recon.web.targets import GatherWebTargets
 
 @inherits(GatherWebTargets)
 class GobusterScan(luigi.Task):
-    """ Use gobuster to perform forced browsing.
-
-    gobuster commands are structured like the example below.
-
-    gobuster dir -q -e -k -t 20 -u www.tesla.com -w /usr/share/seclists/Discovery/Web-Content/common.txt -p http://127.0.0.1:8080 -o gobuster.tesla.txt -x php,html
-
-    An example of the corresponding luigi command is shown below.
-
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.gobuster GobusterScan --target-file tesla --top-ports 1000 \
-                            --interface eth0 --proxy http://127.0.0.1:8080 --extensions php,html \
-                            --wordlist /usr/share/seclists/Discovery/Web-Content/common.txt --threads 20
+    """ Use ``gobuster`` to perform forced browsing.
 
     Install:
-        go get github.com/OJ/gobuster
-        git clone https://github.com/epi052/recursive-gobuster.git
+        .. code-block:: console
+
+            go get github.com/OJ/gobuster
+            git clone https://github.com/epi052/recursive-gobuster.git
+
+    Basic Example:
+        .. code-block:: console
+
+            gobuster dir -q -e -k -t 20 -u www.tesla.com -w /usr/share/seclists/Discovery/Web-Content/common.txt -p http://127.0.0.1:8080 -o gobuster.tesla.txt -x php,html
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.gobuster GobusterScan --target-file tesla --top-ports 1000 --interface eth0 --proxy http://127.0.0.1:8080 --extensions php,html --wordlist /usr/share/seclists/Discovery/Web-Content/common.txt --threads 20
 
     Args:
         threads: number of threads for parallel gobuster command execution
         wordlist: wordlist used for forced browsing
         extensions: additional extensions to apply to each item in the wordlist
         recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        proxy: protocol://ip:port proxy specification for gobuster
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     proxy = luigi.Parameter(default=defaults.get("proxy", ""))
