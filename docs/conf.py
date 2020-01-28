@@ -12,11 +12,10 @@
 #
 import os
 import sys
-import sphinx_bootstrap_theme
+import sphinx_rtd_theme
 
 sys.path.insert(0, os.path.abspath(".."))
 
-html_theme_options = {"bootswatch_theme": "sandstone"}
 
 # -- Project information -----------------------------------------------------
 
@@ -62,8 +61,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 #
 pygments_style = "sphinx"
 
-html_theme = "bootstrap"
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
