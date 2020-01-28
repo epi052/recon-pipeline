@@ -1,6 +1,5 @@
 sphinx-argparse==0.2.5
 sphinxcontrib-napoleon==0.7
-sphinx-rtd-theme==0.4.3
 sphinx-bootstrap-theme==0.7.1
 cmd2==0.9.24
 luigi==2.8.11
