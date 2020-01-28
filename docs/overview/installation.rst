@@ -13,7 +13,7 @@ Manual Steps
 
 First, the manual steps to get cmd2 installed in a virtual environment are as follows (and shown below)
 
-.. code-block::
+.. code-block:: console
 
     apt install pipenv
     git clone https://github.com/epi052/recon-pipeline.git
@@ -52,12 +52,12 @@ for the auto installer to function:
 - derivative of debian (some tools are installed using apt)
 
 The alternatives would be to manually install each tool or to modify the distro-specific portions of the commands
-laid out in ``recon.__init__``.  For example, on Fedora, you could change the package manager from ``apt-get`` to
+laid out in ``recon.__init__.py``.  For example, on Fedora, you could change the package manager from ``apt-get`` to
 ``dnf`` and remove any ``apt-get`` specific options.
 
-Example from ``recon-pipeline/recon/__init__.py``
+Example from ``recon.__init__.py``
 
-.. code-block::
+.. code-block:: python
 
     "pipenv": {
         "installed": False,
@@ -67,16 +67,10 @@ Example from ``recon-pipeline/recon/__init__.py``
 
 would become
 
-.. code-block::
+.. code-block:: python
 
     "pipenv": {
         "installed": False,
         "dependencies": None,
         "commands": ["sudo dnf install -y pipenv"],
     },
-
-
-
-
-
-

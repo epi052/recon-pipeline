@@ -8,24 +8,34 @@ from recon.web.targets import GatherWebTargets
 
 @inherits(GatherWebTargets)
 class TKOSubsScan(ExternalProgramTask):
-    """ Use tko-subs to scan for potential subdomain takeovers.
+    """ Use ``tko-subs`` to scan for potential subdomain takeovers.
 
-    tko-subs commands are structured like the example below.
+    Install:
+        .. code-block:: console
 
-    tko-subs -domains=tesla.subdomains -data=/root/go/src/github.com/anshumanbh/tko-subs/providers-data.csv -output=tkosubs.tesla.csv
+            go get github.com/anshumanbh/tko-subs
+            cd ~/go/src/github.com/anshumanbh/tko-subs
+            go build
+            go install
 
-    An example of the corresponding luigi command is shown below.
+    Basic Example:
+        .. code-block:: console
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover TKOSubsScan --target-file tesla --top-ports 1000 --interface eth0
+            tko-subs -domains=tesla.subdomains -data=/root/go/src/github.com/anshumanbh/tko-subs/providers-data.csv -output=tkosubs.tesla.csv
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover TKOSubsScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     def requires(self):
@@ -77,25 +87,35 @@ class TKOSubsScan(ExternalProgramTask):
 
 @inherits(GatherWebTargets)
 class SubjackScan(ExternalProgramTask):
-    """ Use subjack to scan for potential subdomain takeovers.
+    """ Use ``subjack`` to scan for potential subdomain takeovers.
 
-    subjack commands are structured like the example below.
+    Install:
+        .. code-block:: console
 
-    subjack -w webtargets.tesla.txt -t 100 -timeout 30 -o subjack.tesla.txt -ssl
+            go get github.com/haccer/subjack
+            cd ~/go/src/github.com/haccer/subjack
+            go build
+            go install
 
-    An example of the corresponding luigi command is shown below.
+    Basic Example:
+        .. code-block:: console
 
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover SubjackScan --target-file tesla --top-ports 1000 --interface eth0
+            subjack -w webtargets.tesla.txt -t 100 -timeout 30 -o subjack.tesla.txt -ssl
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover SubjackScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
         threads: number of threads for parallel subjack command execution
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))

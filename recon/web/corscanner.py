@@ -8,31 +8,35 @@ from recon.web.targets import GatherWebTargets
 
 @inherits(GatherWebTargets)
 class CORScannerScan(ExternalProgramTask):
-    """ Use CORScanner to scan for potential CORS misconfigurations.
-
-    CORScanner commands are structured like the example below.
-
-    python cors_scan.py -i webtargets.tesla.txt -t 100
-
-    An example of the corresponding luigi command is shown below.
-
-    PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.corscanner CORScannerScan --target-file tesla --top-ports 1000 --interface eth0
+    """ Use ``CORScanner`` to scan for potential CORS misconfigurations.
 
     Install:
-        git clone https://github.com/chenjj/CORScanner.git
-        cd CORScanner
-        pip install -r requirements.txt
-        pip install future
+        .. code-block:: console
+
+            git clone https://github.com/chenjj/CORScanner.git
+            cd CORScanner
+            pip install -r requirements.txt
+            pip install future
+
+    Basic Example:
+        .. code-block:: console
+
+            python cors_scan.py -i webtargets.tesla.txt -t 100
+
+    Luigi Example:
+        .. code-block:: console
+
+            PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.corscanner CORScannerScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
         threads: number of threads for parallel subjack command execution
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))

@@ -21,19 +21,22 @@ from recon.web.webanalyze import WebanalyzeScan
 class FullScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
 
+    Note:
+        Because FullScan is a wrapper, it requires all Parameters for any of the Scans that it wraps.
+
     Args:
         threads: number of threads for parallel gobuster command execution
         wordlist: wordlist used for forced browsing
         extensions: additional extensions to apply to each item in the wordlist
         recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
         proxy: protocol://ip:port proxy specification for gobuster
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line.
+        top_ports: Scan top N most popular ports
+        ports: specifies the port(s) to be scanned
+        interface: use the named raw network interface, such as "eth0"
+        rate: desired rate for transmitting packets (packets per second)
+        target_file: specifies the file on disk containing a list of ips or domains
+        results_dir: specifes the directory on disk to which all Task results are written
     """
 
     def requires(self):
@@ -80,19 +83,22 @@ class FullScan(luigi.WrapperTask):
 class HTBScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
 
+    Note:
+        Because HTBScan is a wrapper, it requires all Parameters for any of the Scans that it wraps.
+
     Args:
         threads: number of threads for parallel gobuster command execution
         wordlist: wordlist used for forced browsing
         extensions: additional extensions to apply to each item in the wordlist
         recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
         proxy: protocol://ip:port proxy specification for gobuster
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        exempt_list: Path to a file providing blacklisted subdomains, one per line.
+        top_ports: Scan top N most popular ports
+        ports: specifies the port(s) to be scanned
+        interface: use the named raw network interface, such as "eth0"
+        rate: desired rate for transmitting packets (packets per second)
+        target_file: specifies the file on disk containing a list of ips or domains
+        results_dir: specifes the directory on disk to which all Task results are written
     """
 
     def requires(self):
