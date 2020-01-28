@@ -1,5 +1,3 @@
-.. highlight:: python
-
 .. _install-ref-label:
 
 Installation Instructions
@@ -59,7 +57,7 @@ laid out in ``recon.__init__.py``.  For example, on Fedora, you could change the
 
 Example from ``recon.__init__.py``
 
-::
+.. code-block:: python
 
     "pipenv": {
         "installed": False,
@@ -69,7 +67,7 @@ Example from ``recon.__init__.py``
 
 would become
 
-::
+.. code-block:: python
 
     "pipenv": {
         "installed": False,
