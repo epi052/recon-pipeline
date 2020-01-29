@@ -50,9 +50,10 @@ class TargetList(luigi.ExternalTask):
             # no exception thrown; ip address found
             with_suffix = self.target_file.with_suffix(".ips")
 
-        self.results_dir.mkdir(parents=True, exist_ok=True)
 
         with_suffix = (Path(self.results_dir) / with_suffix).resolve()
+
+        with_suffix.parent.mkdir(parents=True, exist_ok=True)
 
         # copy file with new extension
         shutil.copy(self.target_file, with_suffix)
