@@ -1,7 +1,7 @@
 import shutil
 import ipaddress
 from pathlib import Path
-from recon.amass import ParseAmassOutput
+from recon.amass import ParseAmassOutput, AmassScan
 
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem
@@ -37,10 +37,14 @@ subdomains = [
 ]
 
 
+def test_amassscan_output_location(tmp_path):
+    asc = AmassScan(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+
+    assert asc.output().path == str(Path(tmp_path) / f"amass.{tf}.json")
+
+
 def test_parse_amass_output_locations(tmp_path):
     pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
-
-    print(pao.output().get("target-ips").path)
 
     assert pao.output().get("target-ips").path == str(
         (Path(tmp_path) / tf).with_suffix(".ips").resolve()

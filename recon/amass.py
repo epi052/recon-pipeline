@@ -58,7 +58,9 @@ class AmassScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/amass.{self.target_file}.json")
+        new_path = Path(self.results_dir) / self.target_file
+        new_path = new_path.with_name(f"amass.{self.target_file}.json")
+        return luigi.LocalTarget(new_path.resolve())
 
     def program_args(self):
         """ Defines the options/arguments sent to amass after processing.
@@ -66,7 +68,7 @@ class AmassScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        print(f"debug-epi: amass {self.results_dir}")
+
         if not self.input().path.endswith("domains"):
             return f"touch {self.output().path}".split()
 

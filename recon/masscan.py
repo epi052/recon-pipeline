@@ -2,6 +2,7 @@ import json
 import pickle
 import logging
 import subprocess
+from pathlib import Path
 from collections import defaultdict
 
 import luigi
@@ -62,7 +63,9 @@ class MasscanScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.json")
+        new_path = Path(self.results_dir) / self.target_file
+        new_path = new_path.with_name(f"masscan.{self.target_file}.json")
+        return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
         """ Defines the options/arguments sent to masscan after processing.
@@ -70,7 +73,7 @@ class MasscanScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        print(f"debug-epi: masscan {self.results_dir}")
+
         if self.ports and self.top_ports:
             # can't have both
             logging.error("Only --ports or --top-ports is permitted, not both.")
@@ -168,18 +171,17 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(
-            f"{self.results_dir}/masscan.{self.target_file}.parsed.pickle"
-        )
+        new_path = Path(self.results_dir) / self.target_file
+        new_path = new_path.with_name(f"masscan.{self.target_file}.parsed.pickle")
+        return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
         ip_dict = defaultdict(lambda: defaultdict(set))  # nested defaultdict
 
         try:
-            entries = json.load(
-                self.input().open()
-            )  # load masscan results from Masscan Task
+            # load masscan results from Masscan Task
+            entries = json.load(self.input().open())
         except json.decoder.JSONDecodeError as e:
             # return on exception; no output file created; pipeline should start again from
             # this task if restarted because we never hit pickle.dump
