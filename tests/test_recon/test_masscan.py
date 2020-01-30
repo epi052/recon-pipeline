@@ -10,10 +10,12 @@ rd = "../data/recon-results"
 ips = []
 
 test_dict = {
-    "104.20.60.51": {"tcp": {"443", "2086", "80", "2087", "8443"}},
-    "13.57.162.100": {"tcp": {"443"}},
-    "13.57.96.172": {"tcp": {"80", "443"}},
-    "104.20.61.51": {"tcp": {"8080", "80"}},
+    "104.20.60.51": {"tcp": {"8443", "443"}},
+    "104.20.61.51": {"tcp": {"8080", "80", "443"}},
+    "13.225.54.100": {"tcp": {"443"}},
+    "13.225.54.22": {"tcp": {"80"}},
+    "52.53.92.161": {"tcp": {"443", "80"}},
+    "52.9.23.177": {"tcp": {"80"}},
 }
 
 
@@ -22,7 +24,7 @@ def test_massscan_output_location(tmp_path):
         target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100
     )
 
-    assert asc.output().path == str(Path(tmp_path) / f"masscan.{tf}.json")
+    assert asc.output().path == str(Path(tmp_path) / "masscan-results" / "masscan.json")
 
 
 def test_parsemassscan_output_location(tmp_path):
@@ -30,7 +32,9 @@ def test_parsemassscan_output_location(tmp_path):
         target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100
     )
 
-    assert pmo.output().path == str(Path(tmp_path) / f"masscan.{tf}.parsed.pickle")
+    assert pmo.output().path == str(
+        Path(tmp_path) / "masscan-results" / "masscan.parsed.pickle"
+    )
 
 
 def test_parsemassscan_output_dictionary(tmp_path):
@@ -47,10 +51,14 @@ def test_parsemassscan_output_dictionary(tmp_path):
             Path(__file__).parent.parent
             / "data"
             / "recon-results"
-            / f"masscan.{tf}.parsed.pickle"
+            / "masscan-results"
+            / "masscan.parsed.pickle"
         ).open("rb")
     )
+    from pprint import pprint
 
+    pprint(ip_dict)
     for ip, proto_dict in test_dict.items():
         for proto, ports in proto_dict.items():
+            print(ip, proto)
             assert not ip_dict.get(ip).get(proto).difference(ports)

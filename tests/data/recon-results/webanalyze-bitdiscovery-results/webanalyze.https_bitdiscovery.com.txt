@@ -1,3 +1,0 @@
-2020/01/26 13:29:41 Scanning with 4 workers.
-2020/01/26 13:29:42 [+] https://bitdiscovery.com (795.81538ms):
-2020/01/26 13:29:42 	- Nginx, 1.12.1 (Web Servers, Reverse Proxy)

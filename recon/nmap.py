@@ -72,7 +72,9 @@ class ThreadedNmapScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/nmap-{self.target_file}-results")
+        results_subfolder = Path(self.results_dir) / "nmap-results"
+
+        return luigi.LocalTarget(results_subfolder.resolve())
 
     def run(self):
         """ Parses pickled target info dictionary and runs targeted nmap scans against only open ports. """
@@ -119,7 +121,9 @@ class ThreadedNmapScan(luigi.Task):
 
                 # arg to -oA, will drop into subdir off curdir
                 tmp_cmd[10] = ",".join(ports)
-                tmp_cmd.append(f"{self.output().path}/nmap.{target}-{protocol}")
+                tmp_cmd.append(
+                    str(Path(self.output().path) / f"nmap.{target}-{protocol}")
+                )
 
                 tmp_cmd.append(target)  # target as final arg to nmap
 
@@ -195,12 +199,14 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(
-            f"{self.results_dir}/searchsploit-{self.target_file}-results"
-        )
+        results_subfolder = Path(self.results_dir) / "searchsploit-results"
+
+        return luigi.LocalTarget(results_subfolder.resolve())
 
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
+        Path(self.output().path).mkdir(parents=True, exist_ok=True)
+
         for entry in Path(self.input().path).glob("nmap*.xml"):
             proc = subprocess.run(
                 ["searchsploit", "--nmap", str(entry)], stderr=subprocess.PIPE

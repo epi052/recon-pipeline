@@ -1,4 +1,5 @@
 import pickle
+from pathlib import Path
 
 import luigi
 from luigi.util import inherits
@@ -56,12 +57,16 @@ class GatherWebTargets(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(
-            f"{self.results_dir}/webtargets.{self.target_file}.txt"
-        )
+        results_subfolder = Path(self.results_dir) / "target-results"
+
+        new_path = results_subfolder / "webtargets.txt"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
         """ Gather all potential web targets into a single file to pass farther down the pipeline. """
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+
         targets = set()
 
         ip_dict = pickle.load(open(self.input().get("masscan-output").path, "rb"))

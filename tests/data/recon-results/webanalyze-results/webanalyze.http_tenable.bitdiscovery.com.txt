@@ -1,0 +1,3 @@
+2020/01/30 06:52:15 Scanning with 4 workers.
+2020/01/30 06:52:15 [+] http://tenable.bitdiscovery.com (276.179685ms):
+2020/01/30 06:52:15 	- Nginx, 1.12.1 (Web Servers, Reverse Proxy)

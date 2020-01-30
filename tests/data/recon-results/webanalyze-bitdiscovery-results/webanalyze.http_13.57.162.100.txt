@@ -1,3 +1,0 @@
-2020/01/26 13:29:42 Scanning with 4 workers.
-2020/01/26 13:29:43 [+] http://13.57.162.100 (1.062471571s):
-2020/01/26 13:29:43 	- Nginx, 1.16.1 (Web Servers, Reverse Proxy)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 8080,443,80 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.61.51-tcp 104.20.61.51 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 8080,443,80 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.61.51-tcp 104.20.61.51" start="1580388888" startstr="Thu Jan 30 06:54:48 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="3" services="80,443,8080"/>

@@ -1,4 +1,0 @@
-2020/01/26 13:29:40 Scanning with 4 workers.
-2020/01/26 13:29:40 [+] http://99.84.251.117 (80.760172ms):
-2020/01/26 13:29:40 	- Amazon Cloudfront,  (CDN)
-2020/01/26 13:29:40 	- Amazon Web Services,  (PaaS)

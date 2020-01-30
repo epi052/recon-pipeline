@@ -1,3 +1,0 @@
-2020/01/26 13:29:42 Scanning with 4 workers.
-2020/01/26 13:29:43 [+] https://staging.bitdiscovery.com (502.712191ms):
-2020/01/26 13:29:43 	- Nginx, 1.16.1 (Web Servers, Reverse Proxy)

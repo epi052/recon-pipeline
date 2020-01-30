@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 8443,443 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.60.51-tcp 104.20.60.51 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 8443,443 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.60.51-tcp 104.20.60.51" start="1580388888" startstr="Thu Jan 30 06:54:48 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="2" services="443,8443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1580388889" endtime="1580388909"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.20.60.51" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" product="cloudflare" servicefp="SF-Port443-TCP:V=7.80%T=SSL%I=7%D=1/30%Time=5E32D226%P=x86_64-pc-linux-gnu%r(GetRequest,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:01\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990d4869ecc7-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(HTTPOptions,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990dc88eec86-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(FourOhFourRequest,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990e1dc8e01b-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(tor-versions,13C,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(RTSPRequest,9B,&quot;&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(RPCCheck,13C,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;);" tunnel="ssl" method="probed" conf="10"/><script id="fingerprint-strings" output="&#xa;  FourOhFourRequest: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990e1dc8e01b-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  GetRequest: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:01 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990d4869ecc7-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  HTTPOptions: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990dc88eec86-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  RPCCheck: &#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:07 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  RTSPRequest: &#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  tor-versions: &#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;"><elem key="FourOhFourRequest">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990e1dc8e01b-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="GetRequest">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:01 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990d4869ecc7-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="HTTPOptions">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990dc88eec86-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="RPCCheck">&#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:07 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="RTSPRequest">&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="tor-versions">&#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+</script><script id="http-server-header" output="cloudflare"><elem>cloudflare</elem>
+</script><script id="http-title" output="403 Forbidden"><elem key="title">403 Forbidden</elem>
+</script><script id="ssl-cert" output="Subject: commonName=ssl508858.cloudflaressl.com&#xa;Subject Alternative Name: DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com&#xa;Not valid before: 2019-08-23T00:00:00&#xa;Not valid after:  2020-02-29T23:59:59"><table key="subject">
+<elem key="organizationalUnitName">PositiveSSL Multi-Domain</elem>
+<elem key="commonName">ssl508858.cloudflaressl.com</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">COMODO ECC Domain Validation Secure Server CA 2</elem>
+<elem key="countryName">GB</elem>
+<elem key="localityName">Salford</elem>
+<elem key="organizationName">COMODO CA Limited</elem>
+<elem key="stateOrProvinceName">Greater Manchester</elem>
+</table>
+<table key="pubkey">
+<elem key="type">ec</elem>
+<elem key="bits">256</elem>
+<table key="ecdhparams">
+<table key="curve_params">
+<elem key="ec_curve_type">namedcurve</elem>
+<elem key="curve">prime256v1</elem>
+</table>
+</table>
+</table>
+<table key="extensions">
+<table>
+<elem key="value">keyid:40:09:61:67:F0:BC:83:71:4F:DE:12:08:2C:6F:D4:D4:2B:76:3D:96&#xa;</elem>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+</table>
+<table>
+<elem key="value">76:9A:3B:22:CD:3A:18:5E:42:54:06:0B:5F:71:47:4C:23:60:FD:27</elem>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">Digital Signature</elem>
+<elem key="name">X509v3 Key Usage</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">CA:FALSE</elem>
+<elem key="name">X509v3 Basic Constraints</elem>
+</table>
+<table>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+<elem key="name">X509v3 Extended Key Usage</elem>
+</table>
+<table>
+<elem key="value">Policy: 1.3.6.1.4.1.6449.1.2.2.7&#xa;  CPS: https://secure.comodo.com/CPS&#xa;Policy: 2.23.140.1.2.1&#xa;</elem>
+<elem key="name">X509v3 Certificate Policies</elem>
+</table>
+<table>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl.comodoca4.com/COMODOECCDomainValidationSecureServerCA2.crl&#xa;</elem>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+</table>
+<table>
+<elem key="value">CA Issuers - URI:http://crt.comodoca4.com/COMODOECCDomainValidationSecureServerCA2.crt&#xa;OCSP - URI:http://ocsp.comodoca4.com&#xa;</elem>
+<elem key="name">Authority Information Access</elem>
+</table>
+<table>
+<elem key="value">DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com</elem>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+</table>
+<table>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : B2:1E:05:CC:8B:A2:CD:8A:20:4E:87:66:F9:2B:B9:8A:&#xa;                25:20:67:6B:DA:FA:70:E7:B2:49:53:2D:EF:8B:90:5E&#xa;    Timestamp : Aug 23 00:43:05.695 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:5A:DC:AD:83:C8:A0:DF:34:7D:FE:D1:B7:&#xa;                39:76:27:A6:E6:6B:F5:53:39:B3:E3:43:DD:34:08:4F:&#xa;                F8:5E:D6:1D:02:20:64:E4:8D:7C:A3:54:BD:79:C6:DB:&#xa;                7C:37:93:7B:ED:AA:45:99:DE:DB:31:50:D0:58:58:1C:&#xa;                0B:42:5D:34:B9:26&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 5E:A7:73:F9:DF:56:C0:E7:B5:36:48:7D:D0:49:E0:32:&#xa;                7A:91:9A:0C:84:A1:12:12:84:18:75:96:81:71:45:58&#xa;    Timestamp : Aug 23 00:43:05.742 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:5F:84:DA:B8:B2:CF:67:14:56:95:EF:0C:&#xa;                81:34:6C:5B:B0:E6:EE:5C:C8:1D:14:F5:30:E6:B8:66:&#xa;                AA:13:9F:37:02:20:23:9D:25:6E:01:A8:7B:B5:BF:2A:&#xa;                4F:2B:77:EC:08:91:83:95:E1:B4:5F:4E:92:F9:02:C8:&#xa;                79:0F:48:0D:1D:24</elem>
+<elem key="name">CT Precertificate SCTs</elem>
+</table>
+</table>
+<elem key="sig_algo">ecdsa-with-SHA256</elem>
+<table key="validity">
+<elem key="notBefore">2019-08-23T00:00:00</elem>
+<elem key="notAfter">2020-02-29T23:59:59</elem>
+</table>
+<elem key="md5">04ea3d7c1225e12ff3e49637fa9b7356</elem>
+<elem key="sha1">3615874a0ffc73281db2ff7d752f1a308f53cf05</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIFATCCBKegAwIBAgIRAOT8RHpmn2ySf/GbKaINxIgwCgYIKoZIzj0EAwIwgZIx&#xa;CzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNV&#xa;BAcTB1NhbGZvcmQxGjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMTgwNgYDVQQD&#xa;Ey9DT01PRE8gRUNDIERvbWFpbiBWYWxpZGF0aW9uIFNlY3VyZSBTZXJ2ZXIgQ0Eg&#xa;MjAeFw0xOTA4MjMwMDAwMDBaFw0yMDAyMjkyMzU5NTlaMGwxITAfBgNVBAsTGERv&#xa;bWFpbiBDb250cm9sIFZhbGlkYXRlZDEhMB8GA1UECxMYUG9zaXRpdmVTU0wgTXVs&#xa;dGktRG9tYWluMSQwIgYDVQQDExtzc2w1MDg4NTguY2xvdWRmbGFyZXNzbC5jb20w&#xa;WTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQHeLmGdEnQMJLy2lRD5XqecuVgVpHB&#xa;2iT2totE6AcTl/kEaPGU64lTA5c0yFnvPHe18T5E5WfiZ0dhNfoqTXteo4IDATCC&#xa;Av0wHwYDVR0jBBgwFoAUQAlhZ/C8g3FP3hIILG/U1Ct2PZYwHQYDVR0OBBYEFHaa&#xa;OyLNOhheQlQGC19xR0wjYP0nMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAA&#xa;MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBPBgNVHSAESDBGMDoGCysG&#xa;AQQBsjEBAgIHMCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5j&#xa;b20vQ1BTMAgGBmeBDAECATBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3JsLmNv&#xa;bW9kb2NhNC5jb20vQ09NT0RPRUNDRG9tYWluVmFsaWRhdGlvblNlY3VyZVNlcnZl&#xa;ckNBMi5jcmwwgYgGCCsGAQUFBwEBBHwwejBRBggrBgEFBQcwAoZFaHR0cDovL2Ny&#xa;dC5jb21vZG9jYTQuY29tL0NPTU9ET0VDQ0RvbWFpblZhbGlkYXRpb25TZWN1cmVT&#xa;ZXJ2ZXJDQTIuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC5jb21vZG9jYTQu&#xa;Y29tMEQGA1UdEQQ9MDuCG3NzbDUwODg1OC5jbG91ZGZsYXJlc3NsLmNvbYIOKi5i&#xa;dWdjcm93ZC5jb22CDGJ1Z2Nyb3dkLmNvbTCCAQIGCisGAQQB1nkCBAIEgfMEgfAA&#xa;7gB1ALIeBcyLos2KIE6HZvkruYolIGdr2vpw57JJUy3vi5BeAAABbLvtSF8AAAQD&#xa;AEYwRAIgWtytg8ig3zR9/tG3OXYnpuZr9VM5s+ND3TQIT/he1h0CIGTkjXyjVL15&#xa;xtt8N5N77apFmd7bMVDQWFgcC0JdNLkmAHUAXqdz+d9WwOe1Nkh90EngMnqRmgyE&#xa;oRIShBh1loFxRVgAAAFsu+1IjgAABAMARjBEAiBfhNq4ss9nFFaV7wyBNGxbsObu&#xa;XMgdFPUw5rhmqhOfNwIgI50lbgGoe7W/Kk8rd+wIkYOV4bRfTpL5Ash5D0gNHSQw&#xa;CgYIKoZIzj0EAwIDSAAwRQIhAJifYxJMbcdhp+EqIFp+WOIiPIOqVP1P/1uChSOZ&#xa;sRutAiBNIxFziQX6jhXcS0tac9oEXGryGuYZzon08/HiHvtNRg==&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="2020-01-30T12:55:09+00:00; 0s from scanner time."><elem key="date">2020-01-30T12:55:09+00:00</elem>
+<elem key="delta">0.0</elem>
+</script><script id="tls-alpn" output="&#xa;  h2&#xa;  http/1.1"><elem>h2</elem>
+<elem>http/1.1</elem>
+</script><script id="tls-nextprotoneg" output="&#xa;  h2&#xa;  http/1.1"><elem>h2</elem>
+<elem>http/1.1</elem>
+</script></port>
+<port protocol="tcp" portid="8443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https-alt" product="cloudflare" servicefp="SF-Port8443-TCP:V=7.80%T=SSL%I=7%D=1/30%Time=5E32D226%P=x86_64-pc-linux-gnu%r(GetRequest,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:01\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990d5e351fe0-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(HTTPOptions,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990ddb89581d-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(FourOhFourRequest,149,&quot;HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\nCF-RAY:\x2055d3990e4f91c7e6-DFW\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;403\x20Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;403\x20Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(RTSPRequest,9B,&quot;&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(RPCCheck,13C,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;)%r(DNSVersionBindReqTCP,13C,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;400\x20Bad\x20Request&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;400\x20Bad\x20Request&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;);" tunnel="ssl" method="probed" conf="10"/><script id="fingerprint-strings" output="&#xa;  DNSVersionBindReqTCP, RPCCheck: &#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:07 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  FourOhFourRequest: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990e4f91c7e6-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  GetRequest: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:01 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990d5e351fe0-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  HTTPOptions: &#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990ddb89581d-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;&#xa;  RTSPRequest: &#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;"><elem key="DNSVersionBindReqTCP, RPCCheck">&#xa;    HTTP/1.1 400 Bad Request&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:07 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 155&#xa;    Connection: close&#xa;    CF-RAY: -&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="FourOhFourRequest">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990e4f91c7e6-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="GetRequest">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:01 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990d5e351fe0-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="HTTPOptions">&#xa;    HTTP/1.1 403 Forbidden&#xa;    Server: cloudflare&#xa;    Date: Thu, 30 Jan 2020 12:55:02 GMT&#xa;    Content-Type: text/html&#xa;    Content-Length: 151&#xa;    Connection: close&#xa;    CF-RAY: 55d3990ddb89581d-DFW&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+<elem key="RTSPRequest">&#xa;    &lt;html&gt;&#xa;    &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;&#xa;    &lt;body&gt;&#xa;    &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;&#xa;    &lt;hr&gt;&lt;center&gt;cloudflare&lt;/center&gt;&#xa;    &lt;/body&gt;&#xa;    &lt;/html&gt;</elem>
+</script><script id="http-server-header" output="cloudflare"><elem>cloudflare</elem>
+</script><script id="http-title" output="403 Forbidden"><elem key="title">403 Forbidden</elem>
+</script><script id="ssl-cert" output="Subject: commonName=ssl508858.cloudflaressl.com&#xa;Subject Alternative Name: DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com&#xa;Not valid before: 2019-08-23T00:00:00&#xa;Not valid after:  2020-02-29T23:59:59"><table key="subject">
+<elem key="organizationalUnitName">PositiveSSL Multi-Domain</elem>
+<elem key="commonName">ssl508858.cloudflaressl.com</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">COMODO ECC Domain Validation Secure Server CA 2</elem>
+<elem key="countryName">GB</elem>
+<elem key="localityName">Salford</elem>
+<elem key="organizationName">COMODO CA Limited</elem>
+<elem key="stateOrProvinceName">Greater Manchester</elem>
+</table>
+<table key="pubkey">
+<elem key="type">ec</elem>
+<elem key="bits">256</elem>
+<table key="ecdhparams">
+<table key="curve_params">
+<elem key="ec_curve_type">namedcurve</elem>
+<elem key="curve">prime256v1</elem>
+</table>
+</table>
+</table>
+<table key="extensions">
+<table>
+<elem key="value">keyid:40:09:61:67:F0:BC:83:71:4F:DE:12:08:2C:6F:D4:D4:2B:76:3D:96&#xa;</elem>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+</table>
+<table>
+<elem key="value">76:9A:3B:22:CD:3A:18:5E:42:54:06:0B:5F:71:47:4C:23:60:FD:27</elem>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">Digital Signature</elem>
+<elem key="name">X509v3 Key Usage</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">CA:FALSE</elem>
+<elem key="name">X509v3 Basic Constraints</elem>
+</table>
+<table>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+<elem key="name">X509v3 Extended Key Usage</elem>
+</table>
+<table>
+<elem key="value">Policy: 1.3.6.1.4.1.6449.1.2.2.7&#xa;  CPS: https://secure.comodo.com/CPS&#xa;Policy: 2.23.140.1.2.1&#xa;</elem>
+<elem key="name">X509v3 Certificate Policies</elem>
+</table>
+<table>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl.comodoca4.com/COMODOECCDomainValidationSecureServerCA2.crl&#xa;</elem>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+</table>
+<table>
+<elem key="value">CA Issuers - URI:http://crt.comodoca4.com/COMODOECCDomainValidationSecureServerCA2.crt&#xa;OCSP - URI:http://ocsp.comodoca4.com&#xa;</elem>
+<elem key="name">Authority Information Access</elem>
+</table>
+<table>
+<elem key="value">DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com</elem>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+</table>
+<table>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : B2:1E:05:CC:8B:A2:CD:8A:20:4E:87:66:F9:2B:B9:8A:&#xa;                25:20:67:6B:DA:FA:70:E7:B2:49:53:2D:EF:8B:90:5E&#xa;    Timestamp : Aug 23 00:43:05.695 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:5A:DC:AD:83:C8:A0:DF:34:7D:FE:D1:B7:&#xa;                39:76:27:A6:E6:6B:F5:53:39:B3:E3:43:DD:34:08:4F:&#xa;                F8:5E:D6:1D:02:20:64:E4:8D:7C:A3:54:BD:79:C6:DB:&#xa;                7C:37:93:7B:ED:AA:45:99:DE:DB:31:50:D0:58:58:1C:&#xa;                0B:42:5D:34:B9:26&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 5E:A7:73:F9:DF:56:C0:E7:B5:36:48:7D:D0:49:E0:32:&#xa;                7A:91:9A:0C:84:A1:12:12:84:18:75:96:81:71:45:58&#xa;    Timestamp : Aug 23 00:43:05.742 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:5F:84:DA:B8:B2:CF:67:14:56:95:EF:0C:&#xa;                81:34:6C:5B:B0:E6:EE:5C:C8:1D:14:F5:30:E6:B8:66:&#xa;                AA:13:9F:37:02:20:23:9D:25:6E:01:A8:7B:B5:BF:2A:&#xa;                4F:2B:77:EC:08:91:83:95:E1:B4:5F:4E:92:F9:02:C8:&#xa;                79:0F:48:0D:1D:24</elem>
+<elem key="name">CT Precertificate SCTs</elem>
+</table>
+</table>
+<elem key="sig_algo">ecdsa-with-SHA256</elem>
+<table key="validity">
+<elem key="notBefore">2019-08-23T00:00:00</elem>
+<elem key="notAfter">2020-02-29T23:59:59</elem>
+</table>
+<elem key="md5">04ea3d7c1225e12ff3e49637fa9b7356</elem>
+<elem key="sha1">3615874a0ffc73281db2ff7d752f1a308f53cf05</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIFATCCBKegAwIBAgIRAOT8RHpmn2ySf/GbKaINxIgwCgYIKoZIzj0EAwIwgZIx&#xa;CzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNV&#xa;BAcTB1NhbGZvcmQxGjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMTgwNgYDVQQD&#xa;Ey9DT01PRE8gRUNDIERvbWFpbiBWYWxpZGF0aW9uIFNlY3VyZSBTZXJ2ZXIgQ0Eg&#xa;MjAeFw0xOTA4MjMwMDAwMDBaFw0yMDAyMjkyMzU5NTlaMGwxITAfBgNVBAsTGERv&#xa;bWFpbiBDb250cm9sIFZhbGlkYXRlZDEhMB8GA1UECxMYUG9zaXRpdmVTU0wgTXVs&#xa;dGktRG9tYWluMSQwIgYDVQQDExtzc2w1MDg4NTguY2xvdWRmbGFyZXNzbC5jb20w&#xa;WTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQHeLmGdEnQMJLy2lRD5XqecuVgVpHB&#xa;2iT2totE6AcTl/kEaPGU64lTA5c0yFnvPHe18T5E5WfiZ0dhNfoqTXteo4IDATCC&#xa;Av0wHwYDVR0jBBgwFoAUQAlhZ/C8g3FP3hIILG/U1Ct2PZYwHQYDVR0OBBYEFHaa&#xa;OyLNOhheQlQGC19xR0wjYP0nMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAA&#xa;MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBPBgNVHSAESDBGMDoGCysG&#xa;AQQBsjEBAgIHMCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5j&#xa;b20vQ1BTMAgGBmeBDAECATBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3JsLmNv&#xa;bW9kb2NhNC5jb20vQ09NT0RPRUNDRG9tYWluVmFsaWRhdGlvblNlY3VyZVNlcnZl&#xa;ckNBMi5jcmwwgYgGCCsGAQUFBwEBBHwwejBRBggrBgEFBQcwAoZFaHR0cDovL2Ny&#xa;dC5jb21vZG9jYTQuY29tL0NPTU9ET0VDQ0RvbWFpblZhbGlkYXRpb25TZWN1cmVT&#xa;ZXJ2ZXJDQTIuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC5jb21vZG9jYTQu&#xa;Y29tMEQGA1UdEQQ9MDuCG3NzbDUwODg1OC5jbG91ZGZsYXJlc3NsLmNvbYIOKi5i&#xa;dWdjcm93ZC5jb22CDGJ1Z2Nyb3dkLmNvbTCCAQIGCisGAQQB1nkCBAIEgfMEgfAA&#xa;7gB1ALIeBcyLos2KIE6HZvkruYolIGdr2vpw57JJUy3vi5BeAAABbLvtSF8AAAQD&#xa;AEYwRAIgWtytg8ig3zR9/tG3OXYnpuZr9VM5s+ND3TQIT/he1h0CIGTkjXyjVL15&#xa;xtt8N5N77apFmd7bMVDQWFgcC0JdNLkmAHUAXqdz+d9WwOe1Nkh90EngMnqRmgyE&#xa;oRIShBh1loFxRVgAAAFsu+1IjgAABAMARjBEAiBfhNq4ss9nFFaV7wyBNGxbsObu&#xa;XMgdFPUw5rhmqhOfNwIgI50lbgGoe7W/Kk8rd+wIkYOV4bRfTpL5Ash5D0gNHSQw&#xa;CgYIKoZIzj0EAwIDSAAwRQIhAJifYxJMbcdhp+EqIFp+WOIiPIOqVP1P/1uChSOZ&#xa;sRutAiBNIxFziQX6jhXcS0tac9oEXGryGuYZzon08/HiHvtNRg==&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="2020-01-30T12:55:09+00:00; 0s from scanner time."><elem key="date">2020-01-30T12:55:09+00:00</elem>
+<elem key="delta">0.0</elem>
+</script><script id="tls-alpn" output="&#xa;  h2&#xa;  http/1.1"><elem>h2</elem>
+<elem>http/1.1</elem>
+</script><script id="tls-nextprotoneg" output="&#xa;  h2&#xa;  http/1.1"><elem>h2</elem>
+<elem>http/1.1</elem>
+</script></port>
+</ports>
+<times srtt="36310" rttvar="30134" to="156846"/>
+</host>
+<runstats><finished time="1580388910" timestr="Thu Jan 30 06:55:10 2020" elapsed="21.56" summary="Nmap done at Thu Jan 30 06:55:10 2020; 1 IP address (1 host up) scanned in 21.56 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

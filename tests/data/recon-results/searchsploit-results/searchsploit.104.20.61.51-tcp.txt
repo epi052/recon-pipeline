@@ -1,0 +1,6 @@
+[i] SearchSploit's XML mode (without verbose enabled).   To enable: searchsploit -v --xml...
+[i] Reading: '/root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.61.51-tcp.xml'
+
+/root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.61.51-tcp.xml:7: parser error : Premature end of data in tag nmaprun line 5
+
+^

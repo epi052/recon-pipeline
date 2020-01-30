@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
@@ -66,7 +68,11 @@ class TKOSubsScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/tkosubs.{self.target_file}.csv")
+        results_subfolder = Path(self.results_dir) / "tkosubs-results"
+
+        new_path = results_subfolder / "tkosubs.csv"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def program_args(self):
         """ Defines the options/arguments sent to tko-subs after processing.
@@ -74,6 +80,7 @@ class TKOSubsScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         command = [
             tool_paths.get("tko-subs"),
@@ -148,7 +155,11 @@ class SubjackScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/subjack.{self.target_file}.txt")
+        results_subfolder = Path(self.results_dir) / "subjack-results"
+
+        new_path = results_subfolder / "subjack.txt"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def program_args(self):
         """ Defines the options/arguments sent to subjack after processing.
@@ -156,6 +167,7 @@ class SubjackScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         command = [
             tool_paths.get("subjack"),

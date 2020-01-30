@@ -1,4 +1,0 @@
-[i] SearchSploit's XML mode (without verbose enabled).   To enable: searchsploit -v --xml...
-[i] Reading: 'recon-results/nmap-bitdiscovery-results/nmap.104.20.61.51-tcp.xml'
-
-[i] /usr/bin/searchsploit -t cloudflare

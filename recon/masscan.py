@@ -63,8 +63,10 @@ class MasscanScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        new_path = Path(self.results_dir) / self.target_file
-        new_path = new_path.with_name(f"masscan.{self.target_file}.json")
+        results_subfolder = Path(self.results_dir) / "masscan-results"
+
+        new_path = results_subfolder / "masscan.json"
+
         return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
@@ -105,6 +107,8 @@ class MasscanScan(luigi.Task):
             target_file=self.target_file, results_dir=self.results_dir
         )
 
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
                 target_file=self.target_file,
@@ -126,8 +130,12 @@ class MasscanScan(luigi.Task):
             "--ports",
             self.ports,
             "-iL",
-            target_list.path.replace("domains", "ips"),
         ]
+
+        if target_list.path.endswith("domains"):
+            command.append(target_list.path.replace("domains", "ipv4_addresses"))
+        else:
+            command.append(target_list.path.replace("domains", "ip_addresses"))
 
         subprocess.run(command)
 
@@ -171,8 +179,10 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        new_path = Path(self.results_dir) / self.target_file
-        new_path = new_path.with_name(f"masscan.{self.target_file}.parsed.pickle")
+        results_subfolder = Path(self.results_dir) / "masscan-results"
+
+        new_path = results_subfolder / "masscan.parsed.pickle"
+
         return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
@@ -186,6 +196,8 @@ class ParseMasscanOutput(luigi.Task):
             # return on exception; no output file created; pipeline should start again from
             # this task if restarted because we never hit pickle.dump
             return print(e)
+
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         """
         build out ip_dictionary from the loaded JSON

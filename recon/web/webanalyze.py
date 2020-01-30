@@ -77,9 +77,9 @@ class WebanalyzeScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(
-            f"{self.results_dir}/webanalyze-{self.target_file}-results"
-        )
+        results_subfolder = Path(self.results_dir) / "webanalyze-results"
+
+        return luigi.LocalTarget(results_subfolder.resolve())
 
     def _wrapped_subprocess(self, cmd):
         with open(

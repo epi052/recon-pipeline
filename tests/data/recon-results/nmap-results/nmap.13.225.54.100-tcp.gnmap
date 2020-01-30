@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.13.225.54.100-tcp 13.225.54.100
+Host: 13.225.54.100 ()	Status: Up
+Host: 13.225.54.100 ()	Ports: 443/open/tcp//ssl|https//CloudFront/
+# Nmap done at Thu Jan 30 06:56:34 2020 -- 1 IP address (1 host up) scanned in 105.64 seconds

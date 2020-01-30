@@ -1,0 +1,11 @@
+# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.52.9.23.177-tcp 52.9.23.177
+Nmap scan report for 52.9.23.177
+Host is up (0.042s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Did not follow redirect to https://52.9.23.177/
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Jan 30 06:54:57 2020 -- 1 IP address (1 host up) scanned in 8.85 seconds

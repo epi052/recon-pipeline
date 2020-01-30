@@ -53,13 +53,15 @@ class AmassScan(ExternalProgramTask):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is amass.TARGET_FILE.json.
+        Naming convention for the output file is amass.json.
 
         Returns:
             luigi.local_target.LocalTarget
         """
-        new_path = Path(self.results_dir) / self.target_file
-        new_path = new_path.with_name(f"amass.{self.target_file}.json")
+        results_subfolder = Path(self.results_dir) / "amass-results"
+
+        new_path = results_subfolder / "amass.json"
+
         return luigi.LocalTarget(new_path.resolve())
 
     def program_args(self):
@@ -68,6 +70,8 @@ class AmassScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         if not self.input().path.endswith("domains"):
             return f"touch {self.output().path}".split()
@@ -131,22 +135,16 @@ class ParseAmassOutput(luigi.Task):
         Returns:
             dict(str: luigi.local_target.LocalTarget)
         """
+        results_subfolder = Path(self.results_dir) / "target-results"
+
+        ips = (results_subfolder / "ipv4_addresses").resolve()
+        ip6s = ips.with_name("ipv6_addresses").resolve()
+        subdomains = ips.with_name("subdomains").resolve()
+
         return {
-            "target-ips": luigi.LocalTarget(
-                (Path(self.results_dir) / self.target_file)
-                .with_suffix(".ips")
-                .resolve()
-            ),
-            "target-ip6s": luigi.LocalTarget(
-                (Path(self.results_dir) / self.target_file)
-                .with_suffix(".ip6s")
-                .resolve()
-            ),
-            "target-subdomains": luigi.LocalTarget(
-                (Path(self.results_dir) / self.target_file)
-                .with_suffix(".subdomains")
-                .resolve()
-            ),
+            "target-ips": luigi.LocalTarget(ips),
+            "target-ip6s": luigi.LocalTarget(ip6s),
+            "target-subdomains": luigi.LocalTarget(subdomains),
         }
 
     def run(self):
@@ -172,6 +170,10 @@ class ParseAmassOutput(luigi.Task):
         unique_ips = set()
         unique_ip6s = set()
         unique_subs = set()
+
+        Path(self.output().get("target-ips").path).parent.mkdir(
+            parents=True, exist_ok=True
+        )
 
         amass_json = self.input().open()
         ip_file = self.output().get("target-ips").open("w")

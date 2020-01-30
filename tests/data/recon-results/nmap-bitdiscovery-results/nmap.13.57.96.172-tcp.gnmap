@@ -1,4 +1,0 @@
-# Nmap 7.80 scan initiated Sun Jan 26 13:30:15 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80,443 -oA recon-results/nmap-bitdiscovery-results/nmap.13.57.96.172-tcp 13.57.96.172
-Host: 13.57.96.172 ()	Status: Up
-Host: 13.57.96.172 ()	Ports: 80/open/tcp//http//nginx 1.12.1/, 443/open/tcp//ssl|http//nginx 1.12.1/
-# Nmap done at Sun Jan 26 13:30:30 2020 -- 1 IP address (1 host up) scanned in 15.07 seconds
