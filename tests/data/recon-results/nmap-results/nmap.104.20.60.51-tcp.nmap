@@ -1,0 +1,260 @@
+# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,443 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.60.51-tcp 104.20.60.51
+Nmap scan report for 104.20.60.51
+Host is up (0.036s latency).
+
+PORT     STATE SERVICE       VERSION
+443/tcp  open  ssl/https     cloudflare
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:02 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990e1dc8e01b-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   GetRequest: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:01 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990d4869ecc7-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   HTTPOptions: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:02 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990dc88eec86-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   RPCCheck: 
+|     HTTP/1.1 400 Bad Request
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:07 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     CF-RAY: -
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   RTSPRequest: 
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   tor-versions: 
+|     HTTP/1.1 400 Bad Request
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:02 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     CF-RAY: -
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|_    </html>
+|_http-server-header: cloudflare
+|_http-title: 403 Forbidden
+| ssl-cert: Subject: commonName=ssl508858.cloudflaressl.com
+| Subject Alternative Name: DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com
+| Not valid before: 2019-08-23T00:00:00
+|_Not valid after:  2020-02-29T23:59:59
+|_ssl-date: 2020-01-30T12:55:09+00:00; 0s from scanner time.
+| tls-alpn: 
+|   h2
+|_  http/1.1
+| tls-nextprotoneg: 
+|   h2
+|_  http/1.1
+8443/tcp open  ssl/https-alt cloudflare
+| fingerprint-strings: 
+|   DNSVersionBindReqTCP, RPCCheck: 
+|     HTTP/1.1 400 Bad Request
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:07 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     CF-RAY: -
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   FourOhFourRequest: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:02 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990e4f91c7e6-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   GetRequest: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:01 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990d5e351fe0-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   HTTPOptions: 
+|     HTTP/1.1 403 Forbidden
+|     Server: cloudflare
+|     Date: Thu, 30 Jan 2020 12:55:02 GMT
+|     Content-Type: text/html
+|     Content-Length: 151
+|     Connection: close
+|     CF-RAY: 55d3990ddb89581d-DFW
+|     <html>
+|     <head><title>403 Forbidden</title></head>
+|     <body>
+|     <center><h1>403 Forbidden</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   RTSPRequest: 
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|_    </html>
+|_http-server-header: cloudflare
+|_http-title: 403 Forbidden
+| ssl-cert: Subject: commonName=ssl508858.cloudflaressl.com
+| Subject Alternative Name: DNS:ssl508858.cloudflaressl.com, DNS:*.bugcrowd.com, DNS:bugcrowd.com
+| Not valid before: 2019-08-23T00:00:00
+|_Not valid after:  2020-02-29T23:59:59
+|_ssl-date: 2020-01-30T12:55:09+00:00; 0s from scanner time.
+| tls-alpn: 
+|   h2
+|_  http/1.1
+| tls-nextprotoneg: 
+|   h2
+|_  http/1.1
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port443-TCP:V=7.80%T=SSL%I=7%D=1/30%Time=5E32D226%P=x86_64-pc-linux-gnu
+SF:%r(GetRequest,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudfla
+SF:re\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:01\x20GMT\r\nContent-
+SF:Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r\
+SF:nCF-RAY:\x2055d3990d4869ecc7-DFW\r\n\r\n<html>\r\n<head><title>403\x20F
+SF:orbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbidden</h1><
+SF:/center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n")
+SF:%r(HTTPOptions,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudfl
+SF:are\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nContent
+SF:-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r
+SF:\nCF-RAY:\x2055d3990dc88eec86-DFW\r\n\r\n<html>\r\n<head><title>403\x20
+SF:Forbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbidden</h1>
+SF:</center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n"
+SF:)%r(FourOhFourRequest,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20
+SF:cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\n
+SF:Content-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20
+SF:close\r\nCF-RAY:\x2055d3990e1dc8e01b-DFW\r\n\r\n<html>\r\n<head><title>
+SF:403\x20Forbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbidd
+SF:en</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</htm
+SF:l>\r\n")%r(tor-versions,13C,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nServ
+SF:er:\x20cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20
+SF:GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnecti
+SF:on:\x20close\r\nCF-RAY:\x20-\r\n\r\n<html>\r\n<head><title>400\x20Bad\x
+SF:20Request</title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request
+SF:</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>
+SF:\r\n")%r(RTSPRequest,9B,"<html>\r\n<head><title>400\x20Bad\x20Request</
+SF:title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request</h1></cent
+SF:er>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n")%r(RP
+SF:CCheck,13C,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudflare
+SF:\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nContent-Ty
+SF:pe:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nC
+SF:F-RAY:\x20-\r\n\r\n<html>\r\n<head><title>400\x20Bad\x20Request</title>
+SF:</head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request</h1></center>\r\
+SF:n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n");
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port8443-TCP:V=7.80%T=SSL%I=7%D=1/30%Time=5E32D226%P=x86_64-pc-linux-gn
+SF:u%r(GetRequest,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudfl
+SF:are\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:01\x20GMT\r\nContent
+SF:-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\r
+SF:\nCF-RAY:\x2055d3990d5e351fe0-DFW\r\n\r\n<html>\r\n<head><title>403\x20
+SF:Forbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbidden</h1>
+SF:</center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n"
+SF:)%r(HTTPOptions,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x20cloudf
+SF:lare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\nConten
+SF:t-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x20close\
+SF:r\nCF-RAY:\x2055d3990ddb89581d-DFW\r\n\r\n<html>\r\n<head><title>403\x2
+SF:0Forbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbidden</h1
+SF:></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n
+SF:")%r(FourOhFourRequest,149,"HTTP/1\.1\x20403\x20Forbidden\r\nServer:\x2
+SF:0cloudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:02\x20GMT\r\
+SF:nContent-Type:\x20text/html\r\nContent-Length:\x20151\r\nConnection:\x2
+SF:0close\r\nCF-RAY:\x2055d3990e4f91c7e6-DFW\r\n\r\n<html>\r\n<head><title
+SF:>403\x20Forbidden</title></head>\r\n<body>\r\n<center><h1>403\x20Forbid
+SF:den</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</ht
+SF:ml>\r\n")%r(RTSPRequest,9B,"<html>\r\n<head><title>400\x20Bad\x20Reques
+SF:t</title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request</h1></c
+SF:enter>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n")%r
+SF:(RPCCheck,13C,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20cloudfl
+SF:are\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nContent
+SF:-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r
+SF:\nCF-RAY:\x20-\r\n\r\n<html>\r\n<head><title>400\x20Bad\x20Request</tit
+SF:le></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request</h1></center>
+SF:\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n")%r(DNSVe
+SF:rsionBindReqTCP,13C,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nServer:\x20c
+SF:loudflare\r\nDate:\x20Thu,\x2030\x20Jan\x202020\x2012:55:07\x20GMT\r\nC
+SF:ontent-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20c
+SF:lose\r\nCF-RAY:\x20-\r\n\r\n<html>\r\n<head><title>400\x20Bad\x20Reques
+SF:t</title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Request</h1></c
+SF:enter>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Jan 30 06:55:10 2020 -- 1 IP address (1 host up) scanned in 21.56 seconds

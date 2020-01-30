@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Aquatone Report">
+  <meta name="author" content="Michael Henriksen (https://twiter.com/michenriksen)">
+  <meta name="generator" content="Aquatone v1.7.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Aquatone Report</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/visjs-network@4.24.7/dist/vis.min.css"
+    integrity="sha384-hv6STAGuk4qTwmryFbZZTn3QrGRyZW1soC9K/Dy68zs8subBFOU69tg/GGZfkIBb" crossorigin="anonymous">
+  <style type="text/css">
+    footer {
+      border-top: 1px solid rgba(0, 0, 0, .125);
+      margin-top: 50px;
+      padding: 50px;
+      text-align: center;
+      font-size: 12px;
+      color: rgb(68, 68, 68);
+    }
+
+    footer a {
+      color: inherit !important;
+      text-decoration: underline;
+    }
+
+    .carousel {
+      margin-bottom: 50px;
+    }
+
+    .carousel-item {
+      color: #383d41;
+      text-align: center;
+    }
+
+    .carousel-item .page-card {
+      width: 300px;
+      text-align: left;
+      margin: 25px 10px 55px 10px;
+      display: inline-block;
+    }
+
+    .single-page-container .page-card,
+    .single-page-container .page-headers-table {
+      margin: 0px 0px 50px 0px;
+    }
+
+    .page-screenshot-container {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .page-screenshot {
+      transition: transform .5s ease-out;
+      cursor: zoom-in;
+      width: 100%;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 5%;
+    }
+
+    .carousel-control-prev-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%236c757d' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
+    }
+
+    .carousel-control-next-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%236c757d' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
+    }
+
+    .carousel-indicators li {
+      background-color: #6c757d;
+    }
+
+    .badge {
+      margin-right: 5px;
+    }
+
+    .page-headers-table {
+      width: 100%;
+    }
+
+    .page-headers-table td {
+      font-family: Anonymous Pro, Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    }
+
+    .page-headers-table td.header-value {
+      word-break: break-all;
+    }
+
+    .single-page-container {
+      border-bottom: 1px solid rgba(0, 0, 0, .125);
+      margin-bottom: 50px;
+    }
+
+    .graph-container {
+      position: relative;
+      width: 100%;
+      height: 700px;
+      margin-top: 20px;
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .graph {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .graph-loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: #ffffff;
+      text-align: center;
+      padding-top: 25%;
+    }
+
+    .graph-loading-overlay .progress {
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+      height: 35px;
+    }
+
+    .show-more-button {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    #screenshotModal .page-screenshot {
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">AQUATONE</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu"
+      aria-controls="#navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Pages
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="#/pages/by-similarity">By Similarity</a>
+            <a class="dropdown-item" href="#/pages/by-hosts">By Hosts</a>
+            <a class="dropdown-item" href="#/pages/single">Single Pages</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#/pages/graph">Graph</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main role="main" class="container" id="app">
+    <router-view></router-view>
+  </main>
+
+  <footer id="footer">
+    <p class="text-muted">AQUATONE v1.7.0 &middot; made with <span
+        style="color:red;font-weight:bold">&#65533;</span> by <a href="https://michenriksen.com" target="_blank">Michael
+        Henriksen</a></p>
+    <p><a href="https://www.buymeacoffee.com/michenriksen" target="_blank"><img
+          src="data:image/png;base64,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"
+          alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;"></a></p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/underscore@1.9.1/underscore-min.js"
+    integrity="sha384-5DWzr9S4agqS3WKvPrhFKJagpYyHOBsf3/DxuDKORyqCv2sYer9c/ExdhPOL8CGh"
+    crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"
+    integrity="sha384-8t+aLluUVnn5SPPG/NbeZCH6TWIvaXIm/gDbutRvtEeElzxxWaZN+G/ZIEdI/f+y"
+    crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@3.0.6/dist/vue-router.min.js"
+    integrity="sha384-eNSGvYAboU/sfO4dGv1q8C58mrNJs93uBoyn/VQ5S8+KB/XqmiocEDAkgdaCGOMT"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/visjs-network@4.24.7/dist/vis.min.js"
+    integrity="sha384-oakKFXWtujbJX7wGZH2I3z1MXq8kc0RqfMnyFBYctBBM/1G5r9ZpLG7ese6fTdu4"
+    crossorigin="anonymous"></script>
+
+  <script type="text/x-template" id="pageCarouselTemplate">
+      <div class="page-similarity-cluster carousel slide" :id="'carousel_' + id" data-interval="false">
+        <ol class="carousel-indicators">
+          <li :data-target="'#carousel_' + id" v-for="(pageGroup, index) in pagesInGroups" :data-slide-to="index" :class="{ 'active': index === 0 }"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item" v-for="(pageGroup, index) in pagesInGroups" :class="{ 'active': index === 0 }">
+            <page-card v-for="page in pageGroup" v-bind:page="page" v-bind:key="page.uuid"></page-card>
+          </div>
+
+          <a class="carousel-control-prev" :href="'#carousel_' + id" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" :href="'#carousel_' + id" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        <hr />
+    </div>
+  </script>
+
+  <script type="text/x-template" id="PageCardTemplate">
+    <div class="card page-card">
+      <div class="card-header text-truncate" :title="page.url">
+        ${ page.url }
+      </div>
+      <div class="page-screenshot-container" v-on:mouseover="zoomScreenshot" v-on:mouseout="unzoomScreenshot" v-on:mousemove="alignZoomWithCursor">
+        <img v-if="page.hasScreenshot" :src="page.screenshotPath" class="card-img page-screenshot" :alt="page.url" v-on:click="openScreenshotModal" />
+        <img v-else src="data:image/png;base64,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" class="card-img page-screenshot page-no-screenshot" />
+      </div>
+      <div class="card-body">
+        <h5 class="card-title" v-if="page.pageTitle">${ page.pageTitle }</h5>
+        <h5 class="card-title" v-else><em>No title</em></h5>
+        <p class="card-text">
+          <span :class="'badge badge-pill text-break text-wrap ' + badgeClassForStatus()">${ page.status }</span><a v-for="tag in page.tags" :href="tag.link" target="_blank" class="badge badge-pill text-break" :class="'badge-' + tag.type">${ tag.text }</a>
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="btn btn-outline-primary btn-sm card-link" v-on:click="openDetailsModal">View Details</a> <a class="btn btn-outline-secondary btn-sm card-link float-right" :href="page.url" target="_blank">Visit Page</a>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="pageHeadersTableTemplate">
+    <table class="table table-striped table-hover table-sm page-headers-table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Header</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="header in headers" :class="classForHeader(header)">
+          <td class="header-name">${ header.name }</td>
+          <td class="header-value">${ header.value }</td>
+        </tr>
+      </tbody>
+    </table>
+  </script>
+
+  <script type="text/x-template" id="singlePageTemplate">
+    <div class="row single-page-container">
+        <div class="col-4">
+          <page-card v-bind:page="page"></page-card>
+        </div>
+        <div class="col-8">
+          <page-headers-table v-bind:headers="page.headers"></page-headers-table>
+        </div>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="pagesBySimilarityPageTemplate">
+    <div>
+      <h2 class="display-4 text-center border-bottom pb-3">Pages by Similarity</h2>
+      <div v-if="clusterIndex - 1 < pageSimilarityClusters.length" v-for="clusterIndex in clustersToShow">
+        <page-carousel v-bind:id="pageSimilarityClusters[clusterIndex - 1].uuid" v-bind:pages="pageSimilarityClusters[clusterIndex - 1].pages"
+          v-bind:key="pageSimilarityClusters[clusterIndex - 1].uuid">
+        </page-carousel>
+      </div>
+      <button @click="clustersToShow += 15" :disabled="clustersToShow >= pageSimilarityClusters.length" class="btn btn-primary btn-lg btn-block show-more-button">Show More</button>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="pagesByHostsPageTemplate">
+    <div>
+      <h2 class="display-4 text-center border-bottom pb-3">Pages by Hosts</h2>
+      <div v-if="clusterIndex - 1 < pagesByHosts.length" v-for="clusterIndex in clustersToShow">
+        <page-carousel v-bind:id="pagesByHosts[clusterIndex - 1].id" v-bind:pages="pagesByHosts[clusterIndex - 1].pages"
+          v-bind:key="pagesByHosts[clusterIndex - 1].id">
+        </page-carousel>
+      </div>
+      <button @click="clustersToShow += 15" :disabled="clustersToShow >= pagesByHosts.length" class="btn btn-primary btn-lg btn-block show-more-button">Show More</button>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="singlePagesPageTemplate">
+    <div>
+      <h2 class="display-4 text-center border-bottom pb-3">Pages</h2>
+      <div v-if="pageIndex - 1 < pages.length" v-for="pageIndex in pagesToShow">
+        <single-page v-bind:id="pages[pageIndex - 1].uuid" v-bind:page="pages[pageIndex - 1]" v-bind:key="pages[pageIndex - 1].uuid"></single-page>
+      </div>
+      <button @click="pagesToShow += 15" :disabled="pagesToShow >= pages.length" class="btn btn-primary btn-lg btn-block show-more-button">Show More</button>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="graphPageTemplate">
+    <div class="graph-container">
+      <div class="graph" id="graph"></div>
+      <div class="graph-loading-overlay" id="graphLoadingOverlay">
+        <h3>Loading graph...</h3>
+        <div class="progress">
+          <div class="progress-bar bg-info" id="graphProgress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="2500"></div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/javascript">
+    function parseSession(session) {
+      let data = {
+        version: session.version,
+        stats: session.stats,
+        pages: [],
+        pageSimilarityClusters: []
+      }
+      for (let pageUrl in session.pages) {
+        data.pages.push(session.pages[pageUrl]);
+      }
+      for (let uuid in session.pageSimilarityClusters) {
+        let cluster = {
+          uuid: uuid,
+          pages: []
+        }
+        for (let pageUrl of session.pageSimilarityClusters[uuid]) {
+          cluster.pages.push(session.pages[pageUrl])
+        }
+        data.pageSimilarityClusters.push(cluster);
+      }
+      data.pageSimilarityClusters.sort((a, b) => {
+        return a.pages.length - b.pages.length;
+      });
+      return data;
+    }
+
+    Vue.component('PagesBySimilarityPage', {
+      template: '#pagesBySimilarityPageTemplate',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          clustersToShow: 15
+        }
+      },
+      props: {
+        pageSimilarityClusters: Array
+      }
+    });
+
+    Vue.component('PagesByHostsPage', {
+      template: '#pagesByHostsPageTemplate',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          clustersToShow: 15
+        }
+      },
+      props: {
+        pages: Array
+      },
+      computed: {
+        pagesByHosts() {
+          result = {}
+          for (let page of this.pages) {
+            if (page.hostname in result) {
+              result[page.hostname].pages.push(page);
+            } else {
+              result[page.hostname] = {
+                id: _.uniqueId('host-cluster_'),
+                pages: [page]
+              }
+            }
+          }
+          return _.values(result);
+        }
+      }
+    });
+
+    Vue.component('SinglePagesPage', {
+      template: '#singlePagesPageTemplate',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          pagesToShow: 15
+        }
+      },
+      props: {
+        pages: Array
+      }
+    });
+
+    Vue.component('GraphPage', {
+      template: '#graphPageTemplate',
+      delimiters: ['${', '}'],
+      props: {
+        pages: Array,
+        pageSimilarityClusters: Array
+      },
+      computed: {
+        makeDatasets() {
+          let nodes = {};
+          let edges = [];
+
+          for (let page of this.pages) {
+            pageId = `page_${page.uuid}`;
+            nodes[pageId] = {
+              id: pageId,
+              label: page.url,
+              group: 'page',
+              value: 1
+            };
+
+            if (page.tags) {
+              for (let tag of page.tags) {
+                let tagId = `tag_${tag.hash}`;
+                if (!(tagId in nodes)) {
+                  nodes[tagId] = {
+                    id: tagId,
+                    label: tag.text,
+                    group: 'tag',
+                    value: 1,
+                  };
+                } else {
+                  nodes[tagId].value += 3;
+                }
+                edges.push({
+                  from: pageId, to: tagId
+                });
+              }
+            }
+
+            if (page.addrs) {
+              for (let addr of page.addrs) {
+                let addrId = `addr_${addr}`;
+                if (!(addrId in nodes)) {
+                  nodes[addrId] = {
+                    id: addrId,
+                    label: addr,
+                    group: 'addr',
+                    value: 1
+                  };
+                } else {
+                  nodes[addrId].value += 3
+                }
+                edges.push({
+                  from: pageId, to: addrId
+                });
+              }
+            }
+          }
+
+          for (let cluster of this.pageSimilarityClusters) {
+            if (cluster.pages.length <= 1) {
+              continue;
+            }
+
+            clusterId = `cluster_${cluster.uuid}`;
+            nodes[clusterId] = {
+              id: clusterId,
+              label: 'Similar',
+              group: 'similarity',
+              value: 1 + (cluster.pages.length * 3)
+            };
+
+            for (page of cluster.pages) {
+              edges.push({
+                from: `page_${page.uuid}`, to: clusterId
+              });
+            }
+          }
+
+
+          return [new vis.DataSet(_.values(nodes)), new vis.DataSet(edges)]
+        }
+      },
+      mounted: function () {
+        this.$nextTick(() => {
+          $('#footer').hide();
+          $('#graphLoadingOverlay').show();
+          let datasets = this.makeDatasets;
+          let data = {
+            nodes: datasets[0],
+            edges: datasets[1]
+          }
+          let progress = $('#graphProgress');
+
+          let network = new vis.Network($('#graph')[0], data, {
+            layout: {
+              improvedLayout: false,
+            },
+            nodes: {
+              shape: 'dot',
+            },
+            edges: {
+              color: { inherit: 'to' },
+              smooth: false,
+            },
+            physics: {
+              enabled: false,
+              forceAtlas2Based: {
+                springLength: 230,
+                springConstant: 0.18
+              },
+              maxVelocity: 146,
+              solver: 'forceAtlas2Based',
+              timestep: 0.35,
+              stabilization: {
+                enabled: true,
+                iterations: 2500,
+                updateInterval: 25
+              },
+            },
+            groups: {
+              'page': {
+                color: '#28a745'
+              },
+              'tag': {
+                color: '#007bff'
+              },
+              'addr': {
+                color: '#17a2b8'
+              },
+              'similarity': {
+                color: '#ffc107'
+              }
+            }
+          });
+
+          network.on('stabilizationProgress', (params) => {
+            let percentage = (params.iterations / params.total) * 100;
+            progress.attr('aria-valuenow', params.iterations).css('width', `${percentage}%`);
+          });
+
+          network.once('stabilizationIterationsDone', () => {
+            progress.attr('aria-valuenow', 2500).css('width', '100%');
+            $('#graphLoadingOverlay').hide();
+          });
+
+          network.stabilize(2500);
+        });
+      },
+      destroyed: function () {
+        this.$nextTick(() => {
+          $('#footer').show();
+        });
+      }
+    });
+
+    Vue.component('NotFoundPage', {
+      template: "<h1>Ooops. Don't know where that is.</h1>"
+    });
+
+    Vue.component('page-carousel', {
+      template: '#pageCarouselTemplate',
+      delimiters: ['${', '}'],
+      props: {
+        id: String,
+        pages: Array,
+      },
+      computed: {
+        pagesInGroups() {
+          return _.chunk(this.pages, 3);
+        }
+      }
+    });
+
+    Vue.component('page-card', {
+      template: '#PageCardTemplate',
+      delimiters: ['${', '}'],
+      props: {
+        page: Object
+      },
+      methods: {
+        badgeClassForStatus() {
+          let statusCode = parseInt(/^(\d+)\s/.exec(this.page.status)[0]);
+          if (statusCode > 499) {
+            return 'badge-danger';
+          } else if (statusCode > 399) {
+            return 'badge-warning';
+          } else if (statusCode > 299) {
+            return 'badge-info';
+          } else if (statusCode > 199) {
+            return 'badge-success';
+          } else {
+            return 'badge-secondary';
+          }
+        },
+        zoomScreenshot(event) {
+          $(event.target).css({ 'transform': 'scale(2)' });
+        },
+        unzoomScreenshot(event) {
+          $(event.target).css({ 'transform': 'scale(1)' });
+        },
+        alignZoomWithCursor(event) {
+          let container = $(event.target).closest('.page-screenshot-container');
+          $(event.target).css({ 'transform-origin': ((event.pageX - container.offset().left) / container.width()) * 100 + '% ' + ((event.pageY - container.offset().top) / container.height()) * 100 + '%' });
+        },
+        openScreenshotModal(event) {
+          event.preventDefault();
+          let modalTemplate = $("#screenshotModal");
+          modalTemplate.find('.modal-title').text(this.page.url);
+          modalTemplate.find('.screenshot-link').attr('href', this.page.screenshotPath);
+          modalTemplate.find('.page-screenshot').attr('src', this.page.screenshotPath).attr('alt', this.page.url);
+          modalTemplate.modal('show');
+        },
+        openDetailsModal(event) {
+          event.preventDefault();
+          let modalTemplate = $("#detailsModal");
+          let res = Vue.compile('<page-headers-table v-bind:headers="headers"></page-headers-table>');
+          new Vue({
+            data: {
+              headers: this.page.headers
+            },
+            render: res.render,
+            staticRenderFns: res.staticRenderFns
+          }).$mount('#detailsModal .page-headers-table');
+          modalTemplate.find('.modal-title').text(this.page.url);
+          modalTemplate.find('.visit-page-button').attr('href', this.page.url);
+          modalTemplate.find('.view-raw-headers-button').attr('href', this.page.headersPath);
+          modalTemplate.find('.view-raw-response-button').attr('href', this.page.bodyPath);
+          modalTemplate.modal('show');
+        }
+      }
+    });
+
+    Vue.component('page-headers-table', {
+      template: '#pageHeadersTableTemplate',
+      delimiters: ['${', '}'],
+      props: {
+        headers: Array
+      },
+      methods: {
+        classForHeader(header) {
+          if (header.increasesSecurity) {
+            return 'table-success';
+          } else if (header.decreasesSecurity) {
+            return 'table-warning';
+          }
+          return '';
+        }
+      }
+    });
+
+    Vue.component('single-page', {
+      template: '#singlePageTemplate',
+      delimiters: ['${', '}'],
+      props: {
+        page: Object
+      }
+    })
+
+    const session = {"version":"1.7.0","stats":{"startedAt":"2020-01-30T06:52:50.200521364-06:00","finishedAt":"0001-01-01T00:00:00Z","portOpen":42,"portClosed":83,"requestSuccessful":35,"requestFailed":7,"responseCode2xx":21,"responseCode3xx":0,"responseCode4xx":14,"responseCode5xx":0,"screenshotSuccessful":34,"screenshotFailed":1},"pages":{"http://104.20.60.51/":{"uuid":"14339640-ddbe-48f4-b216-e20e4f8c6862","url":"http://104.20.60.51/","hostname":"104.20.60.51","addrs":["104.20.60.51"],"status":"403 Forbidden","pageTitle":"","headersPath":"headers/http__104_20_60_51__42099b4af021e53f.txt","bodyPath":"html/http__104_20_60_51__42099b4af021e53f.html","screenshotPath":"screenshots/http__104_20_60_51__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Cf-Ray","value":"55d395da29c89b00-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/plain; charset=UTF-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cache-Control","value":"max-age=15","decreasesSecurity":false,"increasesSecurity":false},{"name":"Expires","value":"Thu, 30 Jan 2020 12:53:05 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=d14c6b3baccd1c79d90b8644153234cab1580388770; expires=Sat, 29-Feb-20 12:52:50 GMT; path=/; domain=.104.20.60.51; HttpOnly; SameSite=Lax","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://104.20.60.51:8080/":{"uuid":"6969940d-a1df-4412-ae5c-8fe26dc58436","url":"http://104.20.60.51:8080/","hostname":"104.20.60.51","addrs":["104.20.60.51"],"status":"403 Forbidden","pageTitle":"","headersPath":"headers/http__104_20_60_51__8080__42099b4af021e53f.txt","bodyPath":"html/http__104_20_60_51__8080__42099b4af021e53f.html","screenshotPath":"screenshots/http__104_20_60_51__8080__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=d00afdb739bc334f30bdce5225c5fbf2a1580388794; expires=Sat, 29-Feb-20 12:53:14 GMT; path=/; domain=.104.20.60.51; HttpOnly; SameSite=Lax","decreasesSecurity":false,"increasesSecurity":false},{"name":"Expires","value":"Thu, 30 Jan 2020 12:53:29 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d396708d6a9b66-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:53:14 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/plain; charset=UTF-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cache-Control","value":"max-age=15","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://104.20.61.51/":{"uuid":"e91d91d1-8509-4b62-8a5a-19e9060f0713","url":"http://104.20.61.51/","hostname":"104.20.61.51","addrs":["104.20.61.51"],"status":"403 Forbidden","pageTitle":"","headersPath":"headers/http__104_20_61_51__42099b4af021e53f.txt","bodyPath":"html/http__104_20_61_51__42099b4af021e53f.html","screenshotPath":"screenshots/http__104_20_61_51__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Cf-Ray","value":"55d395d7d89e9b6d-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cache-Control","value":"max-age=15","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/plain; charset=UTF-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=db2663a878a1015ad706caecc506caa6e1580388770; expires=Sat, 29-Feb-20 12:52:50 GMT; path=/; domain=.104.20.61.51; HttpOnly; SameSite=Lax","decreasesSecurity":false,"increasesSecurity":false},{"name":"Expires","value":"Thu, 30 Jan 2020 12:53:05 GMT","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://104.20.61.51:8080/":{"uuid":"43e43898-66a1-4f71-a3ea-566c2a25655c","url":"http://104.20.61.51:8080/","hostname":"104.20.61.51","addrs":["104.20.61.51"],"status":"403 Forbidden","pageTitle":"","headersPath":"headers/http__104_20_61_51__8080__42099b4af021e53f.txt","bodyPath":"html/http__104_20_61_51__8080__42099b4af021e53f.html","screenshotPath":"screenshots/http__104_20_61_51__8080__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Expires","value":"Thu, 30 Jan 2020 12:53:29 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d3966c8d23e037-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cache-Control","value":"max-age=15","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=df62cf2ddf06fcad8d69f0c66659e9ad41580388794; expires=Sat, 29-Feb-20 12:53:14 GMT; path=/; domain=.104.20.61.51; HttpOnly; SameSite=Lax","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:53:14 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/plain; charset=UTF-8","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://13.225.54.100/":{"uuid":"eb62ec2a-d781-46ae-a923-fca3c212d212","url":"http://13.225.54.100/","hostname":"13.225.54.100","addrs":["13.225.54.100"],"status":"403 Forbidden","pageTitle":"ERROR: The request could not be satisfied","headersPath":"headers/http__13_225_54_100__42099b4af021e53f.txt","bodyPath":"html/http__13_225_54_100__42099b4af021e53f.html","screenshotPath":"screenshots/http__13_225_54_100__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 352640e22fb9eaa800f19cb44307f5a5.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW50-C1","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Id","value":"CJywtobNprytTsObsL5aYgvX63VJBp2huOouDKa67X5WeD8M7P86Fg==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"CloudFront","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Length","value":"915","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Cache","value":"Error from cloudfront","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"}],"notes":null},"http://13.225.54.22/":{"uuid":"e6001f5c-1684-4da0-87c7-741cacee1997","url":"http://13.225.54.22/","hostname":"13.225.54.22","addrs":["13.225.54.22"],"status":"403 Forbidden","pageTitle":"ERROR: The request could not be satisfied","headersPath":"headers/http__13_225_54_22__42099b4af021e53f.txt","bodyPath":"html/http__13_225_54_22__42099b4af021e53f.html","screenshotPath":"screenshots/http__13_225_54_22__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"X-Amz-Cf-Id","value":"-xOcu_8pI1-7e-Csdxnud7wF8PONg2oAUSK91syAHyiZchM1Tmplag==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"CloudFront","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"915","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW50-C1","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Cache","value":"Error from cloudfront","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 e21716effd81f9f72ae5593fe9fe54a0.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"}],"notes":null},"http://13.225.54.41/":{"uuid":"66308763-f138-4d73-bb5d-75e4d4464dd0","url":"http://13.225.54.41/","hostname":"13.225.54.41","addrs":["13.225.54.41"],"status":"403 Forbidden","pageTitle":"ERROR: The request could not be satisfied","headersPath":"headers/http__13_225_54_41__42099b4af021e53f.txt","bodyPath":"html/http__13_225_54_41__42099b4af021e53f.html","screenshotPath":"screenshots/http__13_225_54_41__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Server","value":"CloudFront","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"915","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Cache","value":"Error from cloudfront","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 72c5987cf6b5170991873937a6e36b80.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Id","value":"9UkQcHRfCNcH1pfvhSE7FDGCukT9YYhOuncVa89dNUfwqseLnS05jg==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW50-C1","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"}],"notes":null},"http://13.225.54.58/":{"uuid":"a805084e-8cb2-4cdb-b96e-8ffdb74ce2a8","url":"http://13.225.54.58/","hostname":"13.225.54.58","addrs":["13.225.54.58"],"status":"403 Forbidden","pageTitle":"ERROR: The request could not be satisfied","headersPath":"headers/http__13_225_54_58__42099b4af021e53f.txt","bodyPath":"html/http__13_225_54_58__42099b4af021e53f.html","screenshotPath":"screenshots/http__13_225_54_58__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Length","value":"915","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 f69bec5206ff49623be64199d8902921.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW50-C1","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"CloudFront","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Cache","value":"Error from cloudfront","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Id","value":"nPLTLIpJUp_NKRKRKvHuaxC3OvSVusVNDKF97iRIxACgeWJuu3f4_w==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"}],"notes":null},"http://13.57.162.100/":{"uuid":"b17acd1d-afd4-449d-b970-bc9a1900f935","url":"http://13.57.162.100/","hostname":"13.57.162.100","addrs":["13.57.162.100"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__13_57_162_100__42099b4af021e53f.txt","bodyPath":"html/http__13_57_162_100__42099b4af021e53f.html","screenshotPath":"screenshots/http__13_57_162_100__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3ACE4sYwUvG9fBBal0Ud-mp35YuejVagNj.VcA4FtYY05sXbWrrnAtvLnZ7WsHiRS5sByXtQGBT3%2B4; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://52.53.92.161/":{"uuid":"79e7d0ea-0bdb-4669-b868-ffb094ec5d58","url":"http://52.53.92.161/","hostname":"52.53.92.161","addrs":["52.53.92.161"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__52_53_92_161__42099b4af021e53f.txt","bodyPath":"html/http__52_53_92_161__42099b4af021e53f.html","screenshotPath":"screenshots/http__52_53_92_161__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3AR0wSShSDItlj4pSEG8bn9V3sDs1u2ykG.zVdUwOhyGePqaOaDO9wotUpC4M6orzAGna9i%2FVNqVn0; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://52.9.23.177/":{"uuid":"d7a2391c-8101-4255-aef0-7becccc8e7a0","url":"http://52.9.23.177/","hostname":"52.9.23.177","addrs":["52.9.23.177"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__52_9_23_177__42099b4af021e53f.txt","bodyPath":"html/http__52_9_23_177__42099b4af021e53f.html","screenshotPath":"screenshots/http__52_9_23_177__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3AaucVLezKKP7aSHdiTuIpbYR7SOt_37do.B90p3nel1BvebCtsAQY0rYmUD5iP%2Byi%2FEzQUyDAYxKU; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://54.183.32.157/":{"uuid":"42433754-80fc-451f-ada4-7c220b173a57","url":"http://54.183.32.157/","hostname":"54.183.32.157","addrs":["54.183.32.157"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__54_183_32_157__42099b4af021e53f.txt","bodyPath":"html/http__54_183_32_157__42099b4af021e53f.html","screenshotPath":"screenshots/http__54_183_32_157__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3AkRMpS5rWgydPNOFHNnpO-d6y2cYpXQs8.KbUMKoT3E1UFUTh3c1gyQ14QJIUM2FerWOL%2FZoMSsGU; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://assetinventory.bugcrowd.com/":{"uuid":"b9112f62-1628-4e8f-ab6f-9e6543c3f0bf","url":"http://assetinventory.bugcrowd.com/","hostname":"assetinventory.bugcrowd.com","addrs":["104.20.60.51","104.20.61.51","2606:4700:10::6814:3d33","2606:4700:10::6814:3c33"],"status":"200 OK","pageTitle":"bugcrowd - Asset Inventory","headersPath":"headers/http__assetinventory_bugcrowd_com__42099b4af021e53f.txt","bodyPath":"html/http__assetinventory_bugcrowd_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__assetinventory_bugcrowd_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains; preload","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"98b-DxNKqNImao/Lh9fDc6XPux2goAI\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3A1-7W_IkU4og6MdJxbo5KO8U6nihVjbPt.%2BimEHMrrskOji%2F5v06yucbAyTBQjxDA1I9xZ3JsP1KQ; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Cache-Status","value":"DYNAMIC","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Expect-Ct","value":"max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395d8eb5cec82-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://bitdiscovery.com/":{"uuid":"d86d8ca1-b72b-4ea3-93a9-00cd014f6c72","url":"http://bitdiscovery.com/","hostname":"bitdiscovery.com","addrs":["54.183.32.157","52.53.92.161"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/http__bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3AU2QJG8DwxzthPOts0o3j6YMvaSU40th2.VVu865bLvxo%2FrpcW0Ppt9AoE0y5leWNRZrH5cH81nrk; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://blog.bitdiscovery.com/":{"uuid":"0224935f-5a6c-453d-bc6f-335f0ff09315","url":"http://blog.bitdiscovery.com/","hostname":"blog.bitdiscovery.com","addrs":["143.204.160.113","143.204.160.80","143.204.160.86","143.204.160.47"],"status":"200 OK","pageTitle":"Bit Discovery Blog -","headersPath":"headers/http__blog_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/http__blog_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__blog_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Last-Modified","value":"Tue, 07 Jan 2020 23:08:55 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 3c144798feb17858393699d5bea35bec.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Id","value":"JSr5sPuURdveABSfXp1p47Sf_c5dAL1rkeYhkBLF2872xaZWkFV3PQ==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 23 Jan 2020 15:51:21 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"AmazonS3","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Cache","value":"Hit from cloudfront","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW3-C1","decreasesSecurity":false,"increasesSecurity":false},{"name":"Age","value":"59031","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"},{"text":"Amazon S3","type":"info","link":"http://aws.amazon.com/s3/","hash":"901fe2969d6cd303e452f37668e45f094197e007"},{"text":"Google Font API","type":"info","link":"http://google.com/fonts","hash":"eeca1cac1d3c4856be7c3bdf554889341e16c738"},{"text":"WordPress","type":"info","link":"https://wordpress.org","hash":"a52bef2d19c06ff28d27be1ed14383fc8a3ce31d"},{"text":"jQuery","type":"info","link":"https://jquery.com","hash":"61ca870c2763b90da43197f43bf497893e9b1166"},{"text":"jQuery Migrate","type":"info","link":"https://github.com/jquery/jquery-migrate","hash":"8e6409adfb62d2e46014dbcb21585f311899771a"}],"notes":null},"http://email.assetinventory.bugcrowd.com/":{"uuid":"66b4e4f2-c168-4100-90e2-924e59408503","url":"http://email.assetinventory.bugcrowd.com/","hostname":"email.assetinventory.bugcrowd.com","addrs":["104.20.60.51","104.20.61.51","2606:4700:10::6814:3d33","2606:4700:10::6814:3c33"],"status":"200 OK","pageTitle":"","headersPath":"headers/http__email_assetinventory_bugcrowd_com__42099b4af021e53f.txt","bodyPath":"html/http__email_assetinventory_bugcrowd_com__42099b4af021e53f.html","screenshotPath":"","hasScreenshot":false,"headers":[{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"application/octet-stream","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"23","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=d4527bd6adbdf73c4650391cd8daec0171580388770; expires=Sat, 29-Feb-20 12:52:50 GMT; path=/; domain=.bugcrowd.com; HttpOnly; SameSite=Lax","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Cache-Status","value":"DYNAMIC","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395d7aa10ecc7-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"http://ibm.bitdiscovery.com/":{"uuid":"3b2131d1-7b02-463f-b234-36b465b79e63","url":"http://ibm.bitdiscovery.com/","hostname":"ibm.bitdiscovery.com","addrs":["52.53.92.161","54.183.32.157"],"status":"200 OK","pageTitle":"IBM - Asset Inventory","headersPath":"headers/http__ibm_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/http__ibm_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__ibm_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"987-PQVVlfC1QE5MlQyXJXFeaOUJCOU\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3AOvGRFnchK7jEPl9WNJZbXgRy4g-Bi1Zr.H41E2tYE0rdEM7wwKDa7GVhbN7%2BMz5izAAoxAyVvmic; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"2439","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://staging.bitdiscovery.com/":{"uuid":"39acf2fb-d4ea-4683-a96f-8f5494a7681e","url":"http://staging.bitdiscovery.com/","hostname":"staging.bitdiscovery.com","addrs":["13.57.162.100","52.9.23.177"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/http__staging_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/http__staging_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__staging_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Set-Cookie","value":"connect.sid=s%3AMIwP1tXxiW5IIB3gF_tg8UQiSP0vsjAy.ibe1bJViqYaPJ6BToXwKHZaEaj%2BjYvp7fxi4gtkNUYI; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"http://tenable.bitdiscovery.com/":{"uuid":"f049e260-725a-47f6-bc42-b3d934a686b9","url":"http://tenable.bitdiscovery.com/","hostname":"tenable.bitdiscovery.com","addrs":["52.53.92.161","54.183.32.157"],"status":"200 OK","pageTitle":"Tenable - Asset Inventory","headersPath":"headers/http__tenable_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/http__tenable_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/http__tenable_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"984-uCOzKHNJY6hX57hkNMYtX3asDvw\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"2436","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3A_UkfRDLj-4er22abmgolAmyj-T9y5cJV.ahsaXU07lpNSKpeYIhnyc4t6n9YhS38Po%2FbzUie6qsk; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://104.20.60.51/":{"uuid":"8a53a246-b4b1-4c85-a916-d21e8bba8f17","url":"https://104.20.60.51/","hostname":"104.20.60.51","addrs":["104.20.60.51"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__104_20_60_51__42099b4af021e53f.txt","bodyPath":"html/https__104_20_60_51__42099b4af021e53f.html","screenshotPath":"screenshots/https__104_20_60_51__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"553","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395e53a999afa-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:52 GMT","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://104.20.60.51:8443/":{"uuid":"a1b00581-a105-4e01-bb7c-5ca3e2d982b8","url":"https://104.20.60.51:8443/","hostname":"104.20.60.51","addrs":["104.20.60.51"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__104_20_60_51__8443__42099b4af021e53f.txt","bodyPath":"html/https__104_20_60_51__8443__42099b4af021e53f.html","screenshotPath":"screenshots/https__104_20_60_51__8443__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:53:15 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"553","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d39675ceea5883-DFW","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://104.20.61.51/":{"uuid":"212eff3f-2b5e-4d07-8e86-45105610b459","url":"https://104.20.61.51/","hostname":"104.20.61.51","addrs":["104.20.61.51"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__104_20_61_51__42099b4af021e53f.txt","bodyPath":"html/https__104_20_61_51__42099b4af021e53f.html","screenshotPath":"screenshots/https__104_20_61_51__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Length","value":"151","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395e0aea7d27e-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://104.20.61.51:8443/":{"uuid":"250c720f-2cc4-4baf-aa61-e07bd1894d2b","url":"https://104.20.61.51:8443/","hostname":"104.20.61.51","addrs":["104.20.61.51"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__104_20_61_51__8443__42099b4af021e53f.txt","bodyPath":"html/https__104_20_61_51__8443__42099b4af021e53f.html","screenshotPath":"screenshots/https__104_20_61_51__8443__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d3967518401fec-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:53:15 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"151","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://13.57.162.100/":{"uuid":"008e4d4e-3237-4b78-83b2-a6f2b59ca6cb","url":"https://13.57.162.100/","hostname":"13.57.162.100","addrs":["13.57.162.100"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__13_57_162_100__42099b4af021e53f.txt","bodyPath":"html/https__13_57_162_100__42099b4af021e53f.html","screenshotPath":"screenshots/https__13_57_162_100__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Set-Cookie","value":"connect.sid=s%3ANI8ilMOt3ciRZXAHjA9C3eqv1jr4A3Cb.7RHKG1mNUvn%2Fl9GS%2FMlsAuCf630pMwvG2lfUS0M%2BjDs; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://52.53.92.161/":{"uuid":"bc738026-9c81-440d-913a-7b78bee9de2e","url":"https://52.53.92.161/","hostname":"52.53.92.161","addrs":["52.53.92.161"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__52_53_92_161__42099b4af021e53f.txt","bodyPath":"html/https__52_53_92_161__42099b4af021e53f.html","screenshotPath":"screenshots/https__52_53_92_161__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3AtA5DTfHM8jPwRteDQzepgSeHRM52bWHb.DPHJtCyQWRim9sfQmY9YlzKyNQpEclWrL7bt%2B8G6Gss; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:52 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://52.9.23.177/":{"uuid":"108b16c0-184e-43aa-884e-b25b50717531","url":"https://52.9.23.177/","hostname":"52.9.23.177","addrs":["52.9.23.177"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__52_9_23_177__42099b4af021e53f.txt","bodyPath":"html/https__52_9_23_177__42099b4af021e53f.html","screenshotPath":"screenshots/https__52_9_23_177__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3AcIC-bK1KNp8Ek9tdyo6EunQHvrX46WqB.vyi5KrQ%2FMDTq3BnCPRgGoiZG890MgFU0WgZ7OrzBSck; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:53 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://54.183.32.157/":{"uuid":"c0662547-c3de-4f43-98ca-e547af5bcfb1","url":"https://54.183.32.157/","hostname":"54.183.32.157","addrs":["54.183.32.157"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__54_183_32_157__42099b4af021e53f.txt","bodyPath":"html/https__54_183_32_157__42099b4af021e53f.html","screenshotPath":"screenshots/https__54_183_32_157__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Date","value":"Thu, 30 Jan 2020 12:52:52 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3A6NnsmoeFwM8aem9Wpt8ypICFEn55-CCW.9PKi%2FLqLqMRr2IjOn0GZwEY5P5YIgonPLcL3nSA3kcw; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://assetinventory.bugcrowd.com/":{"uuid":"feb377ef-8657-4962-9e8b-448de96f9934","url":"https://assetinventory.bugcrowd.com/","hostname":"assetinventory.bugcrowd.com","addrs":["104.20.60.51","104.20.61.51","2606:4700:10::6814:3d33","2606:4700:10::6814:3c33"],"status":"200 OK","pageTitle":"bugcrowd - Asset Inventory","headersPath":"headers/https__assetinventory_bugcrowd_com__42099b4af021e53f.txt","bodyPath":"html/https__assetinventory_bugcrowd_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__assetinventory_bugcrowd_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Expect-Ct","value":"max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"98b-DxNKqNImao/Lh9fDc6XPux2goAI\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395ddaf7e9b8b-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"__cfduid=df21a9360f8b61f385a0e701fb497db861580388771; expires=Sat, 29-Feb-20 12:52:51 GMT; path=/; domain=.bugcrowd.com; HttpOnly; SameSite=Lax connect.sid=s%3AzOtKS_kdCJgTVEb2BylRcAIZzjPKsdP9.RCbh8I9%2BV8YZwln7sAZSIn%2B95uywEkczhtgMFgwEvDM; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains; preload","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Cache-Status","value":"DYNAMIC","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://bitdiscovery.com/":{"uuid":"5108cca1-0351-4d35-9403-5bd0a35f6407","url":"https://bitdiscovery.com/","hostname":"bitdiscovery.com","addrs":["54.183.32.157","52.53.92.161"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/https__bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3AKAU8YE4ynxaz5b6XCnY5GoFeoXe0-v-s.AEJNoWe5gH83BowZIdV089fRkA7r3feWQLIqoFlOH1U; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:50 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://blog.bitdiscovery.com/":{"uuid":"4162c74a-4db7-4789-accf-e21d79db2afb","url":"https://blog.bitdiscovery.com/","hostname":"blog.bitdiscovery.com","addrs":["143.204.160.113","143.204.160.80","143.204.160.86","143.204.160.47"],"status":"200 OK","pageTitle":"Bit Discovery Blog -","headersPath":"headers/https__blog_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/https__blog_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__blog_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Cache","value":"Hit from cloudfront","decreasesSecurity":false,"increasesSecurity":false},{"name":"Via","value":"1.1 9ecc03b2c7594e8fcc014b8995d49867.cloudfront.net (CloudFront)","decreasesSecurity":false,"increasesSecurity":false},{"name":"Last-Modified","value":"Tue, 07 Jan 2020 23:08:55 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"AmazonS3","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Amz-Cf-Pop","value":"DFW3-C1","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Amz-Cf-Id","value":"SOtOuWuytoUW9p_loGYjd1Yo6TUw7F1Ekj336a09u_rofx58sXt50w==","decreasesSecurity":false,"increasesSecurity":false},{"name":"Age","value":"59033","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 23 Jan 2020 15:51:21 GMT","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Amazon Cloudfront","type":"info","link":"http://aws.amazon.com/cloudfront/","hash":"f1fbd77bc96e18c6434c0f483da45f2d87a552b7"},{"text":"Amazon S3","type":"info","link":"http://aws.amazon.com/s3/","hash":"901fe2969d6cd303e452f37668e45f094197e007"},{"text":"Google Font API","type":"info","link":"http://google.com/fonts","hash":"eeca1cac1d3c4856be7c3bdf554889341e16c738"},{"text":"WordPress","type":"info","link":"https://wordpress.org","hash":"a52bef2d19c06ff28d27be1ed14383fc8a3ce31d"},{"text":"jQuery","type":"info","link":"https://jquery.com","hash":"61ca870c2763b90da43197f43bf497893e9b1166"},{"text":"jQuery Migrate","type":"info","link":"https://github.com/jquery/jquery-migrate","hash":"8e6409adfb62d2e46014dbcb21585f311899771a"}],"notes":null},"https://email.assetinventory.bugcrowd.com/":{"uuid":"93707b34-30c5-4459-bae7-993ac05defe1","url":"https://email.assetinventory.bugcrowd.com/","hostname":"email.assetinventory.bugcrowd.com","addrs":["104.20.60.51","104.20.61.51","2606:4700:10::6814:3d33","2606:4700:10::6814:3c33"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__email_assetinventory_bugcrowd_com__42099b4af021e53f.txt","bodyPath":"html/https__email_assetinventory_bugcrowd_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__email_assetinventory_bugcrowd_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Cf-Ray","value":"55d395dd2d7cec56-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"553","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://email.assetinventory.bugcrowd.com:8443/":{"uuid":"679b0dc7-02ea-483f-9e0a-3a5e6cdea4b6","url":"https://email.assetinventory.bugcrowd.com:8443/","hostname":"email.assetinventory.bugcrowd.com","addrs":["104.20.60.51","104.20.61.51","2606:4700:10::6814:3d33","2606:4700:10::6814:3c33"],"status":"403 Forbidden","pageTitle":"403 Forbidden","headersPath":"headers/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.txt","bodyPath":"html/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.html","screenshotPath":"screenshots/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Cf-Ray","value":"55d396727981d25a-DFW","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"cloudflare","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:53:15 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"553","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"CloudFlare","type":"info","link":"http://www.cloudflare.com","hash":"9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"}],"notes":null},"https://ibm.bitdiscovery.com/":{"uuid":"23a044db-213c-4ea6-a7b7-b9ab5fbaa62d","url":"https://ibm.bitdiscovery.com/","hostname":"ibm.bitdiscovery.com","addrs":["52.53.92.161","54.183.32.157"],"status":"200 OK","pageTitle":"IBM - Asset Inventory","headersPath":"headers/https__ibm_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/https__ibm_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__ibm_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"987-PQVVlfC1QE5MlQyXJXFeaOUJCOU\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Set-Cookie","value":"connect.sid=s%3ArRk1-dbTYunP69jeAiYXIdNQJun9ZBFj.u6G1ow8fgtYJQL3Ah2JuOo3svbf8blo4Gb061uxb7Gs; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Length","value":"2439","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://staging.bitdiscovery.com/":{"uuid":"3b5b1ae7-f055-4223-a15b-3fb26ef3c805","url":"https://staging.bitdiscovery.com/","hostname":"staging.bitdiscovery.com","addrs":["13.57.162.100","52.9.23.177"],"status":"200 OK","pageTitle":"Bit Discovery - Asset Inventory","headersPath":"headers/https__staging_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/https__staging_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__staging_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Server","value":"nginx/1.16.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Content-Length","value":"11332","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"*","decreasesSecurity":true,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3Ar8vnLVUd4y48rA8ENClajkDuuuRir-CO.v80SepQPU0kff1FrFfflCF8tdBOBfIstOa05mXqfp4U; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:51 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE\"","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null},"https://tenable.bitdiscovery.com/":{"uuid":"3f79a26b-013c-429e-9d73-68560282b59d","url":"https://tenable.bitdiscovery.com/","hostname":"tenable.bitdiscovery.com","addrs":["52.53.92.161","54.183.32.157"],"status":"200 OK","pageTitle":"Tenable - Asset Inventory","headersPath":"headers/https__tenable_bitdiscovery_com__42099b4af021e53f.txt","bodyPath":"html/https__tenable_bitdiscovery_com__42099b4af021e53f.html","screenshotPath":"screenshots/https__tenable_bitdiscovery_com__42099b4af021e53f.png","hasScreenshot":true,"headers":[{"name":"Content-Length","value":"2436","decreasesSecurity":false,"increasesSecurity":false},{"name":"X-Xss-Protection","value":"1; mode=block","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Content-Type-Options","value":"nosniff","decreasesSecurity":false,"increasesSecurity":true},{"name":"Referrer-Policy","value":"origin-when-cross-origin","decreasesSecurity":false,"increasesSecurity":true},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains","decreasesSecurity":false,"increasesSecurity":true},{"name":"Set-Cookie","value":"connect.sid=s%3Azmu-FFUEwqffzuS6sU6VSSGhCGwUOrTj.EPhq0v8prw2jwq%2BF34Q02dYqtKETQ6LgbuBV8Ofp2Zc; Path=/; HttpOnly","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Origin","value":"https://bitdiscovery.com","decreasesSecurity":false,"increasesSecurity":false},{"name":"Access-Control-Allow-Headers","value":"X-Requested-With","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Type","value":"text/html; charset=utf-8","decreasesSecurity":false,"increasesSecurity":false},{"name":"Server","value":"nginx/1.12.1","decreasesSecurity":true,"increasesSecurity":false},{"name":"Date","value":"Thu, 30 Jan 2020 12:52:52 GMT","decreasesSecurity":false,"increasesSecurity":false},{"name":"Content-Security-Policy","value":"default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com","decreasesSecurity":false,"increasesSecurity":true},{"name":"X-Frame-Options","value":"SAMEORIGIN","decreasesSecurity":false,"increasesSecurity":true},{"name":"Etag","value":"W/\"984-uCOzKHNJY6hX57hkNMYtX3asDvw\"","decreasesSecurity":false,"increasesSecurity":false},{"name":"Retry-Count","value":"0","decreasesSecurity":false,"increasesSecurity":false},{"name":"Vary","value":"Accept-Encoding","decreasesSecurity":false,"increasesSecurity":false}],"tags":[{"text":"Nginx","type":"info","link":"http://nginx.org/en","hash":"c5f9bde4da1314a38cd29cddb1dd216b15d84c8e"}],"notes":null}},"pageSimilarityClusters":{"11905c72-fd18-43de-9133-99ba2a480e2b":["http://52.53.92.161/","https://staging.bitdiscovery.com/","https://52.53.92.161/","http://52.9.23.177/","https://52.9.23.177/","https://bitdiscovery.com/","http://13.57.162.100/","http://bitdiscovery.com/","http://54.183.32.157/","https://13.57.162.100/","https://54.183.32.157/","http://staging.bitdiscovery.com/"],"139fc2c4-0faa-4ae3-a6e4-0a1abe2418fa":["https://104.20.60.51:8443/","https://email.assetinventory.bugcrowd.com:8443/","https://104.20.61.51/","https://email.assetinventory.bugcrowd.com/","https://104.20.60.51/","https://104.20.61.51:8443/"],"7c884fa9-eab5-4b07-b3af-d22645c024db":["https://assetinventory.bugcrowd.com/","http://tenable.bitdiscovery.com/","https://tenable.bitdiscovery.com/","http://ibm.bitdiscovery.com/","http://assetinventory.bugcrowd.com/","https://ibm.bitdiscovery.com/"],"a6b9c161-0880-4ba5-9b29-019c1933f4c5":["http://104.20.61.51/","http://104.20.60.51/","http://104.20.61.51:8080/","http://104.20.60.51:8080/","http://email.assetinventory.bugcrowd.com/"],"cdbdfe99-c0fe-4067-8d45-7c06d6e041fb":["http://blog.bitdiscovery.com/","https://blog.bitdiscovery.com/"],"d12cd693-cc78-4ee4-9b2c-2a1221208a44":["http://13.225.54.41/","http://13.225.54.58/","http://13.225.54.22/","http://13.225.54.100/"]}};
+    const data = _.extend(parseSession(session), { currentRoute: window.location.hash });
+    const router = new VueRouter({
+      routes: [
+        { path: '/', alias: '/pages/by-similarity', component: Vue.component('PagesBySimilarityPage'), props: { pageSimilarityClusters: data.pageSimilarityClusters } },
+        { path: '/pages/by-hosts', component: Vue.component('PagesByHostsPage'), props: { pages: data.pages } },
+        { path: '/pages/single', component: Vue.component('SinglePagesPage'), props: { pages: data.pages } },
+        { path: '/pages/graph', component: Vue.component('GraphPage'), props: { pages: data.pages, pageSimilarityClusters: data.pageSimilarityClusters } },
+        { path: '/pages/stats', component: Vue.component('StatsPage'), props: { pages: data.pages, pageSimilarityClusters: data.pageSimilarityClusters, stats: data.stats } },
+        { path: '*', component: Vue.component('NotFoundPage') }
+      ]
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: data,
+      delimiters: ['${', '}'],
+      router: router
+    });
+  </script>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="screenshotModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <a href="" target="_blank" class="screenshot-link"><img class="page-screenshot" src="" alt="" /></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="detailsModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3>Response Headers:</h3>
+          <table class="page-headers-table"></table>
+        </div>
+        <div class="modal-footer">
+          <a href="" target="_blank" class="btn btn-primary visit-page-button">Visit Page</a>
+          <a href="" target="_blank" class="btn btn-primary view-raw-headers-button">View Raw Headers</a>
+          <a href="" target="_blank" class="btn btn-primary view-raw-response-button">View Raw Response</a>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

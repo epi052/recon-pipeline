@@ -1,0 +1,4 @@
+2020/01/30 06:52:13 Scanning with 4 workers.
+2020/01/30 06:52:13 [+] http://13.225.54.22 (40.474201ms):
+2020/01/30 06:52:13 	- Amazon Cloudfront,  (CDN)
+2020/01/30 06:52:13 	- Amazon Web Services,  (PaaS)

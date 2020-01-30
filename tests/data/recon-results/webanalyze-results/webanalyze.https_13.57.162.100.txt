@@ -1,0 +1,3 @@
+2020/01/30 06:52:14 Scanning with 4 workers.
+2020/01/30 06:52:14 [+] https://13.57.162.100 (502.50977ms):
+2020/01/30 06:52:14 	- Nginx, 1.16.1 (Web Servers, Reverse Proxy)

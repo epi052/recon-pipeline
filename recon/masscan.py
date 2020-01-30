@@ -2,6 +2,7 @@ import json
 import pickle
 import logging
 import subprocess
+from pathlib import Path
 from collections import defaultdict
 
 import luigi
@@ -49,7 +50,9 @@ class MasscanScan(luigi.Task):
 
     rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
     interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
-    top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
+    top_ports = luigi.IntParameter(
+        default=0
+    )  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
     def output(self):
@@ -60,7 +63,11 @@ class MasscanScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.json")
+        results_subfolder = Path(self.results_dir) / "masscan-results"
+
+        new_path = results_subfolder / "masscan.json"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
         """ Defines the options/arguments sent to masscan after processing.
@@ -68,7 +75,7 @@ class MasscanScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        print(f"debug-epi: masscan {self.results_dir}")
+
         if self.ports and self.top_ports:
             # can't have both
             logging.error("Only --ports or --top-ports is permitted, not both.")
@@ -86,13 +93,21 @@ class MasscanScan(luigi.Task):
 
         if self.top_ports:
             # if --top-ports used, format the top_*_ports lists as strings and then into a proper masscan --ports option
-            top_tcp_ports_str = ",".join(str(x) for x in top_tcp_ports[: self.top_ports])
-            top_udp_ports_str = ",".join(str(x) for x in top_udp_ports[: self.top_ports])
+            top_tcp_ports_str = ",".join(
+                str(x) for x in top_tcp_ports[: self.top_ports]
+            )
+            top_udp_ports_str = ",".join(
+                str(x) for x in top_udp_ports[: self.top_ports]
+            )
 
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
+        target_list = yield TargetList(
+            target_file=self.target_file, results_dir=self.results_dir
+        )
+
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
@@ -115,8 +130,12 @@ class MasscanScan(luigi.Task):
             "--ports",
             self.ports,
             "-iL",
-            target_list.path.replace("domains", "ips"),
         ]
+
+        if target_list.path.endswith("domains"):
+            command.append(target_list.path.replace("domains", "ipv4_addresses"))
+        else:
+            command.append(target_list.path.replace("domains", "ip_addresses"))
 
         subprocess.run(command)
 
@@ -160,18 +179,25 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/masscan.{self.target_file}.parsed.pickle")
+        results_subfolder = Path(self.results_dir) / "masscan-results"
+
+        new_path = results_subfolder / "masscan.parsed.pickle"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
         ip_dict = defaultdict(lambda: defaultdict(set))  # nested defaultdict
 
         try:
-            entries = json.load(self.input().open())  # load masscan results from Masscan Task
+            # load masscan results from Masscan Task
+            entries = json.load(self.input().open())
         except json.decoder.JSONDecodeError as e:
             # return on exception; no output file created; pipeline should start again from
             # this task if restarted because we never hit pickle.dump
             return print(e)
+
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         """
         build out ip_dictionary from the loaded JSON

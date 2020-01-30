@@ -9,7 +9,7 @@ from recon.config import defaults
 
 
 class TargetList(luigi.ExternalTask):
-    """ External task.  `TARGET_FILE` is generated manually by the user from target's scope.
+    """ External task.  ``TARGET_FILE`` is generated manually by the user from target's scope.
 
     Args:
         results_dir: specifies the directory on disk to which all Task results are written
@@ -45,16 +45,17 @@ class TargetList(luigi.ExternalTask):
         except ValueError as e:
             # exception thrown by ip_interface; domain name assumed
             logging.debug(e)
-            with_suffix = self.target_file.with_suffix(".domains")
+            new_target = "domains"
         else:
             # no exception thrown; ip address found
-            with_suffix = self.target_file.with_suffix(".ips")
+            new_target = "ip_addresses"
 
-        self.results_dir.mkdir(parents=True, exist_ok=True)
+        results_subfolder = self.results_dir / "target-results"
 
-        with_suffix = (Path(self.results_dir) / with_suffix).resolve()
+        results_subfolder.mkdir(parents=True, exist_ok=True)
 
-        # copy file with new extension
-        shutil.copy(self.target_file, with_suffix)
+        new_path = results_subfolder / new_target
 
-        return luigi.LocalTarget(with_suffix)
+        shutil.copy(self.target_file, new_path.resolve())
+
+        return luigi.LocalTarget(new_path.resolve())

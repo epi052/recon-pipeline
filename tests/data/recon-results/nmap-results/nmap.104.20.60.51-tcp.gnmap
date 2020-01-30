@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,443 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.104.20.60.51-tcp 104.20.60.51
+Host: 104.20.60.51 ()	Status: Up
+Host: 104.20.60.51 ()	Ports: 443/open/tcp//ssl|https//cloudflare/, 8443/open/tcp//ssl|https-alt//cloudflare/
+# Nmap done at Thu Jan 30 06:55:10 2020 -- 1 IP address (1 host up) scanned in 21.56 seconds

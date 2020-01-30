@@ -1,0 +1,7 @@
+https://blog.bitdiscovery.com/favicon.ico (Status: 200)
+https://blog.bitdiscovery.com/feed (Status: 302)
+https://blog.bitdiscovery.com/index.html (Status: 200)
+https://blog.bitdiscovery.com/robots.txt (Status: 200)
+https://blog.bitdiscovery.com/sitemap.xml (Status: 200)
+https://blog.bitdiscovery.com/soap (Status: 200)
+https://blog.bitdiscovery.com/uncategorized (Status: 302)

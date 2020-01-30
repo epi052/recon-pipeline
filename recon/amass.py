@@ -1,5 +1,6 @@
 import json
 import ipaddress
+from pathlib import Path
 
 import luigi
 from luigi.util import inherits
@@ -52,12 +53,16 @@ class AmassScan(ExternalProgramTask):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is amass.TARGET_FILE.json.
+        Naming convention for the output file is amass.json.
 
         Returns:
             luigi.local_target.LocalTarget
         """
-        return luigi.LocalTarget(f"{self.results_dir}/amass.{self.target_file}.json")
+        results_subfolder = Path(self.results_dir) / "amass-results"
+
+        new_path = results_subfolder / "amass.json"
+
+        return luigi.LocalTarget(new_path.resolve())
 
     def program_args(self):
         """ Defines the options/arguments sent to amass after processing.
@@ -65,7 +70,9 @@ class AmassScan(ExternalProgramTask):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        print(f"debug-epi: amass {self.results_dir}")
+
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+
         if not self.input().path.endswith("domains"):
             return f"touch {self.output().path}".split()
 
@@ -128,12 +135,16 @@ class ParseAmassOutput(luigi.Task):
         Returns:
             dict(str: luigi.local_target.LocalTarget)
         """
+        results_subfolder = Path(self.results_dir) / "target-results"
+
+        ips = (results_subfolder / "ipv4_addresses").resolve()
+        ip6s = ips.with_name("ipv6_addresses").resolve()
+        subdomains = ips.with_name("subdomains").resolve()
+
         return {
-            "target-ips": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ips"),
-            "target-ip6s": luigi.LocalTarget(f"{self.results_dir}/{self.target_file}.ip6s"),
-            "target-subdomains": luigi.LocalTarget(
-                f"{self.results_dir}/{self.target_file}.subdomains"
-            ),
+            "target-ips": luigi.LocalTarget(ips),
+            "target-ip6s": luigi.LocalTarget(ip6s),
+            "target-subdomains": luigi.LocalTarget(subdomains),
         }
 
     def run(self):
@@ -160,6 +171,10 @@ class ParseAmassOutput(luigi.Task):
         unique_ip6s = set()
         unique_subs = set()
 
+        Path(self.output().get("target-ips").path).parent.mkdir(
+            parents=True, exist_ok=True
+        )
+
         amass_json = self.input().open()
         ip_file = self.output().get("target-ips").open("w")
         ip6_file = self.output().get("target-ip6s").open("w")
@@ -172,9 +187,13 @@ class ParseAmassOutput(luigi.Task):
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
-                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+                    if isinstance(
+                        ipaddress.ip_address(ipaddr), ipaddress.IPv4Address
+                    ):  # ipv4 addr
                         unique_ips.add(ipaddr)
-                    elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
+                    elif isinstance(
+                        ipaddress.ip_address(ipaddr), ipaddress.IPv6Address
+                    ):  # ipv6
                         unique_ip6s.add(ipaddr)
 
             # send gathered results to their appropriate destination

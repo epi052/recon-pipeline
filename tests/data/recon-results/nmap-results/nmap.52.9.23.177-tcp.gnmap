@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.52.9.23.177-tcp 52.9.23.177
+Host: 52.9.23.177 ()	Status: Up
+Host: 52.9.23.177 ()	Ports: 80/open/tcp//http//nginx 1.16.1/
+# Nmap done at Thu Jan 30 06:54:57 2020 -- 1 IP address (1 host up) scanned in 8.85 seconds

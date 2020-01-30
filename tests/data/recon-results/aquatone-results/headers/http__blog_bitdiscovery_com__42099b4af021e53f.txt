@@ -1,0 +1,12 @@
+200 OK
+Last-Modified: Tue, 07 Jan 2020 23:08:55 GMT
+Vary: Accept-Encoding
+Via: 1.1 3c144798feb17858393699d5bea35bec.cloudfront.net (CloudFront)
+X-Amz-Cf-Id: JSr5sPuURdveABSfXp1p47Sf_c5dAL1rkeYhkBLF2872xaZWkFV3PQ==
+Retry-Count: 0
+Date: Thu, 23 Jan 2020 15:51:21 GMT
+Server: AmazonS3
+X-Cache: Hit from cloudfront
+X-Amz-Cf-Pop: DFW3-C1
+Age: 59031
+Content-Type: text/html
