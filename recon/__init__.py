@@ -26,16 +26,8 @@ tools = {
         ],
         "shell": True,
     },
-    "luigi": {
-        "installed": False,
-        "dependencies": ["pipenv"],
-        "commands": ["pipenv install luigi"],
-    },
-    "pipenv": {
-        "installed": False,
-        "dependencies": None,
-        "commands": ["sudo apt-get install -y -q pipenv"],
-    },
+    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"],},
+    "pipenv": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q pipenv"],},
     "masscan": {
         "installed": False,
         "dependencies": None,
@@ -46,11 +38,7 @@ tools = {
             "rm -rf /tmp/masscan",
         ],
     },
-    "amass": {
-        "installed": False,
-        "dependencies": None,
-        "commands": ["sudo apt-get install -y -q amass"],
-    },
+    "amass": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q amass"],},
     "aquatone": {
         "installed": False,
         "dependencies": None,
@@ -94,10 +82,7 @@ tools = {
     "subjack": {
         "installed": False,
         "dependencies": ["go"],
-        "commands": [
-            "go get github.com/haccer/subjack",
-            "(cd ~/go/src/github.com/haccer/subjack && go install)",
-        ],
+        "commands": ["go get github.com/haccer/subjack", "(cd ~/go/src/github.com/haccer/subjack && go install)",],
         "shell": True,
     },
     "webanalyze": {
@@ -117,11 +102,7 @@ tools = {
             f"sudo bash -c 'if [[ -d {Path(tool_paths.get('recursive-gobuster')).parent} ]] ; then cd {Path(tool_paths.get('recursive-gobuster')).parent} && git pull; else git clone https://github.com/epi052/recursive-gobuster.git {Path(tool_paths.get('recursive-gobuster')).parent}; fi'",
         ],
     },
-    "go": {
-        "installed": False,
-        "dependencies": None,
-        "commands": ["sudo apt-get install -y -q golang"],
-    },
+    "go": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q golang"],},
 }
 
 
@@ -141,9 +122,7 @@ def get_scans():
     # recursively walk packages; import each module in each package
     # walk_packages yields ModuleInfo objects for all modules recursively on path
     # prefix is a string to output on the front of every module name on output.
-    for loader, module_name, is_pkg in pkgutil.walk_packages(
-        path=recon.__path__, prefix="recon."
-    ):
+    for loader, module_name, is_pkg in pkgutil.walk_packages(path=recon.__path__, prefix="recon."):
         importlib.import_module(module_name)
 
     # walk all modules, grabbing classes that we've written and add them to the classlist defaultdict
@@ -162,9 +141,7 @@ def get_scans():
 
 # options for ReconShell's 'install' command
 install_parser = cmd2.Cmd2ArgumentParser()
-install_parser.add_argument(
-    "tool", help="which tool to install", choices=list(tools.keys()) + ["all"]
-)
+install_parser.add_argument("tool", help="which tool to install", choices=list(tools.keys()) + ["all"])
 
 
 # options for ReconShell's 'scan' command
@@ -176,54 +153,34 @@ scan_parser.add_argument(
     help="file created by the user that defines the target's scope; list of ips/domains",
 )
 scan_parser.add_argument(
-    "--exempt-list",
-    completer_method=cmd2.Cmd.path_complete,
-    help="list of blacklisted ips/domains",
+    "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains",
 )
 scan_parser.add_argument(
-    "--results-dir",
-    completer_method=cmd2.Cmd.path_complete,
-    help="directory in which to save scan results",
+    "--results-dir", completer_method=cmd2.Cmd.path_complete, help="directory in which to save scan results",
 )
 scan_parser.add_argument(
-    "--wordlist",
-    completer_method=cmd2.Cmd.path_complete,
-    help="path to wordlist used by gobuster",
+    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster",
 )
 scan_parser.add_argument(
     "--interface",
     choices_function=lambda: [x[1] for x in socket.if_nameindex()],
     help="which interface masscan should use",
 )
-scan_parser.add_argument(
-    "--recursive", action="store_true", help="whether or not to recursively gobust"
-)
+scan_parser.add_argument("--recursive", action="store_true", help="whether or not to recursively gobust")
 scan_parser.add_argument("--rate", help="rate at which masscan should scan")
 scan_parser.add_argument(
-    "--top-ports",
-    help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
+    "--top-ports", help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
 )
 scan_parser.add_argument(
-    "--ports",
-    help="port specification for masscan (all ports example: 1-65535,U:1-65535)",
+    "--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)",
 )
-scan_parser.add_argument(
-    "--threads", help="number of threads for all of the threaded applications to use"
-)
+scan_parser.add_argument("--threads", help="number of threads for all of the threaded applications to use")
 scan_parser.add_argument("--scan-timeout", help="scan timeout for aquatone")
+scan_parser.add_argument("--proxy", help="proxy for gobuster if desired (ex. 127.0.0.1:8080)")
+scan_parser.add_argument("--extensions", help="list of extensions for gobuster (ex. asp,html,aspx)")
 scan_parser.add_argument(
-    "--proxy", help="proxy for gobuster if desired (ex. 127.0.0.1:8080)"
+    "--local-scheduler", action="store_true", help="use the local scheduler instead of the central scheduler (luigid)",
 )
 scan_parser.add_argument(
-    "--extensions", help="list of extensions for gobuster (ex. asp,html,aspx)"
-)
-scan_parser.add_argument(
-    "--local-scheduler",
-    action="store_true",
-    help="use the local scheduler instead of the central scheduler (luigid)",
-)
-scan_parser.add_argument(
-    "--verbose",
-    action="store_true",
-    help="shows debug messages from luigi, useful for troubleshooting",
+    "--verbose", action="store_true", help="shows debug messages from luigi, useful for troubleshooting",
 )

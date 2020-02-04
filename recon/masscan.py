@@ -50,9 +50,7 @@ class MasscanScan(luigi.Task):
 
     rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
     interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
-    top_ports = luigi.IntParameter(
-        default=0
-    )  # IntParameter -> top_ports expected as int
+    top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
     def output(self):
@@ -93,27 +91,19 @@ class MasscanScan(luigi.Task):
 
         if self.top_ports:
             # if --top-ports used, format the top_*_ports lists as strings and then into a proper masscan --ports option
-            top_tcp_ports_str = ",".join(
-                str(x) for x in top_tcp_ports[: self.top_ports]
-            )
-            top_udp_ports_str = ",".join(
-                str(x) for x in top_udp_ports[: self.top_ports]
-            )
+            top_tcp_ports_str = ",".join(str(x) for x in top_tcp_ports[: self.top_ports])
+            top_udp_ports_str = ",".join(str(x) for x in top_udp_ports[: self.top_ports])
 
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(
-            target_file=self.target_file, results_dir=self.results_dir
-        )
+        target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
 
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
-                target_file=self.target_file,
-                exempt_list=self.exempt_list,
-                results_dir=self.results_dir,
+                target_file=self.target_file, exempt_list=self.exempt_list, results_dir=self.results_dir,
             )
 
         command = [

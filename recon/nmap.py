@@ -81,9 +81,7 @@ class ThreadedNmapScan(luigi.Task):
         try:
             self.threads = abs(int(self.threads))
         except TypeError:
-            return logging.error(
-                "The value supplied to --threads must be a non-negative integer."
-            )
+            return logging.error("The value supplied to --threads must be a non-negative integer.")
 
         ip_dict = pickle.load(open(self.input().path, "rb"))
 
@@ -121,9 +119,7 @@ class ThreadedNmapScan(luigi.Task):
 
                 # arg to -oA, will drop into subdir off curdir
                 tmp_cmd[10] = ",".join(ports)
-                tmp_cmd.append(
-                    str(Path(self.output().path) / f"nmap.{target}-{protocol}")
-                )
+                tmp_cmd.append(str(Path(self.output().path) / f"nmap.{target}-{protocol}"))
 
                 tmp_cmd.append(target)  # target as final arg to nmap
 
@@ -132,9 +128,7 @@ class ThreadedNmapScan(luigi.Task):
         # basically mkdir -p, won't error out if already there
         Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
-        with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self.threads
-        ) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.threads) as executor:
 
             executor.map(subprocess.run, commands)
 
@@ -208,19 +202,11 @@ class SearchsploitScan(luigi.Task):
         Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
         for entry in Path(self.input().path).glob("nmap*.xml"):
-            proc = subprocess.run(
-                ["searchsploit", "--nmap", str(entry)], stderr=subprocess.PIPE
-            )
+            proc = subprocess.run(["searchsploit", "--nmap", str(entry)], stderr=subprocess.PIPE)
             if proc.stderr:
                 Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
                 # change  wall-searchsploit-results/nmap.10.10.10.157-tcp to 10.10.10.157
-                target = (
-                    entry.stem.replace("nmap.", "")
-                    .replace("-tcp", "")
-                    .replace("-udp", "")
-                )
+                target = entry.stem.replace("nmap.", "").replace("-tcp", "").replace("-udp", "")
 
-                Path(
-                    f"{self.output().path}/searchsploit.{target}-{entry.stem[-3:]}.txt"
-                ).write_bytes(proc.stderr)
+                Path(f"{self.output().path}/searchsploit.{target}-{entry.stem[-3:]}.txt").write_bytes(proc.stderr)

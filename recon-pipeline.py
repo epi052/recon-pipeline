@@ -9,12 +9,8 @@ import threading
 import subprocess
 from pathlib import Path
 
-__version__ = "0.7.3"
-
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
-os.environ[
-    "PYTHONPATH"
-] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"
+os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"
 
 # suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
@@ -115,9 +111,7 @@ class ReconShell(cmd2.Cmd):
 
             words = output.split()
 
-            self.async_alert(
-                style(f"[-] {words[5].split('_')[0]} queued", fg="bright_white")
-            )
+            self.async_alert(style(f"[-] {words[5].split('_')[0]} queued", fg="bright_white"))
         elif output.startswith("INFO: ") and "running" in output:
             # luigi Task is currently running
 
@@ -134,9 +128,7 @@ class ReconShell(cmd2.Cmd):
 
             words = output.split()
 
-            self.async_alert(
-                style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green")
-            )
+            self.async_alert(style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green"))
 
     @cmd2.with_argparser(scan_parser)
     def do_scan(self, args):
@@ -172,14 +164,10 @@ class ReconShell(cmd2.Cmd):
             subprocess.run(command)
         else:
             # suppress luigi messages in favor of less verbose/cleaner output
-            proc = subprocess.Popen(
-                command, stderr=subprocess.PIPE, stdout=subprocess.PIPE
-            )
+            proc = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
             # add stderr to the selector loop for processing when there's something to read from the fd
-            selector.register(
-                proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer
-            )
+            selector.register(proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer)
 
     @cmd2.with_argparser(install_parser)
     def do_install(self, args):
@@ -219,29 +207,21 @@ class ReconShell(cmd2.Cmd):
                     continue
 
                 self.async_alert(
-                    style(
-                        f"[!] {args.tool} has an unmet dependency; installing {dependency}",
-                        fg="yellow",
-                        bold=True,
-                    )
+                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True,)
                 )
 
                 # install the dependency before continuing with installation
                 self.do_install(dependency)
 
         if tools.get(args.tool).get("installed"):
-            return self.async_alert(
-                style(f"[!] {args.tool} is already installed.", fg="yellow")
-            )
+            return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
 
             # list of return values from commands run during each tool installation
             # used to determine whether the tool installed correctly or not
             retvals = list()
 
-            self.async_alert(
-                style(f"[*] Installing {args.tool}...", fg="bright_yellow")
-            )
+            self.async_alert(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
 
             for command in tools.get(args.tool).get("commands"):
                 # run all commands required to install the tool
@@ -252,20 +232,11 @@ class ReconShell(cmd2.Cmd):
                 if tools.get(args.tool).get("shell"):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
-                    proc = subprocess.Popen(
-                        command,
-                        shell=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                    )
+                    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
                 else:
 
                     # "normal" command, split up the string as usual and run it
-                    proc = subprocess.Popen(
-                        shlex.split(command),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                    )
+                    proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
 
                 out, err = proc.communicate()
 
@@ -298,7 +269,5 @@ class ReconShell(cmd2.Cmd):
 
 
 if __name__ == "__main__":
-    rs = ReconShell(
-        persistent_history_file="~/.reconshell_history", persistent_history_length=10000
-    )
+    rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
     sys.exit(rs.cmdloop())

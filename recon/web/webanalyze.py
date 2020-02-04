@@ -82,9 +82,7 @@ class WebanalyzeScan(luigi.Task):
         return luigi.LocalTarget(results_subfolder.resolve())
 
     def _wrapped_subprocess(self, cmd):
-        with open(
-            f"webanalyze.{cmd[2].replace('//', '_').replace(':', '')}.txt", "wb"
-        ) as f:
+        with open(f"webanalyze.{cmd[2].replace('//', '_').replace(':', '')}.txt", "wb") as f:
             subprocess.run(cmd, stderr=f)
 
     def run(self):
@@ -96,9 +94,7 @@ class WebanalyzeScan(luigi.Task):
         try:
             self.threads = abs(int(self.threads))
         except TypeError:
-            return logging.error(
-                "The value supplied to --threads must be a non-negative integer."
-            )
+            return logging.error("The value supplied to --threads must be a non-negative integer.")
 
         commands = list()
 
@@ -107,9 +103,7 @@ class WebanalyzeScan(luigi.Task):
                 target = target.strip()
 
                 try:
-                    if isinstance(
-                        ipaddress.ip_address(target), ipaddress.IPv6Address
-                    ):  # ipv6
+                    if isinstance(ipaddress.ip_address(target), ipaddress.IPv6Address):  # ipv6
                         target = f"[{target}]"
                 except ValueError:
                     # domain names raise ValueErrors, just assume we have a domain and keep on keepin on

@@ -43,9 +43,7 @@ class GatherWebTargets(luigi.Task):
         return {
             "masscan-output": ParseMasscanOutput(**args),
             "amass-output": ParseAmassOutput(
-                exempt_list=self.exempt_list,
-                target_file=self.target_file,
-                results_dir=self.results_dir,
+                exempt_list=self.exempt_list, target_file=self.target_file, results_dir=self.results_dir,
             ),
         }
 
