@@ -101,6 +101,8 @@ class MasscanScan(luigi.Task):
 
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
+        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
                 target_file=self.target_file, exempt_list=self.exempt_list, results_dir=self.results_dir,

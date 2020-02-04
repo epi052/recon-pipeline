@@ -199,8 +199,6 @@ class SearchsploitScan(luigi.Task):
 
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
-
         for entry in Path(self.input().path).glob("nmap*.xml"):
             proc = subprocess.run(["searchsploit", "--nmap", str(entry)], stderr=subprocess.PIPE)
             if proc.stderr:
