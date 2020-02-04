@@ -69,3 +69,23 @@ jobs:
       run: |
         pipenv install pytest
         pipenv run python -m pytest tests/test_recon
+
+  test-web:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Set up pipenv
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install -d
+    - name: Test with pytest
+      run: |
+        pipenv install pytest
+        pipenv run python -m pytest tests/test_web
