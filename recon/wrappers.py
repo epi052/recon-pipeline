@@ -10,13 +10,7 @@ from recon.web.webanalyze import WebanalyzeScan
 
 
 @inherits(
-    SearchsploitScan,
-    AquatoneScan,
-    TKOSubsScan,
-    SubjackScan,
-    CORScannerScan,
-    GobusterScan,
-    WebanalyzeScan,
+    SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, CORScannerScan, GobusterScan, WebanalyzeScan,
 )
 class FullScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.

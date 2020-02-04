@@ -41,13 +41,7 @@ subdomains = [
     "tenable.bitdiscovery.com",
 ]
 
-amass_json = (
-    Path(__file__).parent.parent
-    / "data"
-    / "recon-results"
-    / "amass-results"
-    / "amass.json"
-)
+amass_json = Path(__file__).parent.parent / "data" / "recon-results" / "amass-results" / "amass.json"
 
 
 def test_amassscan_output_location(tmp_path):
@@ -59,12 +53,8 @@ def test_amassscan_output_location(tmp_path):
 def test_parse_amass_output_locations(tmp_path):
     pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
 
-    assert pao.output().get("target-ips").path == str(
-        (Path(tmp_path) / "target-results" / "ipv4_addresses").resolve()
-    )
-    assert pao.output().get("target-ip6s").path == str(
-        (Path(tmp_path) / "target-results" / "ipv6_addresses").resolve()
-    )
+    assert pao.output().get("target-ips").path == str((Path(tmp_path) / "target-results" / "ipv4_addresses").resolve())
+    assert pao.output().get("target-ip6s").path == str((Path(tmp_path) / "target-results" / "ipv6_addresses").resolve())
     assert pao.output().get("target-subdomains").path == str(
         (Path(tmp_path) / "target-results" / "subdomains").resolve()
     )

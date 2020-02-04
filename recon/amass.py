@@ -171,9 +171,7 @@ class ParseAmassOutput(luigi.Task):
         unique_ip6s = set()
         unique_subs = set()
 
-        Path(self.output().get("target-ips").path).parent.mkdir(
-            parents=True, exist_ok=True
-        )
+        Path(self.output().get("target-ips").path).parent.mkdir(parents=True, exist_ok=True)
 
         amass_json = self.input().open()
         ip_file = self.output().get("target-ips").open("w")
@@ -187,13 +185,9 @@ class ParseAmassOutput(luigi.Task):
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
-                    if isinstance(
-                        ipaddress.ip_address(ipaddr), ipaddress.IPv4Address
-                    ):  # ipv4 addr
+                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
                         unique_ips.add(ipaddr)
-                    elif isinstance(
-                        ipaddress.ip_address(ipaddr), ipaddress.IPv6Address
-                    ):  # ipv6
+                    elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
                         unique_ip6s.add(ipaddr)
 
             # send gathered results to their appropriate destination
