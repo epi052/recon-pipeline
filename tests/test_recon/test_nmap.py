@@ -3,6 +3,8 @@ from recon.nmap import ThreadedNmapScan, SearchsploitScan
 
 import luigi
 
+from ..utils import is_kali
+
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem
 el = "../data/blacklist"
@@ -27,6 +29,10 @@ def test_searchsploit_produces_results(tmp_path):
     sss = SearchsploitScan(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
 
     sss.input = lambda: luigi.LocalTarget(nmap_results)
+
+    if not is_kali():
+        return True
+
     sss.run()
 
     assert len([x for x in Path(sss.output().path).glob("searchsploit*.txt")]) > 0
