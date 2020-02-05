@@ -7,6 +7,7 @@ import pickle
 import selectors
 import threading
 import subprocess
+import webbrowser
 from pathlib import Path
 
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
@@ -20,7 +21,7 @@ import cmd2  # noqa: E402
 from cmd2.ansi import style  # noqa: E402
 
 # project's module imports
-from recon import get_scans, tools, scan_parser, install_parser  # noqa: F401,E402
+from recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -157,6 +158,13 @@ class ReconShell(cmd2.Cmd):
 
         command.extend(args.__statement__.arg_list)
 
+        if args.sausage:
+            # sausage is not a luigi option, need to remove it
+            # name for the option came from @AlphaRingo
+            command.pop(command.index("--sausage"))
+
+            webbrowser.open("localhost:8082")  # hard-coded here, can specify different with the status command
+
         if args.verbose:
             # verbose is not a luigi option, need to remove it
             command.pop(command.index("--verbose"))
@@ -266,6 +274,11 @@ class ReconShell(cmd2.Cmd):
 
         # store any tool installs/failures (back) to disk
         pickle.dump(tools, persistent_tool_dict.open("wb"))
+
+    @cmd2.with_argparser(status_parser)
+    def do_status(self, args):
+        """ Open a web browser to Luigi's central scheduler's visualization site """
+        webbrowser.open(f"{args.host}:{args.port}")
 
 
 if __name__ == "__main__":
