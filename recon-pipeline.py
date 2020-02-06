@@ -225,15 +225,15 @@ class ReconShell(cmd2.Cmd):
                 # install the dependency before continuing with installation
                 self.do_install(dependency)
 
+        if not self.continue_install:
+            return self.async_alert(style(f"[!] {args.tool} something went wrong; aborting install...", fg="red"))
+
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         elif tools.get(args.tool).get('requires-root') and os.geteuid() != 0:
             self.continue_install = False
             return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="yellow"))
         else:
-            if not self.continue_install:
-                return
-
             # list of return values from commands run during each tool installation
             # used to determine whether the tool installed correctly or not
             retvals = list()
