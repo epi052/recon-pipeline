@@ -61,6 +61,7 @@ class ReconShell(cmd2.Cmd):
         self.sentry = False
         self.prompt = "recon-pipeline> "
         self.selectorloop = None
+        self.continue_install = True
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -227,8 +228,11 @@ class ReconShell(cmd2.Cmd):
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         elif tools.get(args.tool).get('requires-root') and os.geteuid() != 0:
+            self.continue_install = False
             return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="yellow"))
         else:
+            if not self.continue_install:
+                return
 
             # list of return values from commands run during each tool installation
             # used to determine whether the tool installed correctly or not
