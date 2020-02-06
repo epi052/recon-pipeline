@@ -117,11 +117,7 @@ class ParseAmassOutput(luigi.Task):
             luigi.ExternalTask - TargetList
         """
 
-        args = {
-            "target_file": self.target_file,
-            "exempt_list": self.exempt_list,
-            "results_dir": self.results_dir,
-        }
+        args = {"target_file": self.target_file, "exempt_list": self.exempt_list, "results_dir": self.results_dir}
         return AmassScan(**args)
 
     def output(self):

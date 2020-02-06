@@ -10,7 +10,7 @@ from collections import defaultdict
 import cmd2
 
 import recon
-from recon.config import tool_paths
+from recon.config import tool_paths, defaults
 
 # tool definitions for recon-pipeline's auto-installer
 tools = {
@@ -25,20 +25,42 @@ tools = {
             "sudo systemctl enable luigid.service",
         ],
         "shell": True,
+        "requires-root": True,
     },
-    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"],},
-    "pipenv": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q pipenv"],},
+    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
+    "seclists": {
+        "installed": False,
+        "dependencies": None,
+        "commands": [f"git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists"],
+    },
+    "pipenv": {
+        "installed": False,
+        "dependencies": None,
+        "commands": [
+            "pip install --user pipenv",
+            f'if [[ ! "$PATH" =~ (^|:)"{Path.home()}/.local/bin"(|/)(:|$) ]]; then echo "PATH=${{PATH}}:~/.local/bin" >> ~/.bashrc; fi',
+        ],
+        "shell": True,
+    },
     "masscan": {
         "installed": False,
         "dependencies": None,
         "commands": [
             "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
             "make -s -j -C /tmp/masscan",
-            f"sudo mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
+            f"mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
             "rm -rf /tmp/masscan",
         ],
     },
-    "amass": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q amass"],},
+    "amass": {
+        "installed": False,
+        "dependencies": ["go"],
+        "commands": [
+            "go get -v -u github.com/OWASP/Amass/v3/...",
+            "(export GO111MODULE=on && cd ~/go/src/github.com/OWASP/Amass && go install ./...)",
+        ],
+        "shell": True,
+    },
     "aquatone": {
         "installed": False,
         "dependencies": None,
@@ -47,7 +69,7 @@ tools = {
             "mkdir /tmp/aquatone",
             "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
             "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-            f"sudo mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
+            f"mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
             "rm -rf /tmp/aquatone",
         ],
     },
@@ -56,18 +78,15 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            f"sudo bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
-            f"pip install -q -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
-            "pip install -q future",
+            f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git fetch --all && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
+            f"pipenv install -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
+            "pipenv install -q future",
         ],
     },
     "gobuster": {
         "installed": False,
-        "dependencies": ["go"],
-        "commands": [
-            "go get github.com/OJ/gobuster",
-            "(cd ~/go/src/github.com/OJ/gobuster && go build && go install)",
-        ],
+        "dependencies": ["go", "seclists"],
+        "commands": ["go get github.com/OJ/gobuster", "(cd ~/go/src/github.com/OJ/gobuster && go build && go install)"],
         "shell": True,
     },
     "tko-subs": {
@@ -82,7 +101,7 @@ tools = {
     "subjack": {
         "installed": False,
         "dependencies": ["go"],
-        "commands": ["go get github.com/haccer/subjack", "(cd ~/go/src/github.com/haccer/subjack && go install)",],
+        "commands": ["go get github.com/haccer/subjack", "(cd ~/go/src/github.com/haccer/subjack && go install)"],
         "shell": True,
     },
     "webanalyze": {
@@ -96,13 +115,18 @@ tools = {
     },
     "recursive-gobuster": {
         "installed": False,
-        "dependencies": None,
+        "dependencies": ["gobuster", "seclists"],
         "shell": True,
         "commands": [
-            f"sudo bash -c 'if [[ -d {Path(tool_paths.get('recursive-gobuster')).parent} ]] ; then cd {Path(tool_paths.get('recursive-gobuster')).parent} && git pull; else git clone https://github.com/epi052/recursive-gobuster.git {Path(tool_paths.get('recursive-gobuster')).parent}; fi'",
+            f"bash -c 'if [[ -d {Path(tool_paths.get('recursive-gobuster')).parent} ]] ; then cd {Path(tool_paths.get('recursive-gobuster')).parent} && git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git {Path(tool_paths.get('recursive-gobuster')).parent}; fi'"
         ],
     },
-    "go": {"installed": False, "dependencies": None, "commands": ["sudo apt-get install -y -q golang"],},
+    "go": {
+        "installed": False,
+        "dependencies": None,
+        "commands": ["sudo apt-get install -y -q golang"],
+        "requires-root": True,
+    },
 }
 
 
@@ -167,13 +191,13 @@ scan_parser.add_argument(
     help="file created by the user that defines the target's scope; list of ips/domains",
 )
 scan_parser.add_argument(
-    "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains",
+    "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains"
 )
 scan_parser.add_argument(
-    "--results-dir", completer_method=cmd2.Cmd.path_complete, help="directory in which to save scan results",
+    "--results-dir", completer_method=cmd2.Cmd.path_complete, help="directory in which to save scan results"
 )
 scan_parser.add_argument(
-    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster",
+    "--wordlist", completer_method=cmd2.Cmd.path_complete, help="path to wordlist used by gobuster"
 )
 scan_parser.add_argument(
     "--interface",
@@ -183,11 +207,9 @@ scan_parser.add_argument(
 scan_parser.add_argument("--recursive", action="store_true", help="whether or not to recursively gobust")
 scan_parser.add_argument("--rate", help="rate at which masscan should scan")
 scan_parser.add_argument(
-    "--top-ports", help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
+    "--top-ports", help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)"
 )
-scan_parser.add_argument(
-    "--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)",
-)
+scan_parser.add_argument("--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)")
 scan_parser.add_argument("--threads", help="number of threads for all of the threaded applications to use")
 scan_parser.add_argument("--scan-timeout", help="scan timeout for aquatone")
 scan_parser.add_argument("--proxy", help="proxy for gobuster if desired (ex. 127.0.0.1:8080)")
@@ -198,8 +220,8 @@ scan_parser.add_argument(
     help="ppen a web browser to Luigi's central scheduler's visualization site (see how the sausage is made!)",
 )
 scan_parser.add_argument(
-    "--local-scheduler", action="store_true", help="use the local scheduler instead of the central scheduler (luigid)",
+    "--local-scheduler", action="store_true", help="use the local scheduler instead of the central scheduler (luigid)"
 )
 scan_parser.add_argument(
-    "--verbose", action="store_true", help="shows debug messages from luigi, useful for troubleshooting",
+    "--verbose", action="store_true", help="shows debug messages from luigi, useful for troubleshooting"
 )

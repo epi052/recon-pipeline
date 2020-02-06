@@ -16,6 +16,9 @@ os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).
 # suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
 
+# in case we need pipenv, add its default --user installed directory to the PATH
+sys.path.append(str(Path.home() / '.local' / 'bin'))
+
 # third party imports
 import cmd2  # noqa: E402
 from cmd2.ansi import style  # noqa: E402
@@ -223,6 +226,8 @@ class ReconShell(cmd2.Cmd):
 
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
+        elif tools.get(args.tool).get('requires-root') and os.geteuid() != 0:
+            return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="yellow"))
         else:
 
             # list of return values from commands run during each tool installation
