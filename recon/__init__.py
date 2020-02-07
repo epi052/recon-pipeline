@@ -25,7 +25,7 @@ tools = {
             "sudo systemctl enable luigid.service",
         ],
         "shell": True,
-        "requires-root": True,
+        # "requires-root": True,
     },
     "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
     "seclists": {
@@ -37,8 +37,8 @@ tools = {
         "installed": False,
         "dependencies": None,
         "commands": [
-            "pip install --user pipenv",
-            f'if [[ ! "$PATH" =~ (^|:)"{Path.home()}/.local/bin"(|/)(:|$) ]]; then echo "PATH=${{PATH}}:~/.local/bin" >> ~/.bashrc; fi',
+            "if [[ ! -f $(which pipenv) ]]; then pip install --user pipenv; fi",
+            f'if [[ ! "${{PATH}}" =~ \'(^|:){Path.home()}/.local/bin(|/)(:|$)\' ]]; then echo "PATH=${{PATH}}:~/.local/bin" >> ~/.bashrc; fi',
         ],
         "shell": True,
     },
@@ -126,7 +126,7 @@ tools = {
         "installed": False,
         "dependencies": None,
         "commands": ["sudo apt-get install -y -q golang"],
-        "requires-root": True,
+        # "requires-root": True,
     },
 }
 
