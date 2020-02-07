@@ -57,9 +57,10 @@ tools = {
         "dependencies": ["go"],
         "commands": [
             "go get -v -u github.com/OWASP/Amass/v3/...",
-            "(export GO111MODULE=on && cd ~/go/src/github.com/OWASP/Amass && go install ./...)",
+            "(cd ~/go/src/github.com/OWASP/Amass && go install ./...)",
         ],
         "shell": True,
+        "environ": {"GO111MODULE": "on"},
     },
     "aquatone": {
         "installed": False,

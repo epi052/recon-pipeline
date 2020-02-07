@@ -114,12 +114,7 @@ class GobusterScan(luigi.Task):
 
                 for url_scheme in ("https://", "http://"):
                     if self.recursive:
-                        command = [
-                            tool_paths.get("recursive-gobuster"),
-                            "-w",
-                            self.wordlist,
-                            f"{url_scheme}{target}",
-                        ]
+                        command = [tool_paths.get("recursive-gobuster"), "-w", self.wordlist, f"{url_scheme}{target}"]
                     else:
                         command = [
                             tool_paths.get("gobuster"),

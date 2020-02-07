@@ -17,7 +17,7 @@ os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
 
 # in case we need pipenv, add its default --user installed directory to the PATH
-sys.path.append(str(Path.home() / '.local' / 'bin'))
+sys.path.append(str(Path.home() / ".local" / "bin"))
 
 # third party imports
 import cmd2  # noqa: E402
@@ -219,23 +219,23 @@ class ReconShell(cmd2.Cmd):
                     continue
 
                 self.async_alert(
-                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True,)
+                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True)
                 )
 
                 # install the dependency before continuing with installation
                 self.do_install(dependency)
 
-        if not self.continue_install:
-            return self.async_alert(style(f"[!] {args.tool} something went wrong; aborting install...", fg="red"))
-
-        if tools.get(args.tool).get('requires-root'):
-            # os.geteuid() isn't necessarily a good enough check
-
-            perm_test = Path('/var/log/.permtest')
-            proc = subprocess.Popen(f'sudo touch {str(perm_test)}'.split())
-            if proc.errors:
-                self.continue_install = False
-                return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="red"))
+        # if not self.continue_install:
+        #     return self.async_alert(style(f"[!] {args.tool} something went wrong; aborting install...", fg="red"))
+        #
+        # if tools.get(args.tool).get('requires-root'):
+        #     # os.geteuid() isn't necessarily a good enough check
+        #
+        #     perm_test = Path('/var/log/.permtest')
+        #     proc = subprocess.Popen(f'sudo touch {str(perm_test)}'.split())
+        #     if proc.errors:
+        #         self.continue_install = False
+        #         return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="red"))
 
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
@@ -255,11 +255,22 @@ class ReconShell(cmd2.Cmd):
                 if tools.get(args.tool).get("shell"):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
-                    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+                    proc = subprocess.Popen(
+                        command,
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        env=tools.get(args.tool).get("environ"),
+                    )
                 else:
 
                     # "normal" command, split up the string as usual and run it
-                    proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+                    proc = subprocess.Popen(
+                        shlex.split(command),
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        env=tools.get(args.tool).get("environ"),
+                    )
 
                 out, err = proc.communicate()
 
