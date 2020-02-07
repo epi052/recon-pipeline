@@ -37,8 +37,8 @@ tools = {
         "installed": False,
         "dependencies": None,
         "commands": [
-            "if [[ ! -f $(which pipenv) ]]; then pip install --user pipenv; fi",
-            f'if [[ ! "${{PATH}}" =~ \'(^|:){Path.home()}/.local/bin(|/)(:|$)\' ]]; then echo "PATH=${{PATH}}:~/.local/bin" >> ~/.bashrc; fi',
+            "bash -c 'if [[ ! -f $(which pipenv) ]]; then pip install --user pipenv; fi'",
+            f"bash -c 'if [[ ! \"${{PATH}}\" =~ '(^|:){Path.home()}/.local/bin(|/)(:|$)' ]]; then echo \"PATH=${{PATH}}:~/.local/bin\" >> ~/.bashrc; fi'",
         ],
         "shell": True,
     },
