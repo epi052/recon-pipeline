@@ -252,6 +252,11 @@ class ReconShell(cmd2.Cmd):
                 # print each command being run
                 self.async_alert(style(f"[=] {command}", fg="cyan"))
 
+                addl_env_vars = tools.get(args.tool).get("environ")
+
+                if addl_env_vars is not None:
+                    addl_env_vars.update(dict(os.environ))
+
                 if tools.get(args.tool).get("shell"):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
@@ -260,7 +265,7 @@ class ReconShell(cmd2.Cmd):
                         shell=True,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
-                        env=tools.get(args.tool).get("environ"),
+                        env=addl_env_vars,
                     )
                 else:
 
@@ -269,7 +274,7 @@ class ReconShell(cmd2.Cmd):
                         shlex.split(command),
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
-                        env=tools.get(args.tool).get("environ"),
+                        env=addl_env_vars,
                     )
 
                 out, err = proc.communicate()
