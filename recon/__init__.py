@@ -56,8 +56,9 @@ tools = {
         "installed": False,
         "dependencies": ["go"],
         "commands": [
-            "go get -v -u github.com/OWASP/Amass/v3/...",
-            "(cd ~/go/src/github.com/OWASP/Amass && go install ./...)",
+            f"{tool_paths.get('go')} get -u github.com/OWASP/Amass/v3/...",
+            f"(cd ~/go/src/github.com/OWASP/Amass && {tool_paths.get('go')} install ./...)",
+            f"cp ~/go/bin/amass {tool_paths.get('amass')}",
         ],
         "shell": True,
         "environ": {"GO111MODULE": "on"},
@@ -87,30 +88,36 @@ tools = {
     "gobuster": {
         "installed": False,
         "dependencies": ["go", "seclists"],
-        "commands": ["go get github.com/OJ/gobuster", "(cd ~/go/src/github.com/OJ/gobuster && go build && go install)"],
+        "commands": [
+            f"{tool_paths.get('go')} get github.com/OJ/gobuster",
+            f"(cd ~/go/src/github.com/OJ/gobuster && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
+        ],
         "shell": True,
     },
     "tko-subs": {
         "installed": False,
         "dependencies": ["go"],
         "commands": [
-            "go get github.com/anshumanbh/tko-subs",
-            "(cd ~/go/src/github.com/anshumanbh/tko-subs && go build && go install)",
+            f"{tool_paths.get('go')} get github.com/anshumanbh/tko-subs",
+            f"(cd ~/go/src/github.com/anshumanbh/tko-subs && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
         ],
         "shell": True,
     },
     "subjack": {
         "installed": False,
         "dependencies": ["go"],
-        "commands": ["go get github.com/haccer/subjack", "(cd ~/go/src/github.com/haccer/subjack && go install)"],
+        "commands": [
+            f"{tool_paths.get('go')} get github.com/haccer/subjack",
+            f"(cd ~/go/src/github.com/haccer/subjack && {tool_paths.get('go')} install)",
+        ],
         "shell": True,
     },
     "webanalyze": {
         "installed": False,
         "dependencies": ["go"],
         "commands": [
-            "go get github.com/rverton/webanalyze/...",
-            "(cd ~/go/src/github.com/rverton/webanalyze && go build && go install)",
+            f"{tool_paths.get('go')} get github.com/rverton/webanalyze/...",
+            f"(cd ~/go/src/github.com/rverton/webanalyze && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
         ],
         "shell": True,
     },
@@ -126,9 +133,9 @@ tools = {
         "installed": False,
         "dependencies": None,
         "commands": [
-            "wget https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
+            "wget -q https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
             "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
-            f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep /usr/local/go/bin) ]]; then echo "PATH=${{PATH}}:/usr/local/go/bin" >> ~/.bashrc; fi\'',
+            f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep $(dirname {tool_paths.get("go")})) ]]; then echo "PATH=${{PATH}}:/usr/local/go/bin" >> ~/.bashrc; fi\'',
         ],
         # "requires-root": True,
     },

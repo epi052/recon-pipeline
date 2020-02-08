@@ -246,16 +246,16 @@ class ReconShell(cmd2.Cmd):
 
             self.async_alert(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
 
+            addl_env_vars = tools.get(args.tool).get("environ")
+
+            if addl_env_vars is not None:
+                addl_env_vars.update(dict(os.environ))
+
             for command in tools.get(args.tool).get("commands"):
                 # run all commands required to install the tool
 
                 # print each command being run
                 self.async_alert(style(f"[=] {command}", fg="cyan"))
-
-                addl_env_vars = tools.get(args.tool).get("environ")
-
-                if addl_env_vars is not None:
-                    addl_env_vars.update(dict(os.environ))
 
                 if tools.get(args.tool).get("shell"):
 

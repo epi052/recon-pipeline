@@ -6,6 +6,7 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
+from recon.config import tool_paths
 from recon.targets import TargetList
 
 
@@ -77,7 +78,7 @@ class AmassScan(ExternalProgramTask):
             return f"touch {self.output().path}".split()
 
         command = [
-            "amass",
+            f"{tool_paths.get('amass')}",
             "enum",
             "-active",
             "-ip",

@@ -28,6 +28,8 @@ tool_paths = {
     "recursive-gobuster": f"{defaults.get('tools-dir')}/recursive-gobuster/recursive-gobuster.pyz",
     "webanalyze": f"{Path.home()}/go/bin/webanalyze",
     "masscan": f"{defaults.get('tools-dir')}/masscan",
+    "amass": f"{defaults.get('tools-dir')}/amass",
+    "go": "/usr/local/go/bin/go"
 }
 
 top_tcp_ports = [
