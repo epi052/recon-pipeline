@@ -47,7 +47,7 @@ jobs:
         pipenv install -d
     - name: Test with pytest
       run: |
-        pipenv install pytest
+        pipenv install pytest cmd2 luigi
         pipenv run python -m pytest tests/test_install
 
   test-recon:
@@ -67,7 +67,7 @@ jobs:
         pipenv install -d
     - name: Test with pytest
       run: |
-        pipenv install pytest
+        pipenv install pytest cmd2 luigi
         pipenv run python -m pytest tests/test_recon
 
   test-web:
@@ -87,5 +87,5 @@ jobs:
         pipenv install -d
     - name: Test with pytest
       run: |
-        pipenv install pytest
+        pipenv install pytest cmd2 luigi
         pipenv run python -m pytest tests/test_web

@@ -3,10 +3,20 @@ import importlib
 import subprocess
 from pathlib import Path
 
-from ..utils import setup_install_test, run_cmd, is_kali
-from recon.config import tool_paths
+from recon.config import tool_paths, defaults
+from ..utils import setup_install_test, run_cmd
 
 recon_pipeline = importlib.import_module("recon-pipeline")
+
+
+def test_install_go():
+    go = Path(tool_paths.get("go"))
+
+    rs = recon_pipeline.ReconShell()
+
+    run_cmd(rs, "install go")
+
+    assert go.exists()
 
 
 def test_install_masscan():
@@ -16,50 +26,36 @@ def test_install_masscan():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install masscan")
 
-    assert masscan.exists() is True
+    assert masscan.exists()
 
 
-def test_install_amass():
-    setup_install_test()
-
-    if not is_kali():
-        return True
-
-    if shutil.which("amass") is not None:
-        subprocess.run("sudo apt remove amass -y".split())
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install amass")
-
-    assert shutil.which("amass") is not None
-
-
-def test_install_pipenv():
-    setup_install_test()
-
-    if not is_kali():
-        return True
-
-    if shutil.which("pipenv") is not None:
-        subprocess.run("sudo apt remove pipenv -y".split())
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install pipenv")
-
-    assert shutil.which("pipenv") is not None
+# def test_install_amass():
+#     amass = Path(tool_paths.get("amass"))
+#
+#     setup_install_test(amass)
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install amass")
+#
+#     assert amass.exists()
 
 
 def test_install_luigi():
     setup_install_test()
 
     if shutil.which("luigi") is not None:
-        subprocess.run("pipenv uninstall luigi".split())
+        subprocess.run("pip uninstall luigi".split())
 
     rs = recon_pipeline.ReconShell()
+
+    assert Path(defaults.get("tools-dir")).exists()
 
     run_cmd(rs, "install luigi")
 
@@ -73,65 +69,75 @@ def test_install_aquatone():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install aquatone")
 
-    assert aquatone.exists() is True
+    assert aquatone.exists()
 
 
-def test_install_gobuster():
-    gobuster = Path(tool_paths.get("gobuster"))
-
-    setup_install_test(gobuster)
-
-    assert shutil.which("go") is not None
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install gobuster")
-
-    assert gobuster.exists() is True
-
-
-def test_install_tkosubs():
-    tkosubs = Path(tool_paths.get("tko-subs"))
-
-    setup_install_test(tkosubs)
-
-    assert shutil.which("go") is not None
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install tko-subs")
-
-    assert tkosubs.exists() is True
-
-
-def test_install_subjack():
-    subjack = Path(tool_paths.get("subjack"))
-
-    setup_install_test(subjack)
-
-    assert shutil.which("go") is not None
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install subjack")
-
-    assert subjack.exists() is True
+# def test_install_gobuster():
+#     gobuster = Path(tool_paths.get("gobuster"))
+#
+#     setup_install_test(gobuster)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install gobuster")
+#
+#     assert gobuster.exists()
+#
+#
+# def test_install_tkosubs():
+#     tkosubs = Path(tool_paths.get("tko-subs"))
+#
+#     setup_install_test(tkosubs)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install tko-subs")
+#
+#     assert tkosubs.exists()
 
 
-def test_install_webanalyze():
-    webanalyze = Path(tool_paths.get("webanalyze"))
+# def test_install_subjack():
+#     subjack = Path(tool_paths.get("subjack"))
+#
+#     setup_install_test(subjack)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install subjack")
+#
+#     assert subjack.exists()
 
-    setup_install_test(webanalyze)
 
-    assert shutil.which("go") is not None
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install webanalyze")
-
-    assert webanalyze.exists() is True
+# def test_install_webanalyze():
+#     webanalyze = Path(tool_paths.get("webanalyze"))
+#
+#     setup_install_test(webanalyze)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install webanalyze")
+#
+#     assert webanalyze.exists()
 
 
 def test_install_corscanner():
@@ -144,9 +150,11 @@ def test_install_corscanner():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install corscanner")
 
-    assert corscanner.exists() is True
+    assert corscanner.exists()
 
 
 def test_update_corscanner():
@@ -155,13 +163,15 @@ def test_update_corscanner():
     setup_install_test()
 
     if not corscanner.parent.exists():
-        subprocess.run(f"sudo git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split())
+        subprocess.run(f"git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split())
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install corscanner")
 
-    assert corscanner.exists() is True
+    assert corscanner.exists()
 
 
 def test_install_recursive_gobuster():
@@ -174,9 +184,11 @@ def test_install_recursive_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install recursive-gobuster")
 
-    assert recursive_gobuster.exists() is True
+    assert recursive_gobuster.exists()
 
 
 def test_update_recursive_gobuster():
@@ -186,14 +198,16 @@ def test_update_recursive_gobuster():
 
     if not recursive_gobuster.parent.exists():
         subprocess.run(
-            f"sudo git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
+            f"git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
         )
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install recursive-gobuster")
 
-    assert recursive_gobuster.exists() is True
+    assert recursive_gobuster.exists()
 
 
 def test_install_luigi_service():
@@ -201,18 +215,18 @@ def test_install_luigi_service():
 
     setup_install_test(luigi_service)
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
 
     if proc.stdout.decode().strip() == "enabled":
-        subprocess.run("systemctl disable luigid.service".split())
+        subprocess.run("sudo systemctl disable luigid.service".split())
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
 
     if proc.stdout.decode().strip() == "active":
-        subprocess.run("systemctl stop luigid.service".split())
+        subprocess.run("sudo systemctl stop luigid.service".split())
 
     if Path("/usr/local/bin/luigid").exists():
-        Path("/usr/local/bin/luigid").unlink()
+        subprocess.run("sudo rm /usr/local/bin/luigid".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -220,10 +234,10 @@ def test_install_luigi_service():
 
     assert Path("/lib/systemd/system/luigid.service").exists()
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
     assert proc.stdout.decode().strip() == "enabled"
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
     assert proc.stdout.decode().strip() == "active"
 
     assert Path("/usr/local/bin/luigid").exists()

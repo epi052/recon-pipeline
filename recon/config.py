@@ -1,30 +1,35 @@
 # flake8: noqa E231
 from pathlib import Path
 
+
 defaults = {
     "proxy": "",
     "threads": "10",
     "masscan-rate": "1000",
     "masscan-iface": "tun0",
+    "tools-dir": f"{Path.home()}/.recon-tools",
     "results-dir": "recon-results",
     "aquatone-scan-timeout": "900",
     "gobuster-extensions": "",
-    "gobuster-wordlist": "/usr/share/seclists/Discovery/Web-Content/common.txt",
 }
+
+defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
 
 web_ports = {"80", "443", "8080", "8000", "8443"}
 
 tool_paths = {
-    "aquatone": "/usr/local/bin/aquatone",
+    "aquatone": f"{defaults.get('tools-dir')}/aquatone",
     "tko-subs": f"{Path.home()}/go/bin/tko-subs",
     "tko-subs-dir": f"{Path.home()}/go/src/github.com/anshumanbh/tko-subs",
     "subjack": f"{Path.home()}/go/bin/subjack",
     "subjack-fingerprints": f"{Path.home()}/go/src/github.com/haccer/subjack/fingerprints.json",
-    "CORScanner": "/opt/CORScanner/cors_scan.py",
+    "CORScanner": f"{defaults.get('tools-dir')}/CORScanner/cors_scan.py",
     "gobuster": f"{Path.home()}/go/bin/gobuster",
-    "recursive-gobuster": "/opt/recursive-gobuster/recursive-gobuster.pyz",
+    "recursive-gobuster": f"{defaults.get('tools-dir')}/recursive-gobuster/recursive-gobuster.pyz",
     "webanalyze": f"{Path.home()}/go/bin/webanalyze",
-    "masscan": "/usr/local/bin/masscan",
+    "masscan": f"{defaults.get('tools-dir')}/masscan",
+    "amass": f"{defaults.get('tools-dir')}/amass",
+    "go": "/usr/local/go/bin/go"
 }
 
 top_tcp_ports = [

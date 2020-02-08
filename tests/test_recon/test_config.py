@@ -1,5 +1,4 @@
 from pathlib import Path
-from ..utils import is_kali
 
 from recon.config import tool_paths, defaults, web_ports, top_tcp_ports, top_udp_ports
 
@@ -7,11 +6,6 @@ from recon.config import tool_paths, defaults, web_ports, top_tcp_ports, top_udp
 def test_tool_paths_absolute():
     for path in tool_paths.values():
         assert Path(path).is_absolute()
-
-
-def test_wordlist_exists():
-    if is_kali():
-        assert Path(defaults.get("gobuster-wordlist")).exists()
 
 
 def test_threads_numeric():

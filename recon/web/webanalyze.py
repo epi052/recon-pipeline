@@ -110,11 +110,7 @@ class WebanalyzeScan(luigi.Task):
                     pass
 
                 for url_scheme in ("https://", "http://"):
-                    command = [
-                        tool_paths.get("webanalyze"),
-                        "-host",
-                        f"{url_scheme}{target}",
-                    ]
+                    command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}"]
                     commands.append(command)
 
         Path(self.output().path).mkdir(parents=True, exist_ok=True)

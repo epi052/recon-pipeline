@@ -61,5 +61,5 @@ def setup_install_test(tool=None):
     if tool is not None:
         try:
             tool.unlink()
-        except FileNotFoundError:
+        except (FileNotFoundError, PermissionError):
             pass

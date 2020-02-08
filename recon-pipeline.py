@@ -16,12 +16,16 @@ os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).
 # suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
 
+# in case we need pipenv, add its default --user installed directory to the PATH
+sys.path.append(str(Path.home() / ".local" / "bin"))
+
 # third party imports
 import cmd2  # noqa: E402
 from cmd2.ansi import style  # noqa: E402
 
 # project's module imports
 from recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
+from recon.config import defaults  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -58,6 +62,9 @@ class ReconShell(cmd2.Cmd):
         self.sentry = False
         self.prompt = "recon-pipeline> "
         self.selectorloop = None
+        self.continue_install = True
+
+        Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -215,7 +222,7 @@ class ReconShell(cmd2.Cmd):
                     continue
 
                 self.async_alert(
-                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True,)
+                    style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True)
                 )
 
                 # install the dependency before continuing with installation
@@ -224,12 +231,16 @@ class ReconShell(cmd2.Cmd):
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
-
             # list of return values from commands run during each tool installation
             # used to determine whether the tool installed correctly or not
             retvals = list()
 
             self.async_alert(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
+
+            addl_env_vars = tools.get(args.tool).get("environ")
+
+            if addl_env_vars is not None:
+                addl_env_vars.update(dict(os.environ))
 
             for command in tools.get(args.tool).get("commands"):
                 # run all commands required to install the tool
@@ -240,11 +251,15 @@ class ReconShell(cmd2.Cmd):
                 if tools.get(args.tool).get("shell"):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
-                    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+                    proc = subprocess.Popen(
+                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=addl_env_vars
+                    )
                 else:
 
                     # "normal" command, split up the string as usual and run it
-                    proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+                    proc = subprocess.Popen(
+                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=addl_env_vars
+                    )
 
                 out, err = proc.communicate()
 
