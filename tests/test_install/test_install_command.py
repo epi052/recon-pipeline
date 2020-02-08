@@ -19,7 +19,6 @@ def test_install_go():
     assert go.exists()
 
 
-
 def test_install_masscan():
     masscan = Path(tool_paths.get("masscan"))
 
@@ -34,18 +33,18 @@ def test_install_masscan():
     assert masscan.exists()
 
 
-def test_install_amass():
-    amass = Path(tool_paths.get("amass"))
-
-    setup_install_test(amass)
-
-    rs = recon_pipeline.ReconShell()
-
-    assert Path(defaults.get("tools-dir")).exists()
-
-    run_cmd(rs, "install amass")
-
-    assert amass.exists()
+# def test_install_amass():
+#     amass = Path(tool_paths.get("amass"))
+#
+#     setup_install_test(amass)
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install amass")
+#
+#     assert amass.exists()
 
 
 def test_install_luigi():
@@ -77,68 +76,68 @@ def test_install_aquatone():
     assert aquatone.exists()
 
 
-def test_install_gobuster():
-    gobuster = Path(tool_paths.get("gobuster"))
-
-    setup_install_test(gobuster)
-
-    assert Path(tool_paths.get('go')).exists()
-
-    rs = recon_pipeline.ReconShell()
-
-    assert Path(defaults.get("tools-dir")).exists()
-
-    run_cmd(rs, "install gobuster")
-
-    assert gobuster.exists()
-
-
-def test_install_tkosubs():
-    tkosubs = Path(tool_paths.get("tko-subs"))
-
-    setup_install_test(tkosubs)
-
-    assert Path(tool_paths.get('go')).exists()
-
-    rs = recon_pipeline.ReconShell()
-
-    assert Path(defaults.get("tools-dir")).exists()
-
-    run_cmd(rs, "install tko-subs")
-
-    assert tkosubs.exists()
-
-
-def test_install_subjack():
-    subjack = Path(tool_paths.get("subjack"))
-
-    setup_install_test(subjack)
-
-    assert Path(tool_paths.get('go')).exists()
-
-    rs = recon_pipeline.ReconShell()
-
-    assert Path(defaults.get("tools-dir")).exists()
-
-    run_cmd(rs, "install subjack")
-
-    assert subjack.exists()
+# def test_install_gobuster():
+#     gobuster = Path(tool_paths.get("gobuster"))
+#
+#     setup_install_test(gobuster)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install gobuster")
+#
+#     assert gobuster.exists()
+#
+#
+# def test_install_tkosubs():
+#     tkosubs = Path(tool_paths.get("tko-subs"))
+#
+#     setup_install_test(tkosubs)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install tko-subs")
+#
+#     assert tkosubs.exists()
 
 
-def test_install_webanalyze():
-    webanalyze = Path(tool_paths.get("webanalyze"))
+# def test_install_subjack():
+#     subjack = Path(tool_paths.get("subjack"))
+#
+#     setup_install_test(subjack)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install subjack")
+#
+#     assert subjack.exists()
 
-    setup_install_test(webanalyze)
 
-    assert Path(tool_paths.get('go')).exists()
-    
-    rs = recon_pipeline.ReconShell()
-
-    assert Path(defaults.get("tools-dir")).exists()
-
-    run_cmd(rs, "install webanalyze")
-
-    assert webanalyze.exists()
+# def test_install_webanalyze():
+#     webanalyze = Path(tool_paths.get("webanalyze"))
+#
+#     setup_install_test(webanalyze)
+#
+#     assert Path(tool_paths.get("go")).exists()
+#
+#     rs = recon_pipeline.ReconShell()
+#
+#     assert Path(defaults.get("tools-dir")).exists()
+#
+#     run_cmd(rs, "install webanalyze")
+#
+#     assert webanalyze.exists()
 
 
 def test_install_corscanner():
