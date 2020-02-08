@@ -35,6 +35,8 @@ echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
 bash
 ```
 
+### Both OSs after pipenv install
+
 ```bash
 git clone https://github.com/epi052/recon-pipeline.git
 cd recon-pipeline
