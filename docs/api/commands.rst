@@ -1,7 +1,7 @@
 Commands
 ========
 
-``recon-pipeline`` provides two commands ``install`` and ``scan``.  All other commands are inherited
+``recon-pipeline`` provides three commands ``install``, ``scan``, and ``status``.  All other commands are inherited
 from `cmd2 <https://github.com/python-cmd2/cmd2>`_.
 
 .. _install_command:
@@ -22,4 +22,14 @@ scan
 .. argparse::
     :module: recon
     :func: scan_parser
-    :prog: install
+    :prog: scan
+
+.. _status_command:
+
+status
+######
+
+.. argparse::
+    :module: recon
+    :func: status_parser
+    :prog: status
