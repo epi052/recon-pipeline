@@ -217,7 +217,7 @@ scan_parser.add_argument("--extensions", help="list of extensions for gobuster (
 scan_parser.add_argument(
     "--sausage",
     action="store_true",
-    help="ppen a web browser to Luigi's central scheduler's visualization site (see how the sausage is made!)",
+    help="open a web browser to Luigi's central scheduler's visualization site (see how the sausage is made!)",
 )
 scan_parser.add_argument(
     "--local-scheduler", action="store_true", help="use the local scheduler instead of the central scheduler (luigid)"
