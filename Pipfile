@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+cmd2 = "*"
+flake8 = "*"
+luigi = "*"
+requests = "*"
+gevent = "*"
+tldextract = "*"
+argparse = "*"
+colorama = "*"
+future = "*"
+
+[requires]
+python_version = "3.7"
