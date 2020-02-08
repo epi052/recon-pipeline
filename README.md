@@ -13,25 +13,40 @@ Check out [recon-pipeline's readthedocs entry](https://recon-pipeline.readthedoc
 
 ## Installation
 
-> Automatic installation only tested on kali 2019.4
+> Automatic installation tested on kali 2019.4 and Ubuntu 18.04
 
 There are two primary phases for installation: 
 
 1. prior to [cmd2](https://github.com/python-cmd2/cmd2) being installed
 2. everything else
 
-First, the manual steps to get cmd2 installed in a virtual environment are as follows (and shown below)
+First, the manual steps to get cmd2 installed in a virtual environment are as follows (and shown below), starting with [pipenv](https://github.com/pypa/pipenv)
 
+### Kali
 ```bash
 apt install pipenv
+```
+
+### Ubuntu 18.04
+```bash
+sudo apt install python3-pip
+pip install --user pipenv
+echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
+bash
+```
+
+```bash
 git clone https://github.com/epi052/recon-pipeline.git
 cd recon-pipeline
 pipenv install cmd2
 ```
 
+
 [![asciicast](https://asciinema.org/a/AxFd1SaLVx7mQdxqQBLfh6aqj.svg)](https://asciinema.org/a/AxFd1SaLVx7mQdxqQBLfh6aqj)
 
-Once manual installation of [cmd2](https://github.com/python-cmd2/cmd2) is complete, the `recon-pipeline` shell provides its own `install` command (seen below).  A simple `install all` will handle all installation steps (as long as you're running a newer version of kali; all other OS's are untested, good luck!)
+Once manual installation of [cmd2](https://github.com/python-cmd2/cmd2) is complete, the `recon-pipeline` shell provides its own `install` command (seen below).  A simple `install all` will handle all installation steps.
+
+> Ubuntu-18.04 Note:  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
 [![asciicast](https://asciinema.org/a/294414.svg)](https://asciinema.org/a/294414)
 
