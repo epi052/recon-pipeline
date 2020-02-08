@@ -25,6 +25,7 @@ from cmd2.ansi import style  # noqa: E402
 
 # project's module imports
 from recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
+from recon.config import defaults  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -62,6 +63,8 @@ class ReconShell(cmd2.Cmd):
         self.prompt = "recon-pipeline> "
         self.selectorloop = None
         self.continue_install = True
+
+        Path(defaults.get('tools-dir')).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -224,18 +227,6 @@ class ReconShell(cmd2.Cmd):
 
                 # install the dependency before continuing with installation
                 self.do_install(dependency)
-
-        # if not self.continue_install:
-        #     return self.async_alert(style(f"[!] {args.tool} something went wrong; aborting install...", fg="red"))
-        #
-        # if tools.get(args.tool).get('requires-root'):
-        #     # os.geteuid() isn't necessarily a good enough check
-        #
-        #     perm_test = Path('/var/log/.permtest')
-        #     proc = subprocess.Popen(f'sudo touch {str(perm_test)}'.split())
-        #     if proc.errors:
-        #         self.continue_install = False
-        #         return self.async_alert(style(f"[!] {args.tool} requires root permissions, unable to install.", fg="red"))
 
         if tools.get(args.tool).get("installed"):
             return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))

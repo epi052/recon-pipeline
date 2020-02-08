@@ -25,7 +25,6 @@ tools = {
             "sudo systemctl enable luigid.service",
         ],
         "shell": True,
-        # "requires-root": True,
     },
     "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
     "seclists": {
@@ -57,7 +56,6 @@ tools = {
         "dependencies": ["go"],
         "commands": [
             f"{tool_paths.get('go')} get -u github.com/OWASP/Amass/v3/...",
-            f"(cd ~/go/src/github.com/OWASP/Amass && {tool_paths.get('go')} install ./...)",
             f"cp ~/go/bin/amass {tool_paths.get('amass')}",
         ],
         "shell": True,
@@ -137,7 +135,6 @@ tools = {
             "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
             f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep $(dirname {tool_paths.get("go")})) ]]; then echo "PATH=${{PATH}}:/usr/local/go/bin" >> ~/.bashrc; fi\'',
         ],
-        # "requires-root": True,
     },
 }
 
