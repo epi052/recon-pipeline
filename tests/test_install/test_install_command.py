@@ -9,6 +9,19 @@ from ..utils import setup_install_test, run_cmd
 recon_pipeline = importlib.import_module("recon-pipeline")
 
 
+def test_install_go():
+    go = Path(tool_paths.get("go"))
+
+    setup_install_test(go)
+
+    rs = recon_pipeline.ReconShell()
+
+    run_cmd(rs, "install go")
+
+    assert go.exists()
+
+
+
 def test_install_masscan():
     masscan = Path(tool_paths.get("masscan"))
 
@@ -24,10 +37,9 @@ def test_install_masscan():
 
 
 def test_install_amass():
-    setup_install_test()
+    amass = Path(tool_paths.get("amass"))
 
-    if Path(tool_paths.get("amass")).exists():
-        subprocess.run(f"rm {tool_paths.get('amass')}".split())
+    setup_install_test(amass)
 
     rs = recon_pipeline.ReconShell()
 
@@ -35,7 +47,7 @@ def test_install_amass():
 
     run_cmd(rs, "install amass")
 
-    assert Path(tool_paths.get("amass")).exists()
+    assert amass.exists()
 
 
 def test_install_luigi():
