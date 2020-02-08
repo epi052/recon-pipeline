@@ -80,7 +80,7 @@ tools = {
         "commands": [
             f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git fetch --all && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
             f"pipenv install -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
-            "pipenv install -q future",
+            "pipenv install future",
         ],
     },
     "gobuster": {
