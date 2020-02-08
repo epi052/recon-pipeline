@@ -64,7 +64,7 @@ class ReconShell(cmd2.Cmd):
         self.selectorloop = None
         self.continue_install = True
 
-        Path(defaults.get('tools-dir')).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -252,20 +252,13 @@ class ReconShell(cmd2.Cmd):
 
                     # go tools use subshells (cmd1 && cmd2 && cmd3 ...) during install, so need shell=True
                     proc = subprocess.Popen(
-                        command,
-                        shell=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        env=addl_env_vars,
+                        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=addl_env_vars
                     )
                 else:
 
                     # "normal" command, split up the string as usual and run it
                     proc = subprocess.Popen(
-                        shlex.split(command),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        env=addl_env_vars,
+                        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=addl_env_vars
                     )
 
                 out, err = proc.communicate()

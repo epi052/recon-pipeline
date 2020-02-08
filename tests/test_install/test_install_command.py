@@ -3,8 +3,8 @@ import importlib
 import subprocess
 from pathlib import Path
 
-from ..utils import setup_install_test, run_cmd, is_kali
 from recon.config import tool_paths
+from ..utils import setup_install_test, run_cmd
 
 recon_pipeline = importlib.import_module("recon-pipeline")
 
@@ -24,33 +24,27 @@ def test_install_masscan():
 def test_install_amass():
     setup_install_test()
 
-    if not is_kali():
-        return True
-
-    if shutil.which("amass") is not None:
-        subprocess.run("sudo apt remove amass -y".split())
+    if Path(tool_paths.get('amass')).exists():
+        subprocess.run(f"rm {tool_paths.get('amass')}".split())
 
     rs = recon_pipeline.ReconShell()
 
     run_cmd(rs, "install amass")
 
-    assert shutil.which("amass") is not None
+    assert Path(tool_paths.get('amass')).exists()
 
 
 def test_install_pipenv():
     setup_install_test()
 
-    if not is_kali():
-        return True
-
-    if shutil.which("pipenv") is not None:
-        subprocess.run("sudo apt remove pipenv -y".split())
+    if Path(f"{Path.home()}/.local/bin/pipenv").exists():
+        subprocess.run(f"rm {Path.home()}/.local/bin/pipenv".split())
 
     rs = recon_pipeline.ReconShell()
 
     run_cmd(rs, "install pipenv")
 
-    assert shutil.which("pipenv") is not None
+    assert Path(f"{Path.home()}/.local/bin/pipenv").exists()
 
 
 def test_install_luigi():
@@ -155,7 +149,7 @@ def test_update_corscanner():
     setup_install_test()
 
     if not corscanner.parent.exists():
-        subprocess.run(f"sudo git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split())
+        subprocess.run(f"git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split())
 
     rs = recon_pipeline.ReconShell()
 
@@ -186,7 +180,7 @@ def test_update_recursive_gobuster():
 
     if not recursive_gobuster.parent.exists():
         subprocess.run(
-            f"sudo git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
+            f"git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
         )
 
     rs = recon_pipeline.ReconShell()
