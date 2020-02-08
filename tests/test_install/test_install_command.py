@@ -12,8 +12,6 @@ recon_pipeline = importlib.import_module("recon-pipeline")
 def test_install_go():
     go = Path(tool_paths.get("go"))
 
-    setup_install_test(go)
-
     rs = recon_pipeline.ReconShell()
 
     run_cmd(rs, "install go")
@@ -218,15 +216,15 @@ def test_install_luigi_service():
 
     setup_install_test(luigi_service)
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
 
     if proc.stdout.decode().strip() == "enabled":
-        subprocess.run("systemctl disable luigid.service".split())
+        subprocess.run("sudo systemctl disable luigid.service".split())
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
 
     if proc.stdout.decode().strip() == "active":
-        subprocess.run("systemctl stop luigid.service".split())
+        subprocess.run("sudo systemctl stop luigid.service".split())
 
     if Path("/usr/local/bin/luigid").exists():
         Path("/usr/local/bin/luigid").unlink()
@@ -237,10 +235,10 @@ def test_install_luigi_service():
 
     assert Path("/lib/systemd/system/luigid.service").exists()
 
-    proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
     assert proc.stdout.decode().strip() == "enabled"
 
-    proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+    proc = subprocess.run("sudo systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
     assert proc.stdout.decode().strip() == "active"
 
     assert Path("/usr/local/bin/luigid").exists()
