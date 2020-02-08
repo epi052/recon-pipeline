@@ -3,7 +3,7 @@ import importlib
 import subprocess
 from pathlib import Path
 
-from recon.config import tool_paths
+from recon.config import tool_paths, defaults
 from ..utils import setup_install_test, run_cmd
 
 recon_pipeline = importlib.import_module("recon-pipeline")
@@ -16,9 +16,11 @@ def test_install_masscan():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install masscan")
 
-    assert masscan.exists() is True
+    assert masscan.exists()
 
 
 def test_install_amass():
@@ -29,31 +31,22 @@ def test_install_amass():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install amass")
 
     assert Path(tool_paths.get("amass")).exists()
-
-
-def test_install_pipenv():
-    setup_install_test()
-
-    if Path(f"{Path.home()}/.local/bin/pipenv").exists():
-        subprocess.run(f"rm {Path.home()}/.local/bin/pipenv".split())
-
-    rs = recon_pipeline.ReconShell()
-
-    run_cmd(rs, "install pipenv")
-
-    assert Path(f"{Path.home()}/.local/bin/pipenv").exists()
 
 
 def test_install_luigi():
     setup_install_test()
 
     if shutil.which("luigi") is not None:
-        subprocess.run("pipenv uninstall luigi".split())
+        subprocess.run("pip uninstall luigi".split())
 
     rs = recon_pipeline.ReconShell()
+
+    assert Path(defaults.get("tools-dir")).exists()
 
     run_cmd(rs, "install luigi")
 
@@ -67,9 +60,11 @@ def test_install_aquatone():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install aquatone")
 
-    assert aquatone.exists() is True
+    assert aquatone.exists()
 
 
 def test_install_gobuster():
@@ -81,9 +76,11 @@ def test_install_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install gobuster")
 
-    assert gobuster.exists() is True
+    assert gobuster.exists()
 
 
 def test_install_tkosubs():
@@ -95,9 +92,11 @@ def test_install_tkosubs():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install tko-subs")
 
-    assert tkosubs.exists() is True
+    assert tkosubs.exists()
 
 
 def test_install_subjack():
@@ -109,9 +108,11 @@ def test_install_subjack():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install subjack")
 
-    assert subjack.exists() is True
+    assert subjack.exists()
 
 
 def test_install_webanalyze():
@@ -123,9 +124,11 @@ def test_install_webanalyze():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install webanalyze")
 
-    assert webanalyze.exists() is True
+    assert webanalyze.exists()
 
 
 def test_install_corscanner():
@@ -138,9 +141,11 @@ def test_install_corscanner():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install corscanner")
 
-    assert corscanner.exists() is True
+    assert corscanner.exists()
 
 
 def test_update_corscanner():
@@ -153,9 +158,11 @@ def test_update_corscanner():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install corscanner")
 
-    assert corscanner.exists() is True
+    assert corscanner.exists()
 
 
 def test_install_recursive_gobuster():
@@ -168,9 +175,11 @@ def test_install_recursive_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install recursive-gobuster")
 
-    assert recursive_gobuster.exists() is True
+    assert recursive_gobuster.exists()
 
 
 def test_update_recursive_gobuster():
@@ -185,9 +194,11 @@ def test_update_recursive_gobuster():
 
     rs = recon_pipeline.ReconShell()
 
+    assert Path(defaults.get("tools-dir")).exists()
+
     run_cmd(rs, "install recursive-gobuster")
 
-    assert recursive_gobuster.exists() is True
+    assert recursive_gobuster.exists()
 
 
 def test_install_luigi_service():

@@ -26,20 +26,11 @@ tools = {
         ],
         "shell": True,
     },
-    "luigi": {"installed": False, "dependencies": ["pipenv"], "commands": ["pipenv install luigi"]},
+    "luigi": {"installed": False, "dependencies": None, "commands": ["pip install luigi"]},
     "seclists": {
         "installed": False,
         "dependencies": None,
         "commands": [f"git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists"],
-    },
-    "pipenv": {
-        "installed": False,
-        "dependencies": None,
-        "commands": [
-            "bash -c 'if [[ ! -f $(which pipenv) ]]; then pip install --user pipenv; fi'",
-            f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep {Path.home()}/.local/bin) ]]; then echo "PATH=${{PATH}}:~/.local/bin" >> ~/.bashrc; fi\'',
-        ],
-        "shell": True,
     },
     "masscan": {
         "installed": False,
@@ -79,8 +70,8 @@ tools = {
         "shell": True,
         "commands": [
             f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git fetch --all && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
-            f"pipenv install -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
-            "pipenv install future",
+            f"pip install -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
+            "pip install future",
         ],
     },
     "gobuster": {
