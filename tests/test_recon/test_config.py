@@ -8,10 +8,6 @@ def test_tool_paths_absolute():
         assert Path(path).is_absolute()
 
 
-def test_wordlist_exists():
-    assert Path(defaults.get("gobuster-wordlist")).exists()
-
-
 def test_threads_numeric():
     assert defaults.get("threads").isnumeric()
 

@@ -24,14 +24,14 @@ def test_install_masscan():
 def test_install_amass():
     setup_install_test()
 
-    if Path(tool_paths.get('amass')).exists():
+    if Path(tool_paths.get("amass")).exists():
         subprocess.run(f"rm {tool_paths.get('amass')}".split())
 
     rs = recon_pipeline.ReconShell()
 
     run_cmd(rs, "install amass")
 
-    assert Path(tool_paths.get('amass')).exists()
+    assert Path(tool_paths.get("amass")).exists()
 
 
 def test_install_pipenv():
