@@ -125,7 +125,11 @@ tools = {
     "go": {
         "installed": False,
         "dependencies": None,
-        "commands": ["sudo apt-get install -y -q golang"],
+        "commands": [
+            "wget https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
+            "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
+            f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep /usr/local/go/bin) ]]; then echo "PATH=${{PATH}}:/usr/local/go/bin" >> ~/.bashrc; fi\'',
+        ],
         # "requires-root": True,
     },
 }
