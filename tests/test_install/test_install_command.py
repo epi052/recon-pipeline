@@ -82,7 +82,7 @@ def test_install_gobuster():
 
     setup_install_test(gobuster)
 
-    assert shutil.which("go") is not None
+    assert Path(tool_paths.get('go')).exists()
 
     rs = recon_pipeline.ReconShell()
 
@@ -98,7 +98,7 @@ def test_install_tkosubs():
 
     setup_install_test(tkosubs)
 
-    assert shutil.which("go") is not None
+    assert Path(tool_paths.get('go')).exists()
 
     rs = recon_pipeline.ReconShell()
 
@@ -114,7 +114,7 @@ def test_install_subjack():
 
     setup_install_test(subjack)
 
-    assert shutil.which("go") is not None
+    assert Path(tool_paths.get('go')).exists()
 
     rs = recon_pipeline.ReconShell()
 
@@ -130,8 +130,8 @@ def test_install_webanalyze():
 
     setup_install_test(webanalyze)
 
-    assert shutil.which("go") is not None
-
+    assert Path(tool_paths.get('go')).exists()
+    
     rs = recon_pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
@@ -227,7 +227,7 @@ def test_install_luigi_service():
         subprocess.run("sudo systemctl stop luigid.service".split())
 
     if Path("/usr/local/bin/luigid").exists():
-        Path("/usr/local/bin/luigid").unlink()
+        subprocess.run("sudo rm /usr/local/bin/luigid".split())
 
     rs = recon_pipeline.ReconShell()
 
