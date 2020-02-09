@@ -178,7 +178,7 @@ status_parser.add_argument(
 status_parser.add_argument(
     "--host",
     help="host on which the luigi central scheduler's visualization site is running (default: localhost)",
-    default="localhost",
+    default="127.0.0.1",
 )
 
 
