@@ -8,6 +8,7 @@ Getting Started
     installation
     running_scans
     scheduler
+    visualization
     scope
 
 .. include:: summary.rst
