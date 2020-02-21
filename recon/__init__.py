@@ -40,6 +40,7 @@ tools = {
             "make -s -j -C /tmp/masscan",
             f"mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
             "rm -rf /tmp/masscan",
+            f"sudo setcap CAP_NET_RAW+ep {tool_paths.get('masscan')}",
         ],
     },
     "amass": {

@@ -170,7 +170,7 @@ class ReconShell(cmd2.Cmd):
             # name for the option came from @AlphaRingo
             command.pop(command.index("--sausage"))
 
-            webbrowser.open("localhost:8082")  # hard-coded here, can specify different with the status command
+            webbrowser.open("127.0.0.1:8082")  # hard-coded here, can specify different with the status command
 
         if args.verbose:
             # verbose is not a luigi option, need to remove it
