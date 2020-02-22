@@ -35,7 +35,7 @@ if __name__ == "__main__" and __package__ is None:
     except ValueError:  # already gone
         pass
 
-    import pipeline
+    import pipeline  # noqa: F401
 
     __package__ = "pipeline"
 
