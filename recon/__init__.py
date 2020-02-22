@@ -30,7 +30,20 @@ tools = {
     "seclists": {
         "installed": False,
         "dependencies": None,
-        "commands": [f"git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists"],
+        "shell": True,
+        "commands": [
+            f"bash -c 'if [[ -d {defaults.get('tools-dir')}/seclists ]] ; then cd {defaults.get('tools-dir')}/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists; fi'"
+        ],
+    },
+    "searchsploit": {
+        "installed": False,
+        "dependencies": None,
+        "shell": True,
+        "commands": [
+            f"bash -c 'if [[ -d {Path(tool_paths.get('searchsploit')).parent} ]] ; then cd {Path(tool_paths.get('searchsploit')).parent} && git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git {defaults.get('tools-dir')}/exploitdb; fi'",
+            f"cp -n {Path(tool_paths.get('searchsploit')).parent}/.searchsploit_rc {Path.home().resolve()}",
+            f"sed -i 's#/opt#{defaults.get('tools-dir')}#g' {Path.home().resolve()}/.searchsploit_rc"
+        ],
     },
     "masscan": {
         "installed": False,
