@@ -4,8 +4,8 @@ from pathlib import Path
 
 import luigi
 
-from recon.config import web_ports
-from recon.web.targets import GatherWebTargets
+from pipeline.recon import web_ports
+from pipeline.recon.web import GatherWebTargets
 
 test_dict = {
     "10.10.10.161": {

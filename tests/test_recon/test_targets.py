@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from recon.targets import TargetList
+from pipeline.recon import TargetList
 
 
 def test_creates_ips(tmp_path):

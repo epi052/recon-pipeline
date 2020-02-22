@@ -11,7 +11,7 @@ import webbrowser
 from pathlib import Path
 
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
-os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parent.resolve())}"
+os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parents[1].resolve())}"
 
 # suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
@@ -24,8 +24,24 @@ import cmd2  # noqa: E402
 from cmd2.ansi import style  # noqa: E402
 
 # project's module imports
-from recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
-from recon.config import defaults  # noqa: F401,E402
+# need to cluge the package to handle relative imports at this level
+if __name__ == "__main__" and __package__ is None:
+    file = Path(__file__).resolve()
+    parent, top = file.parent, file.parents[1]
+
+    sys.path.append(str(top))
+    try:
+        sys.path.remove(str(parent))
+    except ValueError:  # already gone
+        pass
+
+    import pipeline
+
+    __package__ = "pipeline"
+
+
+from .recon.config import defaults  # noqa: F401,E402
+from .recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -161,7 +177,7 @@ class ReconShell(cmd2.Cmd):
 
         # command is a list that will end up looking something like what's below
         # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
-        command = ["luigi", "--module", scans.get(args.scantype)[0]]
+        command = ["luigi", "--module", scans.get(args.scantype)[0], "--workers", "2"]
 
         command.extend(args.__statement__.arg_list)
 

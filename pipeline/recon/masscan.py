@@ -8,9 +8,9 @@ from collections import defaultdict
 import luigi
 from luigi.util import inherits
 
-from recon.targets import TargetList
-from recon.amass import ParseAmassOutput
-from recon.config import top_tcp_ports, top_udp_ports, defaults
+from .targets import TargetList
+from .amass import ParseAmassOutput
+from .config import top_tcp_ports, top_udp_ports, defaults
 
 
 @inherits(TargetList, ParseAmassOutput)
@@ -98,8 +98,6 @@ class MasscanScan(luigi.Task):
             self.top_ports = 0
 
         target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
-
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 

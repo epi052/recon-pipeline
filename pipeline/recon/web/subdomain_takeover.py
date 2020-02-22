@@ -4,8 +4,8 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
-from recon.config import tool_paths, defaults
-from recon.web.targets import GatherWebTargets
+from .targets import GatherWebTargets
+from ..config import tool_paths, defaults
 
 
 @inherits(GatherWebTargets)

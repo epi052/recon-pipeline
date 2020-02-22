@@ -4,12 +4,12 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
-from recon.amass import ParseAmassOutput
-from recon.masscan import ParseMasscanOutput
-from recon.config import web_ports
+from ..amass import ParseAmassOutput
+from ..masscan import ParseMasscanOutput
+from ..config import web_ports
 
 
-@inherits(ParseMasscanOutput, ParseAmassOutput)
+@inherits(ParseMasscanOutput)
 class GatherWebTargets(luigi.Task):
     """ Gather all subdomains as well as any ip addresses known to have a configured web port open.
 

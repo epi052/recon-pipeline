@@ -1,6 +1,7 @@
 import pickle
 from pathlib import Path
-from recon.masscan import ParseMasscanOutput, MasscanScan
+
+from pipeline.recon import ParseMasscanOutput, MasscanScan
 
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem

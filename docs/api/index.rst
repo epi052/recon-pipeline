@@ -7,3 +7,4 @@ API Reference
     scanners
     parsers
     commands
+    models

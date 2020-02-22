@@ -7,8 +7,8 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
-from recon.masscan import ParseMasscanOutput
-from recon.config import defaults, tool_paths
+from .masscan import ParseMasscanOutput
+from .config import defaults, tool_paths
 
 
 @inherits(ParseMasscanOutput)

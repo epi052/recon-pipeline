@@ -4,59 +4,59 @@ Scanners
 Amass Scanner
 #############
 
-.. autoclass:: recon.amass.AmassScan
+.. autoclass:: pipeline.recon.amass.AmassScan
 
 Aquatone Scanner
 ################
 
-.. autoclass:: recon.web.aquatone.AquatoneScan
+.. autoclass:: pipeline.recon.web.aquatone.AquatoneScan
 
 CORS Scanner
 ############
 
-.. autoclass:: recon.web.corscanner.CORScannerScan
+.. autoclass:: pipeline.recon.web.corscanner.CORScannerScan
 
 Full Scanner
 ############
 
-.. autoclass:: recon.wrappers.FullScan
+.. autoclass:: pipeline.recon.wrappers.FullScan
 
 Gobuster Scanner
 ################
 
-.. autoclass:: recon.web.gobuster.GobusterScan
+.. autoclass:: pipeline.recon.web.gobuster.GobusterScan
 
 Hackthebox Scanner
 ##################
 
-.. autoclass:: recon.wrappers.HTBScan
+.. autoclass:: pipeline.recon.wrappers.HTBScan
 
 Masscan Scanner
 ###############
 
-.. autoclass:: recon.masscan.MasscanScan
+.. autoclass:: pipeline.recon.masscan.MasscanScan
 
 Searchsploit Scanner
 ####################
 
-.. autoclass:: recon.nmap.SearchsploitScan
+.. autoclass:: pipeline.recon.nmap.SearchsploitScan
 
 Subjack Scanner
 ###############
 
-.. autoclass:: recon.web.subdomain_takeover.SubjackScan
+.. autoclass:: pipeline.recon.web.subdomain_takeover.SubjackScan
 
 ThreadedNmap Scanner
 ####################
 
-.. autoclass:: recon.nmap.ThreadedNmapScan
+.. autoclass:: pipeline.recon.nmap.ThreadedNmapScan
 
 TKOSubs Scanner
 ###############
 
-.. autoclass:: recon.web.subdomain_takeover.TKOSubsScan
+.. autoclass:: pipeline.recon.web.subdomain_takeover.TKOSubsScan
 
 Webanalyze Scanner
 ##################
 
-.. autoclass:: recon.web.webanalyze.WebanalyzeScan
+.. autoclass:: pipeline.recon.web.webanalyze.WebanalyzeScan

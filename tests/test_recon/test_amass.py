@@ -3,7 +3,7 @@ from pathlib import Path
 
 import luigi
 
-from recon.amass import ParseAmassOutput, AmassScan
+from pipeline.recon import ParseAmassOutput, AmassScan
 
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem
@@ -132,8 +132,6 @@ def test_parse_amass_subdomain_results(tmp_path):
     pao.run()
 
     contents = (Path(pao.output().get("target-subdomains").path)).read_text()
-    print((Path(pao.output().get("target-subdomains").path)))
-    print(contents)
 
     for line in contents.split():
         assert line.strip() in subdomains

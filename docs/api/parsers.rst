@@ -4,14 +4,14 @@ Parsers
 Amass Parser
 ############
 
-.. autoclass:: recon.amass.ParseAmassOutput
+.. autoclass:: pipeline.recon.amass.ParseAmassOutput
 
 Web Targets Parser
 ##################
 
-.. autoclass:: recon.web.targets.GatherWebTargets
+.. autoclass:: pipeline.recon.web.targets.GatherWebTargets
 
 Masscan Parser
 ##############
 
-.. autoclass:: recon.masscan.ParseMasscanOutput
+.. autoclass:: pipeline.recon.masscan.ParseMasscanOutput

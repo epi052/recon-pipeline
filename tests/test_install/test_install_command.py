@@ -3,16 +3,16 @@ import importlib
 import subprocess
 from pathlib import Path
 
-from recon.config import tool_paths, defaults
+from pipeline.recon import tool_paths, defaults
 from ..utils import setup_install_test, run_cmd
 
-recon_pipeline = importlib.import_module("recon-pipeline")
+pipeline = importlib.import_module("pipeline.recon-pipeline")
 
 
 def test_install_go():
     go = Path(tool_paths.get("go"))
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     run_cmd(rs, "install go")
 
@@ -24,7 +24,7 @@ def test_install_masscan():
 
     setup_install_test(masscan)
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -53,7 +53,7 @@ def test_install_luigi():
     if shutil.which("luigi") is not None:
         subprocess.run("pip uninstall luigi".split())
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -67,7 +67,7 @@ def test_install_aquatone():
 
     setup_install_test(aquatone)
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -148,7 +148,7 @@ def test_install_corscanner():
     if corscanner.parent.exists():
         shutil.rmtree(corscanner.parent)
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -165,7 +165,7 @@ def test_update_corscanner():
     if not corscanner.parent.exists():
         subprocess.run(f"git clone https://github.com/chenjj/CORScanner.git {corscanner.parent}".split())
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -182,7 +182,7 @@ def test_install_recursive_gobuster():
     if recursive_gobuster.parent.exists():
         shutil.rmtree(recursive_gobuster.parent)
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -201,7 +201,7 @@ def test_update_recursive_gobuster():
             f"git clone https://github.com/epi052/recursive-gobuster.git {recursive_gobuster.parent}".split()
         )
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     assert Path(defaults.get("tools-dir")).exists()
 
@@ -228,7 +228,7 @@ def test_install_luigi_service():
     if Path("/usr/local/bin/luigid").exists():
         subprocess.run("sudo rm /usr/local/bin/luigid".split())
 
-    rs = recon_pipeline.ReconShell()
+    rs = pipeline.ReconShell()
 
     run_cmd(rs, "install luigi-service")
 

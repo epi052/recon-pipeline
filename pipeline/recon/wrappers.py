@@ -1,12 +1,12 @@
 import luigi
 from luigi.util import inherits
 
-from recon.nmap import SearchsploitScan
-from recon.web.aquatone import AquatoneScan
-from recon.web.corscanner import CORScannerScan
-from recon.web.subdomain_takeover import TKOSubsScan, SubjackScan
-from recon.web.gobuster import GobusterScan
-from recon.web.webanalyze import WebanalyzeScan
+from .nmap import SearchsploitScan
+from .web import AquatoneScan
+from .web import GobusterScan
+from .web import WebanalyzeScan
+from .web import CORScannerScan
+from .web import TKOSubsScan, SubjackScan
 
 
 @inherits(SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, CORScannerScan, GobusterScan, WebanalyzeScan)
@@ -64,7 +64,7 @@ class FullScan(luigi.WrapperTask):
         yield SubjackScan(**args)
         yield SearchsploitScan(**args)
         yield CORScannerScan(**args)
-        yield WebanalyzeScan(**args)
+        # yield WebanalyzeScan(**args)
 
         del args["threads"]
 

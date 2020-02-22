@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from recon.config import tool_paths, defaults, web_ports, top_tcp_ports, top_udp_ports
+from pipeline.recon import tool_paths, defaults, web_ports, top_tcp_ports, top_udp_ports
 
 
 def test_tool_paths_absolute():

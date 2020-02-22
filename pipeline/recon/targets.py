@@ -5,7 +5,7 @@ from pathlib import Path
 
 import luigi
 
-from recon.config import defaults
+from .config import defaults
 
 
 class TargetList(luigi.ExternalTask):

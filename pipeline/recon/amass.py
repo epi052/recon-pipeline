@@ -6,8 +6,8 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
-from recon.config import tool_paths
-from recon.targets import TargetList
+from .config import tool_paths
+from .targets import TargetList
 
 
 @inherits(TargetList)

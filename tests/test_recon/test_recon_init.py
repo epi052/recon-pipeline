@@ -1,4 +1,4 @@
-from recon import get_scans
+from pipeline.recon import get_scans
 
 
 def test_get_scans():
@@ -25,15 +25,18 @@ def test_get_scans():
         assert name in scans.keys()
 
     modules = [
-        "recon.amass",
-        "recon.nmap",
-        "recon.masscan",
-        "recon.wrappers",
-        "recon.web.aquatone",
-        "recon.web.corscanner",
-        "recon.web.gobuster",
-        "recon.web.subdomain_takeover",
-        "recon.web.webanalyze",
+        "pipeline.recon.amass",
+        "pipeline.recon.masscan",
+        "pipeline.recon.nmap",
+        "pipeline.recon.nmap",
+        "pipeline.recon.web",
+        "pipeline.recon.web",
+        "pipeline.recon.web",
+        "pipeline.recon.web",
+        "pipeline.recon.web",
+        "pipeline.recon.web",
+        "pipeline.recon.wrappers",
+        "pipeline.recon.wrappers",
     ]
 
     for module in scans.values():

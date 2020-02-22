@@ -30,7 +30,7 @@ tool_paths = {
     "masscan": f"{defaults.get('tools-dir')}/masscan",
     "amass": f"{defaults.get('tools-dir')}/amass",
     "go": "/usr/local/go/bin/go",
-    "searchsploit": f"{defaults.get('tools-dir')}/exploitdb/searchsploit"
+    "searchsploit": f"{defaults.get('tools-dir')}/exploitdb/searchsploit",
 }
 
 top_tcp_ports = [

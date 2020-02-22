@@ -1,5 +1,6 @@
 from pathlib import Path
-from recon.nmap import ThreadedNmapScan, SearchsploitScan
+
+from pipeline.recon import ThreadedNmapScan, SearchsploitScan
 
 import luigi
 
