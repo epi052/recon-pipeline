@@ -10,7 +10,7 @@ from luigi.util import inherits
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
-from .config import top_tcp_ports, top_udp_ports, defaults
+from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths
 
 
 @inherits(TargetList, ParseAmassOutput)
@@ -107,7 +107,7 @@ class MasscanScan(luigi.Task):
             )
 
         command = [
-            "masscan",
+            tool_paths.get("masscan"),
             "-v",
             "--open",
             "--banners",
