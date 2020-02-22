@@ -7,8 +7,8 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
-from recon.config import defaults
 from recon.masscan import ParseMasscanOutput
+from recon.config import defaults, tool_paths
 
 
 @inherits(ParseMasscanOutput)
@@ -200,7 +200,7 @@ class SearchsploitScan(luigi.Task):
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
         for entry in Path(self.input().path).glob("nmap*.xml"):
-            proc = subprocess.run(["searchsploit", "--nmap", str(entry)], stderr=subprocess.PIPE)
+            proc = subprocess.run([tool_paths.get("searchsploit"), "--nmap", str(entry)], stderr=subprocess.PIPE)
             if proc.stderr:
                 Path(self.output().path).mkdir(parents=True, exist_ok=True)
 
