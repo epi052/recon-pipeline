@@ -177,7 +177,7 @@ class ReconShell(cmd2.Cmd):
 
         # command is a list that will end up looking something like what's below
         # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
-        command = ["luigi", "--module", scans.get(args.scantype)[0], "--workers", "2"]
+        command = ["luigi", "--module", scans.get(args.scantype)[0]]
 
         command.extend(args.__statement__.arg_list)
 

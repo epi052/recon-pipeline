@@ -82,9 +82,14 @@ class TKOSubsScan(ExternalProgramTask):
         """
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
+        subdomains = Path(self.results_dir) / "target-results" / "subdomains"
+
+        if not subdomains.exists():
+            return
+
         command = [
             tool_paths.get("tko-subs"),
-            f"-domains={self.input().path}",
+            f"-domains={str(subdomains.resolve())}",
             f"-data={tool_paths.get('tko-subs-dir')}/providers-data.csv",
             f"-output={self.output().path}",
         ]
