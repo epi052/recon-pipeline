@@ -1,3 +1,4 @@
+# noqa: F401
 from .aquatone import AquatoneScan
 from .gobuster import GobusterScan
 from .targets import GatherWebTargets

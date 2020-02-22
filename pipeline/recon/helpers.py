@@ -7,12 +7,12 @@ from collections import defaultdict
 
 
 def get_scans():
-    """ Iterates over the recon package and its modules to find all of the \*Scan classes.
+    """ Iterates over the recon package and its modules to find all of the classes that end in [Ss]can.
 
     **A contract exists here that says any scans need to end with the word scan in order to be found by this function.**
 
     Example:
-        ``defaultdict(<class 'list'>, {'AmassScan': ['recon.amass'], 'MasscanScan': ['recon.masscan'], ... })``
+        ``defaultdict(<class 'list'>, {'AmassScan': ['pipeline.recon.amass'], 'MasscanScan': ['pipeline.recon.masscan'], ... })``
 
     Returns:
         dict containing mapping of ``classname -> [modulename, ...]`` for all potential recon-pipeline commands
