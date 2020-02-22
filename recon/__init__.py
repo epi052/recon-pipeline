@@ -42,7 +42,7 @@ tools = {
         "commands": [
             f"bash -c 'if [[ -d {Path(tool_paths.get('searchsploit')).parent} ]] ; then cd {Path(tool_paths.get('searchsploit')).parent} && git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git {defaults.get('tools-dir')}/exploitdb; fi'",
             f"cp -n {Path(tool_paths.get('searchsploit')).parent}/.searchsploit_rc {Path.home().resolve()}",
-            f"sed -i 's#/opt#{defaults.get('tools-dir')}#g' {Path.home().resolve()}/.searchsploit_rc"
+            f"sed -i 's#/opt#{defaults.get('tools-dir')}#g' {Path.home().resolve()}/.searchsploit_rc",
         ],
     },
     "masscan": {
