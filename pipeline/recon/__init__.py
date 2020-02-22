@@ -1,4 +1,3 @@
-# noqa: F401
 from .helpers import get_scans
 from .targets import TargetList
 from .tool_definitions import tools
