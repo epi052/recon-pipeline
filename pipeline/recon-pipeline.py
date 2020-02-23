@@ -42,7 +42,7 @@ if __name__ == "__main__" and __package__ is None:
 
 from .recon.config import defaults  # noqa: F401,E402
 from .models import DBManager  # noqa: F401,E402
-from .recon import (
+from .recon import (  # noqa: F401,E402
     get_scans,
     tools,
     scan_parser,
@@ -51,9 +51,8 @@ from .recon import (
     database_parser,
     db_detach_parser,
     db_list_parser,
-    db_create_parser,
     db_attach_parser,
-)  # noqa: F401,E402
+)
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
