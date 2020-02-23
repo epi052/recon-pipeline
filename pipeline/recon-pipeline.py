@@ -41,7 +41,19 @@ if __name__ == "__main__" and __package__ is None:
 
 
 from .recon.config import defaults  # noqa: F401,E402
-from .recon import get_scans, tools, scan_parser, install_parser, status_parser  # noqa: F401,E402
+from .models import DBManager  # noqa: F401,E402
+from .recon import (
+    get_scans,
+    tools,
+    scan_parser,
+    install_parser,
+    status_parser,
+    database_parser,
+    db_detach_parser,
+    db_list_parser,
+    db_create_parser,
+    db_attach_parser,
+)  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -75,10 +87,12 @@ class SelectorThread(threading.Thread):
 class ReconShell(cmd2.Cmd):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.db_mgr = None
         self.sentry = False
-        self.prompt = "recon-pipeline> "
         self.selectorloop = None
         self.continue_install = True
+        self.prompt = "recon-pipeline> "
+        self.original_prompt = self.prompt  # allows for updating prompt and coming back to the original
 
         Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
 
@@ -310,6 +324,44 @@ class ReconShell(cmd2.Cmd):
     def do_status(self, args):
         """ Open a web browser to Luigi's central scheduler's visualization site """
         webbrowser.open(f"{args.host}:{args.port}")
+
+    def database_list(self, args):
+        """ List all known databases """
+        locations = ["/tmp/recon-results.db", f"{Path().cwd() / 'recon-results.db'}"]
+        for i, location in enumerate(locations, start=1):
+            self.poutput(style(f"   {i}. {location}"))
+
+    def database_attach(self, args):
+        """ Attach to the selected database """
+        locations = ["/tmp/recon-results.db", f"{Path().cwd()/'recon-results.db'}"]
+        location = self.select(locations)
+
+        self.db_mgr = DBManager(db_location=location)
+
+        self.poutput(style(f"[*] attached to sqlite database at {Path(location).resolve()}", fg="bright_yellow"))
+        self.async_update_prompt(f"[db-{locations.index(location) + 1}] {self.prompt}")
+
+    def database_detach(self, args):
+        """ Detach from the currently attached database """
+        if self.db_mgr is None:
+            return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
+
+        self.db_mgr.close()
+        self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
+        self.async_update_prompt(self.original_prompt)
+
+    db_list_parser.set_defaults(func=database_list)
+    db_attach_parser.set_defaults(func=database_attach)
+    db_detach_parser.set_defaults(func=database_detach)
+
+    @cmd2.with_argparser(database_parser)
+    def do_database(self, args):
+        """ Manage database connections (list/attach/detach) """
+        func = getattr(args, "func", None)
+        if func is not None:
+            func(self, args)
+        else:
+            self.do_help("database")
 
 
 if __name__ == "__main__":

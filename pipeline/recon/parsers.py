@@ -67,3 +67,18 @@ scan_parser.add_argument(
 scan_parser.add_argument(
     "--verbose", action="store_true", help="shows debug messages from luigi, useful for troubleshooting"
 )
+
+# top level and subparsers for ReconShell's database command
+database_parser = cmd2.Cmd2ArgumentParser()
+database_subparsers = database_parser.add_subparsers(title="subcommands", help="subcommand help")
+
+db_list_parser = database_subparsers.add_parser("list", help="list help")
+
+db_attach_parser = database_subparsers.add_parser("attach", help="attach help")
+db_attach_parser.add_argument("--id", help="connect to database with given id; ids are obtained from database list")
+
+db_detach_parser = database_subparsers.add_parser("detach", help="detach help")
+db_create_parser = database_subparsers.add_parser("create", help="create help")
+db_create_parser.add_argument(
+    "--location", default="recon-results.db", help="location to create the new database (default: recon-results.db)"
+)

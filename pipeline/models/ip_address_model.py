@@ -16,7 +16,7 @@ class IPAddress(Base):
     __tablename__ = "ip_address"
 
     id = Column(Integer, primary_key=True)
-    ipv4_address = Column(String)
-    ipv6_address = Column(String)
+    ipv4_address = Column(String, unique=True)
+    ipv6_address = Column(String, unique=True)
     target_id = Column(Integer, ForeignKey("target.id"))
     target = relationship("Target", back_populates="ip_addresses")

@@ -31,7 +31,7 @@ class Target(Base):
 
     id = Column(Integer, primary_key=True)
     headers = Column(String)
-    hostname = Column(String)
+    hostname = Column(String, unique=True)
     is_web = Column(Boolean, default=False)
     vuln_to_sub_takeover = Column(Boolean, default=False)
 

@@ -8,6 +8,7 @@ from luigi.contrib.external_program import ExternalProgramTask
 
 from .config import tool_paths
 from .targets import TargetList
+from ..models import Target, IPAddress, DBManager
 
 
 @inherits(TargetList)
@@ -168,6 +169,8 @@ class ParseAmassOutput(luigi.Task):
         unique_ip6s = set()
         unique_subs = set()
 
+        db_mgr = DBManager(db_location="recon-results.db")  # TODO: make dynamic
+
         Path(self.output().get("target-ips").path).parent.mkdir(parents=True, exist_ok=True)
 
         amass_json = self.input().open()
@@ -178,14 +181,23 @@ class ParseAmassOutput(luigi.Task):
         with amass_json as aj, ip_file as ip_out, ip6_file as ip6_out, subdomain_file as subdomain_out:
             for line in aj:
                 entry = json.loads(line)
-                unique_subs.add(entry.get("name"))
+                unique_subs.add(entry.get("name"))  # file
+                tgt = Target(hostname=entry.get("name"))  # db
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
                     if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
-                        unique_ips.add(ipaddr)
+                        unique_ips.add(ipaddr)  # file
+
+                        ip_address = IPAddress(ipv4_address=ipaddr)  # db
+                        tgt.ip_addresses.append(ip_address)
+
                     elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
-                        unique_ip6s.add(ipaddr)
+                        unique_ip6s.add(ipaddr)  # file
+                        ip_address = IPAddress(ipv6_address=ipaddr)  # db
+                        tgt.ip_addresses.append(ip_address)
+
+                db_mgr.add(tgt)
 
             # send gathered results to their appropriate destination
             for ip in unique_ips:
