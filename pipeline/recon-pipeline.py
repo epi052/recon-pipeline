@@ -40,8 +40,8 @@ if __name__ == "__main__" and __package__ is None:
     __package__ = "pipeline"
 
 
-from .recon.config import defaults  # noqa: F401,E402
 from .models import DBManager  # noqa: F401,E402
+from .recon.config import defaults  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     tools,
@@ -52,6 +52,7 @@ from .recon import (  # noqa: F401,E402
     db_detach_parser,
     db_list_parser,
     db_attach_parser,
+    db_delete_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -91,9 +92,9 @@ class ReconShell(cmd2.Cmd):
         self.selectorloop = None
         self.continue_install = True
         self.prompt = "recon-pipeline> "
-        self.original_prompt = self.prompt  # allows for updating prompt and coming back to the original
 
         Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("database-dir")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -324,21 +325,51 @@ class ReconShell(cmd2.Cmd):
         """ Open a web browser to Luigi's central scheduler's visualization site """
         webbrowser.open(f"{args.host}:{args.port}")
 
+    @staticmethod
+    def get_databases():
+        """ Simple helper to list all known databases from default directory """
+        dbdir = defaults.get("database-dir")
+
+        for db in sorted(Path(dbdir).iterdir()):
+            yield db
+
     def database_list(self, args):
         """ List all known databases """
-        locations = ["/tmp/recon-results.db", f"{Path().cwd() / 'recon-results.db'}"]
-        for i, location in enumerate(locations, start=1):
+        try:
+            next(self.get_databases())
+        except StopIteration:
+            return self.poutput(style(f"[-] There are no databases.", fg="bright_white"))
+
+        for i, location in enumerate(self.get_databases(), start=1):
             self.poutput(style(f"   {i}. {location}"))
 
     def database_attach(self, args):
         """ Attach to the selected database """
-        locations = ["/tmp/recon-results.db", f"{Path().cwd()/'recon-results.db'}"]
+        index = None
+        locations = [str(x) for x in self.get_databases()] + ["create new database"]
+
         location = self.select(locations)
 
-        self.db_mgr = DBManager(db_location=location)
+        if location == "create new database":
+            location = self.read_input(
+                style("new database name? (recommend something unique for this target)\n-> ", fg="bright_white")
+            )
 
-        self.poutput(style(f"[*] attached to sqlite database at {Path(location).resolve()}", fg="bright_yellow"))
-        self.async_update_prompt(f"[db-{locations.index(location) + 1}] {self.prompt}")
+            new_location = str(Path(defaults.get("database-dir")) / location)
+            index = sorted([new_location] + locations[:-1]).index(new_location) + 1
+
+            self.db_mgr = DBManager(db_location=new_location)
+
+            self.poutput(
+                style(f"[*] created database @ {Path(defaults.get('database-dir')) / location}", fg="bright_yellow")
+            )
+
+        else:
+            index = locations.index(location) + 1
+            self.db_mgr = DBManager(db_location=location)
+
+        self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
+        self.async_update_prompt(f"[db-{index}] recon-pipeline> ")
 
     def database_detach(self, args):
         """ Detach from the currently attached database """
@@ -347,11 +378,28 @@ class ReconShell(cmd2.Cmd):
 
         self.db_mgr.close()
         self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
-        self.async_update_prompt(self.original_prompt)
+        self.async_update_prompt("recon-pipeline> ")
+
+    def database_delete(self, args):
+        """ Delete the selected database """
+        locations = [str(x) for x in self.get_databases()]
+
+        to_delete = self.select(locations)
+        index = locations.index(to_delete) + 1
+
+        Path(to_delete).unlink()
+
+        if f"[db-{index}]" in self.prompt:
+            self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
+            self.async_update_prompt("recon-pipeline> ")
+            self.db_mgr.close()
+
+        self.poutput(style(f"[+] deleted sqlite database at {Path(to_delete).resolve()}", fg="bright_green"))
 
     db_list_parser.set_defaults(func=database_list)
     db_attach_parser.set_defaults(func=database_attach)
     db_detach_parser.set_defaults(func=database_detach)
+    db_delete_parser.set_defaults(func=database_delete)
 
     @cmd2.with_argparser(database_parser)
     def do_database(self, args):

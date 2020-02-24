@@ -12,7 +12,7 @@ from .parsers import (
     status_parser,
     database_parser,
     db_attach_parser,
-    db_create_parser,
+    db_delete_parser,
     db_detach_parser,
     db_list_parser,
 )

@@ -7,10 +7,11 @@ defaults = {
     "threads": "10",
     "masscan-rate": "1000",
     "masscan-iface": "tun0",
-    "tools-dir": f"{Path.home()}/.recon-tools",
+    "gobuster-extensions": "",
     "results-dir": "recon-results",
     "aquatone-scan-timeout": "900",
-    "gobuster-extensions": "",
+    "tools-dir": f"{Path.home()}/.local/recon-pipeline/tools",
+    "database-dir": f"{Path.home()}/.local/recon-pipeline/databases",
 }
 
 defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
