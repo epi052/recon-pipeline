@@ -13,9 +13,11 @@ class TargetList(luigi.ExternalTask):
 
     Args:
         results_dir: specifies the directory on disk to which all Task results are written
+        db_location: specifies the path to the database used for storing results
     """
 
     target_file = luigi.Parameter()
+    db_location = luigi.Parameter()
     results_dir = luigi.Parameter(default=defaults.get("results-dir", ""))
 
     def output(self):

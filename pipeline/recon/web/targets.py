@@ -14,6 +14,7 @@ class GatherWebTargets(luigi.Task):
     """ Gather all subdomains as well as any ip addresses known to have a configured web port open.
 
     Args:
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
         top_ports: Scan top N most popular ports *Required by upstream Task*
         ports: specifies the port(s) to be scanned *Required by upstream Task*
@@ -39,6 +40,7 @@ class GatherWebTargets(luigi.Task):
             "top_ports": self.top_ports,
             "interface": self.interface,
             "ports": self.ports,
+            "db_location": self.db_location,
         }
         return {
             "masscan-output": ParseMasscanOutput(**args),

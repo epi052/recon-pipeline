@@ -36,13 +36,14 @@ class WebanalyzeScan(luigi.Task):
 
     Args:
         threads: number of threads for parallel webanalyze command execution
-        exempt_list: Path to a file providing blacklisted subdomains, one per line. *--* Optional for upstream Task
-        top_ports: Scan top N most popular ports *--* Required by upstream Task
-        ports: specifies the port(s) to be scanned *--* Required by upstream Task
-        interface: use the named raw network interface, such as "eth0" *--* Required by upstream Task
-        rate: desired rate for transmitting packets (packets per second) *--* Required by upstream Task
-        target_file: specifies the file on disk containing a list of ips or domains *--* Required by upstream Task
-        results_dir: specifes the directory on disk to which all Task results are written *--* Required by upstream Task
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
+        exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional for upstream Task*
+        top_ports: Scan top N most popular ports *Required by upstream Task*
+        ports: specifies the port(s) to be scanned  *Required by upstream Task*
+        interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
+        rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
+        results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
@@ -64,6 +65,7 @@ class WebanalyzeScan(luigi.Task):
             "interface": self.interface,
             "ports": self.ports,
             "exempt_list": self.exempt_list,
+            "db_location": self.db_location,
         }
         return GatherWebTargets(**args)
 

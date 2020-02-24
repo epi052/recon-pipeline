@@ -35,6 +35,7 @@ class AmassScan(ExternalProgramTask):
 
     Args:
         exempt_list: Path to a file providing blacklisted subdomains, one per line.
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
@@ -49,7 +50,7 @@ class AmassScan(ExternalProgramTask):
         Returns:
             luigi.ExternalTask - TargetList
         """
-        args = {"target_file": self.target_file, "results_dir": self.results_dir}
+        args = {"target_file": self.target_file, "results_dir": self.results_dir, "db_location": self.db_location}
         return TargetList(**args)
 
     def output(self):
@@ -104,6 +105,7 @@ class ParseAmassOutput(luigi.Task):
     """ Read amass JSON results and create categorized entries into ip|subdomain files.
 
     Args:
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
@@ -119,7 +121,12 @@ class ParseAmassOutput(luigi.Task):
             luigi.ExternalTask - TargetList
         """
 
-        args = {"target_file": self.target_file, "exempt_list": self.exempt_list, "results_dir": self.results_dir}
+        args = {
+            "target_file": self.target_file,
+            "exempt_list": self.exempt_list,
+            "results_dir": self.results_dir,
+            "db_location": self.db_location,
+        }
         return AmassScan(**args)
 
     def output(self):
@@ -169,7 +176,7 @@ class ParseAmassOutput(luigi.Task):
         unique_ip6s = set()
         unique_subs = set()
 
-        db_mgr = DBManager(db_location="recon-results.db")  # TODO: make dynamic
+        db_mgr = DBManager(db_location=self.db_location)
 
         Path(self.output().get("target-ips").path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -198,6 +205,8 @@ class ParseAmassOutput(luigi.Task):
                         tgt.ip_addresses.append(ip_address)
 
                 db_mgr.add(tgt)
+
+            db_mgr.close()
 
             # send gathered results to their appropriate destination
             for ip in unique_ips:

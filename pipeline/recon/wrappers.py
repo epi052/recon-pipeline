@@ -46,6 +46,7 @@ class FullScan(luigi.WrapperTask):
             "wordlist": self.wordlist,
             "extensions": self.extensions,
             "recursive": self.recursive,
+            "db_location": self.db_location,
         }
 
         yield GobusterScan(**args)
@@ -105,6 +106,7 @@ class HTBScan(luigi.WrapperTask):
             "exempt_list": self.exempt_list,
             "threads": self.threads,
             "proxy": self.proxy,
+            "db_location": self.db_location,
             "wordlist": self.wordlist,
             "extensions": self.extensions,
             "recursive": self.recursive,

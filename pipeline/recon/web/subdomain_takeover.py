@@ -31,6 +31,7 @@ class TKOSubsScan(ExternalProgramTask):
             PYTHONPATH=$(pwd) luigi --local-scheduler --module recon.web.subdomain_takeover TKOSubsScan --target-file tesla --top-ports 1000 --interface eth0
 
     Args:
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
         top_ports: Scan top N most popular ports *Required by upstream Task*
         ports: specifies the port(s) to be scanned *Required by upstream Task*
@@ -57,6 +58,7 @@ class TKOSubsScan(ExternalProgramTask):
             "interface": self.interface,
             "ports": self.ports,
             "exempt_list": self.exempt_list,
+            "db_location": self.db_location,
         }
         return GatherWebTargets(**args)
 
@@ -121,6 +123,7 @@ class SubjackScan(ExternalProgramTask):
 
     Args:
         threads: number of threads for parallel subjack command execution
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
         top_ports: Scan top N most popular ports *Required by upstream Task*
         ports: specifies the port(s) to be scanned *Required by upstream Task*
@@ -149,6 +152,7 @@ class SubjackScan(ExternalProgramTask):
             "interface": self.interface,
             "ports": self.ports,
             "exempt_list": self.exempt_list,
+            "db_location": self.db_location,
         }
         return GatherWebTargets(**args)
 

@@ -1,9 +1,9 @@
+import sqlite3
 from pathlib import Path
 
+from cmd2 import ansi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-from cmd2 import ansi
 
 from . import *  # noqa: F403
 
@@ -20,7 +20,7 @@ class DBManager:
         try:
             self.session.add(item)
             self.session.commit()
-        except Exception as e:
+        except sqlite3.IntegrityError as e:
             print(ansi.style(f"[!] exception during database transaction: {e}", fg="red"))
             self.session.rollback()
 

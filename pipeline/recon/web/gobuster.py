@@ -39,6 +39,7 @@ class GobusterScan(luigi.Task):
         recursive: whether or not to recursively gobust the target (may produce a LOT of traffic... quickly)
         proxy: protocol://ip:port proxy specification for gobuster
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         top_ports: Scan top N most popular ports *Required by upstream Task*
         ports: specifies the port(s) to be scanned *Required by upstream Task*
         interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
@@ -70,6 +71,7 @@ class GobusterScan(luigi.Task):
             "interface": self.interface,
             "ports": self.ports,
             "exempt_list": self.exempt_list,
+            "db_location": self.db_location,
         }
         return GatherWebTargets(**args)
 

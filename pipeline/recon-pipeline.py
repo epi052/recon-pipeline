@@ -177,7 +177,12 @@ class ReconShell(cmd2.Cmd):
             ThreadedNmapScan    WebanalyzeScan      AquatoneScan        FullScan
             MasscanScan         SubjackScan         TKOSubsScan         HTBScan
         """
-        self.async_alert(
+        if self.db_mgr is None:
+            return self.poutput(
+                style(f"[!] You are not connected to a database; run database attach before scanning", fg="bright_red")
+            )
+
+        self.poutput(
             style(
                 "If anything goes wrong, rerun your command with --verbose to enable debug statements.",
                 fg="cyan",
@@ -190,10 +195,12 @@ class ReconShell(cmd2.Cmd):
         scans = get_scans()
 
         # command is a list that will end up looking something like what's below
-        # luigi --module recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
+        # luigi --module pipeline.recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
         command = ["luigi", "--module", scans.get(args.scantype)[0]]
 
         command.extend(args.__statement__.arg_list)
+
+        command.extend(["--db-location", str(self.db_mgr.location)])
 
         if args.sausage:
             # sausage is not a luigi option, need to remove it

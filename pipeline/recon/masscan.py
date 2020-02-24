@@ -1,15 +1,18 @@
 import json
 import pickle
 import logging
+import sqlite3
 import subprocess
 from pathlib import Path
 from collections import defaultdict
 
 import luigi
 from luigi.util import inherits
+from sqlalchemy import and_
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
+from ..models import DBManager, IPAddress, Target, Port
 from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths
 
 
@@ -43,6 +46,7 @@ class MasscanScan(luigi.Task):
         interface: use the named raw network interface, such as "eth0"
         top_ports: Scan top N most popular ports
         ports: specifies the port(s) to be scanned
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
@@ -97,13 +101,18 @@ class MasscanScan(luigi.Task):
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(target_file=self.target_file, results_dir=self.results_dir)
+        target_list = yield TargetList(
+            target_file=self.target_file, results_dir=self.results_dir, db_location=self.db_location
+        )
 
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         if target_list.path.endswith("domains"):
             yield ParseAmassOutput(
-                target_file=self.target_file, exempt_list=self.exempt_list, results_dir=self.results_dir
+                target_file=self.target_file,
+                exempt_list=self.exempt_list,
+                results_dir=self.results_dir,
+                db_location=self.db_location,
             )
 
         command = [
@@ -139,6 +148,7 @@ class ParseMasscanOutput(luigi.Task):
         ports: specifies the port(s) to be scanned *Required by upstream Task*
         interface: use the named raw network interface, such as "eth0" *Required by upstream Task*
         rate: desired rate for transmitting packets (packets per second) *Required by upstream Task*
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
@@ -158,6 +168,7 @@ class ParseMasscanOutput(luigi.Task):
             "top_ports": self.top_ports,
             "interface": self.interface,
             "ports": self.ports,
+            "db_location": self.db_location,
         }
         return MasscanScan(**args)
 
@@ -187,6 +198,8 @@ class ParseMasscanOutput(luigi.Task):
             # this task if restarted because we never hit pickle.dump
             return print(e)
 
+        db_mgr = DBManager(db_location=self.db_location)
+
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
         """
@@ -209,9 +222,42 @@ class ParseMasscanOutput(luigi.Task):
         """
         for entry in entries:
             single_target_ip = entry.get("ip")
+
+            result = (
+                db_mgr.session.query(Target, IPAddress)
+                .filter(Target.id == IPAddress.target_id)
+                .filter(IPAddress.ipv4_address == single_target_ip)
+                .first()
+            )
+
+            if not result:
+                # no target has this ip associated with it
+                tgt = Target()
+                tgt_ip = IPAddress(ipv4_address=single_target_ip)
+                tgt.ip_addresses.append(tgt_ip)
+            else:
+                # result == (<Target object at 0x7f070ad9fb10>, <IPAddress object at 0x7f070ad9fb90>)
+                tgt, tgt_ip = result
+
             for port_entry in entry.get("ports"):
                 protocol = port_entry.get("proto")
                 ip_dict[single_target_ip][protocol].add(str(port_entry.get("port")))
+
+                port = (
+                    db_mgr.session.query(Port)
+                    .filter(Port.port_number == port_entry.get("port"))
+                    .filter(Port.protocol == protocol)
+                    .first()
+                )
+
+                if not port:
+                    port = Port(protocol=protocol, port_number=port_entry.get("port"))
+
+                tgt.open_ports.append(port)
+
+            db_mgr.add(tgt)
+
+        db_mgr.close()
 
         with open(self.output().path, "wb") as f:
             pickle.dump(dict(ip_dict), f)

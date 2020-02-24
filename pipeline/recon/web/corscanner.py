@@ -32,6 +32,7 @@ class CORScannerScan(ExternalProgramTask):
 
     Args:
         threads: number of threads for parallel subjack command execution
+        db_location: specifies the path to the database used for storing results *Required by upstream Task*
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
         top_ports: Scan top N most popular ports *Required by upstream Task*
         ports: specifies the port(s) to be scanned *Required by upstream Task*
@@ -60,6 +61,7 @@ class CORScannerScan(ExternalProgramTask):
             "interface": self.interface,
             "ports": self.ports,
             "exempt_list": self.exempt_list,
+            "db_location": self.db_location,
         }
         return GatherWebTargets(**args)
 
