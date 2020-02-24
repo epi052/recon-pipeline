@@ -1,14 +1,12 @@
 import json
 import pickle
 import logging
-import sqlite3
 import subprocess
 from pathlib import Path
 from collections import defaultdict
 
 import luigi
 from luigi.util import inherits
-from sqlalchemy import and_
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
