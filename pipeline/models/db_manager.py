@@ -22,7 +22,7 @@ class DBManager:
         try:
             self.session.add(item)
             self.session.commit()
-        except (sqlite3.IntegrityError, exc.IntegrityError) as e:
+        except (sqlite3.IntegrityError, exc.IntegrityError):
             print(ansi.style(f"[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
 
