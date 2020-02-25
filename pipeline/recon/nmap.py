@@ -157,11 +157,7 @@ class ParseNmapOutput(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-
-        self.highest_id = self.db_mgr.session.query(func.max(NmapResult.id)).first()[0]
-
-        if self.highest_id is None:
-            self.highest_id = 1
+        self.highest_id = self.db_mgr.get_highest_id(table=NmapResult)
 
     def requires(self):
         """ ParseNmapOutput depends on ThreadedNmap to run.

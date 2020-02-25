@@ -151,6 +151,11 @@ class ParseMasscanOutput(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=IPAddress)
+
     def requires(self):
         """ ParseMasscanOutput depends on Masscan to run.
 
@@ -182,6 +187,10 @@ class ParseMasscanOutput(luigi.Task):
 
         new_path = results_subfolder / "masscan.parsed.pickle"
 
+        # TODO: remove localtarget eventually
+        # putting this here for the eventual cut over to full database
+        # SQLiteTarget(table=IPAddress, db_location=self.db_location, index=self.highest_id)
+
         return luigi.LocalTarget(new_path.resolve())
 
     def run(self):
@@ -195,8 +204,6 @@ class ParseMasscanOutput(luigi.Task):
             # return on exception; no output file created; pipeline should start again from
             # this task if restarted because we never hit pickle.dump
             return print(e)
-
-        db_mgr = DBManager(db_location=self.db_location)
 
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -222,7 +229,7 @@ class ParseMasscanOutput(luigi.Task):
             single_target_ip = entry.get("ip")
 
             result = (
-                db_mgr.session.query(Target, IPAddress)
+                self.db_mgr.session.query(Target, IPAddress)
                 .filter(Target.id == IPAddress.target_id)
                 .filter(IPAddress.ipv4_address == single_target_ip)
                 .first()
@@ -242,7 +249,7 @@ class ParseMasscanOutput(luigi.Task):
                 ip_dict[single_target_ip][protocol].add(str(port_entry.get("port")))
 
                 port = (
-                    db_mgr.session.query(Port)
+                    self.db_mgr.session.query(Port)
                     .filter(Port.port_number == port_entry.get("port"))
                     .filter(Port.protocol == protocol)
                     .first()
@@ -253,9 +260,9 @@ class ParseMasscanOutput(luigi.Task):
 
                 tgt.open_ports.append(port)
 
-            db_mgr.add(tgt)
+            self.db_mgr.add(tgt)
 
-        db_mgr.close()
+        self.db_mgr.close()
 
         with open(self.output().path, "wb") as f:
             pickle.dump(dict(ip_dict), f)
