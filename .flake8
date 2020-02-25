@@ -7,3 +7,4 @@ per-file-ignores =
     pipeline/recon/__init__.py:F401
     pipeline/models/__init__.py:F401
     pipeline/recon/web/__init__.py:F401
+    pipeline/luigi_targets/__init__.py:F401

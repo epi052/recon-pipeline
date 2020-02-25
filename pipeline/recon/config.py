@@ -16,7 +16,6 @@ defaults = {
 
 defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
 
-web_ports = {"80", "443", "8080", "8000", "8443"}
 
 tool_paths = {
     "aquatone": f"{defaults.get('tools-dir')}/aquatone",
@@ -32,6 +31,54 @@ tool_paths = {
     "amass": f"{defaults.get('tools-dir')}/amass",
     "go": "/usr/local/go/bin/go",
     "searchsploit": f"{defaults.get('tools-dir')}/exploitdb/searchsploit",
+}
+
+web_ports = {
+    "80",
+    "280",
+    "81",
+    "591",
+    "593",
+    "2080",
+    "2480",
+    "3080",
+    "4080",
+    "4567",
+    "5080",
+    "5104",
+    "5800",
+    "6080",
+    "7001",
+    "7080",
+    "7777",
+    "8000",
+    "8008",
+    "8042",
+    "8080",
+    "8081",
+    "8082",
+    "8088",
+    "8180",
+    "8222",
+    "8280",
+    "8281",
+    "8530",
+    "8887",
+    "9000",
+    "9080",
+    "9090",
+    "16080",
+    "832",
+    "981",
+    "1311",
+    "7002",
+    "7021",
+    "7023",
+    "7025",
+    "7777",
+    "8333",
+    "8531",
+    "8888",
 }
 
 top_tcp_ports = [
