@@ -2,6 +2,7 @@ import sqlite3
 from pathlib import Path
 
 from cmd2 import ansi
+from sqlalchemy import exc
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql.expression import func
@@ -21,8 +22,8 @@ class DBManager:
         try:
             self.session.add(item)
             self.session.commit()
-        except sqlite3.IntegrityError as e:
-            print(ansi.style(f"[!] exception during database transaction: {e}", fg="red"))
+        except (sqlite3.IntegrityError, exc.IntegrityError) as e:
+            print(ansi.style(f"[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
 
     def get_highest_id(self, table):

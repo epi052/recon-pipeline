@@ -16,6 +16,8 @@ class SearchsploitResult(Base):
     __tablename__ = "searchsploit_result"
 
     id = Column(Integer, primary_key=True)
-    text = Column(String)
+    title = Column(String, unique=True)
+    path = Column(String)
+    type = Column(String)
     target_id = Column(Integer, ForeignKey("target.id"))
     target = relationship("Target", back_populates="searchsploit_results")
