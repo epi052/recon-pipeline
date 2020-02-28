@@ -17,5 +17,6 @@ class Endpoint(Base):
 
     id = Column(Integer, primary_key=True)
     url = Column(String)
+    status_code = Column(Integer)
     target_id = Column(Integer, ForeignKey("target.id"))
     target = relationship("Target", back_populates="endpoints")

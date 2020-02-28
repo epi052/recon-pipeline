@@ -3,6 +3,7 @@ import logging
 import ipaddress
 import subprocess
 from pathlib import Path
+from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor
 
 import luigi
@@ -10,6 +11,8 @@ from luigi.util import inherits
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
+from ...luigi_targets import SQLiteTarget
+from ...models import DBManager, Endpoint
 
 
 @inherits(GatherWebTargets)
@@ -54,6 +57,12 @@ class GobusterScan(luigi.Task):
     extensions = luigi.Parameter(default=defaults.get("gobuster-extensions", ""))
     recursive = luigi.BoolParameter(default=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=Endpoint)
+        self.results_subfolder = Path(self.results_dir) / "gobuster-results"
+
     def requires(self):
         """ GobusterScan depends on GatherWebTargets to run.
 
@@ -86,9 +95,40 @@ class GobusterScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "gobuster-results"
+        # TODO: remove file based completion
+        # return SQLiteTarget(table=Endpoint, db_location=self.db_location, index=self.highest_id)
 
-        return luigi.LocalTarget(results_subfolder.resolve())
+        # results_subfolder = Path(self.results_dir) / "gobuster-results"
+
+        # return luigi.LocalTarget(results_subfolder.resolve())
+        return SQLiteTarget(table=Endpoint, db_location=self.db_location, index=self.highest_id)
+
+    def parse_results(self):
+        """ Reads in each individual gobuster file and adds each line to the database as an Endpoint """
+        for file in self.results_subfolder.iterdir():
+            tgt = None
+            for i, line in enumerate(file.read_text().splitlines()):
+                url, status = line.split(maxsplit=1)  # http://somewhere/path (Status:200)
+
+                if i == 0:
+                    # parse first entry to determine ip address -> target relationship
+                    parsed_url = urlparse(url)
+
+                    try:
+                        ipaddress.ip_interface(parsed_url.netloc)  # is it a valid ip/network?
+                    except ValueError as e:
+                        # exception thrown by ip_interface; domain name assumed
+                        logging.debug(e)
+                        tgt = self.db_mgr.get_target_by_hostname(parsed_url.netloc)
+                    else:
+                        # no exception thrown; ip address found
+                        tgt = self.db_mgr.get_target_by_ip(parsed_url.netloc)
+
+                if tgt is not None:
+                    status_code = status.split(maxsplit=1)[1]
+                    ep = Endpoint(url=url, status_code=status_code.replace(")", ""))
+                    tgt.endpoints.append(ep)
+                    self.db_mgr.add(tgt)
 
     def run(self):
         """ Defines the options/arguments sent to gobuster after processing.
@@ -129,7 +169,7 @@ class GobusterScan(luigi.Task):
                             "-w",
                             self.wordlist,
                             "-o",
-                            Path(self.output().path).joinpath(
+                            self.results_subfolder.joinpath(
                                 f"gobuster.{url_scheme.replace('//', '_').replace(':', '')}{target}.txt"
                             ),
                         ]
@@ -142,15 +182,17 @@ class GobusterScan(luigi.Task):
 
                     commands.append(command)
 
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         if self.recursive:
             # workaround for recursive gobuster not accepting output directory
             cwd = Path().cwd()
-            os.chdir(self.output().path)
+            os.chdir(self.results_subfolder)
 
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             executor.map(subprocess.run, commands)
 
         if self.recursive:
             os.chdir(str(cwd))
+
+        self.parse_results()

@@ -1,13 +1,16 @@
 import sqlite3
 from pathlib import Path
+from typing import Union
 
 from cmd2 import ansi
-from sqlalchemy import exc
+from sqlalchemy import exc, or_
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql.expression import func
 
-from . import *  # noqa: F403
+from .base_model import Base
+from .target_model import Target
+from .ip_address_model import IPAddress
 
 
 class DBManager:
@@ -25,6 +28,17 @@ class DBManager:
         except (sqlite3.IntegrityError, exc.IntegrityError):
             print(ansi.style(f"[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
+
+    def get_target_by_ip(self, ipaddr: str) -> Union[Target, None]:
+        tgt = (
+            self.session.query(Target)
+            .filter(or_(IPAddress.ipv4_address == ipaddr, IPAddress.ipv6_address == ipaddr))
+            .first()
+        )
+        return tgt
+
+    def get_target_by_hostname(self, hostname: str) -> Target:
+        return self.session.query(Target).filter(Target.hostname == hostname).first()
 
     def get_highest_id(self, table):
         highest = self.session.query(func.max(table.id)).first()[0]
