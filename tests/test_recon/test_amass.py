@@ -40,13 +40,17 @@ amass_json = Path(__file__).parent.parent / "data" / "recon-results" / "amass-re
 
 
 def test_amassscan_output_location(tmp_path):
-    asc = AmassScan(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    asc = AmassScan(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     assert asc.output().path == str(Path(tmp_path) / "amass-results" / "amass.json")
 
 
 def test_parse_amass_output_locations(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     assert pao.output().get("target-ips").path == str((Path(tmp_path) / "target-results" / "ipv4_addresses").resolve())
     assert pao.output().get("target-ip6s").path == str((Path(tmp_path) / "target-results" / "ipv6_addresses").resolve())
@@ -56,7 +60,9 @@ def test_parse_amass_output_locations(tmp_path):
 
 
 def test_parse_amass_ip_results_only_contain_ipv4_addys(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
@@ -71,7 +77,9 @@ def test_parse_amass_ip_results_only_contain_ipv4_addys(tmp_path):
 
 
 def test_parse_amass_ip6_results_only_contain_ipv6_addys(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
@@ -86,7 +94,9 @@ def test_parse_amass_ip6_results_only_contain_ipv6_addys(tmp_path):
 
 
 def test_parse_amass_subdomain_results_only_contain_domains(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
@@ -102,7 +112,9 @@ def test_parse_amass_subdomain_results_only_contain_domains(tmp_path):
 
 
 def test_parse_amass_ip_results(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
@@ -114,7 +126,9 @@ def test_parse_amass_ip_results(tmp_path):
 
 
 def test_parse_amass_ip6_results(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
@@ -126,7 +140,9 @@ def test_parse_amass_ip6_results(tmp_path):
 
 
 def test_parse_amass_subdomain_results(tmp_path):
-    pao = ParseAmassOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path))
+    pao = ParseAmassOutput(
+        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
+    )
 
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()

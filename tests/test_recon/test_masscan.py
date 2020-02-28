@@ -19,18 +19,30 @@ test_dict = {
 
 
 def test_massscan_output_location(tmp_path):
-    asc = MasscanScan(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
+    asc = MasscanScan(
+        target_file=tf,
+        exempt_list=el,
+        results_dir=str(tmp_path),
+        top_ports=100,
+        db_location=str(Path(tmp_path) / "testing.sqlite"),
+    )
 
     assert asc.output().path == str(Path(tmp_path) / "masscan-results" / "masscan.json")
 
 
 def test_parsemassscan_output_location(tmp_path):
-    pmo = ParseMasscanOutput(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
+    pmo = ParseMasscanOutput(
+        target_file=tf,
+        exempt_list=el,
+        results_dir=str(tmp_path),
+        top_ports=100,
+        db_location=str(Path(tmp_path) / "testing.sqlite"),
+    )
 
     assert pmo.output().path == str(Path(tmp_path) / "masscan-results" / "masscan.parsed.pickle")
 
 
-def test_parsemassscan_output_dictionary(tmp_path):
+def test_parsemassscan_output_dictionary():
     ip_dict = pickle.load(
         (Path(__file__).parent.parent / "data" / "recon-results" / "masscan-results" / "masscan.parsed.pickle").open(
             "rb"
