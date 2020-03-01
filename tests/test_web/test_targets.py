@@ -50,7 +50,7 @@ input_dict = {"masscan-output": None, "amass-output": {}}
 
 
 def test_webtargets_creates_webtargets_txt(tmp_path):
-    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
+    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100, db_location="")
 
     mass_pickle = tmp_path / "masscan.parsed.pickle"
 
@@ -65,7 +65,7 @@ def test_webtargets_creates_webtargets_txt(tmp_path):
 
 
 def test_webtargets_finds_all_web_targets_with_non_web_ports(tmp_path):
-    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
+    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100, db_location="")
 
     mass_pickle = tmp_path / "masscan.parsed.pickle"
 
@@ -86,7 +86,7 @@ def test_webtargets_finds_all_web_targets_with_non_web_ports(tmp_path):
 
 
 def test_webtargets_finds_all_web_targets_with_multiple_targets(tmp_path):
-    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100)
+    gwt = GatherWebTargets(target_file=tf, exempt_list=el, results_dir=str(tmp_path), top_ports=100, db_location="")
 
     mass_pickle = Path(__file__).parent.parent / "data" / "recon-results" / "masscan-results" / "masscan.parsed.pickle"
     ipv4_addys = Path(__file__).parent.parent / "data" / "recon-results" / "target-results" / "ipv4_addresses"
