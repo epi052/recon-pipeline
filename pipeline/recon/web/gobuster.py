@@ -95,12 +95,6 @@ class GobusterScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        # TODO: remove file based completion
-        # return SQLiteTarget(table=Endpoint, db_location=self.db_location, index=self.highest_id)
-
-        # results_subfolder = Path(self.results_dir) / "gobuster-results"
-
-        # return luigi.LocalTarget(results_subfolder.resolve())
         return SQLiteTarget(table=Endpoint, db_location=self.db_location, index=self.highest_id)
 
     def parse_results(self):

@@ -1,15 +1,18 @@
+import csv
+import subprocess
 from pathlib import Path
 
 import luigi
 from luigi.util import inherits
 from luigi.contrib.external_program import ExternalProgramTask
 
+from ...models import DBManager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
 
 
 @inherits(GatherWebTargets)
-class TKOSubsScan(ExternalProgramTask):
+class TKOSubsScan(luigi.Task):
     """ Use ``tko-subs`` to scan for potential subdomain takeovers.
 
     Install:
@@ -40,6 +43,10 @@ class TKOSubsScan(ExternalProgramTask):
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
 
     def requires(self):
         """ TKOSubsScan depends on GatherWebTargets to run.
@@ -76,7 +83,24 @@ class TKOSubsScan(ExternalProgramTask):
 
         return luigi.LocalTarget(new_path.resolve())
 
-    def program_args(self):
+    def parse_results(self):
+        """ Reads in the tkosubs .csv file and updates the associated Target record. """
+        with open(self.output().path, newline="") as f:
+            reader = csv.reader(f)
+
+            next(reader, None)  # skip the headers
+
+            for row in reader:
+                domain = row[0]
+                is_vulnerable = row[3]
+
+                tgt = self.db_mgr.get_target_by_hostname(domain)
+                tgt.vuln_to_sub_takeover = "true" in is_vulnerable.lower()
+                self.db_mgr.add(tgt)
+
+            self.db_mgr.close()
+
+    def run(self):
         """ Defines the options/arguments sent to tko-subs after processing.
 
         Returns:
@@ -84,19 +108,21 @@ class TKOSubsScan(ExternalProgramTask):
         """
         Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
 
-        subdomains = Path(self.results_dir) / "target-results" / "subdomains"
+        domains = self.db_mgr.get_all_hostnames()
 
-        if not subdomains.exists():
+        if not domains:
             return
 
         command = [
             tool_paths.get("tko-subs"),
-            f"-domains={str(subdomains.resolve())}",
+            f"-domain={','.join(domains)}",
             f"-data={tool_paths.get('tko-subs-dir')}/providers-data.csv",
             f"-output={self.output().path}",
         ]
 
-        return command
+        subprocess.run(command)
+
+        self.parse_results()
 
 
 @inherits(GatherWebTargets)

@@ -40,6 +40,12 @@ class DBManager:
     def get_target_by_hostname(self, hostname: str) -> Target:
         return self.session.query(Target).filter(Target.hostname == hostname).first()
 
+    def get_all_targets(self) -> list:
+        return self.session.query(Target).all()
+
+    def get_all_hostnames(self) -> list:
+        return [x[0] for x in self.session.query(Target.hostname).filter(Target.hostname is not None)]
+
     def get_highest_id(self, table):
         highest = self.session.query(func.max(table.id)).first()[0]
         return highest if highest is not None else 1
