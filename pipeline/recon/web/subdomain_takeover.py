@@ -1,10 +1,10 @@
 import csv
+import ipaddress
 import subprocess
 from pathlib import Path
 
 import luigi
 from luigi.util import inherits
-from luigi.contrib.external_program import ExternalProgramTask
 
 from ...models import DBManager
 from .targets import GatherWebTargets
@@ -94,9 +94,10 @@ class TKOSubsScan(luigi.Task):
                 domain = row[0]
                 is_vulnerable = row[3]
 
-                tgt = self.db_mgr.get_target_by_hostname(domain)
-                tgt.vuln_to_sub_takeover = "true" in is_vulnerable.lower()
-                self.db_mgr.add(tgt)
+                if "true" in is_vulnerable.lower():
+                    tgt = self.db_mgr.get_target_by_hostname(domain)
+                    tgt.vuln_to_sub_takeover = True
+                    self.db_mgr.add(tgt)
 
             self.db_mgr.close()
 
@@ -126,7 +127,7 @@ class TKOSubsScan(luigi.Task):
 
 
 @inherits(GatherWebTargets)
-class SubjackScan(ExternalProgramTask):
+class SubjackScan(luigi.Task):
     """ Use ``subjack`` to scan for potential subdomain takeovers.
 
     Install:
@@ -160,6 +161,10 @@ class SubjackScan(ExternalProgramTask):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
 
     def requires(self):
         """ SubjackScan depends on GatherWebTargets to run.
@@ -196,7 +201,46 @@ class SubjackScan(ExternalProgramTask):
 
         return luigi.LocalTarget(new_path.resolve())
 
-    def program_args(self):
+    def parse_results(self):
+        """ Reads in the subjack's subjack.txt file and updates the associated Target record. """
+        import re
+
+        # self.output().path
+        with open("/home/epi/PycharmProjects/recon-pipeline/tests/data/recon-results/subjack-results/subjack.txt") as f:
+            """ example data 
+            
+                [Not Vulnerable] 52.53.92.161:443
+                [Not Vulnerable] 13.57.162.100
+                [Not Vulnerable] 2606:4700:10::6814:3d33
+                [Not Vulnerable] assetinventory.bugcrowd.com
+            """
+            for line in f:
+                match = re.match(r"\[(?P<vuln_status>.+)] (?P<ip_or_hostname>.*)", line)
+
+                if not match:
+                    continue
+
+                if match.group("vuln_status") == "Not Vulnerable":
+                    continue
+
+                ip_or_host = match.group("ip_or_hostname")
+
+                if ip_or_host.count(":") == 1:  # ip or host/port
+                    ip_or_host, port = ip_or_host.split(":", maxsplit=1)
+
+                try:
+                    ipaddress.ip_interface(ip_or_host)
+                    tgt = self.db_mgr.get_target_by_ip(ip_or_host)
+                except ValueError:
+                    tgt = self.db_mgr.get_target_by_hostname(ip_or_host)
+
+                tgt.vuln_to_sub_takeover = True
+
+                self.db_mgr.add(tgt)
+
+            self.db_mgr.close()
+
+    def run(self):
         """ Defines the options/arguments sent to subjack after processing.
 
         Returns:
@@ -221,4 +265,6 @@ class SubjackScan(ExternalProgramTask):
             tool_paths.get("subjack-fingerprints"),
         ]
 
-        return command
+        subprocess.run(command)
+
+        self.parse_results()
