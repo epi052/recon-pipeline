@@ -96,7 +96,7 @@ class WebanalyzeScan(luigi.Task):
 
         for entry in Path(self.results_subfolder).glob("webanalyze*.csv"):
             """ example data
-                
+
                 http://13.57.162.100,Font scripts,Google Font API,
                 http://13.57.162.100,"Web servers,Reverse proxies",Nginx,1.16.1
                 http://13.57.162.100,Font scripts,Font Awesome,

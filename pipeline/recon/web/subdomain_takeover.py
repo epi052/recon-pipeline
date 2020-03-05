@@ -206,8 +206,8 @@ class SubjackScan(luigi.Task):
         """ Reads in the subjack's subjack.txt file and updates the associated Target record. """
 
         with open(self.output().path) as f:
-            """ example data 
-            
+            """ example data
+
                 [Not Vulnerable] 52.53.92.161:443
                 [Not Vulnerable] 13.57.162.100
                 [Not Vulnerable] 2606:4700:10::6814:3d33
