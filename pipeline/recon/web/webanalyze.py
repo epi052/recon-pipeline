@@ -1,8 +1,10 @@
 import os
+import csv
 import logging
 import ipaddress
 import subprocess
 from pathlib import Path
+from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor
 
 import luigi
@@ -10,6 +12,8 @@ from luigi.util import inherits
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
+from ...luigi_targets import SQLiteTarget
+from ...models import DBManager, Technology
 
 
 @inherits(GatherWebTargets)
@@ -48,6 +52,12 @@ class WebanalyzeScan(luigi.Task):
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=Technology)
+        self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
+
     def requires(self):
         """ WebanalyzeScan depends on GatherWebTargets to run.
 
@@ -79,13 +89,65 @@ class WebanalyzeScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "webanalyze-results"
+        return SQLiteTarget(table=Technology, db_location=self.db_location, index=self.highest_id)
 
-        return luigi.LocalTarget(results_subfolder.resolve())
+    def parse_results(self):
+        """ Reads in the webanalyze's .csv files and updates the associated Target record. """
+
+        for entry in Path(self.results_subfolder).glob("webanalyze*.csv"):
+            """ example data
+                
+                http://13.57.162.100,Font scripts,Google Font API,
+                http://13.57.162.100,"Web servers,Reverse proxies",Nginx,1.16.1
+                http://13.57.162.100,Font scripts,Font Awesome,
+            """
+            with open(entry, newline="") as f:
+                reader = csv.reader(f)
+
+                # skip the empty line at the start; webanalyze places an empty line at the top of the file
+                # need to skip that.  remove this line if the files have no empty lines at the top
+                next(reader, None)
+                next(reader, None)  # skip the headers; keep this one forever and always
+
+                tgt = None
+
+                for row in reader:
+                    # each row in a file is a technology specific to that target
+                    host, category, app, version = row
+
+                    parsed_url = urlparse(host)
+                    to_query = parsed_url.netloc
+
+                    if parsed_url.port is not None:
+                        # need to query database by ip/hostname only, port throws it off
+                        to_query = parsed_url.netloc.rstrip(f":{parsed_url.port}")
+
+                    if to_query.startswith("[") and to_query.endswith("]"):
+                        # ipv6 address structed for web urls, need to remove the brackets
+                        to_query = to_query.lstrip("[").rstrip("]")
+
+                    text = f"{app}-{version}" if version else app
+
+                    technology = self.db_mgr.get_or_create(Technology, type=category, text=text)
+
+                    if tgt is None:
+                        # should only hit the first line of each file
+                        try:
+                            ipaddress.ip_interface(to_query)
+                            tgt = self.db_mgr.get_target_by_ip(to_query)
+                        except ValueError:
+                            tgt = self.db_mgr.get_target_by_hostname(to_query)
+
+                    tgt.technologies.append(technology)
+
+                if tgt is not None:
+                    self.db_mgr.add(tgt)
+
+        self.db_mgr.close()
 
     def _wrapped_subprocess(self, cmd):
-        with open(f"webanalyze.{cmd[2].replace('//', '_').replace(':', '')}.txt", "wb") as f:
-            subprocess.run(cmd, stderr=f)
+        with open(f"webanalyze-{cmd[2].replace('//', '_').replace(':', '')}.csv", "wb") as f:
+            subprocess.run(cmd, stdout=f)
 
     def run(self):
         """ Defines the options/arguments sent to webanalyze after processing.
@@ -112,13 +174,13 @@ class WebanalyzeScan(luigi.Task):
                     pass
 
                 for url_scheme in ("https://", "http://"):
-                    command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}"]
+                    command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}", "-output", "csv"]
                     commands.append(command)
 
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
+        Path(self.results_subfolder).mkdir(parents=True, exist_ok=True)
 
         cwd = Path().cwd()
-        os.chdir(self.output().path)
+        os.chdir(self.results_subfolder)
 
         if not Path("apps.json").exists():
             subprocess.run(f"{tool_paths.get('webanalyze')} -update".split())
@@ -127,3 +189,5 @@ class WebanalyzeScan(luigi.Task):
             executor.map(self._wrapped_subprocess, commands)
 
         os.chdir(str(cwd))
+
+        self.parse_results()

@@ -1,3 +1,4 @@
+import re
 import csv
 import ipaddress
 import subprocess
@@ -203,10 +204,8 @@ class SubjackScan(luigi.Task):
 
     def parse_results(self):
         """ Reads in the subjack's subjack.txt file and updates the associated Target record. """
-        import re
 
-        # self.output().path
-        with open("/home/epi/PycharmProjects/recon-pipeline/tests/data/recon-results/subjack-results/subjack.txt") as f:
+        with open(self.output().path) as f:
             """ example data 
             
                 [Not Vulnerable] 52.53.92.161:443

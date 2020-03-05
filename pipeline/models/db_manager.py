@@ -3,10 +3,9 @@ from pathlib import Path
 from typing import Union
 
 from cmd2 import ansi
-from sqlalchemy import exc, or_
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql.expression import func
+from sqlalchemy import exc, or_, create_engine
+from sqlalchemy.sql.expression import func, ClauseElement
 
 from .base_model import Base
 from .target_model import Target
@@ -20,6 +19,17 @@ class DBManager:
         Base.metadata.create_all(engine)  # noqa: F405
         session_factory = sessionmaker(bind=engine)
         self.session = session_factory()
+
+    def get_or_create(self, model, defaults=None, **kwargs):
+        instance = self.session.query(model).filter_by(**kwargs).first()
+        if instance:
+            return instance
+        else:
+            params = dict((k, v) for k, v in kwargs.items() if not isinstance(v, ClauseElement))
+            if defaults:
+                params.update(defaults)
+            instance = model(**params)
+            return instance
 
     def add(self, item):
         try:

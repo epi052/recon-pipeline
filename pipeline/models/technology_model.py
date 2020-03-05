@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, ForeignKey, String, Table
+from sqlalchemy import Column, Integer, ForeignKey, String, Table, UniqueConstraint
 
 from .base_model import Base
 
@@ -22,6 +22,7 @@ class Technology(Base):
     """
 
     __tablename__ = "technology"
+    __table_args__ = (UniqueConstraint("type", "text"),)  # combination of proto/port == unique
 
     id = Column(Integer, primary_key=True)
     type = Column(String)

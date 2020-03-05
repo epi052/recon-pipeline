@@ -189,19 +189,19 @@ class ParseAmassOutput(luigi.Task):
             for line in aj:
                 entry = json.loads(line)
                 unique_subs.add(entry.get("name"))  # file
-                tgt = Target(hostname=entry.get("name"))  # db
+                tgt = db_mgr.get_or_create(Target, hostname=entry.get("name"))
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
                     if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
                         unique_ips.add(ipaddr)  # file
 
-                        ip_address = IPAddress(ipv4_address=ipaddr)  # db
+                        ip_address = db_mgr.get_or_create(IPAddress, ipv4_address=ipaddr)
                         tgt.ip_addresses.append(ip_address)
 
                     elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
                         unique_ip6s.add(ipaddr)  # file
-                        ip_address = IPAddress(ipv6_address=ipaddr)  # db
+                        ip_address = db_mgr.get_or_create(IPAddress, ipv6_address=ipaddr)
                         tgt.ip_addresses.append(ip_address)
 
                 db_mgr.add(tgt)
