@@ -113,17 +113,14 @@ class ThreadedNmapScan(luigi.Task):
                     text.pop()  # get rid of the line we just found, as it's already appended
                     sentry = False
 
-            nmr = NmapResult(text="\n".join(text))
+            nmr = self.db_mgr.get_or_create(NmapResult, text="\n".join(text))
 
-            tgt = (
-                self.db_mgr.session.query(Target)
-                .filter(or_(IPAddress.ipv4_address == ipaddr, IPAddress.ipv6_address == ipaddr))
-                .first()
-            )
+            tgt = self.db_mgr.get_target_by_ip(ipaddr)
 
             tgt.nmap_results.append(nmr)
 
             self.db_mgr.add(tgt)
+
         self.db_mgr.close()
 
     def run(self):

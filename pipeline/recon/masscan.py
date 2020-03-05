@@ -238,7 +238,7 @@ class ParseMasscanOutput(luigi.Task):
             if not result:
                 # no target has this ip associated with it
                 tgt = Target()
-                tgt_ip = IPAddress(ipv4_address=single_target_ip)
+                tgt_ip = self.db_mgr.get_or_create(IPAddress, ipv4_address=single_target_ip)
                 tgt.ip_addresses.append(tgt_ip)
             else:
                 # result == (<Target object at 0x7f070ad9fb10>, <IPAddress object at 0x7f070ad9fb90>)
@@ -248,15 +248,7 @@ class ParseMasscanOutput(luigi.Task):
                 protocol = port_entry.get("proto")
                 ip_dict[single_target_ip][protocol].add(str(port_entry.get("port")))
 
-                port = (
-                    self.db_mgr.session.query(Port)
-                    .filter(Port.port_number == port_entry.get("port"))
-                    .filter(Port.protocol == protocol)
-                    .first()
-                )
-
-                if not port:
-                    port = Port(protocol=protocol, port_number=port_entry.get("port"))
+                port = self.db_mgr.get_or_create(Port, protocol=protocol, port_number=port_entry.get("port"))
 
                 tgt.open_ports.append(port)
 
