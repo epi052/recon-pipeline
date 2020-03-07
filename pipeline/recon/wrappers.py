@@ -65,7 +65,7 @@ class FullScan(luigi.WrapperTask):
         yield SubjackScan(**args)
         yield SearchsploitScan(**args)
         yield CORScannerScan(**args)
-        # yield WebanalyzeScan(**args)
+        yield WebanalyzeScan(**args)
 
         del args["threads"]
 

@@ -112,8 +112,9 @@ class GobusterScan(luigi.Task):
 
                 if tgt is not None:
                     status_code = status.split(maxsplit=1)[1]
-                    ep = Endpoint(url=url, status_code=status_code.replace(")", ""))
-                    tgt.endpoints.append(ep)
+                    ep = self.db_mgr.get_or_create(Endpoint, url=url, status_code=status_code.replace(")", ""))
+                    if ep not in tgt.endpoints:
+                        tgt.endpoints.append(ep)
                     self.db_mgr.add(tgt)
 
     def run(self):

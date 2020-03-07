@@ -45,12 +45,11 @@ class DBManager:
         return (
             self.session.query(Target)
             .filter(
-                Target.ip_addresses.any(
-                    or_(
-                        IPAddress.ipv4_address.in_([ip_or_host]),
-                        IPAddress.ipv6_address.in_([ip_or_host]),
-                        Target.hostname == ip_or_host,
-                    )
+                or_(
+                    Target.ip_addresses.any(
+                        or_(IPAddress.ipv4_address.in_([ip_or_host]), IPAddress.ipv6_address.in_([ip_or_host]))
+                    ),
+                    Target.hostname == ip_or_host,
                 )
             )
             .first()

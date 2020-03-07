@@ -248,9 +248,6 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        # results_subfolder = Path(self.results_dir) / "searchsploit-results"
-        #
-        # return luigi.LocalTarget(results_subfolder.resolve())
         return SQLiteTarget(table=SearchsploitResult, db_location=self.db_location, index=self.highest_id)
 
     def run(self):
@@ -260,12 +257,9 @@ class SearchsploitScan(luigi.Task):
                 [tool_paths.get("searchsploit"), "-j", "-v", "--nmap", str(entry)], stdout=subprocess.PIPE
             )
             if proc.stdout:
-                # Path(self.output().path).mkdir(parents=True, exist_ok=True)
-                #
                 # change  wall-searchsploit-results/nmap.10.10.10.157-tcp to 10.10.10.157
                 ipaddr = entry.stem.replace("nmap.", "").replace("-tcp", "").replace("-udp", "")
-                #
-                # Path(f"{self.output().path}/searchsploit.{target}-{entry.stem[-3:]}.txt").write_bytes(proc.stderr)
+
                 contents = proc.stdout.decode()
                 for line in contents.splitlines():
                     if "Title" in line:
@@ -283,7 +277,9 @@ class SearchsploitScan(luigi.Task):
                         ssr_title = tmp_result.get("Title")
                         ssr_path = tmp_result.get("Path")
 
-                        ssr = SearchsploitResult(type=ssr_type, title=ssr_title, path=ssr_path)
+                        ssr = self.db_mgr.get_or_create(
+                            SearchsploitResult, type=ssr_type, title=ssr_title, path=ssr_path
+                        )
 
                         tgt.searchsploit_results.append(ssr)
 
