@@ -189,7 +189,7 @@ class ParseAmassOutput(luigi.Task):
             for line in aj:
                 entry = json.loads(line)
                 unique_subs.add(entry.get("name"))  # file
-                tgt = db_mgr.get_or_create(Target, hostname=entry.get("name"))
+                tgt = db_mgr.get_or_create(Target, hostname=entry.get("name"), is_web=True)
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")

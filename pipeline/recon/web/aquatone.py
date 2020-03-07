@@ -1,11 +1,16 @@
+import json
+import logging
 import subprocess
 from pathlib import Path
+from urllib.parse import urlparse
 
 import luigi
 from luigi.util import inherits
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
+from ...luigi_targets import SQLiteTarget
+from ...models import DBManager, Screenshot, Endpoint, Port, Header
 
 
 @inherits(GatherWebTargets)
@@ -47,6 +52,12 @@ class AquatoneScan(luigi.Task):
     threads = luigi.Parameter(default=defaults.get("threads", ""))
     scan_timeout = luigi.Parameter(default=defaults.get("aquatone-scan-timeout", ""))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=Screenshot)
+        self.results_subfolder = Path(self.results_dir) / "aquatone-results"
+
     def requires(self):
         """ AquatoneScan depends on GatherWebTargets to run.
 
@@ -76,9 +87,136 @@ class AquatoneScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "aquatone-results"
+        return SQLiteTarget(table=Screenshot, db_location=self.db_location, index=self.highest_id)
 
-        return luigi.LocalTarget(results_subfolder.resolve())
+    def parse_results(self):
+        """ Read in aquatone's .json file and update the associated Target record """
+
+        """ Example data
+
+            "https://email.assetinventory.bugcrowd.com:8443/": {
+              "uuid": "679b0dc7-02ea-483f-9e0a-3a5e6cdea4b6",
+              "url": "https://email.assetinventory.bugcrowd.com:8443/",
+              "hostname": "email.assetinventory.bugcrowd.com",
+              "addrs": [
+                "104.20.60.51",
+                "104.20.61.51",
+                "2606:4700:10::6814:3d33",
+                "2606:4700:10::6814:3c33"
+              ],
+              "status": "403 Forbidden",
+              "pageTitle": "403 Forbidden",
+              "headersPath": "headers/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.txt",
+              "bodyPath": "html/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.html",
+              "screenshotPath": "screenshots/https__email_assetinventory_bugcrowd_com__8443__42099b4af021e53f.png",
+              "hasScreenshot": true,
+              "headers": [
+                {
+                  "name": "Cf-Ray",
+                  "value": "55d396727981d25a-DFW",
+                  "decreasesSecurity": false,
+                  "increasesSecurity": false
+                },
+                ...
+              ],
+              "tags": [
+                {
+                  "text": "CloudFlare",
+                  "type": "info",
+                  "link": "http://www.cloudflare.com",
+                  "hash": "9ea92fc7dce5e740ccc8e64d8f9e3336a96efc2a"
+                }
+              ],
+              "notes": null
+            },
+            ...
+
+              "pageSimilarityClusters": {
+                "11905c72-fd18-43de-9133-99ba2a480e2b": [
+                  "http://52.53.92.161/",
+                  "https://staging.bitdiscovery.com/",
+                  "https://52.53.92.161/",
+                  ...
+                ],
+                "139fc2c4-0faa-4ae3-a6e4-0a1abe2418fa": [
+                  "https://104.20.60.51:8443/",
+                  "https://email.assetinventory.bugcrowd.com:8443/",
+                  ...
+                ],
+        """
+        try:
+            with open(self.results_subfolder / "aquatone_session.json") as f:
+                # results.keys -> dict_keys(['version', 'stats', 'pages', 'pageSimilarityClusters'])
+                results = json.load(f)
+        except FileNotFoundError as e:
+            logging.error(e)
+            return
+
+        for page, page_dict in results.get("pages").items():
+            headers = list()
+
+            url = page_dict.get("url")  # one url to one screenshot, unique key
+
+            # build out the endpoint's data to include headers, this has value whether or not there's a screenshot
+            endpoint = self.db_mgr.get_or_create(Endpoint, url=url)
+            if not endpoint.status_code:
+                endpoint.status_code, _ = page_dict.get("status").split()
+
+            for header_dict in page_dict.get("headers"):
+                header = self.db_mgr.get_or_create(Header, name=header_dict.get("name"), value=header_dict.get("value"))
+
+                if endpoint not in header.endpoints:
+                    header.endpoints.append(endpoint)
+
+                headers.append(header)
+
+            endpoint.headers = headers
+
+            parsed_url = urlparse(url)
+
+            ip_or_hostname = parsed_url.hostname
+            tgt = self.db_mgr.get_target_by_ip_or_hostname(ip_or_hostname)
+
+            endpoint.target = tgt
+
+            if not page_dict.get("hasScreenshot"):
+                # if there isn't a screenshot, save the endpoint data and move along
+                self.db_mgr.add(endpoint)
+                continue
+
+            # build out screenshot data
+            port = parsed_url.port if parsed_url.port else 80
+            port = self.db_mgr.get_or_create(Port, protocol="tcp", port_number=port)
+
+            image = (self.results_subfolder / page_dict.get("screenshotPath")).read_bytes()
+
+            screenshot = self.db_mgr.get_or_create(Screenshot, url=url)
+            screenshot.port = port
+            screenshot.endpoint = endpoint
+            screenshot.target = screenshot.endpoint.target
+            screenshot.image = image
+
+            # populate similar pages if any exist
+            similar_pages = None
+
+            for cluster_id, cluster in results.get("pageSimilarityClusters").items():
+                if url not in cluster:
+                    continue
+
+                similar_pages = list()
+
+                for similar_url in cluster:
+                    if similar_url == url:
+                        continue
+
+                    similar_pages.append(self.db_mgr.get_or_create(Screenshot, url=similar_url))
+
+            if similar_pages is not None:
+                screenshot.similar_pages = similar_pages
+
+            self.db_mgr.add(screenshot)
+
+        self.db_mgr.close()
 
     def run(self):
         """ Defines the options/arguments sent to aquatone after processing.
@@ -88,7 +226,7 @@ class AquatoneScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         command = [
             tool_paths.get("aquatone"),
@@ -98,8 +236,10 @@ class AquatoneScan(luigi.Task):
             self.threads,
             "-silent",
             "-out",
-            self.output().path,
+            self.results_subfolder,
         ]
 
         with self.input().open() as target_list:
             subprocess.run(command, stdin=target_list)
+
+        self.parse_results()

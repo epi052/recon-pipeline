@@ -1,6 +1,5 @@
 import re
 import csv
-import ipaddress
 import subprocess
 from pathlib import Path
 
@@ -96,7 +95,7 @@ class TKOSubsScan(luigi.Task):
                 is_vulnerable = row[3]
 
                 if "true" in is_vulnerable.lower():
-                    tgt = self.db_mgr.get_target_by_hostname(domain)
+                    tgt = self.db_mgr.get_target_by_ip_or_hostname(domain)
                     tgt.vuln_to_sub_takeover = True
                     self.db_mgr.add(tgt)
 
@@ -227,11 +226,7 @@ class SubjackScan(luigi.Task):
                 if ip_or_host.count(":") == 1:  # ip or host/port
                     ip_or_host, port = ip_or_host.split(":", maxsplit=1)
 
-                try:
-                    ipaddress.ip_interface(ip_or_host)
-                    tgt = self.db_mgr.get_target_by_ip(ip_or_host)
-                except ValueError:
-                    tgt = self.db_mgr.get_target_by_hostname(ip_or_host)
+                tgt = self.db_mgr.get_target_by_ip_or_hostname(ip_or_host)
 
                 tgt.vuln_to_sub_takeover = True
 

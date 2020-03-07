@@ -116,15 +116,6 @@ class WebanalyzeScan(luigi.Task):
                     host, category, app, version = row
 
                     parsed_url = urlparse(host)
-                    to_query = parsed_url.netloc
-
-                    if parsed_url.port is not None:
-                        # need to query database by ip/hostname only, port throws it off
-                        to_query = parsed_url.netloc.rstrip(f":{parsed_url.port}")
-
-                    if to_query.startswith("[") and to_query.endswith("]"):
-                        # ipv6 address structed for web urls, need to remove the brackets
-                        to_query = to_query.lstrip("[").rstrip("]")
 
                     text = f"{app}-{version}" if version else app
 
@@ -132,11 +123,7 @@ class WebanalyzeScan(luigi.Task):
 
                     if tgt is None:
                         # should only hit the first line of each file
-                        try:
-                            ipaddress.ip_interface(to_query)
-                            tgt = self.db_mgr.get_target_by_ip(to_query)
-                        except ValueError:
-                            tgt = self.db_mgr.get_target_by_hostname(to_query)
+                        tgt = self.db_mgr.get_target_by_ip_or_hostname(parsed_url.hostname)
 
                     tgt.technologies.append(technology)
 

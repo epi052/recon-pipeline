@@ -6,13 +6,12 @@ import concurrent.futures
 from pathlib import Path
 
 import luigi
-from sqlalchemy import or_
 from luigi.util import inherits
 
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
 from ..luigi_targets import SQLiteTarget
-from ..models import DBManager, NmapResult, Target, IPAddress, SearchsploitResult
+from ..models import DBManager, NmapResult, SearchsploitResult
 
 
 @inherits(ParseMasscanOutput)
@@ -115,7 +114,7 @@ class ThreadedNmapScan(luigi.Task):
 
             nmr = self.db_mgr.get_or_create(NmapResult, text="\n".join(text))
 
-            tgt = self.db_mgr.get_target_by_ip(ipaddr)
+            tgt = self.db_mgr.get_target_by_ip_or_hostname(ipaddr)
 
             tgt.nmap_results.append(nmr)
 
@@ -278,11 +277,8 @@ class SearchsploitScan(luigi.Task):
                             # normal dict
                             tmp_result = ast.literal_eval(line.strip())
 
-                        tgt = (
-                            self.db_mgr.session.query(Target)
-                            .filter(or_(IPAddress.ipv4_address == ipaddr, IPAddress.ipv6_address == ipaddr))
-                            .first()
-                        )
+                        tgt = self.db_mgr.get_target_by_ip_or_hostname(ipaddr)
+
                         ssr_type = tmp_result.get("Type")
                         ssr_title = tmp_result.get("Title")
                         ssr_path = tmp_result.get("Path")

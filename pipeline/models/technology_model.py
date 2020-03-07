@@ -22,7 +22,7 @@ class Technology(Base):
     """
 
     __tablename__ = "technology"
-    __table_args__ = (UniqueConstraint("type", "text"),)  # combination of proto/port == unique
+    __table_args__ = (UniqueConstraint("type", "text"),)  # combination of type/text == unique
 
     id = Column(Integer, primary_key=True)
     type = Column(String)

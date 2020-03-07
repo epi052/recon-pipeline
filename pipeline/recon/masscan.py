@@ -10,8 +10,8 @@ from luigi.util import inherits
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
-from ..models import DBManager, IPAddress, Target, Port
-from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths
+from ..models import DBManager, IPAddress, Port
+from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths, web_ports
 
 
 @inherits(TargetList, ParseAmassOutput)
@@ -225,30 +225,23 @@ class ParseMasscanOutput(luigi.Task):
                 i.e. {protocol: set(ports) }
         }
         """
+
         for entry in entries:
             single_target_ip = entry.get("ip")
 
-            result = (
-                self.db_mgr.session.query(Target, IPAddress)
-                .filter(Target.id == IPAddress.target_id)
-                .filter(IPAddress.ipv4_address == single_target_ip)
-                .first()
-            )
+            tgt = self.db_mgr.get_target_by_ip_or_hostname(single_target_ip)
 
-            if not result:
-                # no target has this ip associated with it
-                tgt = Target()
-                tgt_ip = self.db_mgr.get_or_create(IPAddress, ipv4_address=single_target_ip)
-                tgt.ip_addresses.append(tgt_ip)
-            else:
-                # result == (<Target object at 0x7f070ad9fb10>, <IPAddress object at 0x7f070ad9fb90>)
-                tgt, tgt_ip = result
+            if single_target_ip not in tgt.ip_addresses:
+                tgt.ip_addresses.append(self.db_mgr.get_or_create(IPAddress, ipv4_address=single_target_ip))
 
             for port_entry in entry.get("ports"):
                 protocol = port_entry.get("proto")
                 ip_dict[single_target_ip][protocol].add(str(port_entry.get("port")))
 
                 port = self.db_mgr.get_or_create(Port, protocol=protocol, port_number=port_entry.get("port"))
+
+                if str(port.port_number) in web_ports:
+                    tgt.is_web = True
 
                 tgt.open_ports.append(port)
 

@@ -108,15 +108,7 @@ class GobusterScan(luigi.Task):
                     # parse first entry to determine ip address -> target relationship
                     parsed_url = urlparse(url)
 
-                    try:
-                        ipaddress.ip_interface(parsed_url.netloc)  # is it a valid ip/network?
-                    except ValueError as e:
-                        # exception thrown by ip_interface; domain name assumed
-                        logging.debug(e)
-                        tgt = self.db_mgr.get_target_by_hostname(parsed_url.netloc)
-                    else:
-                        # no exception thrown; ip address found
-                        tgt = self.db_mgr.get_target_by_ip(parsed_url.netloc)
+                    tgt = self.db_mgr.get_target_by_ip_or_hostname(parsed_url.hostname)
 
                 if tgt is not None:
                     status_code = status.split(maxsplit=1)[1]
