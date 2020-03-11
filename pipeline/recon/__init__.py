@@ -15,4 +15,7 @@ from .parsers import (
     db_delete_parser,
     db_detach_parser,
     db_list_parser,
+    view_parser,
+    target_results_parser,
+    endpoint_results_parser,
 )

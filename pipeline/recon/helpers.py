@@ -2,6 +2,7 @@ import sys
 import inspect
 import pkgutil
 import importlib
+import ipaddress
 from pathlib import Path
 from collections import defaultdict
 
@@ -47,3 +48,12 @@ def get_scans():
                     scans[subname].append(f"{__package__}.{name}")
 
     return scans
+
+
+def is_ip_address(ipaddr):
+    """ Simple helper to determine if given string is an ip address or subnet """
+    try:
+        ipaddress.ip_interface(ipaddr)
+        return True
+    except ValueError:
+        return False

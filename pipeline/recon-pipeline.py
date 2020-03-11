@@ -40,7 +40,7 @@ if __name__ == "__main__" and __package__ is None:
     __package__ = "pipeline"
 
 
-from .models import DBManager  # noqa: F401,E402
+from .models import DBManager, IPAddress  # noqa: F401,E402
 from .recon.config import defaults  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
@@ -53,6 +53,9 @@ from .recon import (  # noqa: F401,E402
     db_list_parser,
     db_attach_parser,
     db_delete_parser,
+    view_parser,
+    target_results_parser,
+    endpoint_results_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -89,9 +92,12 @@ class ReconShell(cmd2.Cmd):
         super().__init__(*args, **kwargs)
         self.db_mgr = None
         self.sentry = False
+        self.self_in_py = True
         self.selectorloop = None
         self.continue_install = True
         self.prompt = "recon-pipeline> "
+
+        self._initialize_parsers()
 
         Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
         Path(defaults.get("database-dir")).mkdir(parents=True, exist_ok=True)
@@ -99,6 +105,15 @@ class ReconShell(cmd2.Cmd):
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
         self.register_postloop_hook(self._postloop_hook)
+
+    def _initialize_parsers(self):
+        """ """
+        db_list_parser.set_defaults(func=self.database_list)
+        db_attach_parser.set_defaults(func=self.database_attach)
+        db_detach_parser.set_defaults(func=self.database_detach)
+        db_delete_parser.set_defaults(func=self.database_delete)
+        endpoint_results_parser.set_defaults(func=self.print_endpoint_results)
+        target_results_parser.set_defaults(func=self.print_target_results)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -375,6 +390,9 @@ class ReconShell(cmd2.Cmd):
             index = locations.index(location) + 1
             self.db_mgr = DBManager(db_location=location)
 
+        endpoint_results_parser.add_argument("--status-code", choices=self.db_mgr.get_status_codes())
+        endpoint_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
+
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.async_update_prompt(f"[db-{index}] recon-pipeline> ")
 
@@ -403,19 +421,72 @@ class ReconShell(cmd2.Cmd):
 
         self.poutput(style(f"[+] deleted sqlite database at {Path(to_delete).resolve()}", fg="bright_green"))
 
-    db_list_parser.set_defaults(func=database_list)
-    db_attach_parser.set_defaults(func=database_attach)
-    db_detach_parser.set_defaults(func=database_detach)
-    db_delete_parser.set_defaults(func=database_delete)
-
     @cmd2.with_argparser(database_parser)
     def do_database(self, args):
         """ Manage database connections (list/attach/detach) """
         func = getattr(args, "func", None)
         if func is not None:
-            func(self, args)
+            func(args)
         else:
             self.do_help("database")
+
+    def print_target_results(self, args):
+        for target in self.db_mgr.get_all_targets():
+            self.poutput(target)
+
+    def print_endpoint_results(self, args):
+        host_endpoints = status_endpoints = None
+
+        color_map = {"2": "green", "3": "blue", "4": "bright_red", "5": "bright_magenta"}
+
+        if args.status_code is not None:
+            status_endpoints = self.db_mgr.get_endpoint_by_status_code(args.status_code)
+
+        if args.host is not None:
+            host_endpoints = self.db_mgr.get_endpoints_by_ip_or_hostname(args.host)
+
+        endpoints = self.db_mgr.get_all_endpoints()
+
+        for subset in [status_endpoints, host_endpoints]:
+            if subset is not None:
+                endpoints = set(endpoints).intersection(set(subset))
+
+        results = list()
+
+        for endpoint in endpoints:
+            color = color_map.get(str(endpoint.status_code)[0])
+            if args.plain:
+                results.append(endpoint.url)
+            else:
+                results.append(f"[{style(endpoint.status_code, fg=color)}] {endpoint.url}")
+
+            if not args.headers:
+                continue
+
+            for header in endpoint.headers:
+                if args.plain:
+                    results.append(f"  {header.name}: {header.value}")
+                else:
+                    results.append(style(f"  {header.name}:", fg="cyan") + f" {header.value}")
+
+        if args.paged:
+            self.ppaged("\n".join(results))
+        else:
+            for result in results:
+                self.poutput(result)
+
+    @cmd2.with_argparser(view_parser)
+    def do_view(self, args):
+        """ View results of completed scans """
+        if self.db_mgr is None:
+            return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
+
+        func = getattr(args, "func", None)
+
+        if func is not None:
+            func(args)
+        else:
+            self.do_help("view")
 
 
 if __name__ == "__main__":

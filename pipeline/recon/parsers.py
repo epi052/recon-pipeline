@@ -70,9 +70,27 @@ scan_parser.add_argument(
 
 # top level and subparsers for ReconShell's database command
 database_parser = cmd2.Cmd2ArgumentParser()
-database_subparsers = database_parser.add_subparsers(title="subcommands", help="subcommand help")
+database_subparsers = database_parser.add_subparsers(title="subcommands")
 
 db_list_parser = database_subparsers.add_parser("list", help="List all known databases")
 db_delete_parser = database_subparsers.add_parser("delete", help="Delete the selected database")
 db_attach_parser = database_subparsers.add_parser("attach", help="Attach to the selected database")
 db_detach_parser = database_subparsers.add_parser("detach", help="Detach from the currently attached database")
+
+
+# ReconShell's view-results command
+view_parser = cmd2.Cmd2ArgumentParser()
+view_subparsers = view_parser.add_subparsers(title="result types")
+
+target_results_parser = view_subparsers.add_parser(
+    "targets", help="List all known targets (ipv4/6 & domain names); produced by amass"
+)
+
+endpoint_results_parser = view_subparsers.add_parser("endpoints", help="List all known endpoints; produced by gobuster")
+endpoint_results_parser.add_argument(
+    "--headers", action="store_true", default=False, help="include headers found at each endpoint"
+)
+endpoint_results_parser.add_argument("--paged", action="store_true", default=False, help="display output page-by-page")
+endpoint_results_parser.add_argument(
+    "--plain", action="store_true", default=False, help="display without status-codes/color"
+)
