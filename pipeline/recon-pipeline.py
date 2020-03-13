@@ -482,8 +482,7 @@ class ReconShell(cmd2.Cmd):
 
     def print_nmap_results(self, args):
         for nmap_result in self.db_mgr.get_and_filter(NmapResult):
-            self.poutput()
-            self.ppaged(nmap_result.text)
+            print(nmap_result)
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):

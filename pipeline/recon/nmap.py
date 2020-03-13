@@ -123,19 +123,6 @@ class ThreadedNmapScan(luigi.Task):
                     nmap_result.product_version = service.service_dict.get("version")
                     nmap_result.target.nmap_results.append(nmap_result)
 
-                    print(
-                        "adding the following info"
-                        f"\n\topen - {nmap_result.open}"
-                        f"\n\treason - {nmap_result.reason}"
-                        f"\n\tservice - {nmap_result.service}"
-                        f"\n\tcommandline - {nmap_result.commandline}"
-                        f"\n\tproduct - {nmap_result.product}"
-                        f"\n\tproduct_version - {nmap_result.product_version}"
-                        f"\n\tport - {nmap_result.port.port_number}"
-                        f"\n\tip_address - {nmap_result.ip_address.ipv4_address}"
-                        f"\n\ttarget - {nmap_result.target.id}\n"
-                    )
-
                     self.db_mgr.add(nmap_result)
 
         self.db_mgr.close()

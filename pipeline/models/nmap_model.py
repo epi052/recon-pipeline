@@ -1,3 +1,5 @@
+import textwrap
+
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, ForeignKey, String, Boolean
 
@@ -19,15 +21,29 @@ class NmapResult(Base):
             ``nse_results``: one to many -> :class:`models.nse_model.NSEResult`
     """
 
+    def __str__(self):
+        pad = "  "
+        msg = f"{self.ip_address.ipv4_address} - {self.service}\n"
+        msg += f"{'=' * (len(self.ip_address.ipv4_address) + len(self.service) + 3)}\n\n"
+        msg += f"{self.port.protocol} port: {self.port.port_number} - {'Open' if self.open else 'Closed'}\n"
+        msg += f"product: {self.product} :: {self.product_version}\n"
+
+        for nse_result in self.nse_results:
+            msg += f"{pad}{nse_result.script_id}\n"
+            msg += textwrap.indent(nse_result.script_output, pad * 2)
+            msg += "\n"
+
+        return msg
+
     __tablename__ = "nmap_result"
 
     id = Column(Integer, primary_key=True)
-    open = Column(Boolean)
+    open = Column(Boolean)  #
     reason = Column(String)
-    service = Column(String)
-    product = Column(String)
+    service = Column(String)  #
+    product = Column(String)  #
     commandline = Column(String)
-    product_version = Column(String)
+    product_version = Column(String)  #
 
     port = relationship(Port)
     port_id = Column(Integer, ForeignKey("port.id"))
