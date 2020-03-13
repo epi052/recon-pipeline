@@ -1,6 +1,7 @@
 from .base_model import Base
 from .port_model import Port
 from .header_model import Header
+from .nse_model import NSEResult
 from .target_model import Target
 from .db_manager import DBManager
 from .nmap_model import NmapResult

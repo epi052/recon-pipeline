@@ -7,11 +7,12 @@ from pathlib import Path
 
 import luigi
 from luigi.util import inherits
+from libnmap.parser import NmapParser
 
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
 from ..luigi_targets import SQLiteTarget
-from ..models import DBManager, NmapResult, SearchsploitResult
+from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult
 
 
 @inherits(ParseMasscanOutput)
@@ -49,6 +50,7 @@ class ThreadedNmapScan(luigi.Task):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
         self.highest_id = self.db_mgr.get_highest_id(table=NmapResult)
+        self.results_subfolder = (Path(self.results_dir) / "nmap-results").resolve()
 
     def requires(self):
         """ ThreadedNmap depends on ParseMasscanOutput to run.
@@ -90,35 +92,51 @@ class ThreadedNmapScan(luigi.Task):
         return luigi.LocalTarget(results_subfolder.resolve())
 
     def parse_nmap_output(self):
-        """ Read nmap .nmap results and add entries into specified database. """
-        sentry = False
+        """ Read nmap .xml results and add entries into specified database """
 
-        for entry in Path(self.output().path).glob("nmap*.nmap"):
-            text = list()
+        for entry in Path(self.results_subfolder).glob("nmap*.xml"):
+            # relying on python-libnmap here
+            report = NmapParser.parse_fromfile(entry)
 
-            # nmap.10.10.10.10-tcp.nmap -> 10.10.10.10
-            ipaddr = entry.stem.replace("nmap.", "").split("-")[0]
+            for host in report.hosts:
+                for service in host.services:
+                    port = self.db_mgr.get_or_create(Port, protocol=service.protocol, port_number=service.port)
 
-            for line in entry.read_text().splitlines():
+                    # TODO: this needs to change if we start scanning ipv6 with nmap
+                    ip_address = self.db_mgr.get_or_create(IPAddress, ipv4_address=host.address)
 
-                if sentry:
-                    text.append(line)
+                    nmap_result = self.db_mgr.get_or_create(
+                        NmapResult, port=port, ip_address=ip_address, target=ip_address.target
+                    )
 
-                if "PORT" in line and "STATE" in line and "SERVICE" in line:
-                    # found header (PORT    STATE SERVICE  VERSION)
-                    sentry = True
-                elif "Service detection performed" in line:
-                    # found epilog
-                    text.pop()  # get rid of the line we just found, as it's already appended
-                    sentry = False
+                    for nse_result in service.scripts_results:
+                        script_id = nse_result.get("id")
+                        script_output = nse_result.get("output")
+                        nse_obj = self.db_mgr.get_or_create(NSEResult, script_id=script_id, script_output=script_output)
+                        nmap_result.nse_results.append(nse_obj)
 
-            nmr = self.db_mgr.get_or_create(NmapResult, text="\n".join(text))
+                    nmap_result.open = service.open()
+                    nmap_result.reason = service.reason
+                    nmap_result.service = service.service
+                    nmap_result.commandline = report.commandline
+                    nmap_result.product = service.service_dict.get("product")
+                    nmap_result.product_version = service.service_dict.get("version")
+                    nmap_result.target.nmap_results.append(nmap_result)
 
-            tgt = self.db_mgr.get_target_by_ip_or_hostname(ipaddr)
+                    print(
+                        "adding the following info"
+                        f"\n\topen - {nmap_result.open}"
+                        f"\n\treason - {nmap_result.reason}"
+                        f"\n\tservice - {nmap_result.service}"
+                        f"\n\tcommandline - {nmap_result.commandline}"
+                        f"\n\tproduct - {nmap_result.product}"
+                        f"\n\tproduct_version - {nmap_result.product_version}"
+                        f"\n\tport - {nmap_result.port.port_number}"
+                        f"\n\tip_address - {nmap_result.ip_address.ipv4_address}"
+                        f"\n\ttarget - {nmap_result.target.id}\n"
+                    )
 
-            tgt.nmap_results.append(nmr)
-
-            self.db_mgr.add(tgt)
+                    self.db_mgr.add(nmap_result)
 
         self.db_mgr.close()
 

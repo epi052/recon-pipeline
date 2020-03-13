@@ -25,5 +25,6 @@ class Port(Base):
     id = Column(Integer, primary_key=True)
     protocol = Column("protocol", String)
     port_number = Column("port_number", Integer)
+
     target_id = Column(Integer, ForeignKey("target.id"))
     targets = relationship("Target", secondary=port_association_table, back_populates="open_ports")

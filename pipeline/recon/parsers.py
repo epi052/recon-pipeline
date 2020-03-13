@@ -94,3 +94,7 @@ endpoint_results_parser.add_argument("--paged", action="store_true", default=Fal
 endpoint_results_parser.add_argument(
     "--plain", action="store_true", default=False, help="display without status-codes/color"
 )
+
+nmap_results_parser = view_subparsers.add_parser(
+    "nmap-scans", help="List all known nmap scan results; produced by nmap"
+)

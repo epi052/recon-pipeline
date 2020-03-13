@@ -1,7 +1,10 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy import Column, Integer, ForeignKey, String, Boolean
 
 from .base_model import Base
+from .port_model import Port
+from .ip_address_model import IPAddress
+from .nse_model import nse_result_association_table
 
 
 class NmapResult(Base):
@@ -11,11 +14,25 @@ class NmapResult(Base):
 
         Relationships:
             ``target``: many to one -> :class:`models.target_model.Target`
+            ``ip_address``: one to one -> :class:`models.ip_address_model.IPAddress`
+            ``port``: one to one -> :class:`models.port_model.Port`
+            ``nse_results``: one to many -> :class:`models.nse_model.NSEResult`
     """
 
     __tablename__ = "nmap_result"
 
     id = Column(Integer, primary_key=True)
-    text = Column(String)
+    open = Column(Boolean)
+    reason = Column(String)
+    service = Column(String)
+    product = Column(String)
+    commandline = Column(String)
+    product_version = Column(String)
+
+    port = relationship(Port)
+    port_id = Column(Integer, ForeignKey("port.id"))
+    ip_address = relationship(IPAddress)
+    ip_address_id = Column(Integer, ForeignKey("ip_address.id"))
     target_id = Column(Integer, ForeignKey("target.id"))
     target = relationship("Target", back_populates="nmap_results")
+    nse_results = relationship("NSEResult", secondary=nse_result_association_table, back_populates="nmap_results")

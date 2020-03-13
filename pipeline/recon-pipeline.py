@@ -40,7 +40,7 @@ if __name__ == "__main__" and __package__ is None:
     __package__ = "pipeline"
 
 
-from .models import DBManager, IPAddress  # noqa: F401,E402
+from .models import DBManager, NmapResult  # noqa: F401,E402
 from .recon.config import defaults  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
@@ -56,6 +56,7 @@ from .recon import (  # noqa: F401,E402
     view_parser,
     target_results_parser,
     endpoint_results_parser,
+    nmap_results_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -114,6 +115,7 @@ class ReconShell(cmd2.Cmd):
         db_delete_parser.set_defaults(func=self.database_delete)
         endpoint_results_parser.set_defaults(func=self.print_endpoint_results)
         target_results_parser.set_defaults(func=self.print_target_results)
+        nmap_results_parser.set_defaults(func=self.print_nmap_results)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -392,6 +394,7 @@ class ReconShell(cmd2.Cmd):
 
         endpoint_results_parser.add_argument("--status-code", choices=self.db_mgr.get_status_codes())
         endpoint_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
+        nmap_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.async_update_prompt(f"[db-{index}] recon-pipeline> ")
@@ -431,10 +434,12 @@ class ReconShell(cmd2.Cmd):
             self.do_help("database")
 
     def print_target_results(self, args):
+        """ Display all Targets from the database, ipv4/6 and hostname """
         for target in self.db_mgr.get_all_targets():
             self.poutput(target)
 
     def print_endpoint_results(self, args):
+        """ Display all Endpoints from the database """
         host_endpoints = status_endpoints = None
 
         color_map = {"2": "green", "3": "blue", "4": "bright_red", "5": "bright_magenta"}
@@ -474,6 +479,11 @@ class ReconShell(cmd2.Cmd):
         else:
             for result in results:
                 self.poutput(result)
+
+    def print_nmap_results(self, args):
+        for nmap_result in self.db_mgr.get_and_filter(NmapResult):
+            self.poutput()
+            self.ppaged(nmap_result.text)
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):
