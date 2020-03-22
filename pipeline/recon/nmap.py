@@ -14,6 +14,8 @@ from .config import defaults, tool_paths
 from ..luigi_targets import SQLiteTarget
 from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult
 
+# TODO: nmap and all other downstream only scan IPs, need to reintegrate domain/subdomains into scans if they exist after masscan
+
 
 @inherits(ParseMasscanOutput)
 class ThreadedNmapScan(luigi.Task):

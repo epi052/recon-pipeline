@@ -43,7 +43,7 @@ if __name__ == "__main__" and __package__ is None:
 
 
 from .recon.config import defaults  # noqa: F401,E402
-from .models import DBManager, NmapResult, NSEResult  # noqa: F401,E402
+from .models import DBManager, NmapResult, NSEResult, Technology  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     tools,
@@ -59,6 +59,7 @@ from .recon import (  # noqa: F401,E402
     target_results_parser,
     endpoint_results_parser,
     nmap_results_parser,
+    technology_results_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -118,6 +119,7 @@ class ReconShell(cmd2.Cmd):
         endpoint_results_parser.set_defaults(func=self.print_endpoint_results)
         target_results_parser.set_defaults(func=self.print_target_results)
         nmap_results_parser.set_defaults(func=self.print_nmap_results)
+        technology_results_parser.set_defaults(func=self.print_webanalyze_results)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -409,6 +411,9 @@ class ReconShell(cmd2.Cmd):
         nmap_results_parser.add_argument(
             "--product", help="filter results by reported product", choices=self.db_mgr.get_all_nmap_reported_products()
         )
+        technology_results_parser.add_argument(
+            "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
+        )
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
@@ -529,7 +534,22 @@ class ReconShell(cmd2.Cmd):
             for scan in scans:
                 results.append(scan.pretty(commandline=args.commandline))
 
-        printer("\n".join(results))
+        if results:
+            printer("\n".join(results))
+
+    def print_webanalyze_results(self, args):
+        """ Display all NmapResults from the database """
+        results = list()
+        printer = self.ppaged if args.paged else print
+
+        for webanalyze_scan in self.db_mgr.get_and_filter(Technology):
+            for target in webanalyze_scan.targets:
+                if args.host is not None and self.db_mgr.get_target_by_ip_or_hostname(args.host) != target:
+                    continue
+                results.append(webanalyze_scan.pretty(padlen=1))
+
+        if results:
+            printer("\n".join(results))
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):

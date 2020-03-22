@@ -19,4 +19,5 @@ from .parsers import (
     target_results_parser,
     endpoint_results_parser,
     nmap_results_parser,
+    technology_results_parser,
 )

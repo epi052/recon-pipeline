@@ -88,6 +88,15 @@ target_results_parser = view_subparsers.add_parser(
     "targets", help="List all known targets (ipv4/6 & domain names); produced by amass"
 )
 
+technology_results_parser = view_subparsers.add_parser(
+    "web-technologies",
+    help="List all known web technologies identified; produced by webanalyze",
+    conflict_handler="resolve",
+)
+technology_results_parser.add_argument(
+    "--paged", action="store_true", default=False, help="display output page-by-page"
+)
+
 endpoint_results_parser = view_subparsers.add_parser(
     "endpoints", help="List all known endpoints; produced by gobuster", conflict_handler="resolve"
 )
