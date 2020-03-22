@@ -70,7 +70,9 @@ scan_parser.add_argument(
 
 # top level and subparsers for ReconShell's database command
 database_parser = cmd2.Cmd2ArgumentParser()
-database_subparsers = database_parser.add_subparsers(title="subcommands")
+database_subparsers = database_parser.add_subparsers(
+    title="subcommands", help="Manage database connections (list/attach/detach/delete)"
+)
 
 db_list_parser = database_subparsers.add_parser("list", help="List all known databases")
 db_delete_parser = database_subparsers.add_parser("delete", help="Delete the selected database")
@@ -86,7 +88,9 @@ target_results_parser = view_subparsers.add_parser(
     "targets", help="List all known targets (ipv4/6 & domain names); produced by amass"
 )
 
-endpoint_results_parser = view_subparsers.add_parser("endpoints", help="List all known endpoints; produced by gobuster")
+endpoint_results_parser = view_subparsers.add_parser(
+    "endpoints", help="List all known endpoints; produced by gobuster", conflict_handler="resolve"
+)
 endpoint_results_parser.add_argument(
     "--headers", action="store_true", default=False, help="include headers found at each endpoint"
 )
@@ -96,5 +100,9 @@ endpoint_results_parser.add_argument(
 )
 
 nmap_results_parser = view_subparsers.add_parser(
-    "nmap-scans", help="List all known nmap scan results; produced by nmap"
+    "nmap-scans", help="List all known nmap scan results; produced by nmap", conflict_handler="resolve"
+)
+nmap_results_parser.add_argument("--paged", action="store_true", default=False, help="display output page-by-page")
+nmap_results_parser.add_argument(
+    "--commandline", action="store_true", default=False, help="display command used to scan"
 )

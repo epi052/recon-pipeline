@@ -24,24 +24,31 @@ class NmapResult(Base):
     def __str__(self):
         return self.pretty()
 
-    def pretty(self, nse_results=None):
+    def pretty(self, commandline=False, nse_results=None):
         pad = "  "
         msg = f"{self.ip_address.ipv4_address} - {self.service}\n"
         msg += f"{'=' * (len(self.ip_address.ipv4_address) + len(self.service) + 3)}\n\n"
-        msg += f"{self.port.protocol} port: {self.port.port_number} - {'Open' if self.open else 'Closed'}\n"
+        msg += f"{self.port.protocol} port: {self.port.port_number} - {'open' if self.open else 'closed'} - {self.reason}\n"
         msg += f"product: {self.product} :: {self.product_version}\n"
+        msg += f"nse script(s) output:\n"
 
         if nse_results is None:
+            # add all nse scripts
             for nse_result in self.nse_results:
                 msg += f"{pad}{nse_result.script_id}\n"
                 msg += textwrap.indent(nse_result.script_output, pad * 2)
                 msg += "\n"
         else:
+            # filter used, only return those specified
             for nse_result in nse_results:
                 if nse_result in self.nse_results:
                     msg += f"{pad}{nse_result.script_id}\n"
                     msg += textwrap.indent(nse_result.script_output, pad * 2)
                     msg += "\n"
+
+        if commandline:
+            msg += f"command used:\n"
+            msg += f"{pad}{self.commandline}\n"
 
         return msg
 

@@ -10,6 +10,8 @@ import subprocess
 import webbrowser
 from pathlib import Path
 
+DEFAULT_PROMPT = "recon-pipeline> "
+
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
 os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parents[1].resolve())}"
 
@@ -96,7 +98,7 @@ class ReconShell(cmd2.Cmd):
         self.self_in_py = True
         self.selectorloop = None
         self.continue_install = True
-        self.prompt = "recon-pipeline> "
+        self.prompt = DEFAULT_PROMPT
 
         self._initialize_parsers()
 
@@ -108,7 +110,7 @@ class ReconShell(cmd2.Cmd):
         self.register_postloop_hook(self._postloop_hook)
 
     def _initialize_parsers(self):
-        """ """
+        """ Internal helper to associate methods with the subparsers that use them """
         db_list_parser.set_defaults(func=self.database_list)
         db_attach_parser.set_defaults(func=self.database_attach)
         db_detach_parser.set_defaults(func=self.database_detach)
@@ -369,7 +371,6 @@ class ReconShell(cmd2.Cmd):
 
     def database_attach(self, args):
         """ Attach to the selected database """
-        index = None
         locations = [str(x) for x in self.get_databases()] + ["create new database"]
 
         location = self.select(locations)
@@ -392,14 +393,25 @@ class ReconShell(cmd2.Cmd):
             index = locations.index(location) + 1
             self.db_mgr = DBManager(db_location=location)
 
-        endpoint_results_parser.add_argument("--status-code", choices=self.db_mgr.get_status_codes())
-        endpoint_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
-        nmap_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
-        nmap_results_parser.add_argument("--nse-script", choices=self.db_mgr.get_all_nse_script_types())
-        nmap_results_parser.add_argument("--port", choices=self.db_mgr.get_all_port_numbers())
+        endpoint_results_parser.add_argument(
+            "--status-code", choices=self.db_mgr.get_status_codes(), help="filter results by status code"
+        )
+        endpoint_results_parser.add_argument(
+            "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
+        )
+        nmap_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
+        nmap_results_parser.add_argument(
+            "--nse-script", choices=self.db_mgr.get_all_nse_script_types(), help="filter results by nse script type ran"
+        )
+        nmap_results_parser.add_argument(
+            "--port", choices=self.db_mgr.get_all_port_numbers(), help="filter results by port scanned"
+        )
+        nmap_results_parser.add_argument(
+            "--product", help="filter results by reported product", choices=self.db_mgr.get_all_nmap_reported_products()
+        )
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
-        self.async_update_prompt(f"[db-{index}] recon-pipeline> ")
+        self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
 
     def database_detach(self, args):
         """ Detach from the currently attached database """
@@ -408,7 +420,8 @@ class ReconShell(cmd2.Cmd):
 
         self.db_mgr.close()
         self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
-        self.async_update_prompt("recon-pipeline> ")
+        self.db_mgr = None
+        self.prompt = DEFAULT_PROMPT
 
     def database_delete(self, args):
         """ Delete the selected database """
@@ -421,14 +434,14 @@ class ReconShell(cmd2.Cmd):
 
         if f"[db-{index}]" in self.prompt:
             self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
-            self.async_update_prompt("recon-pipeline> ")
+            self.prompt = DEFAULT_PROMPT
             self.db_mgr.close()
 
         self.poutput(style(f"[+] deleted sqlite database at {Path(to_delete).resolve()}", fg="bright_green"))
 
     @cmd2.with_argparser(database_parser)
     def do_database(self, args):
-        """ Manage database connections (list/attach/detach) """
+        """ Manage database connections (list/attach/detach/delete) """
         func = getattr(args, "func", None)
         if func is not None:
             func(args)
@@ -484,24 +497,22 @@ class ReconShell(cmd2.Cmd):
 
     def print_nmap_results(self, args):
         """ Display all NmapResults from the database """
-
-        if args.nse_script is None and args.host is None and args.port is None:
-            # no filters, print it all
-            for scan in self.db_mgr.get_and_filter(NmapResult):
-                print(scan)
-            return
+        results = list()
+        printer = self.ppaged if args.paged else print
 
         if args.host is not None:
-            # limit by host if necessary
+            # limit by host, if necessary
             scans = self.db_mgr.get_nmap_scans_by_ip_or_hostname(args.host)
         else:
             scans = self.db_mgr.get_and_filter(NmapResult)
 
-        if args.port is not None:
+        if args.port is not None or args.product is not None:
             # limit by port, if necessary
             tmpscans = scans[:]
             for scan in scans:
-                if scan.port.port_number != int(args.port):
+                if args.port is not None and scan.port.port_number != int(args.port) and scan in tmpscans:
+                    del tmpscans[tmpscans.index(scan)]
+                if args.product is not None and scan.product != args.product and scan in tmpscans:
                     del tmpscans[tmpscans.index(scan)]
             scans = tmpscans
 
@@ -512,11 +523,13 @@ class ReconShell(cmd2.Cmd):
                     if nmap_result not in scans:
                         continue
 
-                    print(nmap_result.pretty(nse_results=[nse_scan]))
+                    results.append(nmap_result.pretty(nse_results=[nse_scan], commandline=args.commandline))
         else:
-            # done filtering, print w/e is left
+            # done filtering, grab w/e is left
             for scan in scans:
-                print(scan)
+                results.append(scan.pretty(commandline=args.commandline))
+
+        printer("\n".join(results))
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):
