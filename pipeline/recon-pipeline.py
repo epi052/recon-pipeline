@@ -40,8 +40,8 @@ if __name__ == "__main__" and __package__ is None:
     __package__ = "pipeline"
 
 
-from .models import DBManager, NmapResult  # noqa: F401,E402
 from .recon.config import defaults  # noqa: F401,E402
+from .models import DBManager, NmapResult, NSEResult  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     tools,
@@ -395,6 +395,8 @@ class ReconShell(cmd2.Cmd):
         endpoint_results_parser.add_argument("--status-code", choices=self.db_mgr.get_status_codes())
         endpoint_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
         nmap_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets())
+        nmap_results_parser.add_argument("--nse-script", choices=self.db_mgr.get_all_nse_script_types())
+        nmap_results_parser.add_argument("--port", choices=self.db_mgr.get_all_port_numbers())
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.async_update_prompt(f"[db-{index}] recon-pipeline> ")
@@ -481,8 +483,40 @@ class ReconShell(cmd2.Cmd):
                 self.poutput(result)
 
     def print_nmap_results(self, args):
-        for nmap_result in self.db_mgr.get_and_filter(NmapResult):
-            print(nmap_result)
+        """ Display all NmapResults from the database """
+
+        if args.nse_script is None and args.host is None and args.port is None:
+            # no filters, print it all
+            for scan in self.db_mgr.get_and_filter(NmapResult):
+                print(scan)
+            return
+
+        if args.host is not None:
+            # limit by host if necessary
+            scans = self.db_mgr.get_nmap_scans_by_ip_or_hostname(args.host)
+        else:
+            scans = self.db_mgr.get_and_filter(NmapResult)
+
+        if args.port is not None:
+            # limit by port, if necessary
+            tmpscans = scans[:]
+            for scan in scans:
+                if scan.port.port_number != int(args.port):
+                    del tmpscans[tmpscans.index(scan)]
+            scans = tmpscans
+
+        if args.nse_script:
+            # grab the specific nse-script, check that the corresponding nmap result is one we care about, and print
+            for nse_scan in self.db_mgr.get_and_filter(NSEResult, script_id=args.nse_script):
+                for nmap_result in nse_scan.nmap_results:
+                    if nmap_result not in scans:
+                        continue
+
+                    print(nmap_result.pretty(nse_results=[nse_scan]))
+        else:
+            # done filtering, print w/e is left
+            for scan in scans:
+                print(scan)
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):

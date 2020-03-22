@@ -9,7 +9,10 @@ from sqlalchemy import exc, or_, create_engine
 from sqlalchemy.sql.expression import func, ClauseElement
 
 from .base_model import Base
+from .port_model import Port
+from .nse_model import NSEResult
 from .target_model import Target
+from .nmap_model import NmapResult
 from .endpoint_model import Endpoint
 from .ip_address_model import IPAddress
 
@@ -109,6 +112,10 @@ class DBManager:
         """ Simple helper that returns all Endpoints from the database """
         return self.session.query(Endpoint).all()
 
+    def get_all_port_numbers(self):
+        """ Simple helper that returns all Port.port_numbers from the database """
+        return set(str(x[0]) for x in self.session.query(Port.port_number).all())
+
     def get_endpoint_by_status_code(self, code):
         """ Simple helper that returns all Endpoints filtered by status code """
         return self.session.query(Endpoint).filter(Endpoint.status_code == code).all()
@@ -126,6 +133,16 @@ class DBManager:
 
         return endpoints
 
+    def get_nmap_scans_by_ip_or_hostname(self, ip_or_host):
+        """ Simple helper that returns all Endpoints filtered by ip or hostname """
+        scans = list()
+
+        for result in self.session.query(NmapResult).filter(NmapResult.commandline.contains(ip_or_host)).all():
+            if result.commandline.split()[-1] == ip_or_host:
+                scans.append(result)
+
+        return scans
+
     def get_status_codes(self):
         """ Simple helper that returns all status codes found during scanning """
         return set(str(x[0]) for x in self.session.query(Endpoint.status_code).all())
@@ -133,3 +150,11 @@ class DBManager:
     def get_and_filter(self, model, defaults=None, **kwargs):
         """ Simple helper to either get an existing record if it exists otherwise create and return a new instance """
         return self.session.query(model).filter_by(**kwargs).all()
+
+    def get_all_nse_script_types(self):
+        """ Simple helper that returns all NSE Script types from the database """
+        return set(str(x[0]) for x in self.session.query(NSEResult.script_id).all())
+
+    def get_nse_results_by_script_id(self, nse_script_id):
+        """ Simple helper that returns all NSE Scripts filtered by its script id """
+        return self.session.query(NSEResult).filter_by(script_id=nse_script_id).all()
