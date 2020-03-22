@@ -99,6 +99,7 @@ class GobusterScan(luigi.Task):
 
     def parse_results(self):
         """ Reads in each individual gobuster file and adds each line to the database as an Endpoint """
+        # TODO: doesn't handle recursive option (probably, unconfirmed)
         for file in self.results_subfolder.iterdir():
             tgt = None
             for i, line in enumerate(file.read_text().splitlines()):

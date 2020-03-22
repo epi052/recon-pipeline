@@ -16,6 +16,7 @@ colorama = "*"
 future = "*"
 sqlalchemy = "*"
 flake8 = "*"
+python-libnmap = "*"
 
 [requires]
 python_version = "3.7"
