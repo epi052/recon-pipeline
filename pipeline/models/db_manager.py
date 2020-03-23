@@ -15,6 +15,7 @@ from .target_model import Target
 from .nmap_model import NmapResult
 from .endpoint_model import Endpoint
 from .ip_address_model import IPAddress
+from .searchsploit_model import SearchsploitResult
 
 
 class DBManager:
@@ -162,3 +163,7 @@ class DBManager:
     def get_all_nmap_reported_products(self):
         """ Simple helper that returns all products reported by nmap """
         return set(str(x[0]) for x in self.session.query(NmapResult.product).all())
+
+    def get_all_exploit_types(self):
+        """ Simple helper that returns all exploit types reported by searchsploit """
+        return set(str(x[0]) for x in self.session.query(SearchsploitResult.type).all())

@@ -43,7 +43,7 @@ if __name__ == "__main__" and __package__ is None:
 
 
 from .recon.config import defaults  # noqa: F401,E402
-from .models import DBManager, NmapResult, NSEResult, Technology  # noqa: F401,E402
+from .models import DBManager, NmapResult, NSEResult, Technology, SearchsploitResult  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     tools,
@@ -60,6 +60,7 @@ from .recon import (  # noqa: F401,E402
     endpoint_results_parser,
     nmap_results_parser,
     technology_results_parser,
+    searchsploit_results_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -120,6 +121,7 @@ class ReconShell(cmd2.Cmd):
         target_results_parser.set_defaults(func=self.print_target_results)
         nmap_results_parser.set_defaults(func=self.print_nmap_results)
         technology_results_parser.set_defaults(func=self.print_webanalyze_results)
+        searchsploit_results_parser.set_defaults(func=self.print_searchsploit_results)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -414,6 +416,12 @@ class ReconShell(cmd2.Cmd):
         technology_results_parser.add_argument(
             "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
         )
+        searchsploit_results_parser.add_argument(
+            "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
+        )
+        searchsploit_results_parser.add_argument(
+            "--type", choices=self.db_mgr.get_all_exploit_types(), help="filter results by exploit type"
+        )
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
@@ -547,6 +555,43 @@ class ReconShell(cmd2.Cmd):
                 if args.host is not None and self.db_mgr.get_target_by_ip_or_hostname(args.host) != target:
                     continue
                 results.append(webanalyze_scan.pretty(padlen=1))
+
+        if results:
+            printer("\n".join(results))
+
+    def print_searchsploit_results(self, args):
+        """ Display all NmapResults from the database """
+        results = list()
+        targets = self.db_mgr.get_all_targets()
+        printer = self.ppaged if args.paged else print
+
+        for ss_scan in self.db_mgr.get_and_filter(SearchsploitResult):
+            tmp_targets = set()
+
+            if args.host is not None and self.db_mgr.get_target_by_ip_or_hostname(args.host) != ss_scan.target:
+                continue
+
+            if ss_scan.target.hostname in targets:
+                # hostname is in targets, so hasn't been reported yet
+                tmp_targets.add(ss_scan.target.hostname)  # add to this report
+                targets.remove(ss_scan.target.hostname)  # remove from targets list, having been reported
+
+            for ipaddr in ss_scan.target.ip_addresses:
+                address = ipaddr.ipv4_address or ipaddr.ipv6_address
+                if address is not None and address in targets:
+                    tmp_targets.add(ipaddr.ipv4_address)
+                    targets.remove(ipaddr.ipv4_address)
+
+            if tmp_targets:
+                header = ", ".join(tmp_targets)
+                results.append(header)
+                results.append("=" * len(header))
+
+                for scan in ss_scan.target.searchsploit_results:
+                    if args.type is not None and scan.type != args.type:
+                        continue
+
+                    results.append(scan.pretty(fullpath=args.fullpath))
 
         if results:
             printer("\n".join(results))

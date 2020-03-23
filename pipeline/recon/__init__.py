@@ -20,4 +20,5 @@ from .parsers import (
     endpoint_results_parser,
     nmap_results_parser,
     technology_results_parser,
+    searchsploit_results_parser,
 )

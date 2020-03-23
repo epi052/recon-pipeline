@@ -115,3 +115,15 @@ nmap_results_parser.add_argument("--paged", action="store_true", default=False, 
 nmap_results_parser.add_argument(
     "--commandline", action="store_true", default=False, help="display command used to scan"
 )
+
+searchsploit_results_parser = view_subparsers.add_parser(
+    "searchsploit-results",
+    help="List all known searchsploit hits; produced by searchsploit",
+    conflict_handler="resolve",
+)
+searchsploit_results_parser.add_argument(
+    "--paged", action="store_true", default=False, help="display output page-by-page"
+)
+searchsploit_results_parser.add_argument(
+    "--fullpath", action="store_true", default=False, help="display full path to exploit PoC"
+)
