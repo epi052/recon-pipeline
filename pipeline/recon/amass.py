@@ -177,13 +177,7 @@ class ParseAmassOutput(luigi.Task):
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
 
-                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
-                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv4_address=ipaddr)
-                        tgt.ip_addresses.append(ip_address)
-
-                    elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
-                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv6_address=ipaddr)
-                        tgt.ip_addresses.append(ip_address)
+                    tgt = self.db_mgr.add_ipv4_or_v6_address_to_target(tgt, ipaddr)
 
                 self.db_mgr.add(tgt)
 

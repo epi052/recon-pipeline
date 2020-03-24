@@ -1,4 +1,3 @@
-import shutil
 import logging
 import ipaddress
 from pathlib import Path
@@ -6,6 +5,7 @@ from pathlib import Path
 import luigi
 
 from .config import defaults
+from ..models import Target, DBManager, IPAddress
 
 
 class TargetList(luigi.ExternalTask):
@@ -19,6 +19,12 @@ class TargetList(luigi.ExternalTask):
     target_file = luigi.Parameter()
     db_location = luigi.Parameter()
     results_dir = luigi.Parameter(default=defaults.get("results-dir", ""))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=Target)
+        self.results_subfolder = (Path(self.results_dir) / "target-results").resolve()
 
     def output(self):
         """ Returns the target output for this task. target_file.ips || target_file.domains
@@ -34,30 +40,20 @@ class TargetList(luigi.ExternalTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        self.results_dir = Path(self.results_dir)
-        self.target_file = Path(self.target_file)
+        with open(self.target_file) as f:
+            for line in f.readlines():
+                line = line.strip()
+                try:
+                    ipaddress.ip_interface(line)  # is it a valid ip/network?
+                except ValueError as e:
+                    # exception thrown by ip_interface; domain name assumed
+                    tgt = self.db_mgr.get_or_create(Target, hostname=line, is_web=True)
+                else:
+                    # no exception thrown; ip address found
+                    tgt = self.db_mgr.get_or_create(Target)
 
-        try:
-            with open(self.target_file) as f:
-                first_line = f.readline()
-                ipaddress.ip_interface(first_line.strip())  # is it a valid ip/network?
-        except OSError as e:
-            # can't open file; log error / return nothing
-            return logging.error(f"opening {self.target_file}: {e.strerror}")
-        except ValueError as e:
-            # exception thrown by ip_interface; domain name assumed
-            logging.debug(e)
-            new_target = "domains"
-        else:
-            # no exception thrown; ip address found
-            new_target = "ip_addresses"
+                    tgt = self.db_mgr.add_ipv4_or_v6_address_to_target(tgt, line)
 
-        results_subfolder = self.results_dir / "target-results"
+                self.db_mgr.add(tgt)
 
-        results_subfolder.mkdir(parents=True, exist_ok=True)
-
-        new_path = results_subfolder / new_target
-
-        shutil.copy(self.target_file, new_path.resolve())
-
-        return luigi.LocalTarget(new_path.resolve())
+            self.db_mgr.close()

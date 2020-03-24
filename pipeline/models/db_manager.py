@@ -167,3 +167,16 @@ class DBManager:
     def get_all_exploit_types(self):
         """ Simple helper that returns all exploit types reported by searchsploit """
         return set(str(x[0]) for x in self.session.query(SearchsploitResult.type).all())
+
+    def add_ipv4_or_v6_address_to_target(self, tgt, ipaddr):
+        """ Simple helper that adds an appropriate IPAddress to the given target """
+
+        if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+            ip_address = self.get_or_create(IPAddress, ipv4_address=ipaddr)
+            tgt.ip_addresses.append(ip_address)
+
+        elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
+            ip_address = self.get_or_create(IPAddress, ipv6_address=ipaddr)
+            tgt.ip_addresses.append(ip_address)
+
+        return tgt
