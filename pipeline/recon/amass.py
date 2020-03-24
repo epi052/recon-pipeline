@@ -8,7 +8,8 @@ from luigi.contrib.external_program import ExternalProgramTask
 
 from .config import tool_paths
 from .targets import TargetList
-from ..models import Target, IPAddress, DBManager
+from ..luigi_targets import SQLiteTarget
+from ..models import Target, IPAddress, DBManager, Screenshot
 
 
 @inherits(TargetList)
@@ -111,6 +112,12 @@ class ParseAmassOutput(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.highest_id = self.db_mgr.get_highest_id(table=Screenshot)
+        self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
+
     def requires(self):
         """ ParseAmassOutput depends on AmassScan to run.
 
@@ -132,25 +139,10 @@ class ParseAmassOutput(luigi.Task):
     def output(self):
         """ Returns the target output files for this task.
 
-        Naming conventions for the output files are:
-            TARGET_FILE.ips
-            TARGET_FILE.ip6s
-            TARGET_FILE.subdomains
-
         Returns:
-            dict(str: luigi.local_target.LocalTarget)
+            SQLiteTarget
         """
-        results_subfolder = Path(self.results_dir) / "target-results"
-
-        ips = (results_subfolder / "ipv4_addresses").resolve()
-        ip6s = ips.with_name("ipv6_addresses").resolve()
-        subdomains = ips.with_name("subdomains").resolve()
-
-        return {
-            "target-ips": luigi.LocalTarget(ips),
-            "target-ip6s": luigi.LocalTarget(ip6s),
-            "target-subdomains": luigi.LocalTarget(subdomains),
-        }
+        return SQLiteTarget(table=Screenshot, db_location=self.db_location, index=self.highest_id)
 
     def run(self):
         """ Parse the json file produced by AmassScan and categorize the results into ip|subdomain files.
@@ -172,48 +164,27 @@ class ParseAmassOutput(luigi.Task):
               "source": "Previous Enum"
             }
         """
-        unique_ips = set()
-        unique_ip6s = set()
-        unique_subs = set()
-
-        db_mgr = DBManager(db_location=self.db_location)
-
-        Path(self.output().get("target-ips").path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         amass_json = self.input().open()
-        ip_file = self.output().get("target-ips").open("w")
-        ip6_file = self.output().get("target-ip6s").open("w")
-        subdomain_file = self.output().get("target-subdomains").open("w")
 
-        with amass_json as aj, ip_file as ip_out, ip6_file as ip6_out, subdomain_file as subdomain_out:
-            for line in aj:
+        with amass_json as amass_json_file:
+            for line in amass_json_file:
                 entry = json.loads(line)
-                unique_subs.add(entry.get("name"))  # file
-                tgt = db_mgr.get_or_create(Target, hostname=entry.get("name"), is_web=True)
+
+                tgt = self.db_mgr.get_or_create(Target, hostname=entry.get("name"), is_web=True)
 
                 for address in entry.get("addresses"):
                     ipaddr = address.get("ip")
-                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
-                        unique_ips.add(ipaddr)  # file
 
-                        ip_address = db_mgr.get_or_create(IPAddress, ipv4_address=ipaddr)
+                    if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv4_address=ipaddr)
                         tgt.ip_addresses.append(ip_address)
 
                     elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
-                        unique_ip6s.add(ipaddr)  # file
-                        ip_address = db_mgr.get_or_create(IPAddress, ipv6_address=ipaddr)
+                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv6_address=ipaddr)
                         tgt.ip_addresses.append(ip_address)
 
-                db_mgr.add(tgt)
+                self.db_mgr.add(tgt)
 
-            db_mgr.close()
-
-            # send gathered results to their appropriate destination
-            for ip in unique_ips:
-                print(ip, file=ip_out)
-
-            for sub in unique_subs:
-                print(sub, file=subdomain_out)
-
-            for ip6 in unique_ip6s:
-                print(ip6, file=ip6_out)
+            self.db_mgr.close()
