@@ -1,5 +1,4 @@
 import ast
-import pickle
 import logging
 import subprocess
 import concurrent.futures
@@ -8,10 +7,10 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 from libnmap.parser import NmapParser
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
-from ..luigi_targets import SQLiteTarget
 from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult
 
 # TODO: nmap and all other downstream only scan IPs, need to reintegrate domain/subdomains into scans if they exist after masscan
@@ -51,7 +50,6 @@ class ThreadedNmapScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=NmapResult)
         self.results_subfolder = (Path(self.results_dir) / "nmap-results").resolve()
 
     def requires(self):
@@ -86,17 +84,17 @@ class ThreadedNmapScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        # TODO: remove file based completion
-        # return SQLiteTarget(table=NmapResult, db_location=self.db_location, index=self.highest_id)
-
-        results_subfolder = Path(self.results_dir) / "nmap-results"
-
-        return luigi.LocalTarget(results_subfolder.resolve())
+        return {
+            "sqltarget": SQLAlchemyTarget(
+                connection_string=self.db_mgr.connection_string, target_table="nmap_result", update_id=self.task_id
+            ),
+            "localtarget": luigi.LocalTarget(str(self.results_subfolder)),
+        }
 
     def parse_nmap_output(self):
         """ Read nmap .xml results and add entries into specified database """
 
-        for entry in Path(self.results_subfolder).glob("nmap*.xml"):
+        for entry in self.results_subfolder.glob("nmap*.xml"):
             # relying on python-libnmap here
             report = NmapParser.parse_fromfile(entry)
 
@@ -126,6 +124,7 @@ class ThreadedNmapScan(luigi.Task):
                     nmap_result.target.nmap_results.append(nmap_result)
 
                     self.db_mgr.add(nmap_result)
+                    self.output().get("sqltarget").touch()
 
         self.db_mgr.close()
 
@@ -135,8 +134,6 @@ class ThreadedNmapScan(luigi.Task):
             self.threads = abs(int(self.threads))
         except TypeError:
             return logging.error("The value supplied to --threads must be a non-negative integer.")
-
-        ip_dict = pickle.load(open(self.input().path, "rb"))
 
         nmap_command = [  # placeholders will be overwritten with appropriate info in loop below
             "nmap",
@@ -155,31 +152,23 @@ class ThreadedNmapScan(luigi.Task):
 
         commands = list()
 
-        """
-        ip_dict structure
-        {
-            "IP_ADDRESS":
-                {'udp': {"161", "5000", ... },
-                ...
-                i.e. {protocol: set(ports) }
-        }
-        """
-        for target, protocol_dict in ip_dict.items():
-            for protocol, ports in protocol_dict.items():
+        for target in self.db_mgr.get_all_targets():
+            for protocol in ("tcp", "udp"):
+                ports = self.db_mgr.get_ports_by_ip_or_host_and_protocol(target, protocol)
+                if ports:
+                    tmp_cmd = nmap_command[:]
+                    tmp_cmd[2] = "-sT" if protocol == "tcp" else "-sU"
 
-                tmp_cmd = nmap_command[:]
-                tmp_cmd[2] = "-sT" if protocol == "tcp" else "-sU"
+                    # arg to -oA, will drop into subdir off curdir
+                    tmp_cmd[10] = ",".join(ports)
+                    tmp_cmd.append(str(Path(self.output().get("localtarget").path) / f"nmap.{target}-{protocol}"))
 
-                # arg to -oA, will drop into subdir off curdir
-                tmp_cmd[10] = ",".join(ports)
-                tmp_cmd.append(str(Path(self.output().path) / f"nmap.{target}-{protocol}"))
+                    tmp_cmd.append(target)  # target as final arg to nmap
 
-                tmp_cmd.append(target)  # target as final arg to nmap
-
-                commands.append(tmp_cmd)
+                    commands.append(tmp_cmd)
 
         # basically mkdir -p, won't error out if already there
-        Path(self.output().path).mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.threads) as executor:
 
@@ -220,7 +209,6 @@ class SearchsploitScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=NmapResult)
 
     def requires(self):
         """ Searchsploit depends on ThreadedNmap to run.
@@ -255,11 +243,13 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return SQLiteTarget(table=SearchsploitResult, db_location=self.db_location, index=self.highest_id)
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="searchsploit_result", update_id=self.task_id
+        )
 
     def run(self):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
-        for entry in Path(self.input().path).glob("nmap*.xml"):
+        for entry in Path(self.input().get("localtarget").path).glob("nmap*.xml"):
             proc = subprocess.run(
                 [tool_paths.get("searchsploit"), "-j", "-v", "--nmap", str(entry)], stdout=subprocess.PIPE
             )
@@ -291,5 +281,6 @@ class SearchsploitScan(luigi.Task):
                         tgt.searchsploit_results.append(ssr)
 
                         self.db_mgr.add(tgt)
+                        self.output().touch()
 
         self.db_mgr.close()

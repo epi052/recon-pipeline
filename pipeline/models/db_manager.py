@@ -181,3 +181,14 @@ class DBManager:
             tgt.ip_addresses.append(ip_address)
 
         return tgt
+
+    def get_ports_by_ip_or_host_and_protocol(self, ip_or_host, protocol):
+        """ Simple helper that returns all ports based on the given protocol and host """
+        tgt = self.get_target_by_ip_or_hostname(ip_or_host)
+        ports = list()
+
+        for port in tgt.open_ports:
+            if port.protocol == protocol:
+                ports.append(str(port.port_number))
+
+        return ports
