@@ -182,6 +182,23 @@ class DBManager:
 
         return tgt
 
+    def get_all_web_targets(self):
+        """ Simple helper that returns all Targets tagged as having an open web port """
+        # return set(str(x[0]) for x in self.session.query(Target).all())
+        web_targets = list()
+        targets = self.get_and_filter(Target, is_web=True)
+
+        for target in targets:
+            if target.hostname:
+                web_targets.append(target.hostname)
+            for ipaddr in target.ip_addresses:
+                if ipaddr.ipv4_address:
+                    web_targets.append(ipaddr.ipv4_address)
+                if ipaddr.ipv6_address:
+                    web_targets.append(ipaddr.ipv6_address)
+
+        return web_targets
+
     def get_ports_by_ip_or_host_and_protocol(self, ip_or_host, protocol):
         """ Simple helper that returns all ports based on the given protocol and host """
         tgt = self.get_target_by_ip_or_hostname(ip_or_host)

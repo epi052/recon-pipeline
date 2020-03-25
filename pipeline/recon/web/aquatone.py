@@ -6,10 +6,10 @@ from urllib.parse import urlparse
 
 import luigi
 from luigi.util import inherits
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...luigi_targets import SQLiteTarget
 from ...models import DBManager, Screenshot, Endpoint, Port, Header
 
 
@@ -55,7 +55,6 @@ class AquatoneScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=Screenshot)
         self.results_subfolder = Path(self.results_dir) / "aquatone-results"
 
     def requires(self):
@@ -82,12 +81,12 @@ class AquatoneScan(luigi.Task):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is amass.TARGET_FILE.json.
-
         Returns:
-            luigi.local_target.LocalTarget
+            luigi.contrib.sqla.SQLAlchemyTarget
         """
-        return SQLiteTarget(table=Screenshot, db_location=self.db_location, index=self.highest_id)
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="screenshot", update_id=self.task_id
+        )
 
     def parse_results(self):
         """ Read in aquatone's .json file and update the associated Target record """
@@ -160,7 +159,7 @@ class AquatoneScan(luigi.Task):
             # build out the endpoint's data to include headers, this has value whether or not there's a screenshot
             endpoint = self.db_mgr.get_or_create(Endpoint, url=url)
             if not endpoint.status_code:
-                endpoint.status_code, _ = page_dict.get("status").split()
+                endpoint.status_code, _ = page_dict.get("status").split(maxsplit=1)
 
             for header_dict in page_dict.get("headers"):
                 header = self.db_mgr.get_or_create(Header, name=header_dict.get("name"), value=header_dict.get("value"))
@@ -182,6 +181,9 @@ class AquatoneScan(luigi.Task):
             if not page_dict.get("hasScreenshot"):
                 # if there isn't a screenshot, save the endpoint data and move along
                 self.db_mgr.add(endpoint)
+                SQLAlchemyTarget(
+                    connection_string=self.db_mgr.connection_string, target_table="endpoint", update_id=self.task_id
+                ).touch()
                 continue
 
             # build out screenshot data
@@ -215,6 +217,7 @@ class AquatoneScan(luigi.Task):
                 screenshot.similar_pages = similar_pages
 
             self.db_mgr.add(screenshot)
+            self.output().touch()
 
         self.db_mgr.close()
 
@@ -239,7 +242,15 @@ class AquatoneScan(luigi.Task):
             self.results_subfolder,
         ]
 
-        with self.input().open() as target_list:
+        aquatone_input_file = self.results_subfolder / "input-from-webtargets"
+
+        with open(aquatone_input_file, "w") as f:
+            for target in self.db_mgr.get_all_web_targets():
+                f.write(f"{target}\n")
+
+        with open(aquatone_input_file) as target_list:
             subprocess.run(command, stdin=target_list)
+
+        aquatone_input_file.unlink()
 
         self.parse_results()

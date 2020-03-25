@@ -1,12 +1,11 @@
-import pickle
-from pathlib import Path
-
 import luigi
 from luigi.util import inherits
+from luigi.contrib.sqla import SQLAlchemyTarget
 
+from ..config import web_ports
 from ..amass import ParseAmassOutput
 from ..masscan import ParseMasscanOutput
-from ..config import web_ports
+from ...models.db_manager import DBManager
 
 
 @inherits(ParseMasscanOutput)
@@ -23,6 +22,10 @@ class GatherWebTargets(luigi.Task):
         target_file: specifies the file on disk containing a list of ips or domains *Required by upstream Task*
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
 
     def requires(self):
         """ GatherWebTargets depends on ParseMasscanOutput and ParseAmassOutput to run.
@@ -55,50 +58,27 @@ class GatherWebTargets(luigi.Task):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is webtargets.TARGET_FILE.txt.
-
         Returns:
-            luigi.local_target.LocalTarget
+            luigi.contrib.sqla.SQLAlchemyTarget
         """
-        results_subfolder = Path(self.results_dir) / "target-results"
-
-        new_path = results_subfolder / "webtargets.txt"
-
-        return luigi.LocalTarget(new_path.resolve())
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        )
 
     def run(self):
-        """ Gather all potential web targets into a single file to pass farther down the pipeline. """
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        """ Gather all potential web targets and tag them as web in the database. """
 
-        targets = set()
+        for target in self.db_mgr.get_all_targets():
+            ports = self.db_mgr.get_ports_by_ip_or_host_and_protocol(target, "tcp")
+            if any(port in web_ports for port in ports):
+                tgt = self.db_mgr.get_target_by_ip_or_hostname(target)
+                tgt.is_web = True
+                self.db_mgr.add(tgt)
+                self.output().touch()
 
-        ip_dict = pickle.load(open(self.input().get("masscan-output").path, "rb"))
+        # in the event that there are no web ports for any target, we still want to be able to mark the
+        # task complete successfully.  we accomplish this by calling .touch() even though a database entry
+        # may not have happened
+        self.output().touch()
 
-        """
-        structure over which we're looping
-        {
-            "IP_ADDRESS":
-                {'udp': {"161", "5000", ... },
-                ...
-                i.e. {protocol: set(ports) }
-        }
-        """
-        for target, protocol_dict in ip_dict.items():
-            for protocol, ports in protocol_dict.items():
-                for port in ports:
-                    if protocol == "udp":
-                        continue
-                    if port == "80":
-                        targets.add(target)
-                    elif port in web_ports:
-                        targets.add(f"{target}:{port}")
-
-        for amass_result in self.input().get("amass-output").values():
-            with amass_result.open() as f:
-                for target in f:
-                    # we care about all results returned from amass
-                    targets.add(target.strip())
-
-        with self.output().open("w") as f:
-            for target in targets:
-                f.write(f"{target}\n")
+        self.db_mgr.close()
