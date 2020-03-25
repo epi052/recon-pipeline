@@ -1,5 +1,4 @@
 import json
-import pickle
 import logging
 import subprocess
 from pathlib import Path
@@ -7,6 +6,7 @@ from collections import defaultdict
 
 import luigi
 from luigi.util import inherits
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
@@ -55,6 +55,11 @@ class MasscanScan(luigi.Task):
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
+
     def output(self):
         """ Returns the target output for this task.
 
@@ -75,21 +80,10 @@ class MasscanScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-
-        if self.ports and self.top_ports:
-            # can't have both
-            logging.error("Only --ports or --top-ports is permitted, not both.")
-            exit(1)
-
         if not self.ports and not self.top_ports:
-            # need at least one
+            # need at least one, can't be put into argparse scanner because things like amass don't require ports option
             logging.error("Must specify either --top-ports or --ports.")
             exit(2)
-
-        if self.top_ports < 0:
-            # sanity check
-            logging.error("--top-ports must be greater than 0")
-            exit(3)
 
         if self.top_ports:
             # if --top-ports used, format the top_*_ports lists as strings and then into a proper masscan --ports option
@@ -99,13 +93,13 @@ class MasscanScan(luigi.Task):
             self.ports = f"{top_tcp_ports_str},U:{top_udp_ports_str}"
             self.top_ports = 0
 
-        target_list = yield TargetList(
-            target_file=self.target_file, results_dir=self.results_dir, db_location=self.db_location
-        )
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        yield TargetList(target_file=self.target_file, results_dir=self.results_dir, db_location=self.db_location)
 
-        if target_list.path.endswith("domains"):
+        if self.db_mgr.get_all_hostnames():
+            # TargetList generated some domains for us to scan with amass
+
             yield ParseAmassOutput(
                 target_file=self.target_file,
                 exempt_list=self.exempt_list,
@@ -129,12 +123,24 @@ class MasscanScan(luigi.Task):
             "-iL",
         ]
 
-        if target_list.path.endswith("domains"):
-            command.append(target_list.path.replace("domains", "ipv4_addresses"))
-        else:
-            command.append(target_list.path.replace("domains", "ip_addresses"))
+        # masscan only understands how to scan ipv4
+        ip_addresses = self.db_mgr.get_all_ipv4_addresses()
+        masscan_input_file = None
 
-        subprocess.run(command)
+        if ip_addresses:
+            # TargetList generated ip addresses for us to scan with masscan
+            masscan_input_file = self.results_subfolder / "input-from-amass"
+
+            with open(masscan_input_file, "w") as f:
+                for ip_address in ip_addresses:
+                    f.write(f"{ip_address}\n")
+
+            command.append(str(masscan_input_file))
+
+        subprocess.run(command)  # will fail if no ipv4 addresses were found
+
+        if masscan_input_file is not None:
+            masscan_input_file.unlink()
 
 
 @inherits(MasscanScan)
@@ -154,7 +160,7 @@ class ParseMasscanOutput(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=IPAddress)
+        self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
 
     def requires(self):
         """ ParseMasscanOutput depends on Masscan to run.
@@ -183,15 +189,9 @@ class ParseMasscanOutput(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "masscan-results"
-
-        new_path = results_subfolder / "masscan.parsed.pickle"
-
-        # TODO: remove localtarget eventually
-        # putting this here for the eventual cut over to full database
-        # SQLiteTarget(table=IPAddress, db_location=self.db_location, index=self.highest_id)
-
-        return luigi.LocalTarget(new_path.resolve())
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="port", update_id=self.task_id
+        )
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
@@ -205,7 +205,7 @@ class ParseMasscanOutput(luigi.Task):
             # this task if restarted because we never hit pickle.dump
             return print(e)
 
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         """
         build out ip_dictionary from the loaded JSON
@@ -246,8 +246,6 @@ class ParseMasscanOutput(luigi.Task):
                 tgt.open_ports.append(port)
 
             self.db_mgr.add(tgt)
+            self.output().touch()
 
         self.db_mgr.close()
-
-        with open(self.output().path, "wb") as f:
-            pickle.dump(dict(ip_dict), f)

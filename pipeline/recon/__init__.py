@@ -21,4 +21,5 @@ from .parsers import (
     nmap_results_parser,
     technology_results_parser,
     searchsploit_results_parser,
+    port_results_parser,
 )

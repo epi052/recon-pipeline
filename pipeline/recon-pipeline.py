@@ -61,6 +61,7 @@ from .recon import (  # noqa: F401,E402
     nmap_results_parser,
     technology_results_parser,
     searchsploit_results_parser,
+    port_results_parser,
 )
 
 # select loop, handles async stdout/stderr processing of subprocesses
@@ -122,6 +123,7 @@ class ReconShell(cmd2.Cmd):
         nmap_results_parser.set_defaults(func=self.print_nmap_results)
         technology_results_parser.set_defaults(func=self.print_webanalyze_results)
         searchsploit_results_parser.set_defaults(func=self.print_searchsploit_results)
+        port_results_parser.set_defaults(func=self.print_port_results)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -422,6 +424,7 @@ class ReconShell(cmd2.Cmd):
         searchsploit_results_parser.add_argument(
             "--type", choices=self.db_mgr.get_all_exploit_types(), help="filter results by exploit type"
         )
+        port_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
 
         self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
         self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
@@ -592,6 +595,21 @@ class ReconShell(cmd2.Cmd):
                         continue
 
                     results.append(scan.pretty(fullpath=args.fullpath))
+
+        if results:
+            printer("\n".join(results))
+
+    def print_port_results(self, args):
+        """ Display all Ports from the database """
+        results = list()
+        targets = self.db_mgr.get_all_targets()
+        printer = self.ppaged if args.paged else print
+
+        for target in targets:
+            if args.host is not None and target != args.host:
+                continue
+            ports = [str(port.port_number) for port in self.db_mgr.get_target_by_ip_or_hostname(target).open_ports]
+            results.append(f"{target}: {','.join(ports)}")
 
         if results:
             printer("\n".join(results))

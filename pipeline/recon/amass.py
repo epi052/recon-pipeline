@@ -1,19 +1,18 @@
 import json
-import ipaddress
+import subprocess
 from pathlib import Path
 
 import luigi
 from luigi.util import inherits
-from luigi.contrib.external_program import ExternalProgramTask
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .config import tool_paths
 from .targets import TargetList
-from ..luigi_targets import SQLiteTarget
-from ..models import Target, IPAddress, DBManager, Screenshot
+from ..models import Target, DBManager
 
 
 @inherits(TargetList)
-class AmassScan(ExternalProgramTask):
+class AmassScan(luigi.Task):
     """ Run ``amass`` scan to perform subdomain enumeration of given domain(s).
 
     Note:
@@ -43,6 +42,11 @@ class AmassScan(ExternalProgramTask):
 
     exempt_list = luigi.Parameter(default="")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
+
     def requires(self):
         """ AmassScan depends on TargetList to run.
 
@@ -68,17 +72,25 @@ class AmassScan(ExternalProgramTask):
 
         return luigi.LocalTarget(new_path.resolve())
 
-    def program_args(self):
+    def run(self):
         """ Defines the options/arguments sent to amass after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
 
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
-        if not self.input().path.endswith("domains"):
-            return f"touch {self.output().path}".split()
+        hostnames = self.db_mgr.get_all_hostnames()
+
+        if hostnames:
+            # TargetList generated some domains for us to scan with amass
+            amass_input_file = self.results_subfolder / "input-from-targetlist"
+            with open(amass_input_file, "w") as f:
+                for hostname in hostnames:
+                    f.write(f"{hostname}\n")
+        else:
+            return subprocess.run(f"touch {self.output().path}".split())
 
         command = [
             f"{tool_paths.get('amass')}",
@@ -89,7 +101,7 @@ class AmassScan(ExternalProgramTask):
             "-min-for-recursive",
             "3",
             "-df",
-            self.input().path,
+            str(amass_input_file),
             "-json",
             self.output().path,
         ]
@@ -98,7 +110,9 @@ class AmassScan(ExternalProgramTask):
             command.append("-blf")  # Path to a file providing blacklisted subdomains
             command.append(self.exempt_list)
 
-        return command
+        subprocess.run(command)
+
+        amass_input_file.unlink()
 
 
 @inherits(AmassScan)
@@ -115,7 +129,6 @@ class ParseAmassOutput(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=Screenshot)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
 
     def requires(self):
@@ -142,7 +155,9 @@ class ParseAmassOutput(luigi.Task):
         Returns:
             SQLiteTarget
         """
-        return SQLiteTarget(table=Screenshot, db_location=self.db_location, index=self.highest_id)
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        )
 
     def run(self):
         """ Parse the json file produced by AmassScan and categorize the results into ip|subdomain files.
@@ -180,5 +195,6 @@ class ParseAmassOutput(luigi.Task):
                     tgt = self.db_mgr.add_ipv4_or_v6_address_to_target(tgt, ipaddr)
 
                 self.db_mgr.add(tgt)
+                self.output().touch()
 
             self.db_mgr.close()

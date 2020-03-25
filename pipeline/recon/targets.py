@@ -1,11 +1,10 @@
-import logging
 import ipaddress
-from pathlib import Path
 
 import luigi
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .config import defaults
-from ..models import Target, DBManager, IPAddress
+from ..models import Target, DBManager
 
 
 class TargetList(luigi.ExternalTask):
@@ -23,8 +22,6 @@ class TargetList(luigi.ExternalTask):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=Target)
-        self.results_subfolder = (Path(self.results_dir) / "target-results").resolve()
 
     def output(self):
         """ Returns the target output for this task. target_file.ips || target_file.domains
@@ -40,12 +37,18 @@ class TargetList(luigi.ExternalTask):
         Returns:
             luigi.local_target.LocalTarget
         """
+        # normally the call is self.output().touch(), however, that causes recursion here, so we grab the target now
+        # in order to call .touch() on it later and eventually return it
+        db_target = SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        )
+
         with open(self.target_file) as f:
             for line in f.readlines():
                 line = line.strip()
                 try:
                     ipaddress.ip_interface(line)  # is it a valid ip/network?
-                except ValueError as e:
+                except ValueError:
                     # exception thrown by ip_interface; domain name assumed
                     tgt = self.db_mgr.get_or_create(Target, hostname=line, is_web=True)
                 else:
@@ -55,5 +58,8 @@ class TargetList(luigi.ExternalTask):
                     tgt = self.db_mgr.add_ipv4_or_v6_address_to_target(tgt, line)
 
                 self.db_mgr.add(tgt)
+                db_target.touch()
 
             self.db_mgr.close()
+
+        return db_target

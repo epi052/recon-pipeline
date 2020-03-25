@@ -48,10 +48,14 @@ scan_parser.add_argument(
 )
 scan_parser.add_argument("--recursive", action="store_true", help="whether or not to recursively gobust")
 scan_parser.add_argument("--rate", help="rate at which masscan should scan")
-scan_parser.add_argument(
-    "--top-ports", help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)"
+port_group = scan_parser.add_mutually_exclusive_group()
+
+port_group.add_argument(
+    "--top-ports",
+    help="ports to scan as specified by nmap's list of top-ports (only meaningful to around 5000)",
+    type=int,
 )
-scan_parser.add_argument("--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)")
+port_group.add_argument("--ports", help="port specification for masscan (all ports example: 1-65535,U:1-65535)")
 scan_parser.add_argument("--threads", help="number of threads for all of the threaded applications to use")
 scan_parser.add_argument("--scan-timeout", help="scan timeout for aquatone")
 scan_parser.add_argument("--proxy", help="proxy for gobuster if desired (ex. 127.0.0.1:8080)")
@@ -127,3 +131,6 @@ searchsploit_results_parser.add_argument(
 searchsploit_results_parser.add_argument(
     "--fullpath", action="store_true", default=False, help="display full path to exploit PoC"
 )
+
+port_results_parser = view_subparsers.add_parser("ports", help="List all known open ports; produced by masscan")
+port_results_parser.add_argument("--paged", action="store_true", default=False, help="display output page-by-page")

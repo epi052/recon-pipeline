@@ -21,7 +21,8 @@ from .searchsploit_model import SearchsploitResult
 class DBManager:
     def __init__(self, db_location):
         self.location = Path(db_location).resolve()
-        engine = create_engine(f"sqlite:///{self.location}")
+        self.connection_string = f"sqlite:///{self.location}"
+        engine = create_engine(self.connection_string)
         Base.metadata.create_all(engine)  # noqa: F405
         session_factory = sessionmaker(bind=engine)
         self.session = session_factory()
