@@ -8,10 +8,10 @@ from concurrent.futures import ThreadPoolExecutor
 
 import luigi
 from luigi.util import inherits
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...luigi_targets import SQLiteTarget
 from ...models import DBManager, Endpoint
 
 
@@ -60,7 +60,6 @@ class GobusterScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
-        self.highest_id = self.db_mgr.get_highest_id(table=Endpoint)
         self.results_subfolder = Path(self.results_dir) / "gobuster-results"
 
     def requires(self):
@@ -95,7 +94,9 @@ class GobusterScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        return SQLiteTarget(table=Endpoint, db_location=self.db_location, index=self.highest_id)
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="endpoint", update_id=self.task_id
+        )
 
     def parse_results(self):
         """ Reads in each individual gobuster file and adds each line to the database as an Endpoint """
@@ -117,6 +118,7 @@ class GobusterScan(luigi.Task):
                     if ep not in tgt.endpoints:
                         tgt.endpoints.append(ep)
                     self.db_mgr.add(tgt)
+                    self.output().touch()
 
     def run(self):
         """ Defines the options/arguments sent to gobuster after processing.
@@ -131,44 +133,41 @@ class GobusterScan(luigi.Task):
 
         commands = list()
 
-        with self.input().open() as f:
-            for target in f:
-                target = target.strip()
+        for target in self.db_mgr.get_all_web_targets():
+            try:
+                if isinstance(ipaddress.ip_address(target), ipaddress.IPv6Address):  # ipv6
+                    target = f"[{target}]"
+            except ValueError:
+                # domain names raise ValueErrors, just assume we have a domain and keep on keepin on
+                pass
 
-                try:
-                    if isinstance(ipaddress.ip_address(target), ipaddress.IPv6Address):  # ipv6
-                        target = f"[{target}]"
-                except ValueError:
-                    # domain names raise ValueErrors, just assume we have a domain and keep on keepin on
-                    pass
+            for url_scheme in ("https://", "http://"):
+                if self.recursive:
+                    command = [tool_paths.get("recursive-gobuster"), "-w", self.wordlist, f"{url_scheme}{target}"]
+                else:
+                    command = [
+                        tool_paths.get("gobuster"),
+                        "dir",
+                        "-q",
+                        "-e",
+                        "-k",
+                        "-u",
+                        f"{url_scheme}{target}",
+                        "-w",
+                        self.wordlist,
+                        "-o",
+                        self.results_subfolder.joinpath(
+                            f"gobuster.{url_scheme.replace('//', '_').replace(':', '')}{target}.txt"
+                        ),
+                    ]
 
-                for url_scheme in ("https://", "http://"):
-                    if self.recursive:
-                        command = [tool_paths.get("recursive-gobuster"), "-w", self.wordlist, f"{url_scheme}{target}"]
-                    else:
-                        command = [
-                            tool_paths.get("gobuster"),
-                            "dir",
-                            "-q",
-                            "-e",
-                            "-k",
-                            "-u",
-                            f"{url_scheme}{target}",
-                            "-w",
-                            self.wordlist,
-                            "-o",
-                            self.results_subfolder.joinpath(
-                                f"gobuster.{url_scheme.replace('//', '_').replace(':', '')}{target}.txt"
-                            ),
-                        ]
+                if self.extensions:
+                    command.extend(["-x", self.extensions])
 
-                    if self.extensions:
-                        command.extend(["-x", self.extensions])
+                if self.proxy:
+                    command.extend(["-p", self.proxy])
 
-                    if self.proxy:
-                        command.extend(["-p", self.proxy])
-
-                    commands.append(command)
+                commands.append(command)
 
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
