@@ -100,7 +100,6 @@ class GobusterScan(luigi.Task):
 
     def parse_results(self):
         """ Reads in each individual gobuster file and adds each line to the database as an Endpoint """
-        # TODO: doesn't handle recursive option (probably, unconfirmed)
         for file in self.results_subfolder.iterdir():
             tgt = None
             for i, line in enumerate(file.read_text().splitlines()):
@@ -143,7 +142,7 @@ class GobusterScan(luigi.Task):
 
             for url_scheme in ("https://", "http://"):
                 if self.recursive:
-                    command = [tool_paths.get("recursive-gobuster"), "-w", self.wordlist, f"{url_scheme}{target}"]
+                    command = [tool_paths.get("recursive-gobuster"), "-s", "-w", self.wordlist, f"{url_scheme}{target}"]
                 else:
                     command = [
                         tool_paths.get("gobuster"),

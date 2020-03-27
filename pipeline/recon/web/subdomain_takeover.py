@@ -5,6 +5,7 @@ from pathlib import Path
 
 import luigi
 from luigi.util import inherits
+from luigi.contrib.sqla import SQLAlchemyTarget
 
 from ...models import DBManager
 from .targets import GatherWebTargets
@@ -47,6 +48,8 @@ class TKOSubsScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
+        self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").resolve()
+        self.output_file = self.results_subfolder / "tkosubs.csv"
 
     def requires(self):
         """ TKOSubsScan depends on GatherWebTargets to run.
@@ -72,20 +75,16 @@ class TKOSubsScan(luigi.Task):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is tkosubs.TARGET_FILE.csv.
-
         Returns:
-            luigi.local_target.LocalTarget
+            luigi.contrib.sqla.SQLAlchemyTarget
         """
-        results_subfolder = Path(self.results_dir) / "tkosubs-results"
-
-        new_path = results_subfolder / "tkosubs.csv"
-
-        return luigi.LocalTarget(new_path.resolve())
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        )
 
     def parse_results(self):
         """ Reads in the tkosubs .csv file and updates the associated Target record. """
-        with open(self.output().path, newline="") as f:
+        with open(self.output_file, newline="") as f:
             reader = csv.reader(f)
 
             next(reader, None)  # skip the headers
@@ -97,9 +96,15 @@ class TKOSubsScan(luigi.Task):
                 if "true" in is_vulnerable.lower():
                     tgt = self.db_mgr.get_target_by_ip_or_hostname(domain)
                     tgt.vuln_to_sub_takeover = True
+
                     self.db_mgr.add(tgt)
+                    self.output().touch()
 
             self.db_mgr.close()
+
+        # make sure task doesn't fail due to no results, it's the last in its chain, so doesn't
+        # affect any downstream tasks
+        self.output().touch()
 
     def run(self):
         """ Defines the options/arguments sent to tko-subs after processing.
@@ -107,7 +112,7 @@ class TKOSubsScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         domains = self.db_mgr.get_all_hostnames()
 
@@ -118,7 +123,7 @@ class TKOSubsScan(luigi.Task):
             tool_paths.get("tko-subs"),
             f"-domain={','.join(domains)}",
             f"-data={tool_paths.get('tko-subs-dir')}/providers-data.csv",
-            f"-output={self.output().path}",
+            f"-output={self.output_file}",
         ]
 
         subprocess.run(command)
@@ -165,6 +170,8 @@ class SubjackScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = DBManager(db_location=self.db_location)
+        self.results_subfolder = (Path(self.results_dir) / "subjack-results").resolve()
+        self.output_file = self.results_subfolder / "subjack.txt"
 
     def requires(self):
         """ SubjackScan depends on GatherWebTargets to run.
@@ -190,21 +197,17 @@ class SubjackScan(luigi.Task):
     def output(self):
         """ Returns the target output for this task.
 
-        Naming convention for the output file is subjack.TARGET_FILE.txt.
-
         Returns:
-            luigi.local_target.LocalTarget
+            luigi.contrib.sqla.SQLAlchemyTarget
         """
-        results_subfolder = Path(self.results_dir) / "subjack-results"
-
-        new_path = results_subfolder / "subjack.txt"
-
-        return luigi.LocalTarget(new_path.resolve())
+        return SQLAlchemyTarget(
+            connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        )
 
     def parse_results(self):
         """ Reads in the subjack's subjack.txt file and updates the associated Target record. """
 
-        with open(self.output().path) as f:
+        with open(self.output_file) as f:
             """ example data
 
                 [Not Vulnerable] 52.53.92.161:443
@@ -231,8 +234,13 @@ class SubjackScan(luigi.Task):
                 tgt.vuln_to_sub_takeover = True
 
                 self.db_mgr.add(tgt)
+                self.output().touch()
 
             self.db_mgr.close()
+
+        # make sure task doesn't fail due to no results, it's the last in its chain, so doesn't
+        # affect any downstream tasks
+        self.output().touch()
 
     def run(self):
         """ Defines the options/arguments sent to subjack after processing.
@@ -240,19 +248,29 @@ class SubjackScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
+
+        hostnames = self.db_mgr.get_all_hostnames()
+
+        if not hostnames:
+            return
+
+        subjack_input_file = self.results_subfolder / "input-from-webtargets"
+        with open(subjack_input_file, "w") as f:
+            for hostname in hostnames:
+                f.write(f"{hostname}\n")
 
         command = [
             tool_paths.get("subjack"),
             "-w",
-            self.input().path,
+            str(subjack_input_file),
             "-t",
             self.threads,
             "-a",
             "-timeout",
             "30",
             "-o",
-            self.output().path,
+            str(self.output_file),
             "-v",
             "-ssl",
             "-c",
@@ -262,3 +280,5 @@ class SubjackScan(luigi.Task):
         subprocess.run(command)
 
         self.parse_results()
+
+        subjack_input_file.unlink()

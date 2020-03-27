@@ -153,7 +153,7 @@ class ParseAmassOutput(luigi.Task):
         """ Returns the target output files for this task.
 
         Returns:
-            SQLiteTarget
+            luigi.contrib.sqla.SQLAlchemyTarget
         """
         return SQLAlchemyTarget(
             connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id

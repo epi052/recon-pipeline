@@ -89,7 +89,7 @@ view_parser = cmd2.Cmd2ArgumentParser()
 view_subparsers = view_parser.add_subparsers(title="result types")
 
 target_results_parser = view_subparsers.add_parser(
-    "targets", help="List all known targets (ipv4/6 & domain names); produced by amass"
+    "targets", help="List all known targets (ipv4/6 & domain names); produced by amass", conflict_handler="resolve"
 )
 
 technology_results_parser = view_subparsers.add_parser(

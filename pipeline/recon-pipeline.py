@@ -399,6 +399,12 @@ class ReconShell(cmd2.Cmd):
             index = locations.index(location) + 1
             self.db_mgr = DBManager(db_location=location)
 
+        target_results_parser.add_argument(
+            "--vuln-to-subdomain-takeover",
+            action="store_true",
+            default=False,
+            help="show targets identified as vulnerable to subdomain takeover",
+        )
         endpoint_results_parser.add_argument(
             "--status-code", choices=self.db_mgr.get_status_codes(), help="filter results by status code"
         )
@@ -467,7 +473,14 @@ class ReconShell(cmd2.Cmd):
     def print_target_results(self, args):
         """ Display all Targets from the database, ipv4/6 and hostname """
         for target in self.db_mgr.get_all_targets():
-            self.poutput(target)
+            if args.vuln_to_subdomain_takeover:
+                tgt = self.db_mgr.get_target_by_ip_or_hostname(target)
+                notvuln = style("not vulnerable", fg="bright_red")
+                vuln = style("vulnerable", fg="green")
+                vulnstring = [notvuln, vuln][tgt.vuln_to_sub_takeover]
+                self.poutput(f"[{vulnstring}] {target}")
+            else:
+                self.poutput(target)
 
     def print_endpoint_results(self, args):
         """ Display all Endpoints from the database """

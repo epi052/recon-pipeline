@@ -11,9 +11,8 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
-from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult
-
-# TODO: nmap and all other downstream only scan IPs, need to reintegrate domain/subdomains into scans if they exist after masscan
+from .helpers import get_ip_address_version, is_ip_address
+from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult, Target
 
 
 @inherits(ParseMasscanOutput)
@@ -102,12 +101,20 @@ class ThreadedNmapScan(luigi.Task):
                 for service in host.services:
                     port = self.db_mgr.get_or_create(Port, protocol=service.protocol, port_number=service.port)
 
-                    # TODO: this needs to change if we start scanning ipv6 with nmap
-                    ip_address = self.db_mgr.get_or_create(IPAddress, ipv4_address=host.address)
+                    if is_ip_address(host.address) and get_ip_address_version(host.address) == "4":
+                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv4_address=host.address)
+                    else:
+                        ip_address = self.db_mgr.get_or_create(IPAddress, ipv6_address=host.address)
 
-                    nmap_result = self.db_mgr.get_or_create(
-                        NmapResult, port=port, ip_address=ip_address, target=ip_address.target
-                    )
+                    if ip_address.target is None:
+                        # account for ip addresses identified that aren't already tied to a target
+                        # almost certainly ipv6 addresses
+                        tgt = self.db_mgr.get_or_create(Target)
+                        tgt.ip_addresses.append(ip_address)
+                    else:
+                        tgt = ip_address.target
+
+                    nmap_result = self.db_mgr.get_or_create(NmapResult, port=port, ip_address=ip_address, target=tgt)
 
                     for nse_result in service.scripts_results:
                         script_id = nse_result.get("id")
@@ -163,6 +170,11 @@ class ThreadedNmapScan(luigi.Task):
                     tmp_cmd[10] = ",".join(ports)
                     tmp_cmd.append(str(Path(self.output().get("localtarget").path) / f"nmap.{target}-{protocol}"))
 
+                    print(f"!!! {get_ip_address_version(target)}")
+                    if is_ip_address(target) and get_ip_address_version(target) == "6":
+                        # got an ipv6 address
+                        tmp_cmd.insert(-2, "-6")
+                    print(f"!!! {tmp_cmd} {is_ip_address(target)} - {get_ip_address_version(target)}")
                     tmp_cmd.append(target)  # target as final arg to nmap
 
                     commands.append(tmp_cmd)

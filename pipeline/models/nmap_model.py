@@ -26,8 +26,11 @@ class NmapResult(Base):
 
     def pretty(self, commandline=False, nse_results=None):
         pad = "  "
-        msg = f"{self.ip_address.ipv4_address} - {self.service}\n"
-        msg += f"{'=' * (len(self.ip_address.ipv4_address) + len(self.service) + 3)}\n\n"
+
+        ip_address = self.ip_address.ipv4_address or self.ip_address.ipv6_address
+
+        msg = f"{ip_address} - {self.service}\n"
+        msg += f"{'=' * (len(ip_address) + len(self.service) + 3)}\n\n"
         msg += f"{self.port.protocol} port: {self.port.port_number} - {'open' if self.open else 'closed'} - {self.reason}\n"
         msg += f"product: {self.product} :: {self.product_version}\n"
         msg += f"nse script(s) output:\n"

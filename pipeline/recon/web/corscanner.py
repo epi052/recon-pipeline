@@ -1,15 +1,16 @@
+import subprocess
 from pathlib import Path
 
 import luigi
 from luigi.util import inherits
-from luigi.contrib.external_program import ExternalProgramTask
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
+from ...models.db_manager import DBManager
 
 
 @inherits(GatherWebTargets)
-class CORScannerScan(ExternalProgramTask):
+class CORScannerScan(luigi.Task):
     """ Use ``CORScanner`` to scan for potential CORS misconfigurations.
 
     Install:
@@ -44,6 +45,11 @@ class CORScannerScan(ExternalProgramTask):
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.db_mgr = DBManager(db_location=self.db_location)
+        self.results_subfolder = (Path(self.results_dir) / "corscanner-results").resolve()
+
     def requires(self):
         """ CORScannerScan depends on GatherWebTargets to run.
 
@@ -73,29 +79,42 @@ class CORScannerScan(ExternalProgramTask):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "corscanner-results"
+        # TODO:  cut over to the database once actual CORScanner results come up during a scan
+        #        https://github.com/epi052/recon-pipeline/projects/1#card-32050846
+        # return SQLAlchemyTarget(
+        #     connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
+        # )
+        return luigi.LocalTarget((self.results_subfolder / "corscanner.json").resolve())
 
-        new_path = results_subfolder / "corscanner.json"
-
-        return luigi.LocalTarget(new_path.resolve())
-
-    def program_args(self):
+    def run(self):
         """ Defines the options/arguments sent to tko-subs after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-        Path(self.output().path).parent.mkdir(parents=True, exist_ok=True)
+        self.results_subfolder.mkdir(parents=True, exist_ok=True)
+
+        targets = self.db_mgr.get_all_web_targets()
+
+        if not targets:
+            return
+
+        corscanner_input_file = self.results_subfolder / "input-from-webtargets"
+        with open(corscanner_input_file, "w") as f:
+            for target in targets:
+                f.write(f"{targets}\n")
 
         command = [
             "python3",
             tool_paths.get("CORScanner"),
             "-i",
-            self.input().path,
+            str(corscanner_input_file),
             "-t",
             self.threads,
             "-o",
             self.output().path,
         ]
 
-        return command
+        subprocess.run(command)
+
+        corscanner_input_file.unlink()

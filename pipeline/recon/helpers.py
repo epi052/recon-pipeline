@@ -57,3 +57,12 @@ def is_ip_address(ipaddr):
         return True
     except ValueError:
         return False
+
+
+def get_ip_address_version(ipaddr):
+    """ Simple helper to determine whether a given ip address is ipv4 or ipv6 """
+    if is_ip_address(ipaddr):
+        if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+            return "4"
+        elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
+            return "6"
