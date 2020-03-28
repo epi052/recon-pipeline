@@ -1,12 +1,21 @@
+import tempfile
+from pathlib import Path
+
 from pipeline.recon import TargetList
 
+tfp = Path(__file__).parent.parent / "data" / "bitdiscovery"
 
-def test_creates_ips(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetdb = tmp_path / "testing.sqlite"
-    targetfile.write_text("127.0.0.1")
 
-    tl = TargetList(target_file=str(targetfile), results_dir=str(tmp_path / "recon-results"), db_location=str(targetdb))
+class TestReconTargets:
+    def setup_method(self):
+        self.tmp_path = Path(tempfile.mkdtemp())
+        self.tl = TargetList(
+            target_file=str(tfp), results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
+        )
 
-    out = tl.output()
-    assert out.exists()
+    def test_targets_creates_database(self):
+        assert self.tl.db_mgr.location.exists()
+        assert self.tmp_path / "testing.sqlite" == self.tl.db_mgr.location
+
+    def test_targets_adds_to_database(self):
+        assert self.tl.output().exists()

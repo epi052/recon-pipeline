@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import luigi
 from luigi.contrib.sqla import SQLAlchemyTarget
 
@@ -42,7 +44,7 @@ class TargetList(luigi.ExternalTask):
             connection_string=self.db_mgr.connection_string, target_table="target", update_id=self.task_id
         )
 
-        with open(self.target_file) as f:
+        with open(Path(self.target_file).resolve()) as f:
             for line in f.readlines():
                 line = line.strip()
 

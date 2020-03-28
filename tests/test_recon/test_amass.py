@@ -49,7 +49,7 @@ class TestAmassScan:
             db_location=str(self.tmp_path / "testing.sqlite"),
         )
 
-    def test_parse_amass_creates_database(self):
+    def test_amassscan_creates_database(self):
         assert self.asc.db_mgr.location.exists()
         assert self.tmp_path / "testing.sqlite" == self.asc.db_mgr.location
 
