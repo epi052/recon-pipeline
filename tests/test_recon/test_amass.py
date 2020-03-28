@@ -2,7 +2,7 @@ from pathlib import Path
 
 import luigi
 
-from pipeline.recon import ParseAmassOutput, AmassScan
+from pipeline.recon import ParseAmassOutput
 
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem

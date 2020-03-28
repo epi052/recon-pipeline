@@ -1,10 +1,8 @@
 import pickle
-import ipaddress
 from pathlib import Path
 
 import luigi
 
-from pipeline.recon import web_ports
 from pipeline.recon.web import GatherWebTargets
 
 test_dict = {
