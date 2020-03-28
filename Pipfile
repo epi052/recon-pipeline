@@ -17,6 +17,7 @@ future = "*"
 sqlalchemy = "*"
 flake8 = "*"
 python-libnmap = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.7"

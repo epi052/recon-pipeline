@@ -21,5 +21,3 @@ repos:
       entry: pytest
       language: system
       types: [python]
-
-
