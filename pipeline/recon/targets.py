@@ -17,7 +17,7 @@ class TargetList(luigi.ExternalTask):
 
     target_file = luigi.Parameter()
     db_location = luigi.Parameter()
-    results_dir = luigi.Parameter(default=defaults.get("results-dir", ""))
+    results_dir = luigi.Parameter(default=defaults.get("results-dir"))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

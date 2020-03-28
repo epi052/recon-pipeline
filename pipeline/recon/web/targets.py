@@ -3,9 +3,9 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 from ..config import web_ports
+from ...models import DBManager
 from ..amass import ParseAmassOutput
 from ..masscan import ParseMasscanOutput
-from ...models.db_manager import DBManager
 
 
 @inherits(ParseMasscanOutput)

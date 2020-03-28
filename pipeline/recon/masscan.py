@@ -50,8 +50,8 @@ class MasscanScan(luigi.Task):
         exempt_list: Path to a file providing blacklisted subdomains, one per line. *Optional by upstream Task*
     """
 
-    rate = luigi.Parameter(default=defaults.get("masscan-rate", ""))
-    interface = luigi.Parameter(default=defaults.get("masscan-iface", ""))
+    rate = luigi.Parameter(default=defaults.get("masscan-rate"))
+    interface = luigi.Parameter(default=defaults.get("masscan-iface"))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 

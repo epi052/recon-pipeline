@@ -44,7 +44,7 @@ class ThreadedNmapScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    threads = luigi.Parameter(default=defaults.get("threads", ""))
+    threads = luigi.Parameter(default=defaults.get("threads"))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

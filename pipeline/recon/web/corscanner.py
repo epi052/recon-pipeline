@@ -4,9 +4,9 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
+from ...models import DBManager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models.db_manager import DBManager
 
 
 @inherits(GatherWebTargets)
@@ -43,7 +43,7 @@ class CORScannerScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    threads = luigi.Parameter(default=defaults.get("threads", ""))
+    threads = luigi.Parameter(default=defaults.get("threads"))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

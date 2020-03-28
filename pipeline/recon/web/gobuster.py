@@ -51,11 +51,11 @@ class GobusterScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    proxy = luigi.Parameter(default=defaults.get("proxy", ""))
-    threads = luigi.Parameter(default=defaults.get("threads", ""))
-    wordlist = luigi.Parameter(default=defaults.get("gobuster-wordlist", ""))
-    extensions = luigi.Parameter(default=defaults.get("gobuster-extensions", ""))
     recursive = luigi.BoolParameter(default=False)
+    proxy = luigi.Parameter(default=defaults.get("proxy"))
+    threads = luigi.Parameter(default=defaults.get("threads"))
+    wordlist = luigi.Parameter(default=defaults.get("gobuster-wordlist"))
+    extensions = luigi.Parameter(default=defaults.get("gobuster-extensions"))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
