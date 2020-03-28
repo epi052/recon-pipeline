@@ -1,7 +1,7 @@
 import pickle
 from pathlib import Path
 
-from pipeline.recon import ParseMasscanOutput, MasscanScan
+from pipeline.recon import MasscanScan
 
 tfp = "../data/bitdiscovery"
 tf = Path(tfp).stem
@@ -28,18 +28,6 @@ def test_massscan_output_location(tmp_path):
     )
 
     assert asc.output().path == str(Path(tmp_path) / "masscan-results" / "masscan.json")
-
-
-def test_parsemassscan_output_location(tmp_path):
-    pmo = ParseMasscanOutput(
-        target_file=tf,
-        exempt_list=el,
-        results_dir=str(tmp_path),
-        top_ports=100,
-        db_location=str(Path(tmp_path) / "testing.sqlite"),
-    )
-
-    assert pmo.output().path == str(Path(tmp_path) / "masscan-results" / "masscan.parsed.pickle")
 
 
 def test_parsemassscan_output_dictionary():

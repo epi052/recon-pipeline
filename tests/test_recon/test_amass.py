@@ -1,4 +1,3 @@
-import ipaddress
 from pathlib import Path
 
 import luigi
@@ -39,78 +38,6 @@ subdomains = [
 amass_json = Path(__file__).parent.parent / "data" / "recon-results" / "amass-results" / "amass.json"
 
 
-def test_amassscan_output_location(tmp_path):
-    asc = AmassScan(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    assert asc.output().path == str(Path(tmp_path) / "amass-results" / "amass.json")
-
-
-def test_parse_amass_output_locations(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    assert pao.output().get("target-ips").path == str((Path(tmp_path) / "target-results" / "ipv4_addresses").resolve())
-    assert pao.output().get("target-ip6s").path == str((Path(tmp_path) / "target-results" / "ipv6_addresses").resolve())
-    assert pao.output().get("target-subdomains").path == str(
-        (Path(tmp_path) / "target-results" / "subdomains").resolve()
-    )
-
-
-def test_parse_amass_ip_results_only_contain_ipv4_addys(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    pao.input = lambda: luigi.LocalTarget(amass_json)
-    pao.run()
-
-    contents = (Path(pao.output().get("target-ips").path)).read_text()
-
-    for line in contents.split():
-        try:
-            ipaddress.ip_interface(line.strip())  # is it a valid ip/network?
-        except ValueError:
-            assert 0
-
-
-def test_parse_amass_ip6_results_only_contain_ipv6_addys(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    pao.input = lambda: luigi.LocalTarget(amass_json)
-    pao.run()
-
-    contents = (Path(pao.output().get("target-ip6s").path)).read_text()
-
-    for line in contents.split():
-        try:
-            ipaddress.ip_interface(line.strip())  # is it a valid ip/network?
-        except ValueError:
-            assert 0
-
-
-def test_parse_amass_subdomain_results_only_contain_domains(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    pao.input = lambda: luigi.LocalTarget(amass_json)
-    pao.run()
-
-    contents = (Path(pao.output().get("target-subdomains").path)).read_text()
-
-    for line in contents.split():
-        try:
-            ipaddress.ip_interface(line.strip())  # is it a valid ip/network?
-        except ValueError:
-            continue
-        assert 0
-
-
 def test_parse_amass_ip_results(tmp_path):
     pao = ParseAmassOutput(
         target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
@@ -119,35 +46,4 @@ def test_parse_amass_ip_results(tmp_path):
     pao.input = lambda: luigi.LocalTarget(amass_json)
     pao.run()
 
-    contents = (Path(pao.output().get("target-ips").path)).read_text()
-
-    for line in contents.split():
-        assert line.strip() in ips
-
-
-def test_parse_amass_ip6_results(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    pao.input = lambda: luigi.LocalTarget(amass_json)
-    pao.run()
-
-    contents = (Path(pao.output().get("target-ip6s").path)).read_text()
-
-    for line in contents.split():
-        assert line.strip() in ip6s
-
-
-def test_parse_amass_subdomain_results(tmp_path):
-    pao = ParseAmassOutput(
-        target_file=tf, exempt_list=el, results_dir=str(tmp_path), db_location=str(Path(tmp_path) / "testing.sqlite")
-    )
-
-    pao.input = lambda: luigi.LocalTarget(amass_json)
-    pao.run()
-
-    contents = (Path(pao.output().get("target-subdomains").path)).read_text()
-
-    for line in contents.split():
-        assert line.strip() in subdomains
+    assert pao.output().exists()
