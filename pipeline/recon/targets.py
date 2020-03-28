@@ -1,9 +1,8 @@
-import ipaddress
-
 import luigi
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .config import defaults
+from .helpers import is_ip_address
 from ..models import Target, DBManager
 
 
@@ -46,16 +45,13 @@ class TargetList(luigi.ExternalTask):
         with open(self.target_file) as f:
             for line in f.readlines():
                 line = line.strip()
-                try:
-                    ipaddress.ip_interface(line)  # is it a valid ip/network?
-                except ValueError:
-                    # exception thrown by ip_interface; domain name assumed
-                    tgt = self.db_mgr.get_or_create(Target, hostname=line, is_web=True)
-                else:
-                    # no exception thrown; ip address found
-                    tgt = self.db_mgr.get_or_create(Target)
 
+                if is_ip_address(line):
+                    tgt = self.db_mgr.get_or_create(Target)
                     tgt = self.db_mgr.add_ipv4_or_v6_address_to_target(tgt, line)
+                else:
+                    # domain name assumed if not ip address
+                    tgt = self.db_mgr.get_or_create(Target, hostname=line, is_web=True)
 
                 self.db_mgr.add(tgt)
                 db_target.touch()

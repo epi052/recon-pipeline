@@ -1,5 +1,4 @@
 import sqlite3
-import ipaddress
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -16,6 +15,7 @@ from .nmap_model import NmapResult
 from .endpoint_model import Endpoint
 from .ip_address_model import IPAddress
 from .searchsploit_model import SearchsploitResult
+from ..recon.helpers import get_ip_address_version, is_ip_address
 
 
 class DBManager:
@@ -65,21 +65,18 @@ class DBManager:
         if instance:
             return instance
         else:
-            try:
-                ipaddress.ip_interface(ip_or_host)
-                is_ip_address = True
-            except ValueError:
-                is_ip_address = False
+            if not is_ip_address(ip_or_host):
+                return
 
-            if is_ip_address:
-                tgt = self.get_or_create(Target)
-                if isinstance(ipaddress.ip_address(ip_or_host), ipaddress.IPv4Address):  # ipv4 addr
-                    ipaddr = IPAddress(ipv4_address=ip_or_host)
-                elif isinstance(ipaddress.ip_address(ip_or_host), ipaddress.IPv6Address):  # ipv6
-                    ipaddr = IPAddress(ipv6_address=ip_or_host)
+            tgt = self.get_or_create(Target)
 
-                tgt.ip_addresses.append(ipaddr)
-                return tgt
+            if get_ip_address_version(ip_or_host) == "4":
+                tgt.ip_addresses.append(IPAddress(ipv4_address=ip_or_host))
+            else:
+                # we've already determined it's an IP, only other possibility is v6
+                tgt.ip_addresses.append(IPAddress(ipv6_address=ip_or_host))
+
+            return tgt
 
     def get_all_hostnames(self) -> list:
         """ Simple helper to return all hostnames from Target records """
@@ -171,14 +168,15 @@ class DBManager:
 
     def add_ipv4_or_v6_address_to_target(self, tgt, ipaddr):
         """ Simple helper that adds an appropriate IPAddress to the given target """
+        if not is_ip_address(ipaddr):
+            return
 
-        if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
+        if get_ip_address_version(ipaddr) == "4":
             ip_address = self.get_or_create(IPAddress, ipv4_address=ipaddr)
-            tgt.ip_addresses.append(ip_address)
-
-        elif isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv6Address):  # ipv6
+        else:
             ip_address = self.get_or_create(IPAddress, ipv6_address=ipaddr)
-            tgt.ip_addresses.append(ip_address)
+
+        tgt.ip_addresses.append(ip_address)
 
         return tgt
 
