@@ -4,9 +4,22 @@ repos:
     hooks:
     - id: black
       language_version: python3.7
-      args: ['.']
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v1.2.3
+      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_install']
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
     hooks:
     - id: flake8
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0  # Use the ref you want to point at
+    hooks:
+    -   id: trailing-whitespace
+    -   id: debug-statements
+-   repo: local
+    hooks:
+    - id: tests
+      name: run tests
+      entry: pytest
+      language: system
+      types: [python]
+
 
