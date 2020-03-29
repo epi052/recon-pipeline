@@ -2,7 +2,6 @@ import json
 import logging
 import subprocess
 from pathlib import Path
-from collections import defaultdict
 
 import luigi
 from luigi.util import inherits
@@ -68,9 +67,7 @@ class MasscanScan(luigi.Task):
         Returns:
             luigi.local_target.LocalTarget
         """
-        results_subfolder = Path(self.results_dir) / "masscan-results"
-
-        new_path = results_subfolder / "masscan.json"
+        new_path = self.results_subfolder / "masscan.json"
 
         return luigi.LocalTarget(new_path.resolve())
 
@@ -195,8 +192,6 @@ class ParseMasscanOutput(luigi.Task):
 
     def run(self):
         """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
-        ip_dict = defaultdict(lambda: defaultdict(set))  # nested defaultdict
-
         try:
             # load masscan results from Masscan Task
             entries = json.load(self.input().open())
@@ -208,7 +203,7 @@ class ParseMasscanOutput(luigi.Task):
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         """
-        build out ip_dictionary from the loaded JSON
+        populate database from the loaded JSON
 
         masscan JSON structure over which we're looping
         [
@@ -216,14 +211,6 @@ class ParseMasscanOutput(luigi.Task):
         ,
         {   "ip": "10.10.10.146",   "timestamp": "1567856130", "ports": [ {"port": 80, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 63} ] }
         ]
-
-        ip_dictionary structure that is built out from each JSON entry
-        {
-            "IP_ADDRESS":
-                {'udp': {"161", "5000", ... },
-                ...
-                i.e. {protocol: set(ports) }
-        }
         """
 
         for entry in entries:
@@ -236,7 +223,6 @@ class ParseMasscanOutput(luigi.Task):
 
             for port_entry in entry.get("ports"):
                 protocol = port_entry.get("proto")
-                ip_dict[single_target_ip][protocol].add(str(port_entry.get("port")))
 
                 port = self.db_mgr.get_or_create(Port, protocol=protocol, port_number=port_entry.get("port"))
 

@@ -43,10 +43,7 @@ class TestAmassScan:
     def setup_method(self):
         self.tmp_path = Path(tempfile.mkdtemp())
         self.asc = AmassScan(
-            target_file=tf,
-            exempt_list=el,
-            results_dir=str(self.tmp_path),
-            db_location=str(self.tmp_path / "testing.sqlite"),
+            target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
 
     def test_amassscan_creates_database(self):
@@ -60,37 +57,34 @@ class TestAmassScan:
 class TestParseAmass:
     def setup_method(self):
         self.tmp_path = Path(tempfile.mkdtemp())
-        self.pao = ParseAmassOutput(
-            target_file=tf,
-            exempt_list=el,
-            results_dir=str(self.tmp_path),
-            db_location=str(self.tmp_path / "testing.sqlite"),
+        self.scan = ParseAmassOutput(
+            target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
 
-        self.pao.input = lambda: luigi.LocalTarget(amass_json)
-        self.pao.run()
+        self.scan.input = lambda: luigi.LocalTarget(amass_json)
+        self.scan.run()
 
-    def test_parse_amass_ip_results(self):
-        assert self.pao.output().exists()
+    def test_scan_results(self):
+        assert self.scan.output().exists()
 
-    def test_parse_amass_hostname_results(self):
-        parsed_hosts = self.pao.db_mgr.get_all_hostnames()
+    def test_scan_hostname_results(self):
+        parsed_hosts = self.scan.db_mgr.get_all_hostnames()
         for hostname in subdomains:
             assert hostname in parsed_hosts
 
-    def test_parse_amass_ipv4_results(self):
-        parsed_hosts = self.pao.db_mgr.get_all_ipv4_addresses()
+    def test_scan_ipv4_results(self):
+        parsed_hosts = self.scan.db_mgr.get_all_ipv4_addresses()
         for ip in ips:
             assert ip in parsed_hosts
 
-    def test_parse_amass_ipv6_results(self):
-        parsed_hosts = self.pao.db_mgr.get_all_ipv6_addresses()
+    def test_scan_ipv6_results(self):
+        parsed_hosts = self.scan.db_mgr.get_all_ipv6_addresses()
         for ip in ip6s:
             assert ip in parsed_hosts
 
-    def test_parse_amass_creates_results_dir(self):
-        assert self.pao.results_subfolder.exists()
+    def test_scan_creates_results_dir(self):
+        assert self.scan.results_subfolder.exists()
 
-    def test_parse_amass_creates_database(self):
-        assert self.pao.db_mgr.location.exists()
-        assert self.tmp_path / "testing.sqlite" == self.pao.db_mgr.location
+    def test_scan_creates_database(self):
+        assert self.scan.db_mgr.location.exists()
+        assert self.tmp_path / "testing.sqlite" == self.scan.db_mgr.location

@@ -38,7 +38,7 @@ class TestSearchsploitScan:
         assert self.scan.db_mgr.location.exists()
         assert self.tmp_path / "testing.sqlite" == self.scan.db_mgr.location
 
-    def test_searchsploit_produces_results(self):
+    def test_scan_creates_results(self):
         self.scan.input = lambda: {"localtarget": luigi.LocalTarget(nmap_results)}
 
         if not is_kali():
