@@ -181,9 +181,13 @@ class AquatoneScan(luigi.Task):
             if not page_dict.get("hasScreenshot"):
                 # if there isn't a screenshot, save the endpoint data and move along
                 self.db_mgr.add(endpoint)
-                SQLAlchemyTarget(
-                    connection_string=self.db_mgr.connection_string, target_table="endpoint", update_id=self.task_id
-                ).touch()
+                # This causes an integrity error on insertion due to the task_id being the same for two
+                # different target tables.  Could subclass SQLAlchemyTarget and set the unique-ness to be the
+                # combination of update_id + target_table.  The question is, does it matter?
+                # TODO: assess above and act
+                # SQLAlchemyTarget(
+                #     connection_string=self.db_mgr.connection_string, target_table="endpoint", update_id=self.task_id
+                # ).touch()
                 continue
 
             # build out screenshot data
