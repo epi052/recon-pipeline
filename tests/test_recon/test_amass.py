@@ -5,10 +5,6 @@ import luigi
 
 from pipeline.recon import AmassScan, ParseAmassOutput
 
-tfp = "../data/bitdiscovery"
-tf = Path(tfp).stem
-el = "../data/blacklist"
-rd = "../data/recon-results"
 ips = [
     "13.225.54.58",
     "13.225.54.100",
@@ -42,16 +38,16 @@ amass_json = Path(__file__).parent.parent / "data" / "recon-results" / "amass-re
 class TestAmassScan:
     def setup_method(self):
         self.tmp_path = Path(tempfile.mkdtemp())
-        self.asc = AmassScan(
+        self.scan = AmassScan(
             target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
 
-    def test_amassscan_creates_database(self):
-        assert self.asc.db_mgr.location.exists()
-        assert self.tmp_path / "testing.sqlite" == self.asc.db_mgr.location
+    def test_scan_creates_database(self):
+        assert self.scan.db_mgr.location.exists()
+        assert self.tmp_path / "testing.sqlite" == self.scan.db_mgr.location
 
-    def test_amassscan_output_location(self):
-        assert self.asc.output().path == str(Path(self.tmp_path) / "amass-results" / "amass.json")
+    def test_scan_output_location(self):
+        assert self.scan.output().path == str(Path(self.tmp_path) / "amass-results" / "amass.json")
 
 
 class TestParseAmass:
