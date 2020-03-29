@@ -48,8 +48,9 @@ class DBManager:
             print(ansi.style(f"[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
 
-    def get_target_by_ip_or_hostname(self, ip_or_host):
+    def get_or_create_target_by_ip_or_hostname(self, ip_or_host):
         """ Simple helper to query a Target record by either hostname or ip address, whichever works """
+        # get existing instance
         instance = (
             self.session.query(Target)
             .filter(
@@ -65,16 +66,16 @@ class DBManager:
         if instance:
             return instance
         else:
-            if not is_ip_address(ip_or_host):
-                return
-
+            # create new entry
             tgt = self.get_or_create(Target)
 
             if get_ip_address_version(ip_or_host) == "4":
                 tgt.ip_addresses.append(IPAddress(ipv4_address=ip_or_host))
-            else:
-                # we've already determined it's an IP, only other possibility is v6
+            elif get_ip_address_version(ip_or_host) == "6":
                 tgt.ip_addresses.append(IPAddress(ipv6_address=ip_or_host))
+            else:
+                # we've already determined it's not an IP, only other possibility is a hostname
+                tgt.hostname = ip_or_host
 
             return tgt
 
@@ -199,7 +200,7 @@ class DBManager:
 
     def get_ports_by_ip_or_host_and_protocol(self, ip_or_host, protocol):
         """ Simple helper that returns all ports based on the given protocol and host """
-        tgt = self.get_target_by_ip_or_hostname(ip_or_host)
+        tgt = self.get_or_create_target_by_ip_or_hostname(ip_or_host)
         ports = list()
 
         for port in tgt.open_ports:

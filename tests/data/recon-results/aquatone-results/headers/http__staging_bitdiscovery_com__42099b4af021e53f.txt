@@ -1,17 +1,17 @@
 200 OK
-Set-Cookie: connect.sid=s%3AMIwP1tXxiW5IIB3gF_tg8UQiSP0vsjAy.ibe1bJViqYaPJ6BToXwKHZaEaj%2BjYvp7fxi4gtkNUYI; Path=/; HttpOnly
-Retry-Count: 0
-X-Frame-Options: SAMEORIGIN
-Etag: W/"2c44-aSq52Bwr/hjAPBUWuI0BtbI4oiE"
+X-Content-Type-Options: nosniff
+Referrer-Policy: origin-when-cross-origin
+Etag: W/"5f8a-vQBYKrRAfqI5iQ/GP2AM/fcHMKU"
+Set-Cookie: connect.sid=s%3ASllBJqqkfOO7s8eVSlMpOB1ajtp9uaVW.1pHlPuAfZpEFB61gk%2BB1p35fo7OFzOp9Bj9pQElHLvQ; Path=/; HttpOnly
 Content-Type: text/html; charset=utf-8
+Retry-Count: 0
+Access-Control-Allow-Origin: *
+X-Xss-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+Server: nginx/1.16.1
+Date: Sun, 29 Mar 2020 11:17:37 GMT
+Content-Length: 24458
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Vary: Accept-Encoding
 Access-Control-Allow-Headers: X-Requested-With
-Referrer-Policy: origin-when-cross-origin
-Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
-Server: nginx/1.16.1
-Access-Control-Allow-Origin: *
-X-Content-Type-Options: nosniff
-X-Xss-Protection: 1; mode=block
-Strict-Transport-Security: max-age=31536000; includeSubDomains
-Date: Thu, 30 Jan 2020 12:52:50 GMT
-Content-Length: 11332

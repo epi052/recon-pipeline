@@ -474,7 +474,7 @@ class ReconShell(cmd2.Cmd):
         """ Display all Targets from the database, ipv4/6 and hostname """
         for target in self.db_mgr.get_all_targets():
             if args.vuln_to_subdomain_takeover:
-                tgt = self.db_mgr.get_target_by_ip_or_hostname(target)
+                tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(target)
                 notvuln = style("not vulnerable", fg="bright_red")
                 vuln = style("vulnerable", fg="green")
                 vulnstring = [notvuln, vuln][tgt.vuln_to_sub_takeover]
@@ -568,7 +568,7 @@ class ReconShell(cmd2.Cmd):
 
         for webanalyze_scan in self.db_mgr.get_and_filter(Technology):
             for target in webanalyze_scan.targets:
-                if args.host is not None and self.db_mgr.get_target_by_ip_or_hostname(args.host) != target:
+                if args.host is not None and self.db_mgr.get_or_create_target_by_ip_or_hostname(args.host) != target:
                     continue
                 results.append(webanalyze_scan.pretty(padlen=1))
 
@@ -584,7 +584,10 @@ class ReconShell(cmd2.Cmd):
         for ss_scan in self.db_mgr.get_and_filter(SearchsploitResult):
             tmp_targets = set()
 
-            if args.host is not None and self.db_mgr.get_target_by_ip_or_hostname(args.host) != ss_scan.target:
+            if (
+                args.host is not None
+                and self.db_mgr.get_or_create_target_by_ip_or_hostname(args.host) != ss_scan.target
+            ):
                 continue
 
             if ss_scan.target.hostname in targets:
@@ -621,7 +624,9 @@ class ReconShell(cmd2.Cmd):
         for target in targets:
             if args.host is not None and target != args.host:
                 continue
-            ports = [str(port.port_number) for port in self.db_mgr.get_target_by_ip_or_hostname(target).open_ports]
+            ports = [
+                str(port.port_number) for port in self.db_mgr.get_or_create_target_by_ip_or_hostname(target).open_ports
+            ]
             results.append(f"{target}: {','.join(ports)}")
 
         if results:

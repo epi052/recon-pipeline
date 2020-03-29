@@ -1,0 +1,20 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80,443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.synopsys.bitdiscovery.com-tcp synopsys.bitdiscovery.com
+Nmap scan report for synopsys.bitdiscovery.com (52.53.89.219)
+Host is up (0.041s latency).
+Other addresses for synopsys.bitdiscovery.com (not scanned): 52.8.186.88
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Did not follow redirect to https://synopsys.bitdiscovery.com/
+443/tcp open  ssl/http nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Synopsys - Asset Inventory
+| ssl-cert: Subject: commonName=bitdiscovery.com
+| Subject Alternative Name: DNS:bitdiscovery.com, DNS:*.bitdiscovery.com
+| Not valid before: 2019-07-20T00:00:00
+|_Not valid after:  2020-08-20T12:00:00
+|_ssl-date: TLS randomness does not represent time
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Mar 29 06:19:17 2020 -- 1 IP address (1 host up) scanned in 14.43 seconds

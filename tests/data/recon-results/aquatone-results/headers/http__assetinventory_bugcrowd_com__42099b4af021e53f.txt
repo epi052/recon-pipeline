@@ -1,19 +1,19 @@
 200 OK
+Content-Type: text/html; charset=utf-8
+Access-Control-Allow-Headers: X-Requested-With
+Referrer-Policy: origin-when-cross-origin
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: connect.sid=s%3AbvW4FOay2tdoAl4w4g-K1qNheM5l91M4.gXnGl2ba3BCTlzSS9JpM%2FWwhXadlU8wj54bKQJnzb0Y; Path=/; HttpOnly
+Date: Sun, 29 Mar 2020 11:17:37 GMT
+Vary: Accept-Encoding
+Access-Control-Allow-Origin: https://bitdiscovery.com
+Cf-Ray: 57b92f7cfd8dc7e2-DFW
 Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
 X-Xss-Protection: 1; mode=block
-Referrer-Policy: origin-when-cross-origin
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-Etag: W/"98b-DxNKqNImao/Lh9fDc6XPux2goAI"
-Set-Cookie: connect.sid=s%3A1-7W_IkU4og6MdJxbo5KO8U6nihVjbPt.%2BimEHMrrskOji%2F5v06yucbAyTBQjxDA1I9xZ3JsP1KQ; Path=/; HttpOnly
-Cf-Cache-Status: DYNAMIC
-Vary: Accept-Encoding
-X-Content-Type-Options: nosniff
 Expect-Ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
 Server: cloudflare
 Retry-Count: 0
-Date: Thu, 30 Jan 2020 12:52:50 GMT
-Content-Type: text/html; charset=utf-8
-Access-Control-Allow-Headers: X-Requested-With
-Cf-Ray: 55d395d8eb5cec82-DFW
-Access-Control-Allow-Origin: https://bitdiscovery.com
-X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Etag: W/"9e1-aLna+VdyZ93w66rce6JPLNqCE4Q"
+Cf-Cache-Status: DYNAMIC

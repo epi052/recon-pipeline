@@ -170,11 +170,10 @@ class ThreadedNmapScan(luigi.Task):
                     tmp_cmd[10] = ",".join(ports)
                     tmp_cmd.append(str(Path(self.output().get("localtarget").path) / f"nmap.{target}-{protocol}"))
 
-                    print(f"!!! {get_ip_address_version(target)}")
                     if is_ip_address(target) and get_ip_address_version(target) == "6":
                         # got an ipv6 address
                         tmp_cmd.insert(-2, "-6")
-                    print(f"!!! {tmp_cmd} {is_ip_address(target)} - {get_ip_address_version(target)}")
+
                     tmp_cmd.append(target)  # target as final arg to nmap
 
                     commands.append(tmp_cmd)
@@ -280,7 +279,7 @@ class SearchsploitScan(luigi.Task):
                             # normal dict
                             tmp_result = ast.literal_eval(line.strip())
 
-                        tgt = self.db_mgr.get_target_by_ip_or_hostname(ipaddr)
+                        tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(ipaddr)
 
                         ssr_type = tmp_result.get("Type")
                         ssr_title = tmp_result.get("Title")

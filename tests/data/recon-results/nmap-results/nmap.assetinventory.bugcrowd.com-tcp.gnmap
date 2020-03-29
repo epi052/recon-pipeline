@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,8080,443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.assetinventory.bugcrowd.com-tcp assetinventory.bugcrowd.com
+Host: 104.20.61.51 ()	Status: Up
+Host: 104.20.61.51 ()	Ports: 80/open/tcp//http//cloudflare/, 443/open/tcp//ssl|https//cloudflare/, 8080/open/tcp//http-proxy//cloudflare/, 8443/open/tcp//ssl|https-alt//cloudflare/
+# Nmap done at Sun Mar 29 06:20:44 2020 -- 1 IP address (1 host up) scanned in 101.78 seconds

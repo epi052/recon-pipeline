@@ -120,7 +120,7 @@ class WebanalyzeScan(luigi.Task):
 
                     if tgt is None:
                         # should only hit the first line of each file
-                        tgt = self.db_mgr.get_target_by_ip_or_hostname(parsed_url.hostname)
+                        tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(parsed_url.hostname)
 
                     tgt.technologies.append(technology)
 

@@ -1,4 +1,0 @@
-# Nmap 7.80 scan initiated Thu Jan 30 06:54:48 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.13.225.54.22-tcp 13.225.54.22
-Host: 13.225.54.22 ()	Status: Up
-Host: 13.225.54.22 ()	Ports: 80/open/tcp//http//Amazon CloudFront httpd/
-# Nmap done at Thu Jan 30 06:54:56 2020 -- 1 IP address (1 host up) scanned in 8.12 seconds

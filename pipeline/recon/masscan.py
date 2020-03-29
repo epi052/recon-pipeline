@@ -216,7 +216,7 @@ class ParseMasscanOutput(luigi.Task):
         for entry in entries:
             single_target_ip = entry.get("ip")
 
-            tgt = self.db_mgr.get_target_by_ip_or_hostname(single_target_ip)
+            tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(single_target_ip)
 
             if single_target_ip not in tgt.ip_addresses:
                 tgt.ip_addresses.append(self.db_mgr.get_or_create(IPAddress, ipv4_address=single_target_ip))

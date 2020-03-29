@@ -21,3 +21,4 @@ repos:
       entry: pytest
       language: system
       types: [python]
+      args: ['tests/test_web', 'tests/test_recon']

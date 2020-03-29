@@ -1,0 +1,7 @@
+https://52.8.163.50/css (Status: 301)
+https://52.8.163.50/dist (Status: 301)
+https://52.8.163.50/fonts (Status: 301)
+https://52.8.163.50/homepage (Status: 301)
+https://52.8.163.50/images (Status: 301)
+https://52.8.163.50/js (Status: 301)
+https://52.8.163.50/robots.txt (Status: 200)

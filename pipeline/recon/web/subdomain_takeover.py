@@ -94,7 +94,7 @@ class TKOSubsScan(luigi.Task):
                 is_vulnerable = row[3]
 
                 if "true" in is_vulnerable.lower():
-                    tgt = self.db_mgr.get_target_by_ip_or_hostname(domain)
+                    tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(domain)
                     tgt.vuln_to_sub_takeover = True
 
                     self.db_mgr.add(tgt)
@@ -229,7 +229,7 @@ class SubjackScan(luigi.Task):
                 if ip_or_host.count(":") == 1:  # ip or host/port
                     ip_or_host, port = ip_or_host.split(":", maxsplit=1)
 
-                tgt = self.db_mgr.get_target_by_ip_or_hostname(ip_or_host)
+                tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(ip_or_host)
 
                 tgt.vuln_to_sub_takeover = True
 

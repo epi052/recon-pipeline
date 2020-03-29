@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.blog.bitdiscovery.com-tcp blog.bitdiscovery.com
+Host: 13.226.182.120 ()	Status: Up
+Host: 13.226.182.120 ()	Ports: 80/open/tcp//http//Amazon CloudFront httpd/, 443/open/tcp//ssl|http//Amazon CloudFront httpd/
+# Nmap done at Sun Mar 29 06:19:16 2020 -- 1 IP address (1 host up) scanned in 13.88 seconds

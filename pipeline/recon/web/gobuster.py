@@ -109,7 +109,7 @@ class GobusterScan(luigi.Task):
                     # parse first entry to determine ip address -> target relationship
                     parsed_url = urlparse(url)
 
-                    tgt = self.db_mgr.get_target_by_ip_or_hostname(parsed_url.hostname)
+                    tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(parsed_url.hostname)
 
                 if tgt is not None:
                     status_code = status.split(maxsplit=1)[1]

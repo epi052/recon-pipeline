@@ -71,7 +71,7 @@ class GatherWebTargets(luigi.Task):
         for target in self.db_mgr.get_all_targets():
             ports = self.db_mgr.get_ports_by_ip_or_host_and_protocol(target, "tcp")
             if any(port in web_ports for port in ports):
-                tgt = self.db_mgr.get_target_by_ip_or_hostname(target)
+                tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(target)
                 tgt.is_web = True
                 self.db_mgr.add(tgt)
                 self.output().touch()

@@ -174,7 +174,7 @@ class AquatoneScan(luigi.Task):
             parsed_url = urlparse(url)
 
             ip_or_hostname = parsed_url.hostname
-            tgt = self.db_mgr.get_target_by_ip_or_hostname(ip_or_hostname)
+            tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(ip_or_hostname)
 
             endpoint.target = tgt
 
