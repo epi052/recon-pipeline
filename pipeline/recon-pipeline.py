@@ -25,22 +25,28 @@ sys.path.append(str(Path.home() / ".local" / "bin"))
 import cmd2  # noqa: E402
 from cmd2.ansi import style  # noqa: E402
 
-# project's module imports
-# need to cluge the package to handle relative imports at this level
-if __name__ == "__main__" and __package__ is None:
-    file = Path(__file__).resolve()
-    parent, top = file.parent, file.parents[1]
 
-    sys.path.append(str(top))
-    try:
-        sys.path.remove(str(parent))
-    except ValueError:  # already gone
-        pass
+def cluge_package_imports(name, package):
+    """ project's module imports; need to cluge the package to handle relative imports at this level
 
-    import pipeline  # noqa: F401
+        putting into a function for testability
+    """
+    if name == "__main__" and package is None:
+        file = Path(__file__).resolve()
+        parent, top = file.parent, file.parents[1]
 
-    __package__ = "pipeline"
+        sys.path.append(str(top))
+        try:
+            sys.path.remove(str(parent))
+        except ValueError:  # already gone
+            pass
 
+        import pipeline  # noqa: F401
+
+        __package__ = "pipeline"  # noqa: F841
+
+
+cluge_package_imports(name=__name__, package=__package__)
 
 from .recon.config import defaults  # noqa: F401,E402
 from .models import DBManager, NmapResult, NSEResult, Technology, SearchsploitResult  # noqa: F401,E402
@@ -399,6 +405,14 @@ class ReconShell(cmd2.Cmd):
             index = locations.index(location) + 1
             self.db_mgr = DBManager(db_location=location)
 
+        self.add_dynamic_parser_arguments()
+
+        self.poutput(style(f"[+] attached to sqlite database @ {Path(location).resolve()}", fg="bright_green"))
+        self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
+
+    def add_dynamic_parser_arguments(self):
+        """ Populate command parsers with information from the currently attached database """
+        port_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
         target_results_parser.add_argument(
             "--vuln-to-subdomain-takeover",
             action="store_true",
@@ -430,10 +444,6 @@ class ReconShell(cmd2.Cmd):
         searchsploit_results_parser.add_argument(
             "--type", choices=self.db_mgr.get_all_exploit_types(), help="filter results by exploit type"
         )
-        port_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
-
-        self.poutput(style(f"[+] attached to sqlite database at {Path(location).resolve()}", fg="bright_green"))
-        self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
 
     def database_detach(self, args):
         """ Detach from the currently attached database """
@@ -441,7 +451,7 @@ class ReconShell(cmd2.Cmd):
             return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
 
         self.db_mgr.close()
-        self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
+        self.poutput(style(f"[*] detached from sqlite database @ {self.db_mgr.location}", fg="bright_yellow"))
         self.db_mgr = None
         self.prompt = DEFAULT_PROMPT
 
@@ -458,8 +468,9 @@ class ReconShell(cmd2.Cmd):
             self.poutput(style(f"[*] detached from sqlite database at {self.db_mgr.location}", fg="bright_yellow"))
             self.prompt = DEFAULT_PROMPT
             self.db_mgr.close()
+            self.db_mgr = None
 
-        self.poutput(style(f"[+] deleted sqlite database at {Path(to_delete).resolve()}", fg="bright_green"))
+        self.poutput(style(f"[+] deleted sqlite database @ {Path(to_delete).resolve()}", fg="bright_green"))
 
     @cmd2.with_argparser(database_parser)
     def do_database(self, args):
@@ -646,6 +657,11 @@ class ReconShell(cmd2.Cmd):
             self.do_help("view")
 
 
-if __name__ == "__main__":
-    rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
-    sys.exit(rs.cmdloop())
+def main(name):
+    """ Functionified for testability """
+    if name == "__main__":
+        rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
+        sys.exit(rs.cmdloop())
+
+
+main(name=__name__)

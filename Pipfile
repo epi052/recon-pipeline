@@ -18,6 +18,7 @@ sqlalchemy = "*"
 flake8 = "*"
 python-libnmap = "*"
 pre-commit = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"

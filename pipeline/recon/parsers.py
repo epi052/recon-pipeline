@@ -156,7 +156,9 @@ searchsploit_results_parser.add_argument(
     "--fullpath", action="store_true", default=False, help="display full path to exploit PoC (default: False)"
 )
 
-port_results_parser = view_subparsers.add_parser("ports", help="List all known open ports; produced by masscan")
+port_results_parser = view_subparsers.add_parser(
+    "ports", help="List all known open ports; produced by masscan", conflict_handler="resolve"
+)
 port_results_parser.add_argument(
     "--paged", action="store_true", default=False, help="display output page-by-page (default: False)"
 )
