@@ -43,7 +43,7 @@ def cluge_package_imports(name, package):
 
         import pipeline  # noqa: F401
 
-        __package__ = "pipeline"  # noqa: F841
+        sys.modules[name].__package__ = "pipeline"
 
 
 cluge_package_imports(name=__name__, package=__package__)
