@@ -5,6 +5,7 @@ import concurrent.futures
 from pathlib import Path
 
 import luigi
+import sqlalchemy
 from luigi.util import inherits
 from libnmap.parser import NmapParser
 from luigi.contrib.sqla import SQLAlchemyTarget
@@ -114,7 +115,18 @@ class ThreadedNmapScan(luigi.Task):
                     else:
                         tgt = ip_address.target
 
-                    nmap_result = self.db_mgr.get_or_create(NmapResult, port=port, ip_address=ip_address, target=tgt)
+                    try:
+                        nmap_result = self.db_mgr.get_or_create(
+                            NmapResult, port=port, ip_address=ip_address, target=tgt
+                        )
+                    except sqlalchemy.exc.StatementError:
+                        # one of the three (port/ip/tgt) didn't exist and we're querying on ids that the db doesn't know
+                        self.db_mgr.add(port)
+                        self.db_mgr.add(ip_address)
+                        self.db_mgr.add(tgt)
+                        nmap_result = self.db_mgr.get_or_create(
+                            NmapResult, port=port, ip_address=ip_address, target=tgt
+                        )
 
                     for nse_result in service.scripts_results:
                         script_id = nse_result.get("id")
@@ -139,7 +151,7 @@ class ThreadedNmapScan(luigi.Task):
         """ Parses pickled target info dictionary and runs targeted nmap scans against only open ports. """
         try:
             self.threads = abs(int(self.threads))
-        except TypeError:
+        except (TypeError, ValueError):
             return logging.error("The value supplied to --threads must be a non-negative integer.")
 
         nmap_command = [  # placeholders will be overwritten with appropriate info in loop below

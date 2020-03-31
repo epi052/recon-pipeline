@@ -208,3 +208,6 @@ class DBManager:
                 ports.append(str(port.port_number))
 
         return ports
+
+    def get_all_searchsploit_results(self):
+        return self.get_and_filter(SearchsploitResult)
