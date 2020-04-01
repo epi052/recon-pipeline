@@ -102,7 +102,7 @@ class TestSearchsploitScan:
         assert len(self.scan.db_mgr.get_all_searchsploit_results()) == 0
 
         if not Path(config.tool_paths.get("searchsploit")).exists():
-            pytest.skip(reason="exploit-db's searchsploit tool not installed")
+            pytest.skip("exploit-db's searchsploit tool not installed")
 
         self.scan.run()
 
