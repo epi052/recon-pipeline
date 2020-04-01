@@ -4,9 +4,10 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 import luigi
+import pytest
 from luigi.contrib.sqla import SQLAlchemyTarget
 
-from pipeline.recon import ThreadedNmapScan, SearchsploitScan, ParseMasscanOutput
+from pipeline.recon import ThreadedNmapScan, SearchsploitScan, ParseMasscanOutput, config
 
 nmap_results = Path(__file__).parent.parent / "data" / "recon-results" / "nmap-results"
 
@@ -99,6 +100,9 @@ class TestSearchsploitScan:
         self.scan.input = lambda: {"localtarget": luigi.LocalTarget(lcl_nmap)}
 
         assert len(self.scan.db_mgr.get_all_searchsploit_results()) == 0
+
+        if not Path(config.tool_paths.get("searchsploit")).exists():
+            pytest.skip(reason="exploit-db's searchsploit tool not installed")
 
         self.scan.run()
 
