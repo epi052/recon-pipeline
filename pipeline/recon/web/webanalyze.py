@@ -1,7 +1,6 @@
 import os
 import csv
 import logging
-import ipaddress
 import subprocess
 from pathlib import Path
 from urllib.parse import urlparse
@@ -14,6 +13,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
 from ...models import DBManager, Technology
+from ..helpers import get_ip_address_version, is_ip_address
 
 
 @inherits(GatherWebTargets)
@@ -142,18 +142,14 @@ class WebanalyzeScan(luigi.Task):
         """
         try:
             self.threads = abs(int(self.threads))
-        except TypeError:
+        except (TypeError, ValueError):
             return logging.error("The value supplied to --threads must be a non-negative integer.")
 
         commands = list()
 
         for target in self.db_mgr.get_all_web_targets():
-            try:
-                if isinstance(ipaddress.ip_address(target), ipaddress.IPv6Address):  # ipv6
-                    target = f"[{target}]"
-            except ValueError:
-                # domain names raise ValueErrors, just assume we have a domain and keep on keepin on
-                pass
+            if is_ip_address(target) and get_ip_address_version(target) == "6":
+                target = f"[{target}]"
 
             for url_scheme in ("https://", "http://"):
                 command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}", "-output", "csv"]
