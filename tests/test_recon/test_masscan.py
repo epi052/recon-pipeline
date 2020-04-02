@@ -11,6 +11,7 @@ masscan_results = Path(__file__).parent.parent / "data" / "recon-results" / "mas
 
 
 class TestMasscanScan:
+    # can't test run method due to yields from TargetList and ParseAmassOutput
     def setup_method(self):
         self.tmp_path = Path(tempfile.mkdtemp())
         self.scan = MasscanScan(
