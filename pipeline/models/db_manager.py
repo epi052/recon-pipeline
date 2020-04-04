@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from cmd2 import ansi
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc, or_, create_engine
-from sqlalchemy.sql.expression import func, ClauseElement
+from sqlalchemy.sql.expression import ClauseElement
 
 from .base_model import Base
 from .port_model import Port
@@ -27,15 +27,13 @@ class DBManager:
         session_factory = sessionmaker(bind=engine)
         self.session = session_factory()
 
-    def get_or_create(self, model, defaults=None, **kwargs):
+    def get_or_create(self, model, **kwargs):
         """ Simple helper to either get an existing record if it exists otherwise create and return a new instance """
         instance = self.session.query(model).filter_by(**kwargs).first()
         if instance:
             return instance
         else:
             params = dict((k, v) for k, v in kwargs.items() if not isinstance(v, ClauseElement))
-            if defaults:
-                params.update(defaults)
             instance = model(**params)
             return instance
 
@@ -94,11 +92,6 @@ class DBManager:
         return [
             x[0] for x in self.session.query(IPAddress.ipv6_address).filter(IPAddress.ipv6_address != None)
         ]  # noqa: E711
-
-    def get_highest_id(self, table):
-        """ Simple helper to get the highest id number of the given table """
-        highest = self.session.query(func.max(table.id)).first()[0]
-        return highest if highest is not None else 1
 
     def close(self):
         """ Simple helper to close the database session """
