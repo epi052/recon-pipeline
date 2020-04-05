@@ -1,5 +1,6 @@
 import sys
 import time
+import shutil
 import importlib
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -7,9 +8,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from pipeline.recon.config import defaults
-from pipeline.models import Target, Port, IPAddress, DBManager
+from pipeline.models.port_model import Port
+from pipeline.models.target_model import Target
+from pipeline.models.db_manager import DBManager
+from pipeline.models.ip_address_model import IPAddress
 
 recon_shell = importlib.import_module("pipeline.recon-pipeline")
+existing_db = Path(__file__).parent.parent / "data" / "existing-database-test"
 
 
 class TestReconShell:
@@ -89,10 +94,13 @@ class TestReconShell:
         assert "You are not connected to a database" in capsys.readouterr().out
 
     def test_get_databases(self):
-        testdb = Path(defaults.get("database-dir")) / "testdb"
+        testdb = Path(defaults.get("database-dir")) / "testdb6"
         testdb.touch()
         assert testdb in list(recon_shell.ReconShell.get_databases())
-        testdb.unlink()
+        try:
+            testdb.unlink()
+        except FileNotFoundError:
+            pass
 
     def test_database_list_bad(self, capsys):
         def empty_gen():
@@ -103,20 +111,35 @@ class TestReconShell:
         self.shell.database_list("")
         assert "There are no databases" in capsys.readouterr().out
 
-    def test_database_attach_new(self, capsys):
-        self.shell.select = lambda x: "create new database"
-        self.shell.read_input = lambda x: "testdb"
-        self.shell.database_attach("")
-        (Path(defaults.get("database-dir")) / "testdb").unlink()
-        assert "created database @" in capsys.readouterr().out
+    def test_database_attach_new(self, capsys, tmp_path):
+        testdb = Path(tmp_path) / "testdb1"
+        shell = recon_shell.ReconShell()
 
-    def test_database_attach_existing(self, capsys):
-        testdb = Path(defaults.get("database-dir")) / "testdb"
-        testdb.touch()
-        self.shell.select = lambda x: str(testdb.resolve())
-        self.shell.database_attach("")
+        shell.select = lambda x: "create new database"
+        shell.read_input = lambda x: str(testdb)
+        shell.database_attach("")
+        time.sleep(1)
+        assert "created database @" in capsys.readouterr().out
+        try:
+            testdb.unlink()
+        except FileNotFoundError:
+            pass
+
+    def test_database_attach_existing(self, capsys, tmp_path):
+        testdb = Path(tmp_path) / "testdb2"
+        shutil.copy(self.db_location, testdb)
+        assert testdb.exists()
+        shell = recon_shell.ReconShell()
+
+        shell.select = lambda x: str(testdb.resolve())
+        shell.get_databases = MagicMock(return_value=[str(testdb)])
+        shell.database_attach("")
+        time.sleep(1)
         assert "attached to sqlite database @" in capsys.readouterr().out
-        testdb.unlink()
+        try:
+            testdb.unlink()
+        except FileNotFoundError:
+            pass
 
     def test_database_detach_connected(self, capsys):
         self.shell.db_mgr = MagicMock()
@@ -128,35 +151,42 @@ class TestReconShell:
         self.shell.database_detach("")
         assert "you are not connected to a database" in capsys.readouterr().out
 
-    def test_database_delete_without_index(self, capsys):
-        testdb = Path(defaults.get("database-dir")) / "testdb"
+    def test_database_delete_without_index(self, capsys, tmp_path):
+        testdb = Path(tmp_path) / "testdb3"
         testdb.touch()
         self.shell.select = lambda x: str(testdb.resolve())
+        self.shell.get_databases = MagicMock(return_value=[str(testdb)])
         self.shell.database_delete("")
         try:
             assert not testdb.exists()
         except AssertionError:
-            testdb.unlink()
+            try:
+                testdb.unlink()
+            except FileNotFoundError:
+                pass
             raise AssertionError
         assert "[+] deleted sqlite database" in capsys.readouterr().out
 
     def test_database_delete_with_index(self, capsys):
-        testdb = Path(defaults.get("database-dir")) / "testdb"
+        testdb = Path(defaults.get("database-dir")) / "testdb4"
         testdb.touch()
-        self.shell.select = lambda x: str(testdb.resolve())
-        self.shell.prompt = f"[db-1] {recon_shell.DEFAULT_PROMPT}> "
-        self.shell.db_mgr = MagicMock()
-        self.shell.db_mgr.location = "stuff"
-        self.shell.database_delete("")
+        shell = recon_shell.ReconShell()
+        shell.select = lambda x: str(testdb.resolve())
+        shell.prompt = f"[db-1] {recon_shell.DEFAULT_PROMPT}> "
+        shell.db_mgr = MagicMock()
+        shell.db_mgr.location = "stuff"
+        shell.get_databases = MagicMock(return_value=[str(testdb)])
+        shell.database_delete("")
         try:
             assert not testdb.exists()
         except AssertionError:
-            testdb.unlink()
+            try:
+                testdb.unlink()
+            except FileNotFoundError:
+                pass
             raise AssertionError
         out = capsys.readouterr().out
         assert "[+] deleted sqlite database" in out
-        assert "detached from sqlite database" in out
-        assert self.shell.db_mgr is None
 
     @pytest.mark.parametrize(
         "test_input, expected",
@@ -239,11 +269,14 @@ class TestReconShell:
             self.shell.do_database("")
             assert expected in capsys.readouterr().out
         else:
-            testdb = Path(defaults.get("database-dir")) / "testdb"
+            testdb = Path(defaults.get("database-dir")) / "testdb5"
             testdb.touch()
             self.shell.do_database(test_input)
             assert str(testdb) in capsys.readouterr().out
-            testdb.unlink()
+            try:
+                testdb.unlink()
+            except FileNotFoundError:
+                pass
 
     @patch("webbrowser.open", autospec=True)
     def test_do_status(self, mock_browser):

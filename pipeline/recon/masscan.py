@@ -9,7 +9,10 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import TargetList
 from .amass import ParseAmassOutput
-from ..models import DBManager, IPAddress, Port
+from ..models.port_model import Port
+from ..models.db_manager import DBManager
+from ..models.ip_address_model import IPAddress
+
 from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths, web_ports
 
 

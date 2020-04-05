@@ -10,7 +10,12 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models import DBManager, Screenshot, Endpoint, Port, Header
+
+from ...models.port_model import Port
+from ...models.header_model import Header
+from ...models.db_manager import DBManager
+from ...models.endpoint_model import Endpoint
+from ...models.screenshot_model import Screenshot
 
 
 @inherits(GatherWebTargets)

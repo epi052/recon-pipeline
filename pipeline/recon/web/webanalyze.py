@@ -12,7 +12,8 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models import DBManager, Technology
+from ...models.db_manager import DBManager
+from ...models.technology_model import Technology
 from ..helpers import get_ip_address_version, is_ip_address
 
 

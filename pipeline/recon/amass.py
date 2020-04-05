@@ -8,7 +8,8 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .config import tool_paths
 from .targets import TargetList
-from ..models import Target, DBManager
+from ..models.target_model import Target
+from ..models.db_manager import DBManager
 
 
 @inherits(TargetList)

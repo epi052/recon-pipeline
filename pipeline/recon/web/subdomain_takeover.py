@@ -7,9 +7,9 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
-from ...models import DBManager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
+from ...models.db_manager import DBManager
 
 
 @inherits(GatherWebTargets)

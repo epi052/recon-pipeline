@@ -49,7 +49,12 @@ def cluge_package_imports(name, package):
 cluge_package_imports(name=__name__, package=__package__)
 
 from .recon.config import defaults  # noqa: F401,E402
-from .models import DBManager, NmapResult, NSEResult, Technology, SearchsploitResult  # noqa: F401,E402
+from .models.nse_model import NSEResult  # noqa: F401,E402
+from .models.db_manager import DBManager  # noqa: F401,E402
+from .models.nmap_model import NmapResult  # noqa: F401,E402
+from .models.technology_model import Technology  # noqa: F401,E402
+from .models.searchsploit_model import SearchsploitResult  # noqa: F401,E402
+
 from .recon import (  # noqa: F401,E402
     get_scans,
     tools,

@@ -5,7 +5,8 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .config import defaults
 from .helpers import is_ip_address
-from ..models import Target, DBManager
+from ..models.target_model import Target
+from ..models.db_manager import DBManager
 
 
 class TargetList(luigi.ExternalTask):

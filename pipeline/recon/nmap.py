@@ -13,7 +13,14 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
 from .helpers import get_ip_address_version, is_ip_address
-from ..models import DBManager, NmapResult, SearchsploitResult, IPAddress, Port, NSEResult, Target
+
+from ..models.port_model import Port
+from ..models.nse_model import NSEResult
+from ..models.target_model import Target
+from ..models.db_manager import DBManager
+from ..models.nmap_model import NmapResult
+from ..models.ip_address_model import IPAddress
+from ..models.searchsploit_model import SearchsploitResult
 
 
 @inherits(ParseMasscanOutput)
