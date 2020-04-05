@@ -6,10 +6,10 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .config import tool_paths
 from .targets import TargetList
 from ..models.target_model import Target
-from ..models.db_manager import DBManager
 
 
 @inherits(TargetList)
@@ -45,7 +45,7 @@ class AmassScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
 
     def requires(self):
@@ -129,7 +129,7 @@ class ParseAmassOutput(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
 
     def requires(self):

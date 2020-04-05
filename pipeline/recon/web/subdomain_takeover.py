@@ -7,9 +7,9 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models.db_manager import DBManager
 
 
 @inherits(GatherWebTargets)
@@ -47,7 +47,7 @@ class TKOSubsScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
 
@@ -169,7 +169,7 @@ class SubjackScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "subjack-results").resolve()
         self.output_file = self.results_subfolder / "subjack.txt"
 

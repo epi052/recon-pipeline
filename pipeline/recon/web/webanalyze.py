@@ -10,9 +10,9 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models.db_manager import DBManager
 from ...models.technology_model import Technology
 from ..helpers import get_ip_address_version, is_ip_address
 
@@ -55,7 +55,7 @@ class WebanalyzeScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
 
     def requires(self):

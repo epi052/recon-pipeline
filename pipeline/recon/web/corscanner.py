@@ -4,9 +4,9 @@ from pathlib import Path
 import luigi
 from luigi.util import inherits
 
+import pipeline.models.db_manager
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
-from ...models.db_manager import DBManager
 
 
 @inherits(GatherWebTargets)
@@ -47,7 +47,7 @@ class CORScannerScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "corscanner-results").resolve()
 
     def requires(self):

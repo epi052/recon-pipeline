@@ -11,9 +11,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 from .targets import GatherWebTargets
 from ..config import tool_paths, defaults
 
+import pipeline.models.db_manager
 from ...models.port_model import Port
 from ...models.header_model import Header
-from ...models.db_manager import DBManager
 from ...models.endpoint_model import Endpoint
 from ...models.screenshot_model import Screenshot
 
@@ -59,7 +59,7 @@ class AquatoneScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "aquatone-results"
 
     def requires(self):

@@ -10,6 +10,7 @@ from luigi.util import inherits
 from libnmap.parser import NmapParser
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .masscan import ParseMasscanOutput
 from .config import defaults, tool_paths
 from .helpers import get_ip_address_version, is_ip_address
@@ -17,7 +18,6 @@ from .helpers import get_ip_address_version, is_ip_address
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
-from ..models.db_manager import DBManager
 from ..models.nmap_model import NmapResult
 from ..models.ip_address_model import IPAddress
 from ..models.searchsploit_model import SearchsploitResult
@@ -56,7 +56,7 @@ class ThreadedNmapScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "nmap-results").resolve()
 
     def requires(self):
@@ -238,7 +238,7 @@ class SearchsploitScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):
         """ Searchsploit depends on ThreadedNmap to run.

@@ -2,10 +2,10 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from ..config import web_ports
 from ..amass import ParseAmassOutput
 from ..masscan import ParseMasscanOutput
-from ...models.db_manager import DBManager
 
 
 @inherits(ParseMasscanOutput)
@@ -25,7 +25,7 @@ class GatherWebTargets(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):
         """ GatherWebTargets depends on ParseMasscanOutput and ParseAmassOutput to run.

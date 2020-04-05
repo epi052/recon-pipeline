@@ -3,10 +3,10 @@ from pathlib import Path
 import luigi
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .config import defaults
 from .helpers import is_ip_address
 from ..models.target_model import Target
-from ..models.db_manager import DBManager
 
 
 class TargetList(luigi.ExternalTask):
@@ -23,7 +23,7 @@ class TargetList(luigi.ExternalTask):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def output(self):
         """ Returns the target output for this task. target_file.ips || target_file.domains

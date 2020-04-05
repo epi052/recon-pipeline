@@ -7,10 +7,10 @@ import luigi
 from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
+import pipeline.models.db_manager
 from .targets import TargetList
 from .amass import ParseAmassOutput
 from ..models.port_model import Port
-from ..models.db_manager import DBManager
 from ..models.ip_address_model import IPAddress
 
 from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths, web_ports
@@ -59,7 +59,7 @@ class MasscanScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
 
     def output(self):
@@ -159,7 +159,7 @@ class ParseMasscanOutput(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_mgr = DBManager(db_location=self.db_location)
+        self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
 
     def requires(self):

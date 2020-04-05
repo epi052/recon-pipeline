@@ -148,10 +148,6 @@ class DBManager:
         """ Simple helper that returns all NSE Script types from the database """
         return set(str(x[0]) for x in self.session.query(NSEResult.script_id).all())
 
-    def get_nse_results_by_script_id(self, nse_script_id):
-        """ Simple helper that returns all NSE Scripts filtered by its script id """
-        return self.session.query(NSEResult).filter_by(script_id=nse_script_id).all()
-
     def get_all_nmap_reported_products(self):
         """ Simple helper that returns all products reported by nmap """
         return set(str(x[0]) for x in self.session.query(NmapResult.product).all())
