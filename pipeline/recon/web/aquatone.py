@@ -93,6 +93,24 @@ class AquatoneScan(luigi.Task):
             connection_string=self.db_mgr.connection_string, target_table="screenshot", update_id=self.task_id
         )
 
+    def _get_similar_pages(self, url, results):
+        # populate similar pages if any exist
+        similar_pages = None
+
+        for cluster_id, cluster in results.get("pageSimilarityClusters").items():
+            if url not in cluster:
+                continue
+
+            similar_pages = list()
+
+            for similar_url in cluster:
+                if similar_url == url:
+                    continue
+
+                similar_pages.append(self.db_mgr.get_or_create(Screenshot, url=similar_url))
+
+        return similar_pages
+
     def parse_results(self):
         """ Read in aquatone's .json file and update the associated Target record """
 
@@ -164,7 +182,11 @@ class AquatoneScan(luigi.Task):
             # build out the endpoint's data to include headers, this has value whether or not there's a screenshot
             endpoint = self.db_mgr.get_or_create(Endpoint, url=url)
             if not endpoint.status_code:
-                endpoint.status_code, _ = page_dict.get("status").split(maxsplit=1)
+                status = page_dict.get("status").split(maxsplit=1)
+                if len(status) > 1:
+                    endpoint.status_code, _ = status
+                else:
+                    endpoint.status_code = status[0]
 
             for header_dict in page_dict.get("headers"):
                 header = self.db_mgr.get_or_create(Header, name=header_dict.get("name"), value=header_dict.get("value"))
@@ -207,20 +229,7 @@ class AquatoneScan(luigi.Task):
             screenshot.target = screenshot.endpoint.target
             screenshot.image = image
 
-            # populate similar pages if any exist
-            similar_pages = None
-
-            for cluster_id, cluster in results.get("pageSimilarityClusters").items():
-                if url not in cluster:
-                    continue
-
-                similar_pages = list()
-
-                for similar_url in cluster:
-                    if similar_url == url:
-                        continue
-
-                    similar_pages.append(self.db_mgr.get_or_create(Screenshot, url=similar_url))
+            similar_pages = self._get_similar_pages(url, results)
 
             if similar_pages is not None:
                 screenshot.similar_pages = similar_pages

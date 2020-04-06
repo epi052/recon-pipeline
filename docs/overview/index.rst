@@ -6,9 +6,10 @@ Getting Started
     :hidden:
 
     installation
+    scope
     running_scans
     scheduler
     visualization
-    scope
+
 
 .. include:: summary.rst

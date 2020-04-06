@@ -13,7 +13,7 @@ class SearchsploitResult(Base):
         Represents searchsploit data.
 
         Relationships:
-            ``target``: many to one -> :class:`models.target_model.Target`
+            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "searchsploit_result"

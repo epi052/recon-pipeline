@@ -23,7 +23,7 @@ Changing the Code
 .. toctree::
     :maxdepth: 1
 
-    modifications/index
+    Changing the Code <modifications/index>
 
 API Reference
 =============

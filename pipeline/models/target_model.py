@@ -7,18 +7,23 @@ from .technology_model import technology_association_table
 
 
 class Target(Base):
-    """ Database model that describes a target.
-
-    This is the model that functions as the "top" model.
+    """ Database model that describes a target; This is the model that functions as the "top" model.
 
     Relationships:
-        ``ip_addresses``: one to many -> :class:`models.ip_address_model.IPAddress`
-        ``open_ports``: many to many -> :class:`models.port_model.Port`
-        ``nmap_results``: one to many -> :class:`models.nmap_model.NmapResult`
-        ``searchsploit_results``: one to many -> :class:`models.searchsploit_model.SearchsploitResult`
-        ``endpoints``: one to many -> :class:`models.endpoint_model.Endpoint`
-        ``technologies``: many to many -> :class:`models.technology_model.Technology`
-        ``screenshots``: one to many -> :class:`models.screenshot_model.Screenshot`
+        ``ip_addresses``: one to many -> :class:`pipeline.models.ip_address_model.IPAddress`
+
+        ``open_ports``: many to many -> :class:`pipeline.models.port_model.Port`
+
+        ``nmap_results``: one to many -> :class:`pipeline.models.nmap_model.NmapResult`
+
+        ``searchsploit_results``: one to many -> :class:`pipeline.models.searchsploit_model.SearchsploitResult`
+
+        ``endpoints``: one to many -> :class:`pipeline.models.endpoint_model.Endpoint`
+
+        ``technologies``: many to many -> :class:`pipeline.models.technology_model.Technology`
+
+        ``screenshots``: one to many -> :class:`pipeline.models.screenshot_model.Screenshot`
+
     """
 
     __tablename__ = "target"

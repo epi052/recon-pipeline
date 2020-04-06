@@ -14,6 +14,11 @@ Endpoint Model
 
 .. autoclass:: pipeline.models.endpoint_model.Endpoint
 
+Header Model
+############
+
+.. autoclass:: pipeline.models.header_model.Header
+
 IP Address Model
 ################
 
@@ -23,6 +28,11 @@ Nmap Model
 ##########
 
 .. autoclass:: pipeline.models.nmap_model.NmapResult
+
+Nmap Scripting Engine Model
+###########################
+
+.. autoclass:: pipeline.models.nse_model.NSEResult
 
 Port Model
 ##########

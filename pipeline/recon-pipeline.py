@@ -402,9 +402,9 @@ class ReconShell(cmd2.Cmd):
 
             self.db_mgr = DBManager(db_location=new_location)
 
-            self.poutput(
-                style(f"[*] created database @ {Path(defaults.get('database-dir')) / location}", fg="bright_yellow")
-            )
+            self.poutput(style(f"[*] created database @ {new_location}", fg="bright_yellow"))
+
+            location = new_location
 
         else:
             index = locations.index(location) + 1
@@ -418,12 +418,6 @@ class ReconShell(cmd2.Cmd):
     def add_dynamic_parser_arguments(self):
         """ Populate command parsers with information from the currently attached database """
         port_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
-        target_results_parser.add_argument(
-            "--vuln-to-subdomain-takeover",
-            action="store_true",
-            default=False,
-            help="show targets identified as vulnerable to subdomain takeover",
-        )
         endpoint_results_parser.add_argument(
             "--status-code", choices=self.db_mgr.get_status_codes(), help="filter results by status code"
         )

@@ -15,10 +15,13 @@ class NmapResult(Base):
         Represents nmap data.
 
         Relationships:
-            ``target``: many to one -> :class:`models.target_model.Target`
-            ``ip_address``: one to one -> :class:`models.ip_address_model.IPAddress`
-            ``port``: one to one -> :class:`models.port_model.Port`
-            ``nse_results``: one to many -> :class:`models.nse_model.NSEResult`
+            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+
+            ``ip_address``: one to one -> :class:`pipeline.models.ip_address_model.IPAddress`
+
+            ``port``: one to one -> :class:`pipeline.models.port_model.Port`
+
+            ``nse_results``: one to many -> :class:`pipeline.models.nse_model.NSEResult`
     """
 
     def __str__(self):

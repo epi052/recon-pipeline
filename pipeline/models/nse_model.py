@@ -17,7 +17,7 @@ class NSEResult(Base):
         Represents NSE script data.
 
         Relationships:
-            ``NmapResult``: many to many -> :class:`models.nmap_model.NmapResult`
+            ``NmapResult``: many to many -> :class:`pipeline.models.nmap_model.NmapResult`
     """
 
     __tablename__ = "nse_result"

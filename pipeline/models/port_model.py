@@ -16,7 +16,7 @@ class Port(Base):
     """ Database model that describes a port (tcp or udp).
 
         Relationships:
-            ``targets``: many to many -> :class:`models.target_model.Target`
+            ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "port"

@@ -10,7 +10,7 @@ class IPAddress(Base):
         Represents amass data or targets specified manually as part of the ``target-file``.
 
         Relationships:
-            ``target``: many to one -> :class:`models.target_model.Target`
+            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "ip_address"

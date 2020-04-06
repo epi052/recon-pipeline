@@ -18,10 +18,13 @@ class Screenshot(Base):
         Represents aquatone data.
 
         Relationships:
-            ``port``: one to one -> :class:`models.port_model.Port`
-            ``target``: many to one -> :class:`models.target_model.Target`
-            ``endpoint``: one to one -> :class:`models.endpoint_model.Endpoint`
-            ``similar_pages``: black magic -> :class:`models.screenshot_model.Screenshot`
+            ``port``: one to one -> :class:`pipeline.models.port_model.Port`
+
+            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+
+            ``endpoint``: one to one -> :class:`pipeline.models.endpoint_model.Endpoint`
+
+            ``similar_pages``: black magic -> :class:`pipeline.models.screenshot_model.Screenshot`
     """
 
     __tablename__ = "screenshot"

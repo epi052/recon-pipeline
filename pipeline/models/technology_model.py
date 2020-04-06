@@ -18,7 +18,7 @@ class Technology(Base):
         Represents webanalyze data.
 
         Relationships:
-            ``targets``: many to many -> :class:`models.target_model.Target`
+            ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "technology"

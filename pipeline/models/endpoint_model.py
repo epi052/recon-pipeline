@@ -11,8 +11,9 @@ class Endpoint(Base):
     Represents gobuster data.
 
     Relationships:
-            ``target``: many to one -> :class:`models.target_model.Target`
-            ``headers``: many to many -> :class:`models.header_model.Header`
+        ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+
+        ``headers``: many to many -> :class:`pipeline.models.header_model.Header`
     """
 
     __tablename__ = "endpoint"
