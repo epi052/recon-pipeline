@@ -11,6 +11,7 @@ coverage = "*"
 sphinx = "*"
 sphinx-argparse = "*"
 sphinx-rtd-theme = "*"
+sphinxcontrib-napoleon = "*"
 
 [packages]
 cmd2 = "*"
