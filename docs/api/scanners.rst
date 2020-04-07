@@ -1,3 +1,5 @@
+.. _scanners-ref-label:
+
 Scanners
 ================
 

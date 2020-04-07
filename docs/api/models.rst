@@ -1,3 +1,5 @@
+.. _models-ref-label:
+
 Database Models
 ===============
 

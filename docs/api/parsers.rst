@@ -1,3 +1,5 @@
+.. _parsers-ref-label:
+
 Parsers
 =======
 

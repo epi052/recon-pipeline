@@ -1,3 +1,5 @@
+.. _commands-ref-label:
+
 Commands
 ========
 

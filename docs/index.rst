@@ -23,19 +23,18 @@ Changing the Code
 .. toctree::
     :maxdepth: 1
 
-    Changing the Code <modifications/index>
+    Creating a New Wrapper Scan <modifications/index>
 
 API Reference
 =============
 
-.. toctree::
-    :maxdepth: 2
-
-    api/index
+* :ref:`scanners-ref-label`
+* :ref:`parsers-ref-label`
+* :ref:`commands-ref-label`
+* :ref:`models-ref-label`
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
