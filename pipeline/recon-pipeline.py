@@ -482,15 +482,23 @@ class ReconShell(cmd2.Cmd):
 
     def print_target_results(self, args):
         """ Display all Targets from the database, ipv4/6 and hostname """
+        results = list()
+        printer = self.ppaged if args.paged else print
+
         for target in self.db_mgr.get_all_targets():
             if args.vuln_to_subdomain_takeover:
                 tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(target)
-                notvuln = style("not vulnerable", fg="bright_red")
-                vuln = style("vulnerable", fg="green")
-                vulnstring = [notvuln, vuln][tgt.vuln_to_sub_takeover]
-                self.poutput(f"[{vulnstring}] {target}")
+                if not tgt.vuln_to_sub_takeover:
+                    # skip targets that aren't vulnerable
+                    continue
+                vulnstring = style("vulnerable", fg="green")
+                vulnstring = f"[{vulnstring}] {target}"
+                results.append(vulnstring)
             else:
-                self.poutput(target)
+                results.append(target)
+
+        if results:
+            printer("\n".join(results))
 
     def print_endpoint_results(self, args):
         """ Display all Endpoints from the database """
@@ -633,11 +641,15 @@ class ReconShell(cmd2.Cmd):
 
         for target in targets:
             if args.host is not None and target != args.host:
+                # host specified, but it's not this particular target
                 continue
+
             ports = [
                 str(port.port_number) for port in self.db_mgr.get_or_create_target_by_ip_or_hostname(target).open_ports
             ]
-            results.append(f"{target}: {','.join(ports)}")
+
+            if ports:
+                results.append(f"{target}: {','.join(ports)}")
 
         if results:
             printer("\n".join(results))

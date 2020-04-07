@@ -117,6 +117,9 @@ target_results_parser.add_argument(
     default=False,
     help="show targets identified as vulnerable to subdomain takeover",
 )
+target_results_parser.add_argument(
+    "--paged", action="store_true", default=False, help="display output page-by-page (default: False)"
+)
 
 technology_results_parser = view_subparsers.add_parser(
     "web-technologies",
