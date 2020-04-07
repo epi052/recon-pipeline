@@ -1,0 +1,17 @@
+200 OK
+Date: Mon, 06 Apr 2020 14:58:13 GMT
+Content-Type: text/html; charset=utf-8
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+X-Xss-Protection: 1; mode=block
+Etag: W/"5f8a-vQBYKrRAfqI5iQ/GP2AM/fcHMKU"
+Retry-Count: 0
+X-Frame-Options: SAMEORIGIN
+Content-Length: 24458
+Vary: Accept-Encoding
+Access-Control-Allow-Origin: *
+X-Content-Type-Options: nosniff
+Referrer-Policy: origin-when-cross-origin
+Set-Cookie: connect.sid=s%3APd8ugrHwMLERUtsvE40vqkfKaFmhEODl.FeZjIm7jJi3UOiqBKtpwb72iyQaaXs3hcZCAtNIICAM; Path=/; HttpOnly
+Server: nginx/1.16.1
+Access-Control-Allow-Headers: X-Requested-With
+Strict-Transport-Security: max-age=31536000; includeSubDomains

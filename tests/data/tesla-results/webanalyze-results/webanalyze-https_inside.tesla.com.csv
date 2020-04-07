@@ -1,0 +1,5 @@
+
+Host,Category,App,Version
+https://inside.tesla.com,"Web servers,Reverse proxies",Nginx,1.10.3
+https://inside.tesla.com,Operating systems,Ubuntu,
+https://inside.tesla.com,CMS,NivCMS,

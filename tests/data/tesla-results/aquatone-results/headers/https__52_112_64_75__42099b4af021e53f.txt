@@ -1,0 +1,7 @@
+404 Not Found
+Retry-Count: 0
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: text/plain
+Content-Length: 75
+Server: RTC/7.0
+X-Ms-Server-Fqdn: DM10A00EDG17.infra.lync.com

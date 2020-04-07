@@ -1,0 +1,7 @@
+https://edr.tesla.com/Help (Status: 200)
+https://edr.tesla.com/guides (Status: 301)
+https://edr.tesla.com/help (Status: 200)
+https://edr.tesla.com/js (Status: 301)
+https://edr.tesla.com/robots.txt (Status: 200)
+https://edr.tesla.com/shop (Status: 302)
+https://edr.tesla.com/styles (Status: 301)

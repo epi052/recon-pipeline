@@ -1,0 +1,5 @@
+https://52.112.65.37/.well-known/apple-app-site-association (Status: 200)
+https://52.112.65.37/apple-app-site-association (Status: 200)
+https://52.112.65.37/autodiscover (Status: 403)
+https://52.112.65.37/favicon.ico (Status: 200)
+https://52.112.65.37/storage (Status: 403)

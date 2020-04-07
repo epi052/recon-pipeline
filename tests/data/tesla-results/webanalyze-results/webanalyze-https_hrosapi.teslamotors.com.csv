@@ -1,0 +1,4 @@
+
+Host,Category,App,Version
+https://hrosapi.teslamotors.com,Operating systems,Ubuntu,
+https://hrosapi.teslamotors.com,"Web servers,Reverse proxies",Nginx,1.10.3

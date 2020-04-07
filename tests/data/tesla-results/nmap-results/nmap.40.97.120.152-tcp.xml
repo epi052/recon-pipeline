@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:15:19 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.40.97.120.152-tcp 40.97.120.152 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.40.97.120.152-tcp 40.97.120.152" start="1586182519" startstr="Mon Apr  6 09:15:19 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182520" endtime="1586182526"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="40.97.120.152" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="10.0" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:iis:10.0</cpe><cpe>cpe:/o:microsoft:windows</cpe></service><script id="http-server-header" output="Microsoft-IIS/10.0"><elem>Microsoft-IIS/10.0</elem>
+</script><script id="http-title" output="Did not follow redirect to https://40.97.120.152/owa/"><elem key="redirect_url">https://40.97.120.152/owa/</elem>
+</script></port>
+</ports>
+<times srtt="3989" rttvar="5000" to="100000"/>
+</host>
+<runstats><finished time="1586182526" timestr="Mon Apr  6 09:15:26 2020" elapsed="6.56" summary="Nmap done at Mon Apr  6 09:15:26 2020; 1 IP address (1 host up) scanned in 6.56 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

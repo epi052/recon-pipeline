@@ -1,0 +1,7 @@
+200 OK
+Server: Apache/2.2.15 (CentOS)
+Vary: Accept-Encoding
+Retry-Count: 0
+Content-Type: text/html;charset=UTF-8
+X-Frame-Options: SAMEORIGIN
+Date: Mon, 06 Apr 2020 13:55:52 GMT

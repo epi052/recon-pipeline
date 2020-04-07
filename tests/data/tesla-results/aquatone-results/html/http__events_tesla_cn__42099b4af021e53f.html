@@ -1,0 +1,5038 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8"><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"af51bd774d",applicationID:"194553216"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1167.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+        <meta id="viewport-tag" name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tesla Semi Unveil</title>
+        <meta name="description" content="Tesla">
+        <meta name="author" content="Tesla">
+        <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/vnd.microsoft.icon">
+                <link rel="stylesheet" media="all" href="../assets/css/base.css">
+        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/touch_icon_ipad.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="../assets/img/touch_icon_ipad@2x.png">
+
+
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+  <script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false"}]);</script>
+  <script>!function(){function o(n,i){if(n&&i)for(var r in i)i.hasOwnProperty(r)&&(void 0===n[r]?n[r]=i[r]:n[r].constructor===Object&&i[r].constructor===Object?o(n[r],i[r]):n[r]=i[r])}try{var n=decodeURIComponent("");if(n.length>0&&window.JSON&&"function"==typeof window.JSON.parse){var i=JSON.parse(n);void 0!==window.BOOMR_config?o(window.BOOMR_config,i):window.BOOMR_config=i}}catch(r){window.console&&"function"==typeof window.console.error&&console.error("mPulse: Could not parse configuration",r)}}();</script>
+  <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="CZ5PJ-C3ULH-UWR94-5N9HG-JMT9V",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,o,_,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",_=document.getElementsByTagName("script")[0],_.parentNode.insertBefore(r,_);try{o=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",o=r.contentWindow.document}o.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"CZ5PJ-C3ULH-UWR94-5N9HG-JMT9V",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},o.write("<bo"+'dy onload="document._l();">'),o.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="nc7qx2dilzdfwxulgssq-f-6e977dd36-clientnsv4-s.akamaihd.net",i={"ak.v":"26","ak.cp":"455333","ak.ai":parseInt("224388",10),"ak.ol":"0","ak.cr":13,"ak.ipv":4,"ak.proto":"","ak.rid":"75e4eec","ak.r":33809,"ak.a2":e,"ak.m":"","ak.n":"essl","ak.bpcip":"246.156.193.0","ak.cport":35392,"ak.gh":"23.223.202.36","ak.quicv":"","ak.tlsv":"tls1.2","ak.0rtt":"","ak.csrc":"-","ak.acc":"reno","ak.t":"1586181285","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==O+Ge0Kb0KPUYlcHVxt9cEwF47Ee470wFLusY2wngAiKHWdMZOeorsjMa5FhXG9ta2hlzgPkgNGvKUjPjX709cjgJlxuH2pIFfm5JJPByeT508oJj1R3EyPRysNvA+Jm+Vfr+Ra46C8PzCk1qJGKsw3XhGH1rDhZ777ImjblHcMoNDvoaZpSBZjwJCg1OzmhLK1qgxmN96v7+zQoZMVwZbz9snM9GNdsQCeg91q6UGVl0uRyFqEaoOF9cAU6xbSCzYYvRB+/Js+Q+TvM4cYhA9vD1wFRz2WEM/h4caRlfwU904m5JSUIcOdAHcgF2jrUXWcCbYtZ097WJA14mz5eYbmi7t24E9TQXDWAleic/hy+qf6JY0CmNW2bR8f/2dLiGA9mT+hjtsChKVuDiDxVqdtECe/DiZ177rdo+YkJJOhk="};if(""!==t)i["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))i["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(i)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:i,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
+
+    <body>
+        <div class="container">
+            <header class="main">
+                <div id="logo-link"]>
+                    <a href="#" class="logo" title="Tesla Motors">Tesla Motors</a>
+                </div>
+            </header>
+            <section class="content">
+                <div class="title">
+                    <!-- <img id="main_stage" src="../assets/img/M3Logo_White_2X.png" width="367" height="32" /> -->
+                    <!-- ><h1 style="color: #fff">Tesla Semi</h1> -->
+                </div>
+                <div id="form-errors"></div>
+                <div class="media">
+                                            <div class='embed-container'><iframe src="https://www.ustream.tv/embed/23313961?html5ui&autoplay=true&showtitle=false" " style="border: 0 none transparent;"  webkitallowfullscreen allowfullscreen frameborder="no"></iframe></div>                                    </div>
+
+                <div class="side lead hidden">
+                    <form action="receiveLead" method="POST" id="lead-form" data-parsley-errors-container="#form-errors">
+                    <div class="title small"><span class="string" key="sign_up"></span></div>
+
+                        <div id="row-lead-localname" class="form-row">
+                            <div class="form-item form-type-textfield form-item-localname">
+                                <label for="edit-localname" class="form-label label-text"><span class="string" key="localname_label"></span></label>
+                                <input class="form-text"
+                                    type="text"
+                                    id="lead-localname"
+                                    name="lead-localname"
+                                    maxlength="50"
+                                    data-parsley-trigger="focusout"
+                                    data-parsley-maxlength="50"
+                                    data-parsley-maxlength-message=""
+                                    data-parsley-whitespace="trim"
+                                >
+                            </div>
+                        </div>
+
+                        <div id="row-lead-firstname" class="form-row">
+                            <div class="form-item form-type-textfield form-item-firstname">
+                                <label for="edit-firstname" class="form-label label-text"><span class="string" key="firstname_label"></span></label>
+                                <input class="translate form-text"
+                                    type="text"
+                                    id="lead-firstname"
+                                    name="lead-firstname"
+                                    maxlength="50"
+                                    data-parsley-required="true"
+                                    data-parsley-required-message=""
+                                    data-parsley-trigger="focusout"
+                                    data-parsley-maxlength="50"
+                                    data-parsley-maxlength-message=""
+                                    data-parsley-whitespace="trim"
+                                >
+                            </div>
+                        </div>
+
+                        <div id="row-lead-lastname" class="form-row">
+                            <div class="form-item form-type-textfield form-item-lastname">
+                                <label for="edit-lastname" class="form-label label-text"><span class="string" key="lastname_label"></span></label>
+                                <input class="translate form-text"
+                                    type="text"
+                                    id="lead-lastname"
+                                    name="lead-lastname"
+                                    maxlength="50"
+                                    data-parsley-required="true"
+                                    data-parsley-required-message=""
+                                    data-parsley-trigger="focusout"
+                                    data-parsley-maxlength="50"
+                                    data-parsley-maxlength-message=""
+                                    data-parsley-whitespace="trim"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-item form-type-textfield form-item-usermail">
+                                <label for="edit-usermail" class="form-label label-text"><span class="string" key="email_label"></span></label>
+                                <input class="translate form-text"
+                                    type="text"
+                                    id="lead-usermail"
+                                    name="lead-usermail"
+                                    maxlength="50"
+                                    data-parsley-required="true"
+                                    data-parsley-required-message=""
+                                    data-parsley-trigger="focusout"
+                                    data-parsley-type="email"
+                                    data-parsley-type-message=""
+                                    data-parsley-whitespace="trim"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <button id="watch-event" class="btn-primary ladda-button" data-style="expand-left"><span class="ladda-label string" key="watch_event"></span></button>
+                            <!-- <input type="submit" id="watch-event" class="btn-primary translate" value="" /> -->
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="stand_by side hidden">
+					<!-- Waiting for event to start -->
+                    <div class="soon hidden">
+						<span class="string" key="soon"></span>
+                    </div>
+
+                </div>
+                				<div class="side reservation hidden"></div>
+
+                <div class="side thanks hidden">
+                    <div class="form ">
+
+                                                    <div class="title"><span class="string" key="thanks"></span></div>
+                            <p class="online hidden" style="margin-top:0;"><span class="string" key="confirmed_msg"></span></p>
+                            <p class="offline hidden" style="margin-top:0;"><span class="string" key="confirmed_msg_offline"></span></p>
+                            <br />
+                            <button class="btn-secondary"><span class="string" key="close"></span></button>
+
+                    </div>
+                </div>
+            </section>
+            <footer class="footer pane-skinny-footer">
+                <p class="colophon">
+                    <span class="copy">Tesla &copy; 2017</span> |
+					<span class="privacy"><a href="https://www.tesla.com/about/legal#privacy-policy" target="_new">Privacy &amp; Legal</a></span>
+                </p>
+            </footer>
+        </div>
+    		<!--<script type="text/javascript" src="https://js.stripe.com/v2/"></script>-->
+        <script type="text/javascript">
+            window.stripeKeys = {};
+            window.stripeKeys.MX = 'pk_live_qYV68RGB1wKiRiX2EC2HHl7R';
+            window.stripeKeys.AU = 'pk_live_bvM4s6UR2zxVZHmP0aQxAwqB';
+            window.stripeKeys.JP = 'pk_live_Y522bXzBfTnslWJrjLMmzBi0';
+            window.stripeKeys.EU = {"GB":"pk_live_M8miIroSfc0IVaIGzceJs2mX","NO":"pk_live_6V6FRhovNrsqhROg3DCQlCxF","SE":"pk_live_fbwDXeUtwCTwMcFq7gXLPqkF","DK":"pk_live_XHnMW7mglFCW1JpjW4lrpB0b","CH":"pk_live_w616IM42Kb3m74WNlaD5ZUHl","FR":"pk_live_E9SAjY3YtYmtqjukldOxCnR9","IT":"pk_live_WF15X0yjbBM1pyK0dAZQSrJw","DE":"pk_live_YeZXBMCsnxexzoQaWNWGMa0Y","BE":"pk_live_5pGy5NpLUndb0DRbDSKIkA4D","IE":"pk_live_XWoB9VRvLDkhxIJnsKl2ZUio","NL":"pk_live_JMueuwmRol1tnwhBWm1pJdQJ","other":"pk_live_JMueuwmRol1tnwhBWm1pJdQJ"};
+            window.localeSettings = {
+    "markets": [
+        "US",
+        "CA",
+        "AT",
+        "AU",
+        "BE",
+        "CH",
+        "CN",
+        "DE",
+        "DK",
+        "FI",
+        "FR",
+        "GB",
+        "HK",
+        "MO",
+        "EU",
+        "IT",
+        "JP",
+        "MX",
+        "NL",
+        "NO",
+        "SE",
+        "LI",
+        "AE",
+        "BR",
+        "IN",
+        "NZ",
+        "SG",
+        "KR",
+        "ZA",
+        "TW"
+    ],
+    "otherEU": [
+        "BG",
+        "CY",
+        "CZ",
+        "EE",
+        "GR",
+        "HR",
+        "HU",
+        "IS",
+        "LV",
+        "LT",
+        "LU",
+        "MT",
+        "PL",
+        "PT",
+        "RO",
+        "RU",
+        "SK",
+        "SI",
+        "ES",
+        "TR",
+        "IE"
+    ],
+    "properties": {
+        "AU": {
+            "locale": "en_AU",
+            "slug": "en_AU",
+            "region": "apac",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,500",
+            "hamsterDeposit": "$7,000",
+            "hamsterFullDeposit": "$59,000",
+            "hamsterCombinedDeposit": "$66,000",
+            "roadsterFoundersWire": "$319,000",
+            "hamsterTotal1": "$261,000",
+            "hamsterTotal2": "$326,000",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Zip code format: 4985"
+        },
+        "AT": {
+            "locale": "de_AT",
+            "slug": "de_AT",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000",
+            "hamsterTotal2": "€&nbsp;215.000",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postleitzahl-Format: 4985"
+        },
+        "BE": {
+            "locale": "fr_BE",
+            "slug": "fr_BE",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000",
+            "hamsterTotal2": "€&nbsp;215.000",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Format de code postal : 4985"
+        },
+        "CA": {
+            "locale": "en_CA",
+            "slug": "en_CA",
+            "region": "na",
+            "language": "en",
+            "language_overrides": "en_ca",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000",
+            "hamsterDeposit": "$6,000 CAD",
+            "hamsterFullDeposit": "$58,000 CAD",
+            "hamsterCombinedDeposit": "$64,000 CAD",
+            "roadsterFoundersWire": "$316,000 CAD",
+            "hamsterTotal1": "$257,000 CAD",
+            "hamsterTotal2": "$322,000 CAD",
+            "zipPattern": "/^[A-Za-z]{1}[0-9]{1}[A-Za-z]{1}[ ]?[0-9]{1}[A-Za-z]{1}[0-9]{1}/",
+            "zipFormat": "Zip code format: B4V 2K4"
+        },
+        "CN": {
+            "locale": "zh_CN",
+            "slug": "zh_CN",
+            "region": "apac",
+            "language": "zh",
+            "paymentType": "ALIPAY",
+            "formattedDeposit": "¥&nbsp;8,000",
+            "hamsterDeposit": "¥&nbsp;33,000",
+            "hamsterFullDeposit": "¥&nbsp;299,000",
+            "hamsterCombinedDeposit": "¥&nbsp;332,000",
+            "roadsterFoundersWire": "¥&nbsp;1,626,000",
+            "hamsterTotal1": "¥&nbsp;1,330,000",
+            "hamsterTotal2": "¥&nbsp;1,659,000 ",
+            "zipPattern": "/^([0-9]{6})?$/",
+            "zipFormat": "邮政编码格式: 342620"
+        },
+        "DK": {
+            "locale": "da_DK",
+            "slug": "da_DK",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "kr.&nbsp;10,000",
+            "hamsterDeposit": "kr.&nbsp;32,000",
+            "hamsterFullDeposit": "kr.&nbsp;288,000",
+            "hamsterCombinedDeposit": "kr.&nbsp;320,000",
+            "roadsterFoundersWire": "kr.&nbsp;1,566,000",
+            "hamsterTotal1": "kr.&nbsp;1,280,000 ",
+            "hamsterTotal2": "kr.&nbsp;1,598,000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postnummer format: 4985"
+        },
+        "FI": {
+            "locale": "fi_FI",
+            "slug": "fi_FI",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000",
+            "hamsterTotal2": "€&nbsp;215.000",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Postinumeron muoto: 00550"
+        },
+        "FR": {
+            "locale": "fr_FR",
+            "slug": "fr_FR",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "1.000&nbsp;€",
+            "hamsterDeposit": "€&nbsp;4.000",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000",
+            "hamsterTotal2": "€&nbsp;215.000",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Format de code postal : 75015"
+        },
+        "GB": {
+            "locale": "en_GB",
+            "slug": "en_GB",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "£1,000",
+            "hamsterDeposit": "£4,000",
+            "hamsterFullDeposit": "£34,000",
+            "hamsterCombinedDeposit": "£38,000",
+            "roadsterFoundersWire": "£185,000",
+            "hamsterTotal1": "£151,000",
+            "hamsterTotal2": "£189,000",
+            "zipPattern": "/^[a-zA-Z0-9]{1}/",
+            "zipFormat": ""
+        },
+        "DE": {
+            "locale": "de_DE",
+            "slug": "de_DE",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "1.000&nbsp;€",
+            "hamsterDeposit": "4.000&nbsp;€",
+            "hamsterFullDeposit": "39.000&nbsp;€",
+            "hamsterCombinedDeposit": "43.000&nbsp;€",
+            "roadsterFoundersWire": "211.000&nbsp;€",
+            "hamsterTotal1": "172.000&nbsp;€",
+            "hamsterTotal2": "215.000&nbsp;€",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Postleitzahl-Format: 10317"
+        },
+        "HK": {
+            "locale": "en_HK",
+            "slug": "en_HK",
+            "region": "apac",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$&nbsp;10,000",
+            "hamsterDeposit": "$&nbsp;39,000 HKD",
+            "hamsterFullDeposit": "$&nbsp;351,000 HKD",
+            "hamsterCombinedDeposit": "$&nbsp;390,000 HKD",
+            "roadsterFoundersWire": "$&nbsp;1,911,000 HKD",
+            "hamsterTotal1": "$&nbsp;1,560,000  HKD",
+            "hamsterTotal2": "$&nbsp;1,950,000 HKD",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "MO": {
+            "locale": "en_MO",
+            "slug": "en_MO",
+            "region": "apac",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$&nbsp;10,000",
+            "hamsterDeposit": "$&nbsp;39,000 HKD",
+            "hamsterFullDeposit": "$&nbsp;351,000 HKD",
+            "hamsterCombinedDeposit": "$&nbsp;390,000 HKD",
+            "roadsterFoundersWire": "$&nbsp;1,911,000 HKD",
+            "hamsterTotal1": "$&nbsp;1,560,000  HKD",
+            "hamsterTotal2": "$&nbsp;1,950,000 HKD",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "IT": {
+            "locale": "it_IT",
+            "slug": "it_IT",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{5}/",
+            "zipFormat": "Formato del CAP: 47182"
+        },
+        "JP": {
+            "locale": "ja_JP",
+            "slug": "jp",
+            "region": "apac",
+            "language": "jp",
+            "paymentType": "CC",
+            "formattedDeposit": "¥&nbsp;150,000",
+            "hamsterDeposit": "¥&nbsp;570,000",
+            "hamsterFullDeposit": "¥&nbsp;5,114,000",
+            "hamsterCombinedDeposit": "¥&nbsp;5,684,000",
+            "roadsterFoundersWire": "¥&nbsp;27,839,000",
+            "hamsterTotal1": "¥&nbsp;22,700,000 ",
+            "hamsterTotal2": "¥&nbsp;28,409,000 ",
+            "zipPattern": "/^[0-9]{3}-[0-9]{4}$/",
+            "zipFormat": "郵便番号形式：123-4567"
+        },
+        "MX": {
+            "locale": "es_MX",
+            "slug": "es_MX",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "20,000&nbsp;MXN",
+            "hamsterDeposit": "100,000&nbsp;MXN",
+            "hamsterFullDeposit": "864,000&nbsp;MXN",
+            "hamsterCombinedDeposit": "964,000&nbsp;MXN",
+            "roadsterFoundersWire": "4,698,000 &nbsp;MXN",
+            "hamsterTotal1": "3,840,000 &nbsp;MXN",
+            "hamsterTotal2": "4,798,000 &nbsp;MXN",
+            "zipPattern": "/^([0-9]{5})?$/",
+            "zipFormat": "Formato de código postal: 12345"
+        },
+        "NL": {
+            "locale": "nl_NL",
+            "slug": "nl_NL",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}[ ]?[A-Za-z]{2}$/",
+            "zipFormat": "Postcode opmaak: 7858AZ"
+        },
+        "NO": {
+            "locale": "no_NO",
+            "slug": "no_NO",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "kr.&nbsp;10.000",
+            "hamsterDeposit": "kr.&nbsp;41.000",
+            "hamsterFullDeposit": "kr.&nbsp;368.000",
+            "hamsterCombinedDeposit": "kr.&nbsp;409.000",
+            "roadsterFoundersWire": "kr.&nbsp;2.001.000",
+            "hamsterTotal1": "kr.&nbsp;1.630.000 ",
+            "hamsterTotal2": "kr.&nbsp;2.042.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Format på postnummer: 6278"
+        },
+        "SE": {
+            "locale": "sv_SE",
+            "slug": "sv_SE",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "10.000&nbsp;kr",
+            "hamsterDeposit": "42.000&nbsp;kr",
+            "hamsterFullDeposit": "377.000&nbsp;kr",
+            "hamsterCombinedDeposit": "419.000&nbsp;kr",
+            "roadsterFoundersWire": "2.050.000&nbsp;kr",
+            "hamsterTotal1": "1.670.000&nbsp;kr",
+            "hamsterTotal2": "2.092.000&nbsp;kr",
+            "zipPattern": "/^[0-9]{3}[ ]?[0-9]{2}$/",
+            "zipFormat": "Postnummerformat: 849 76"
+        },
+        "CH": {
+            "locale": "de_CH",
+            "slug": "de_CH",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "CHF&nbsp;1'000",
+            "hamsterDeposit": "CHF&nbsp;5'000 ",
+            "hamsterFullDeposit": "CHF&nbsp;45'000 ",
+            "hamsterCombinedDeposit": "CHF&nbsp;50'000",
+            "roadsterFoundersWire": "CHF&nbsp;244'000",
+            "hamsterTotal1": "CHF&nbsp;200'000 ",
+            "hamsterTotal2": "CHF&nbsp;249'000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postleitzahl-Format: 4985"
+        },
+        "LI": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postleitzahl-Format: 4985"
+        },
+        "US": {
+            "locale": "en_US",
+            "slug": "",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000",
+            "hamsterDeposit": "$5,000",
+            "hamsterFullDeposit": "$45,000",
+            "hamsterCombinedDeposit": "$50,000",
+            "roadsterFoundersWire": "$245,000",
+            "hamsterTotal1": "$200,000",
+            "hamsterTotal2": "$250,000",
+            "zipPattern": "/^([0-9]{5})(-[0-9]{4})?$/",
+            "zipFormat": "Zip code format: 78585"
+        },
+        "EU": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "BG": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postal code format: 4985"
+        },
+        "CY": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postal code format: 4985"
+        },
+        "CZ": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{3}[ ]?[0-9]{2}$/",
+            "zipFormat": "Postal code format: 785 92"
+        },
+        "EE": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Postal code format: 10317"
+        },
+        "GR": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{3}[ ]?[0-9]{2}$/",
+            "zipFormat": "Postal code format: 223 32"
+        },
+        "HR": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Postal code format: 47182"
+        },
+        "HU": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postal code format: 4718"
+        },
+        "IS": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{3}$/",
+            "zipFormat": "Postal code format: 418"
+        },
+        "LV": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^(LV-)[0-9]{4}/",
+            "zipFormat": "Postal code format: LV-9063"
+        },
+        "LT": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{5}/",
+            "zipFormat": "Postal code format: 58278"
+        },
+        "LU": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}/",
+            "zipFormat": "Postal code format: 9482"
+        },
+        "MT": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "PL": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{2}[-]?[0-9]{3}$/",
+            "zipFormat": "Postal code format: 89-742"
+        },
+        "PT": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}-[0-9]{3}$/",
+            "zipFormat": "Postal code format: 5728-725"
+        },
+        "RO": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{6}$/",
+            "zipFormat": "Postal code format: 542046"
+        },
+        "RU": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{6}$/",
+            "zipFormat": "Postal code format: 542046"
+        },
+        "SK": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{3}[ ]?[0-9]{2}$/",
+            "zipFormat": "Postal code format: 782 49"
+        },
+        "SI": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4}$/",
+            "zipFormat": "Postal code format: 9063"
+        },
+        "ES": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{5}$/",
+            "zipFormat": "Postal code format: 10317"
+        },
+        "TR": {
+            "locale": "en_EU",
+            "slug": "en_EU",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "/^[0-9]{4,5}$/",
+            "zipFormat": "Postal code format: 3525"
+        },
+        "AE": {
+            "locale": "en_US",
+            "slug": "en_AE",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": " $18,000 AED",
+            "hamsterFullDeposit": "$165,000 AED",
+            "hamsterCombinedDeposit": "$183,000 AED",
+            "roadsterFoundersWire": "$900,000 AED",
+            "hamsterTotal1": " $735,000   AED",
+            "hamsterTotal2": " $918,000   AED",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "BR": {
+            "locale": "en_US",
+            "slug": "en_BR",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": " $5,000 ",
+            "hamsterFullDeposit": " $45,000 ",
+            "hamsterCombinedDeposit": "$50,000",
+            "roadsterFoundersWire": "$245,000",
+            "hamsterTotal1": " $200,000 ",
+            "hamsterTotal2": " $250,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "IN": {
+            "locale": "en_US",
+            "slug": "en_IN",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": "$5,000",
+            "hamsterFullDeposit": "$45,000",
+            "hamsterCombinedDeposit": "$50,000",
+            "roadsterFoundersWire": "$245,000",
+            "hamsterTotal1": "$200,000 ",
+            "hamsterTotal2": "$250,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "IE": {
+            "locale": "en_EU",
+            "slug": "en_IE",
+            "region": "eu",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "€&nbsp;1.000",
+            "hamsterDeposit": "€&nbsp;4.000 ",
+            "hamsterFullDeposit": "€&nbsp;39.000 ",
+            "hamsterCombinedDeposit": "€&nbsp;43.000",
+            "roadsterFoundersWire": "€&nbsp;211.000",
+            "hamsterTotal1": "€&nbsp;172.000 ",
+            "hamsterTotal2": "€&nbsp;215.000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "NZ": {
+            "locale": "en_US",
+            "slug": "en_NZ",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": "NZ$ 7,000",
+            "hamsterFullDeposit": "NZ$ 66,000",
+            "hamsterCombinedDeposit": "NZ$ 73,000",
+            "roadsterFoundersWire": "NZ$ 358,000",
+            "hamsterTotal1": "NZ$ 292,000 ",
+            "hamsterTotal2": "NZ$ 365,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "SG": {
+            "locale": "en_US",
+            "slug": "en_SG",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": "$ 5,000 ",
+            "hamsterFullDeposit": " $45,000 ",
+            "hamsterCombinedDeposit": "$50,000",
+            "roadsterFoundersWire": "$245,000",
+            "hamsterTotal1": " $200,000 ",
+            "hamsterTotal2": " $250,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "KR": {
+            "locale": "en_US",
+            "slug": "en_KR",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": "₩5,600,000 ",
+            "hamsterFullDeposit": "₩50,000,000 ",
+            "hamsterCombinedDeposit": "₩55,600,000",
+            "roadsterFoundersWire": "₩272,178,000",
+            "hamsterTotal1": "₩222,200,000  ",
+            "hamsterTotal2": "₩277,778,000  ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "ZA": {
+            "locale": "en_US",
+            "slug": "en_ZA",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": " $5,000 ",
+            "hamsterFullDeposit": " $45,000 ",
+            "hamsterCombinedDeposit": "$50,000",
+            "roadsterFoundersWire": "$245,000",
+            "hamsterTotal1": " $200,000 ",
+            "hamsterTotal2": " $250,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        },
+        "TW": {
+            "locale": "en_US",
+            "slug": "en_TW",
+            "region": "na",
+            "language": "en",
+            "paymentType": "CC",
+            "formattedDeposit": "$1,000 USD",
+            "hamsterDeposit": "NT$ 150,000",
+            "hamsterFullDeposit": "NT$ 1,360,000 ",
+            "hamsterCombinedDeposit": "NT$ 1,510,000",
+            "roadsterFoundersWire": "NT$ 7,403,000",
+            "hamsterTotal1": "NT$ 6,040,000  ",
+            "hamsterTotal2": "NT$ 7,553,000 ",
+            "zipPattern": "",
+            "zipFormat": ""
+        }
+    },
+    "strings": {
+        "en": {
+            "confirmed_msg": "Your reservation has been confirmed.",
+            "confirmed_msg_new": "Thank you for your reservation.",
+            "confirmed_inquiry": "Thank you",
+            "confirmed_inquiry_msg": "A Tesla representative will contact you.",
+            "reserve_cta_hamster2": "Reserve Founders Series For <span class='hamsterTotal2'></span>",
+            "reserve_cta_hamster1": "Reserve Roadster For <span class='hamsterFullDeposit'></span>",
+            "confirmed_instructions_online": "Your <span class='hamsterDue'></span> wire transfer payment is due by <span class='dueDate'></span>. You will receive wire transfer instructions to the email address you provided.",
+            "confirmed_msg_offline": "Your reservation is received. You will receive wire transfer instructions to the email address you provided.",
+            "store_confirmed_msg": "You will be sent a confirmation email in 48 hours",
+            "store_confirmed_admin": "Reservation number: ",
+            "res_complete": "Your reservation is complete",
+            "refresh": "Return to Reservation form",
+            "employee_disclaimer_1": "Please use your work email address",
+            "sorry": "Sorry",
+            "duplicate_msg": "You have already submitted a reservation. Please check your email for your confirmation.",
+            "exceeded_qty_msg": "There is a 2 reservation limit per person.",
+            "account_msg": "If you don’t already have an account on <a href='https://www.tesla.com/' target='_blank'>www.tesla.com</a>, you will receive a password reset email.",
+            "soon": "<h1>Thank you</h1><p>The event will begin shortly.</p>",
+            "timer": "Thank You<br />The event will begin shortly.",
+            "minutes": "minutes",
+            "minute": "minute",
+            "agreement_text": "I agree to the <a href='assets/TeslaSemiReservationAgreement_v20171116.pdf' target='_new'>Tesla Semi Reservation Agreement</a>, the <a href='https://www.tesla.com/about/legal#privacy-policy' target='_new'>Customer Privacy Policy</a>, and to be contacted at the number provided with more information or offers about Tesla products. I understand these calls or texts may use computer-assisted dialing or pre-recorded messages. This consent is not a condition of purchase.",
+            "agreement_file": "Tesla Semi Reservation Agreement",
+			"truck_inquiry_text": "I agree that Tesla can contact me via automated technology and/or pre-recorded messages using the number provided. I understand that this consent is not required to make a purchase.",
+			"hamster_agreement_text": "By placing this order you agree to the <a href='https://www.tesla.com/sites/default/files/roadster/TeslaRoadsterReservationAgreement_20171116.pdf' class='hamsterLink' target='_new'><span class='hamsterLabel3'></span> Reservation Agreement</a> and <a href='https://www.tesla.com/about/legal#privacy-policy' target='_new'>Customer Privacy Policy</a><br/><br/>I agree to be contacted at the number provided with more information or offers about Tesla products. I understand these calls or texts may use computer-assisted dialing or pre-recorded messages. This consent is not a condition of purchase.",
+            "name_required": "Full name is required",
+            "name_minlength": "Full name must have a min length of 2",
+            "name_maxlength": "Full name must have a max length of 50",
+            "localname_minlength": "Local name must have a min length of 2",
+            "localname_maxlength": "Local name must have a max length of 50",
+            "firstname_required": "First name is required",
+            "firstname_minlength": "First name must have a min length of 2",
+            "firstname_maxlength": "First name must have a max length of 50",
+            "lastname_required": "Last name is required",
+            "lastname_minlength": "Last name must have a min length of 2",
+            "lastname_maxlength": "Last name must have a max length of 50",
+            "name_multiword": "Please specify a last name",
+            "email_required": "Email is required",
+            "email_invalid": "Email is not valid",
+            "confirm_email_required": "Confirm Email is required",
+            "contactpref_label": "I prefer email over phone calls",
+            "inq_fleetsize_required": "Number of trucks you operate is required",
+            "cc_num_required": "Credit Card number is required",
+            "cc_maxlength": "Credit Card number must have a max length of 16",
+            "cc_minlength": "Credit Card number must have a min length of 15",
+            "cc_not_num": "Card number entered is not a number",
+            "cc_invalid": "Credit Card number is invalid",
+            "cvv_minlength": "CVV must have a min length of 3",
+            "cvv_maxlength": "CVV must have a max length of 4",
+            "cvv_not_num": "CVV entered is not a number",
+            "cvv_required": "CVV is required",
+            "cvv_invalid": "CVV is not valid",
+            "zip_required": "Postal code code is required",
+            "zip_maxlength": "Postal code code must have a max length of 8",
+            "line1_required": "Billing address line 1 is required",
+            "line1_minlength": "Billing address line 1 must have a min length of 2",
+            "line1_maxlength": "Billing address line 1 must have a max length of 50",
+            "line2_minlength": "Billing address line 2 must have a min length of 2",
+            "line2_maxlength": "Billing address line 2 must have a max length of 50",
+            "city_required": "City is required",
+            "city_minlength": "City must have a min length of 2",
+            "city_maxlength": "City must have a max length of 50",
+            "expdate_required": "Expiration date is required",
+            "cc_expired": "The expiration date on your card has expired",
+            "expdate_placeholder": "MM/YYYY",
+            "expdate_format": "Expiration date format: mm/yyyy",
+            "phone_required": "Phone number is required",
+            "phone_invalid": "Phone number is invalid",
+            "phone_minlength": "Phone number must have a min length of 8",
+            "phone_maxlength": "Phone number must have a max length of 20",
+            "required": "required",
+            "invalid": "invalid",
+            "min15": "minimum 15 numbers",
+            "max16": "maximum 16 numbers",
+            "min3": "minimum 3",
+            "max4": "maximum 4",
+            "expdate_short_format": "format: mm/yyyy",
+            "cc_short_expired": "expired",
+            "series_label": "Choose your series",
+            "full_name_label": "full name",
+            "quantity_label": "quantity",
+            "localname_label": "local name",
+            "firstname_label": "first name",
+            "email_label": "email",
+            "confirm_email_label": "confirm email",
+            "phone_label": "phone number",
+            "country_label": "country",
+            "zip_label": "zipcode",
+            "lastname_label": "last name",
+            "expiration_date_label": "expiration date",
+            "ccv_label": "cvv",
+            "cc_num_label": "card number",
+            "address1_label": "billing address 1",
+            "address2_label": "billing address 2",
+            "bus_address1_label": "business address 1",
+            "bus_address2_label": "business address 2",
+            "city_label": "city",
+            "state_label": "state",
+            "test_drive": "I would like to test drive a Model S",
+            "thanks": "Thank you",
+            "watch_event": "watch event",
+            "close": "close",
+            "next": "next",
+            "cost_blurb": "Each reservation is ",
+            "reserve": "Reserve",
+            "reserve_semi": "Reserve the Tesla Semi",
+            "reserve_hamster": "Reserve your Roadster",
+            "reserve_roadster_base": "Reserve your Roadster",
+            "reserve_roadster_founders": "Reserve your Founders Series Roadster",
+      			"reserve_roadster_base_intro": "Roadster reservations require an initial <span class='hamsterDeposit'></span> credit card payment, plus a <span class='baseRoadsterWirePayment'></span> wire transfer payment due in 10 days. Reservations are not final until the wire transfer payment is received. Total vehicle price is <span class='hamsterTotal1'></span>. Balance due at delivery.",
+      			"reserve_roadster_founders_intro": "Founders Series Roadster reservations require an initial <span class='hamsterDeposit'></span> credit card payment, plus a <span class='foundersRoadsterWirePayment'></span> wire transfer payment due in 10 days. Reservations are not final until the wire transfer payment is received.",
+      			"reserve_roadster_base_intro_wire_only": "Roadster requires a <span class='hamsterFullDeposit'></span> wire transfer reservation payment. Total vehicle price is <span class='hamsterTotal1'></span>. Balance due at delivery.",
+      			"reserve_roadster_founders_intro_wire_only": "Founders Series Roadster requires a <span class='hamsterTotal2'></span> wire transfer reservation payment.",
+      			"reserve_hamster_cc_intro": "<span class='hamsterLabel3'></span> reservations require an initial <span class='hamsterDeposit'></span> credit card reservation payment, plus a ",
+            "sign_up": "Sign up to watch",
+            "edit": "edit",
+            "inquire": "Request More Information",
+            "inquire_contact": "Enter your contact information below to learn more about the Tesla Semi.",
+            "res_ws_fail": "We were unable to process your reservation. Please try again.",
+            "res_ws_novalidate": "There was an error processing your payment. Please try again.",
+            "res_ws_badcard": "There was an error processing your payment. Please try another method of payment.",
+            "invalid_confirm_email": "Confirmation email does not match",
+            "invalid_quantity": "You can only reserve 1 or 2 vehicles",
+            "not_employee": "You must use a teslamotors.com email address",
+            "invalid_cc": "Credit card number is invalid",
+            "invalid_cvv": "CVV number is invalid",
+            "invalid_fullname": "Please specify a last name",
+            "invalid_password": "Your passwords do not match, please try again",
+            "password_strength": "Password strength is low"
+        },
+        "en_ca": {
+            "zip_label": "postal code",
+            "state_label": "province",
+            "truck_inquiry_text": "I consent to receive Tesla email communications, events and product updates from Tesla. I can unsubscribe at any time."
+        },
+        "zh": {
+            "confirmed_msg": "您的预订已确认。",
+            "confirmed_msg_new": "感谢您的预订。",
+            "confirmed_inquiry": "谢谢",
+            "confirmed_inquiry_msg": "将有一位Tesla代表很快与您联系。",
+            "reserve_cta_hamster2": "预订创始人系列Roadster <span class='hamsterTotal2'>辆</span>",
+            "reserve_cta_hamster1": "预订Roadster<span class='hamsterFullDeposit'>辆 </span>",
+            "confirmed_instructions_online": "您的 <span class='hamsterDue'></span> 电汇支付到期日是2017年11月26日。您提供的邮箱将会收到电汇流程的邮件。",
+            "confirmed_msg_offline": "您的预订已接收。您提供的邮箱将会收到电汇流程的邮件。",
+            "store_confirmed_msg": "我们会在 48 小时内向您发送确认电子邮件",
+            "store_confirmed_admin": "您的预订号: ",
+            "res_complete": "预约已完成",
+            "refresh": "Return to Reservation form",
+            "employee_disclaimer_1": "Please use your work email address",
+            "sorry": "Sorry",
+            "duplicate_msg": "You have already submitted a reservation. Please check your email for your confirmation.",
+            "exceeded_qty_msg": "There is a 2 reservation limit per person.",
+            "account_msg": "If you don'92t already have an account on <a href='https://www.tesla.com/' target='_blank'>www.tesla.com</a>, you will receive a password reset email.",
+            "soon": "<h1>Thank you</h1><p>The event will begin shortly.</p>",
+            "timer": "Thank You<br />The event will begin shortly.",
+            "minutes": "minutes",
+            "minute": "minute",
+            "agreement_text": "I agree to the <a href='assets/TeslaSemiReservationAgreement_v20171116.pdf' target='_new'>Tesla Semi Reservation Agreement</a>, the <a href='https://www.tesla.com/about/legal#privacy-policy' target='_new'>Customer Privacy Policy</a>, and to be contacted at the number provided with more information or offers about Tesla products. I understand these calls or texts may use computer-assisted dialing or pre-recorded messages. This consent is not a condition of purchase.",
+            "agreement_file": "Tesla Semi Reservation Agreement",
+            "truck_inquiry_text": "I agree that Tesla can contact me via automated technology and/or pre-recorded messages using the number provided. I understand that this consent is not required to make a purchase.",
+            "hamster_agreement_text": "By placing this order you agree to the <a href='#' class='hamsterLink' target='_new'><span class='hamsterLabel3'></span> Reservation Agreement</a> and <a href='https://www.tesla.com/about/legal#privacy-policy' target='_new'>Customer Privacy Policy</a><br/>I agree to be contacted at the number provided with more information or offers about Tesla products. I understand these calls or texts may use computer-assisted dialing or pre-recorded messages. This consent is not a condition of purchase.",
+            "name_required": "必须填写全名",
+            "name_minlength": "全名最短长度必须为 2",
+            "name_maxlength": "全名最长长度必须为 50",
+            "localname_minlength": "Local name must have a min length of 2",
+            "localname_maxlength": "Local name must have a max length of 50",
+            "firstname_required": "名字为必填项",
+            "firstname_minlength": "名字最短长度必须为 2",
+            "firstname_maxlength": "名字最长长度必须为 50",
+            "lastname_required": "姓为必填项",
+            "lastname_minlength": "姓最短长度必须为 2",
+            "lastname_maxlength": "姓最长长度必须为 50",
+            "name_multiword": "请填写姓氏",
+            "email_required": "必须填写电子邮件",
+            "email_invalid": "电子邮件无效",
+            "confirm_email_required": "Confirm Email is required",
+            "contactpref_label": "我希望通过邮件与Tesla联系",
+            "inq_fleetsize_required": "Number of trucks you operate is required",
+            "cc_num_required": "必须填写信用卡号",
+            "cc_maxlength": "信用卡号最长长度必须为 16",
+            "cc_minlength": "信用卡号最短长度必须为 15",
+            "cc_not_num": "输入的卡号不是一个数字",
+            "cc_invalid": "信用卡号无效",
+            "cvv_minlength": "信用卡验证码最短长度为 3",
+            "cvv_maxlength": "信用卡验证码最长长度为 4",
+            "cvv_not_num": "输入的信用卡验证码不是一个数字",
+            "cvv_required": "必须填写信用卡验证码",
+            "cvv_invalid": "信用卡验证码无效",
+            "zip_required": "必须填写账单地址邮编",
+            "zip_maxlength": "账单地址邮编最长长度必须为 8",
+            "line1_required": "必须填写账单地址行 1",
+            "line1_minlength": "账单地址行 1 最短长度必须为 2",
+            "line1_maxlength": "账单地址行 1 最长长度必须为 50",
+            "line2_minlength": "账单地址行 2 最短长度必须为 2",
+            "line2_maxlength": "账单地址行 2 最长长度必须为 50",
+            "city_required": "必须填写城市",
+            "city_minlength": "城市最短长度必须为 2",
+            "city_maxlength": "城市最长长度必须为 50",
+            "expdate_required": "必须填写有效期限",
+            "cc_expired": "信用卡的有效期限已到期",
+            "expdate_placeholder": "MM/YYYY",
+            "expdate_format": "有效期限格式： mm/yyyy",
+            "phone_required": "必须填写电话号码",
+            "phone_invalid": "电话号码无效",
+            "phone_minlength": "电话号码最短长度必须为 8",
+            "phone_maxlength": "电话号码最长长度必须为 20",
+            "required": "必须",
+            "invalid": "无效",
+            "min15": "最少 15 个数字",
+            "max16": "最多 16 个数字",
+            "min3": "最少 3",
+            "max4": "最多 4",
+            "expdate_short_format": "格式：mm/yyyy",
+            "cc_short_expired": "到期",
+            "series_label": "Choose your series",
+            "full_name_label": "全名",
+            "quantity_label": "数量",
+            "localname_label": "中文姓名",
+            "firstname_label": "名字",
+            "email_label": "电子邮件",
+            "confirm_email_label": "确认电子邮件",
+            "phone_label": "电话号码",
+            "country_label": "国家",
+            "zip_label": "邮政编码",
+            "lastname_label": "姓氏",
+            "expiration_date_label": "有效期限",
+            "ccv_label": "信用卡验证码",
+            "cc_num_label": "卡号",
+            "address1_label": "账单地址行 1",
+            "address2_label": "账单地址行 2",
+            "bus_address1_label": "business address 1",
+            "bus_address2_label": "business address 2",
+            "city_label": "城市",
+            "state_label": "省份",
+            "test_drive": "我想试驾 Model S",
+            "thanks": "谢谢",
+            "watch_event": "观看活动",
+            "close": "关闭",
+            "next": "下一步",
+            "cost_blurb": "每台车的订金为 ",
+            "reserve": "预订",
+            "reserve_semi": "Reserve the Tesla Semi",
+            "reserve_hamster": "预订您的 <span class='hamsterLabel3'></span>",
+            "reserve_roadster_base": "预订您的 <span class='hamsterLabel3'></span>",
+            "reserve_roadster_founders": "预订您的 <span class='hamsterLabel4'></span>",
+            "reserve_hamster_cc_intro": "<span class='hamsterLabel3'></span> reservations require an initial <span class='hamsterDeposit'></span> credit card reservation payment, plus a ",
+            "sign_up": "注册后观看",
+            "edit": "编辑",
+            "inquire": "查询更多详情",
+            "inquire_contact": "Enter your contact information below to learn more about the Tesla Semi.",
+            "res_ws_fail": "我们无法处理您的预订。请重试。",
+            "res_ws_novalidate": "我们正在处理您的付款。请重试。",
+            "res_ws_badcard": "我们正在处理您的付款。请尝试其他支付方式。",
+            "invalid_confirm_email": "确认电子邮件不匹配",
+            "invalid_quantity": "You can only reserve 1 or 2 vehicles",
+            "not_employee": "You must use a teslamotors.com email address",
+            "invalid_cc": "信用卡号无效",
+            "invalid_cvv": "信用卡验证码无效",
+            "invalid_fullname": "请填写姓氏",
+            "invalid_password": "您的密码不匹配，请再试一次。n",
+            "password_strength": "Password strength is low"
+        },
+        "jp": {
+            "confirmed_msg": "予約を承りました。",
+            "confirmed_msg_new": "ご予約ありがとうございます。",
+            "confirmed_instructions": "次の手順についてはメールをご確認ください。",
+            "confirmed_msg_offline": "予約を承りました。予約の確認とお支払い方法をメールにてお送りします。",
+            "store_confirmed_msg": "予約確認のメールを48時間以内に送信します",
+            "store_confirmed_admin": "予約番号: ",
+            "res_complete": "お客様の予約は完了しました",
+            "refresh": "予約フォームに戻る",
+            "employee_disclaimer_1": "Please use your work email address",
+            "sorry": "申し訳ありません",
+            "duplicate_msg": "お客様は既にご予約済みです。メールの受信ボックスの予約確認メールをご確認ください。",
+            "exceeded_qty_msg": "There is a 2 reservation limit per person.",
+            "account_msg": "<a href='https://www.teslamotors.com/jp' target='_blank'>www.teslamotors.com</a>のアカウントをまだお持ちでないい場合は、パスワード リセットメールをお送りします。",
+            "soon": "間もなく予約受付を開始します",
+            "timer": "イベント開始まであと<span id='countdown'></span>です",
+            "minutes": "分",
+            "minute": "分",
+            "agreement_text": "この予約を送信することで、",
+            "agreement_file": "モデル3予約同意書 に同意したことになります。",
+            "name_required": "氏名を入力してください",
+            "name_minlength": "氏名は2文字以上です",
+            "name_maxlength": "氏名は50文字以内です",
+            "name_multiword": "姓（ローマ字）を明記してください",
+            "localname_maxlength": "お名前 (日本語表記) は50文字以内でお願いします",
+            "firstname_required": "名 (ローマ字) を入力してください",
+            "firstname_minlength": "名 (ローマ字) は2文字以上でお願いします",
+            "firstname_maxlength": "名 (ローマ字) は50文字以内でお願いします",
+            "lastname_required": "姓 (ローマ字) を入力してください",
+            "lastname_minlength": "姓 (ローマ字) は2文字以上でお願いします",
+            "lastname_maxlength": "姓 (ローマ字) は50文字以内でお願いします",
+            "email_required": "ご予約と製品に関する情報受信可能なメールアドレスをお願いします",
+            "confirm_email_required": "電子メールの確認が必要です",
+            "invalid_confirm_email": "電子メールが一致しないことを確認する",
+            "email_invalid": "無効なメールアドレスです",
+            "cc_num_required": "クレジットカード番号を入力してください",
+            "cc_maxlength": "クレジットカード番号は16桁以内です",
+            "cc_minlength": "クレジットカード番号は15桁以上です",
+            "cc_not_num": "入力されたカード番号は数字ではありません",
+            "cc_invalid": "クレジットカード番号が無効です",
+            "cvv_minlength": "CVVは3文字以上です",
+            "cvv_maxlength": "CVVは4文字以内です",
+            "cvv_not_num": "入力されたCVVは数字ではありません",
+            "cvv_required": "CVVを入力してください",
+            "cvv_invalid": "CVVが無効です",
+            "zip_required": "クレジットカード登録先郵便番号を入力してください",
+            "zip_maxlength": "郵便番号は8桁以内です",
+            "line1_required": "請求先住所(行1)を入力してください",
+            "line1_minlength": "請求先住所(行1)は2文字以上です",
+            "line1_maxlength": "請求先住所(行1)は50文字以内です",
+            "line2_minlength": "請求先住所(行2)は2文字以上です",
+            "line2_maxlength": "請求先住所(行2)は50文字以内です",
+            "city_required": "市区町村を入力してください",
+            "city_minlength": "市区町村は2文字以上です",
+            "city_maxlength": "市区町村は50文字以内です",
+            "expdate_required": "有効期限を入力してください",
+            "cc_expired": "入力したカードの有効期限が切れています",
+            "expdate_placeholder": "MM/YYYY",
+            "expdate_format": "有効期限のフォーマット：mm/yyyy",
+            "phone_required": "電話番号を入力してください",
+            "phone_invalid": "電話番号が無効です",
+            "phone_minlength": "電話番号は8文字以上です",
+            "phone_maxlength": "電話番号は20文字以内です",
+            "required": "必須フィールドです",
+            "invalid": "無効",
+            "min15": "15文字以上",
+            "max16": "16文字以内",
+            "min3": "3文字以上",
+            "max4": "4文字以内",
+            "expdate_short_format": "format: mm/yyyy",
+            "cc_short_expired": "期限切れ",
+            "series_label": "Choose your series",
+            "full_name_label": "氏名",
+            "quantity_label": "台数",
+            "localname_label": "お名前 (日本語表記)",
+            "firstname_label": "名 (ローマ字) (例：Taro)",
+            "email_label": "メールアドレス",
+            "confirm_email_label": "Eメール確認",
+            "phone_label": "電話番号",
+            "country_label": "国",
+            "zip_label": "〒 (カード登録先)",
+            "lastname_label": "姓 (ローマ字) (例：Tanaka) ",
+            "expiration_date_label": "有効期限",
+            "ccv_label": "CVV (カードの裏又は表にある3桁又は4桁の番号）",
+            "cc_num_label": "クレジットカード番号",
+            "address1_label": "請求先住所(行1)",
+            "address2_label": "請求先住所(行2)",
+            "city_label": "市区町村",
+            "state_label": "都道府県",
+            "test_drive": "モデルSで試乗を希望します。",
+            "thanks": "ありがとうございました",
+            "watch_event": "イベントを観る",
+            "close": "閉じる",
+            "next": "次へ",
+            "cost_blurb": "ご予約1件ごと ",
+            "reserve": "モデル3を予約する",
+            "sign_up": "サインアップして観る／予約する",
+            "edit": "編集",
+            "res_ws_fail": "ご予約を処理できませんでした。 もう一度お試しください。",
+            "res_ws_novalidate": "お支払い手続中にエラーが発生しました。もう一度お試しください。",
+            "res_ws_badcard": "お支払い手続中にエラーが発生しました。別のお支払い方法をお試しください。",
+            "invalid_quantity": "ご予約は2台までです",
+            "not_employee": "You must use a teslamotors.com email address",
+            "invalid_cc": "クレジットカード番号が無効です",
+            "invalid_cvv": "CVV番号が無効です",
+            "invalid_fullname": "姓を明記してください",
+            "invalid_password": "パスワードが一致しません。もう一度お試しください",
+            "password_strength": "パスワードの強度が低い"
+        }
+    }
+}
+;
+                        window.currentCountry = 'CN';
+            window.districtMap = {
+  "北京": {
+    "北京": [
+      "东城区",
+      "西城区",
+      "朝阳区",
+      "丰台区",
+      "石景山区",
+      "海淀区",
+      "门头沟区",
+      "房山区",
+      "通州区",
+      "顺义区",
+      "昌平区",
+      "大兴区",
+      "怀柔区",
+      "平谷区",
+      "密云县",
+      "延庆县"
+    ]
+  },
+  "天津": {
+    "天津": [
+      "和平区",
+      "河东区",
+      "河西区",
+      "南开区",
+      "河北区",
+      "红桥区",
+      "东丽区",
+      "西青区",
+      "津南区",
+      "北辰区",
+      "武清区",
+      "宝坻区",
+      "滨海新区",
+      "宁河县",
+      "静海县",
+      "蓟县"
+    ]
+  },
+  "河北": {
+    "石家庄市": [
+      "长安区",
+      "桥东区",
+      "桥西区",
+      "新华区",
+      "井陉矿区",
+      "裕华区",
+      "井陉县",
+      "正定县",
+      "栾城县",
+      "行唐县",
+      "灵寿县",
+      "高邑县",
+      "深泽县",
+      "赞皇县",
+      "无极县",
+      "平山县",
+      "元氏县",
+      "赵县",
+      "辛集市",
+      "藁城市",
+      "晋州市",
+      "新乐市",
+      "鹿泉市"
+    ],
+    "唐山市": [
+      "路南区",
+      "路北区",
+      "古冶区",
+      "开平区",
+      "丰南区",
+      "丰润区",
+      "曹妃甸区",
+      "滦县",
+      "滦南县",
+      "乐亭县",
+      "迁西县",
+      "玉田县",
+      "遵化市",
+      "迁安市"
+    ],
+    "秦皇岛市": [
+      "海港区",
+      "山海关区",
+      "北戴河区",
+      "青龙满族自治县",
+      "昌黎县",
+      "抚宁县",
+      "卢龙县"
+    ],
+    "邯郸市": [
+      "邯山区",
+      "丛台区",
+      "复兴区",
+      "峰峰矿区",
+      "邯郸县",
+      "临漳县",
+      "成安县",
+      "大名县",
+      "涉县",
+      "磁县",
+      "肥乡县",
+      "永年县",
+      "邱县",
+      "鸡泽县",
+      "广平县",
+      "馆陶县",
+      "魏县",
+      "曲周县",
+      "武安市"
+    ],
+    "邢台市": [
+      "桥东区",
+      "桥西区",
+      "邢台县",
+      "临城县",
+      "内丘县",
+      "柏乡县",
+      "隆尧县",
+      "任县",
+      "南和县",
+      "宁晋县",
+      "巨鹿县",
+      "新河县",
+      "广宗县",
+      "平乡县",
+      "威县",
+      "清河县",
+      "临西县",
+      "南宫市",
+      "沙河市"
+    ],
+    "保定市": [
+      "新市区",
+      "北市区",
+      "南市区",
+      "满城县",
+      "清苑县",
+      "涞水县",
+      "阜平县",
+      "徐水县",
+      "定兴县",
+      "唐县",
+      "高阳县",
+      "容城县",
+      "涞源县",
+      "望都县",
+      "安新县",
+      "易县",
+      "曲阳县",
+      "蠡县",
+      "顺平县",
+      "博野县",
+      "雄县",
+      "涿州市",
+      "定州市",
+      "安国市",
+      "高碑店市"
+    ],
+    "张家口市": [
+      "桥东区",
+      "桥西区",
+      "宣化区",
+      "下花园区",
+      "宣化县",
+      "张北县",
+      "康保县",
+      "沽源县",
+      "尚义县",
+      "蔚县",
+      "阳原县",
+      "怀安县",
+      "万全县",
+      "怀来县",
+      "涿鹿县",
+      "赤城县",
+      "崇礼县"
+    ],
+    "承德市": [
+      "双桥区",
+      "双滦区",
+      "鹰手营子矿区",
+      "承德县",
+      "兴隆县",
+      "平泉县",
+      "滦平县",
+      "隆化县",
+      "丰宁满族自治县",
+      "宽城满族自治县",
+      "围场满族蒙古族自治县"
+    ],
+    "沧州市": [
+      "新华区",
+      "运河区",
+      "沧县",
+      "青县",
+      "东光县",
+      "海兴县",
+      "盐山县",
+      "肃宁县",
+      "南皮县",
+      "吴桥县",
+      "献县",
+      "孟村回族自治县",
+      "泊头市",
+      "任丘市",
+      "黄骅市",
+      "河间市"
+    ],
+    "廊坊市": [
+      "安次区",
+      "广阳区",
+      "固安县",
+      "永清县",
+      "香河县",
+      "大城县",
+      "文安县",
+      "大厂回族自治县",
+      "霸州市",
+      "三河市"
+    ],
+    "衡水市": [
+      "桃城区",
+      "枣强县",
+      "武邑县",
+      "武强县",
+      "饶阳县",
+      "安平县",
+      "故城县",
+      "景县",
+      "阜城县",
+      "冀州市",
+      "深州市"
+    ]
+  },
+  "山西": {
+    "太原市": [
+      "小店区",
+      "迎泽区",
+      "杏花岭区",
+      "尖草坪区",
+      "万柏林区",
+      "晋源区",
+      "清徐县",
+      "阳曲县",
+      "娄烦县",
+      "古交市"
+    ],
+    "大同市": [
+      "城区",
+      "矿区",
+      "南郊区",
+      "新荣区",
+      "阳高县",
+      "天镇县",
+      "广灵县",
+      "灵丘县",
+      "浑源县",
+      "左云县",
+      "大同县"
+    ],
+    "阳泉市": [
+      "城区",
+      "矿区",
+      "郊区",
+      "平定县",
+      "盂县"
+    ],
+    "长治市": [
+      "城区",
+      "郊区",
+      "长治县",
+      "襄垣县",
+      "屯留县",
+      "平顺县",
+      "黎城县",
+      "壶关县",
+      "长子县",
+      "武乡县",
+      "沁县",
+      "沁源县",
+      "潞城市"
+    ],
+    "晋城市": [
+      "城区",
+      "沁水县",
+      "阳城县",
+      "陵川县",
+      "泽州县",
+      "高平市"
+    ],
+    "朔州市": [
+      "朔城区",
+      "平鲁区",
+      "山阴县",
+      "应县",
+      "右玉县",
+      "怀仁县"
+    ],
+    "晋中市": [
+      "榆次区",
+      "榆社县",
+      "左权县",
+      "和顺县",
+      "昔阳县",
+      "寿阳县",
+      "太谷县",
+      "祁县",
+      "平遥县",
+      "灵石县",
+      "介休市"
+    ],
+    "运城市": [
+      "盐湖区",
+      "临猗县",
+      "万荣县",
+      "闻喜县",
+      "稷山县",
+      "新绛县",
+      "绛县",
+      "垣曲县",
+      "夏县",
+      "平陆县",
+      "芮城县",
+      "永济市",
+      "河津市"
+    ],
+    "忻州市": [
+      "忻府区",
+      "定襄县",
+      "五台县",
+      "代县",
+      "繁峙县",
+      "宁武县",
+      "静乐县",
+      "神池县",
+      "五寨县",
+      "岢岚县",
+      "河曲县",
+      "保德县",
+      "偏关县",
+      "原平市"
+    ],
+    "临汾市": [
+      "尧都区",
+      "曲沃县",
+      "翼城县",
+      "襄汾县",
+      "洪洞县",
+      "古县",
+      "安泽县",
+      "浮山县",
+      "吉县",
+      "乡宁县",
+      "大宁县",
+      "隰县",
+      "永和县",
+      "蒲县",
+      "汾西县",
+      "侯马市",
+      "霍州市"
+    ],
+    "吕梁市": [
+      "离石区",
+      "文水县",
+      "交城县",
+      "兴县",
+      "临县",
+      "柳林县",
+      "石楼县",
+      "岚县",
+      "方山县",
+      "中阳县",
+      "交口县",
+      "孝义市",
+      "汾阳市"
+    ]
+  },
+  "内蒙古": {
+    "呼和浩特市": [
+      "新城区",
+      "回民区",
+      "玉泉区",
+      "赛罕区",
+      "土默特左旗",
+      "托克托县",
+      "和林格尔县",
+      "清水河县",
+      "武川县"
+    ],
+    "包头市": [
+      "东河区",
+      "昆都仑区",
+      "青山区",
+      "石拐区",
+      "白云鄂博矿区",
+      "九原区",
+      "土默特右旗",
+      "固阳县",
+      "达尔罕茂明安联合旗"
+    ],
+    "乌海市": [
+      "海勃湾区",
+      "海南区",
+      "乌达区"
+    ],
+    "赤峰市": [
+      "红山区",
+      "元宝山区",
+      "松山区",
+      "阿鲁科尔沁旗",
+      "巴林左旗",
+      "巴林右旗",
+      "林西县",
+      "克什克腾旗",
+      "翁牛特旗",
+      "喀喇沁旗",
+      "宁城县",
+      "敖汉旗"
+    ],
+    "通辽市": [
+      "科尔沁区",
+      "科尔沁左翼中旗",
+      "科尔沁左翼后旗",
+      "开鲁县",
+      "库伦旗",
+      "奈曼旗",
+      "扎鲁特旗",
+      "霍林郭勒市"
+    ],
+    "鄂尔多斯市": [
+      "东胜区",
+      "达拉特旗",
+      "准格尔旗",
+      "鄂托克前旗",
+      "鄂托克旗",
+      "杭锦旗",
+      "乌审旗",
+      "伊金霍洛旗"
+    ],
+    "呼伦贝尔市": [
+      "海拉尔区",
+      "扎赉诺尔区",
+      "阿荣旗",
+      "莫力达瓦达斡尔族自治旗",
+      "鄂伦春自治旗",
+      "鄂温克族自治旗",
+      "陈巴尔虎旗",
+      "新巴尔虎左旗",
+      "新巴尔虎右旗",
+      "满洲里市",
+      "牙克石市",
+      "扎兰屯市",
+      "额尔古纳市",
+      "根河市"
+    ],
+    "巴彦淖尔市": [
+      "临河区",
+      "五原县",
+      "磴口县",
+      "乌拉特前旗",
+      "乌拉特中旗",
+      "乌拉特后旗",
+      "杭锦后旗"
+    ],
+    "乌兰察布市": [
+      "集宁区",
+      "卓资县",
+      "化德县",
+      "商都县",
+      "兴和县",
+      "凉城县",
+      "察哈尔右翼前旗",
+      "察哈尔右翼中旗",
+      "察哈尔右翼后旗",
+      "四子王旗",
+      "丰镇市"
+    ],
+    "兴安盟": [
+      "乌兰浩特市",
+      "阿尔山市",
+      "科尔沁右翼前旗",
+      "科尔沁右翼中旗",
+      "扎赉特旗",
+      "突泉县"
+    ],
+    "锡林郭勒盟": [
+      "二连浩特市",
+      "锡林浩特市",
+      "阿巴嘎旗",
+      "苏尼特左旗",
+      "苏尼特右旗",
+      "东乌珠穆沁旗",
+      "西乌珠穆沁旗",
+      "太仆寺旗",
+      "镶黄旗",
+      "正镶白旗",
+      "正蓝旗",
+      "多伦县"
+    ],
+    "阿拉善盟": [
+      "阿拉善左旗",
+      "阿拉善右旗",
+      "额济纳旗"
+    ]
+  },
+  "辽宁": {
+    "沈阳市": [
+      "和平区",
+      "沈河区",
+      "大东区",
+      "皇姑区",
+      "铁西区",
+      "苏家屯区",
+      "东陵区",
+      "沈北新区",
+      "于洪区",
+      "辽中县",
+      "康平县",
+      "法库县",
+      "新民市"
+    ],
+    "大连市": [
+      "中山区",
+      "西岗区",
+      "沙河口区",
+      "甘井子区",
+      "旅顺口区",
+      "金州区",
+      "长海县",
+      "瓦房店市",
+      "普兰店市",
+      "庄河市"
+    ],
+    "鞍山市": [
+      "铁东区",
+      "铁西区",
+      "立山区",
+      "千山区",
+      "台安县",
+      "岫岩满族自治县",
+      "海城市"
+    ],
+    "抚顺市": [
+      "新抚区",
+      "东洲区",
+      "望花区",
+      "顺城区",
+      "抚顺县",
+      "新宾满族自治县",
+      "清原满族自治县"
+    ],
+    "本溪市": [
+      "平山区",
+      "溪湖区",
+      "明山区",
+      "南芬区",
+      "本溪满族自治县",
+      "桓仁满族自治县"
+    ],
+    "丹东市": [
+      "元宝区",
+      "振兴区",
+      "振安区",
+      "宽甸满族自治县",
+      "东港市",
+      "凤城市"
+    ],
+    "锦州市": [
+      "古塔区",
+      "凌河区",
+      "太和区",
+      "黑山县",
+      "义县",
+      "凌海市",
+      "北镇市"
+    ],
+    "营口市": [
+      "站前区",
+      "西市区",
+      "鲅鱼圈区",
+      "老边区",
+      "盖州市",
+      "大石桥市"
+    ],
+    "阜新市": [
+      "海州区",
+      "新邱区",
+      "太平区",
+      "清河门区",
+      "细河区",
+      "阜新蒙古族自治县",
+      "彰武县"
+    ],
+    "辽阳市": [
+      "白塔区",
+      "文圣区",
+      "宏伟区",
+      "弓长岭区",
+      "太子河区",
+      "辽阳县",
+      "灯塔市"
+    ],
+    "盘锦市": [
+      "双台子区",
+      "兴隆台区",
+      "大洼县",
+      "盘山县"
+    ],
+    "铁岭市": [
+      "银州区",
+      "清河区",
+      "铁岭县",
+      "西丰县",
+      "昌图县",
+      "调兵山市",
+      "开原市"
+    ],
+    "朝阳市": [
+      "双塔区",
+      "龙城区",
+      "朝阳县",
+      "建平县",
+      "喀喇沁左翼蒙古族自治县",
+      "北票市",
+      "凌源市"
+    ],
+    "葫芦岛市": [
+      "连山区",
+      "龙港区",
+      "南票区",
+      "绥中县",
+      "建昌县",
+      "兴城市"
+    ]
+  },
+  "吉林": {
+    "长春市": [
+      "南关区",
+      "宽城区",
+      "朝阳区",
+      "二道区",
+      "绿园区",
+      "双阳区",
+      "农安县",
+      "九台市",
+      "榆树市",
+      "德惠市"
+    ],
+    "吉林市": [
+      "昌邑区",
+      "龙潭区",
+      "船营区",
+      "丰满区",
+      "永吉县",
+      "蛟河市",
+      "桦甸市",
+      "舒兰市",
+      "磐石市"
+    ],
+    "四平市": [
+      "铁西区",
+      "铁东区",
+      "梨树县",
+      "伊通满族自治县",
+      "公主岭市",
+      "双辽市"
+    ],
+    "辽源市": [
+      "龙山区",
+      "西安区",
+      "东丰县",
+      "东辽县"
+    ],
+    "通化市": [
+      "东昌区",
+      "二道江区",
+      "通化县",
+      "辉南县",
+      "柳河县",
+      "梅河口市",
+      "集安市"
+    ],
+    "白山市": [
+      "浑江区",
+      "江源区",
+      "抚松县",
+      "靖宇县",
+      "长白朝鲜族自治县",
+      "临江市"
+    ],
+    "松原市": [
+      "宁江区",
+      "前郭尔罗斯蒙古族自治县",
+      "长岭县",
+      "乾安县",
+      "扶余市"
+    ],
+    "白城市": [
+      "洮北区",
+      "镇赉县",
+      "通榆县",
+      "洮南市",
+      "大安市"
+    ],
+    "延边朝鲜族自治州": [
+      "延吉市",
+      "图们市",
+      "敦化市",
+      "珲春市",
+      "龙井市",
+      "和龙市",
+      "汪清县",
+      "安图县"
+    ]
+  },
+  "黑龙江": {
+    "哈尔滨市": [
+      "道里区",
+      "南岗区",
+      "道外区",
+      "平房区",
+      "松北区",
+      "香坊区",
+      "呼兰区",
+      "阿城区",
+      "依兰县",
+      "方正县",
+      "宾县",
+      "巴彦县",
+      "木兰县",
+      "通河县",
+      "延寿县",
+      "双城市",
+      "尚志市",
+      "五常市"
+    ],
+    "齐齐哈尔市": [
+      "龙沙区",
+      "建华区",
+      "铁锋区",
+      "昂昂溪区",
+      "富拉尔基区",
+      "碾子山区",
+      "梅里斯达斡尔族区",
+      "龙江县",
+      "依安县",
+      "泰来县",
+      "甘南县",
+      "富裕县",
+      "克山县",
+      "克东县",
+      "拜泉县",
+      "讷河市"
+    ],
+    "鸡西市": [
+      "鸡冠区",
+      "恒山区",
+      "滴道区",
+      "梨树区",
+      "城子河区",
+      "麻山区",
+      "鸡东县",
+      "虎林市",
+      "密山市"
+    ],
+    "鹤岗市": [
+      "向阳区",
+      "工农区",
+      "南山区",
+      "兴安区",
+      "东山区",
+      "兴山区",
+      "萝北县",
+      "绥滨县"
+    ],
+    "双鸭山市": [
+      "尖山区",
+      "岭东区",
+      "四方台区",
+      "宝山区",
+      "集贤县",
+      "友谊县",
+      "宝清县",
+      "饶河县"
+    ],
+    "大庆市": [
+      "萨尔图区",
+      "龙凤区",
+      "让胡路区",
+      "红岗区",
+      "大同区",
+      "肇州县",
+      "肇源县",
+      "林甸县",
+      "杜尔伯特蒙古族自治县"
+    ],
+    "伊春市": [
+      "伊春区",
+      "南岔区",
+      "友好区",
+      "西林区",
+      "翠峦区",
+      "新青区",
+      "美溪区",
+      "金山屯区",
+      "五营区",
+      "乌马河区",
+      "汤旺河区",
+      "带岭区",
+      "乌伊岭区",
+      "红星区",
+      "上甘岭区",
+      "嘉荫县",
+      "铁力市"
+    ],
+    "佳木斯市": [
+      "向阳区",
+      "前进区",
+      "东风区",
+      "郊区",
+      "桦南县",
+      "桦川县",
+      "汤原县",
+      "抚远县",
+      "同江市",
+      "富锦市"
+    ],
+    "七台河市": [
+      "新兴区",
+      "桃山区",
+      "茄子河区",
+      "勃利县"
+    ],
+    "牡丹江市": [
+      "东安区",
+      "阳明区",
+      "爱民区",
+      "西安区",
+      "东宁县",
+      "林口县",
+      "绥芬河市",
+      "海林市",
+      "宁安市",
+      "穆棱市"
+    ],
+    "黑河市": [
+      "爱辉区",
+      "嫩江县",
+      "逊克县",
+      "孙吴县",
+      "北安市",
+      "五大连池市"
+    ],
+    "绥化市": [
+      "北林区",
+      "望奎县",
+      "兰西县",
+      "青冈县",
+      "庆安县",
+      "明水县",
+      "绥棱县",
+      "安达市",
+      "肇东市",
+      "海伦市"
+    ],
+    "大兴安岭地区": [
+      "呼玛县",
+      "塔河县",
+      "漠河县"
+    ]
+  },
+  "上海": {
+    "上海": [
+      "黄浦区",
+      "徐汇区",
+      "长宁区",
+      "静安区",
+      "普陀区",
+      "闸北区",
+      "虹口区",
+      "杨浦区",
+      "闵行区",
+      "宝山区",
+      "嘉定区",
+      "浦东新区",
+      "金山区",
+      "松江区",
+      "青浦区",
+      "奉贤区",
+      "崇明县"
+    ]
+  },
+  "江苏": {
+    "南京市": [
+      "玄武区",
+      "秦淮区",
+      "建邺区",
+      "鼓楼区",
+      "浦口区",
+      "栖霞区",
+      "雨花台区",
+      "江宁区",
+      "六合区",
+      "溧水区",
+      "高淳区"
+    ],
+    "无锡市": [
+      "崇安区",
+      "南长区",
+      "北塘区",
+      "锡山区",
+      "惠山区",
+      "滨湖区",
+      "江阴市",
+      "宜兴市"
+    ],
+    "徐州市": [
+      "鼓楼区",
+      "云龙区",
+      "贾汪区",
+      "泉山区",
+      "铜山区",
+      "丰县",
+      "沛县",
+      "睢宁县",
+      "新沂市",
+      "邳州市"
+    ],
+    "常州市": [
+      "天宁区",
+      "钟楼区",
+      "戚墅堰区",
+      "新北区",
+      "武进区",
+      "溧阳市",
+      "金坛市"
+    ],
+    "苏州市": [
+      "虎丘区",
+      "吴中区",
+      "相城区",
+      "姑苏区",
+      "吴江区",
+      "常熟市",
+      "张家港市",
+      "昆山市",
+      "太仓市",
+      "工业园区",
+      "高新区",
+      "沧浪区",
+      "平江区",
+      "金阊区"
+    ],
+    "南通市": [
+      "崇川区",
+      "港闸区",
+      "通州区",
+      "海安县",
+      "如东县",
+      "启东市",
+      "如皋市",
+      "海门市"
+    ],
+    "连云港市": [
+      "连云区",
+      "新浦区",
+      "海州区",
+      "赣榆县",
+      "东海县",
+      "灌云县",
+      "灌南县"
+    ],
+    "淮安市": [
+      "清河区",
+      "淮安区",
+      "淮阴区",
+      "清浦区",
+      "涟水县",
+      "洪泽县",
+      "盱眙县",
+      "金湖县"
+    ],
+    "盐城市": [
+      "亭湖区",
+      "盐都区",
+      "响水县",
+      "滨海县",
+      "阜宁县",
+      "射阳县",
+      "建湖县",
+      "东台市",
+      "大丰市"
+    ],
+    "扬州市": [
+      "广陵区",
+      "邗江区",
+      "江都区",
+      "宝应县",
+      "仪征市",
+      "高邮市"
+    ],
+    "镇江市": [
+      "京口区",
+      "润州区",
+      "丹徒区",
+      "丹阳市",
+      "扬中市",
+      "句容市"
+    ],
+    "泰州市": [
+      "海陵区",
+      "高港区",
+      "姜堰区",
+      "兴化市",
+      "靖江市",
+      "泰兴市"
+    ],
+    "宿迁市": [
+      "宿城区",
+      "宿豫区",
+      "沭阳县",
+      "泗阳县",
+      "泗洪县"
+    ]
+  },
+  "浙江": {
+    "杭州市": [
+      "上城区",
+      "下城区",
+      "江干区",
+      "拱墅区",
+      "西湖区",
+      "滨江区",
+      "萧山区",
+      "余杭区",
+      "桐庐县",
+      "淳安县",
+      "建德市",
+      "富阳市",
+      "临安市"
+    ],
+    "宁波市": [
+      "海曙区",
+      "江东区",
+      "江北区",
+      "北仑区",
+      "镇海区",
+      "鄞州区",
+      "象山县",
+      "宁海县",
+      "余姚市",
+      "慈溪市",
+      "奉化市"
+    ],
+    "温州市": [
+      "鹿城区",
+      "龙湾区",
+      "瓯海区",
+      "洞头县",
+      "永嘉县",
+      "平阳县",
+      "苍南县",
+      "文成县",
+      "泰顺县",
+      "瑞安市",
+      "乐清市"
+    ],
+    "嘉兴市": [
+      "南湖区",
+      "秀洲区",
+      "嘉善县",
+      "海盐县",
+      "海宁市",
+      "平湖市",
+      "桐乡市"
+    ],
+    "湖州市": [
+      "吴兴区",
+      "南浔区",
+      "德清县",
+      "长兴县",
+      "安吉县"
+    ],
+    "绍兴市": [
+      "越城区",
+      "绍兴县",
+      "新昌县",
+      "诸暨市",
+      "上虞市",
+      "嵊州市"
+    ],
+    "金华市": [
+      "婺城区",
+      "金东区",
+      "武义县",
+      "浦江县",
+      "磐安县",
+      "兰溪市",
+      "义乌市",
+      "东阳市",
+      "永康市"
+    ],
+    "衢州市": [
+      "柯城区",
+      "衢江区",
+      "常山县",
+      "开化县",
+      "龙游县",
+      "江山市"
+    ],
+    "舟山市": [
+      "定海区",
+      "普陀区",
+      "岱山县",
+      "嵊泗县"
+    ],
+    "台州市": [
+      "椒江区",
+      "黄岩区",
+      "路桥区",
+      "玉环县",
+      "三门县",
+      "天台县",
+      "仙居县",
+      "温岭市",
+      "临海市"
+    ],
+    "丽水市": [
+      "莲都区",
+      "青田县",
+      "缙云县",
+      "遂昌县",
+      "松阳县",
+      "云和县",
+      "庆元县",
+      "景宁畲族自治县",
+      "龙泉市"
+    ]
+  },
+  "安徽": {
+    "合肥市": [
+      "瑶海区",
+      "庐阳区",
+      "蜀山区",
+      "包河区",
+      "长丰县",
+      "肥东县",
+      "肥西县",
+      "庐江县",
+      "巢湖市"
+    ],
+    "芜湖市": [
+      "镜湖区",
+      "弋江区",
+      "鸠江区",
+      "三山区",
+      "芜湖县",
+      "繁昌县",
+      "南陵县",
+      "无为县"
+    ],
+    "蚌埠市": [
+      "龙子湖区",
+      "蚌山区",
+      "禹会区",
+      "淮上区",
+      "怀远县",
+      "五河县",
+      "固镇县"
+    ],
+    "淮南市": [
+      "大通区",
+      "田家庵区",
+      "谢家集区",
+      "八公山区",
+      "潘集区",
+      "凤台县"
+    ],
+    "马鞍山市": [
+      "花山区",
+      "雨山区",
+      "博望区",
+      "当涂县",
+      "含山县",
+      "和县"
+    ],
+    "淮北市": [
+      "杜集区",
+      "相山区",
+      "烈山区",
+      "濉溪县"
+    ],
+    "铜陵市": [
+      "铜官山区",
+      "狮子山区",
+      "郊区",
+      "铜陵县"
+    ],
+    "安庆市": [
+      "迎江区",
+      "大观区",
+      "宜秀区",
+      "怀宁县",
+      "枞阳县",
+      "潜山县",
+      "太湖县",
+      "宿松县",
+      "望江县",
+      "岳西县",
+      "桐城市"
+    ],
+    "黄山市": [
+      "屯溪区",
+      "黄山区",
+      "徽州区",
+      "歙县",
+      "休宁县",
+      "黟县",
+      "祁门县"
+    ],
+    "滁州市": [
+      "琅琊区",
+      "南谯区",
+      "来安县",
+      "全椒县",
+      "定远县",
+      "凤阳县",
+      "天长市",
+      "明光市"
+    ],
+    "阜阳市": [
+      "颍州区",
+      "颍东区",
+      "颍泉区",
+      "临泉县",
+      "太和县",
+      "阜南县",
+      "颍上县",
+      "界首市"
+    ],
+    "宿州市": [
+      "埇桥区",
+      "砀山县",
+      "萧县",
+      "灵璧县",
+      "泗县"
+    ],
+    "六安市": [
+      "金安区",
+      "裕安区",
+      "寿县",
+      "霍邱县",
+      "舒城县",
+      "金寨县",
+      "霍山县"
+    ],
+    "亳州市": [
+      "谯城区",
+      "涡阳县",
+      "蒙城县",
+      "利辛县"
+    ],
+    "池州市": [
+      "贵池区",
+      "东至县",
+      "石台县",
+      "青阳县"
+    ],
+    "宣城市": [
+      "宣州区",
+      "郎溪县",
+      "广德县",
+      "泾县",
+      "绩溪县",
+      "旌德县",
+      "宁国市"
+    ]
+  },
+  "福建": {
+    "福州市": [
+      "鼓楼区",
+      "台江区",
+      "仓山区",
+      "马尾区",
+      "晋安区",
+      "闽侯县",
+      "连江县",
+      "罗源县",
+      "闽清县",
+      "永泰县",
+      "平潭县",
+      "福清市",
+      "长乐市"
+    ],
+    "厦门市": [
+      "思明区",
+      "海沧区",
+      "湖里区",
+      "集美区",
+      "同安区",
+      "翔安区"
+    ],
+    "莆田市": [
+      "城厢区",
+      "涵江区",
+      "荔城区",
+      "秀屿区",
+      "仙游县"
+    ],
+    "三明市": [
+      "梅列区",
+      "三元区",
+      "明溪县",
+      "清流县",
+      "宁化县",
+      "大田县",
+      "尤溪县",
+      "沙县",
+      "将乐县",
+      "泰宁县",
+      "建宁县",
+      "永安市"
+    ],
+    "泉州市": [
+      "鲤城区",
+      "丰泽区",
+      "洛江区",
+      "泉港区",
+      "惠安县",
+      "安溪县",
+      "永春县",
+      "德化县",
+      "金门县",
+      "石狮市",
+      "晋江市",
+      "南安市"
+    ],
+    "漳州市": [
+      "芗城区",
+      "龙文区",
+      "云霄县",
+      "漳浦县",
+      "诏安县",
+      "长泰县",
+      "东山县",
+      "南靖县",
+      "平和县",
+      "华安县",
+      "龙海市"
+    ],
+    "南平市": [
+      "延平区",
+      "顺昌县",
+      "浦城县",
+      "光泽县",
+      "松溪县",
+      "政和县",
+      "邵武市",
+      "武夷山市",
+      "建瓯市",
+      "建阳市"
+    ],
+    "龙岩市": [
+      "新罗区",
+      "长汀县",
+      "永定县",
+      "上杭县",
+      "武平县",
+      "连城县",
+      "漳平市"
+    ],
+    "宁德市": [
+      "蕉城区",
+      "霞浦县",
+      "古田县",
+      "屏南县",
+      "寿宁县",
+      "周宁县",
+      "柘荣县",
+      "福安市",
+      "福鼎市"
+    ]
+  },
+  "江西": {
+    "南昌市": [
+      "东湖区",
+      "西湖区",
+      "青云谱区",
+      "湾里区",
+      "青山湖区",
+      "南昌县",
+      "新建县",
+      "安义县",
+      "进贤县"
+    ],
+    "景德镇市": [
+      "昌江区",
+      "珠山区",
+      "浮梁县",
+      "乐平市"
+    ],
+    "萍乡市": [
+      "安源区",
+      "湘东区",
+      "莲花县",
+      "上栗县",
+      "芦溪县"
+    ],
+    "九江市": [
+      "庐山区",
+      "浔阳区",
+      "九江县",
+      "武宁县",
+      "修水县",
+      "永修县",
+      "德安县",
+      "星子县",
+      "都昌县",
+      "湖口县",
+      "彭泽县",
+      "瑞昌市",
+      "共青城市"
+    ],
+    "新余市": [
+      "渝水区",
+      "分宜县"
+    ],
+    "鹰潭市": [
+      "月湖区",
+      "余江县",
+      "贵溪市"
+    ],
+    "赣州市": [
+      "章贡区",
+      "赣县",
+      "信丰县",
+      "大余县",
+      "上犹县",
+      "崇义县",
+      "安远县",
+      "龙南县",
+      "定南县",
+      "全南县",
+      "宁都县",
+      "于都县",
+      "兴国县",
+      "会昌县",
+      "寻乌县",
+      "石城县",
+      "瑞金市",
+      "南康市"
+    ],
+    "吉安市": [
+      "吉州区",
+      "青原区",
+      "吉安县",
+      "吉水县",
+      "峡江县",
+      "新干县",
+      "永丰县",
+      "泰和县",
+      "遂川县",
+      "万安县",
+      "安福县",
+      "永新县",
+      "井冈山市"
+    ],
+    "宜春市": [
+      "袁州区",
+      "奉新县",
+      "万载县",
+      "上高县",
+      "宜丰县",
+      "靖安县",
+      "铜鼓县",
+      "丰城市",
+      "樟树市",
+      "高安市"
+    ],
+    "抚州市": [
+      "临川区",
+      "南城县",
+      "黎川县",
+      "南丰县",
+      "崇仁县",
+      "乐安县",
+      "宜黄县",
+      "金溪县",
+      "资溪县",
+      "东乡县",
+      "广昌县"
+    ],
+    "上饶市": [
+      "信州区",
+      "上饶县",
+      "广丰县",
+      "玉山县",
+      "铅山县",
+      "横峰县",
+      "弋阳县",
+      "余干县",
+      "鄱阳县",
+      "万年县",
+      "婺源县",
+      "德兴市"
+    ]
+  },
+  "山东": {
+    "济南市": [
+      "历下区",
+      "市中区",
+      "槐荫区",
+      "天桥区",
+      "历城区",
+      "长清区",
+      "平阴县",
+      "济阳县",
+      "商河县",
+      "章丘市"
+    ],
+    "青岛市": [
+      "市南区",
+      "市北区",
+      "黄岛区",
+      "崂山区",
+      "李沧区",
+      "城阳区",
+      "胶州市",
+      "即墨市",
+      "平度市",
+      "莱西市"
+    ],
+    "淄博市": [
+      "淄川区",
+      "张店区",
+      "博山区",
+      "临淄区",
+      "周村区",
+      "桓台县",
+      "高青县",
+      "沂源县"
+    ],
+    "枣庄市": [
+      "市中区",
+      "薛城区",
+      "峄城区",
+      "台儿庄区",
+      "山亭区",
+      "滕州市"
+    ],
+    "东营市": [
+      "东营区",
+      "河口区",
+      "垦利县",
+      "利津县",
+      "广饶县"
+    ],
+    "烟台市": [
+      "芝罘区",
+      "福山区",
+      "牟平区",
+      "莱山区",
+      "长岛县",
+      "龙口市",
+      "莱阳市",
+      "莱州市",
+      "蓬莱市",
+      "招远市",
+      "栖霞市",
+      "海阳市"
+    ],
+    "潍坊市": [
+      "潍城区",
+      "寒亭区",
+      "坊子区",
+      "奎文区",
+      "临朐县",
+      "昌乐县",
+      "青州市",
+      "诸城市",
+      "寿光市",
+      "安丘市",
+      "高密市",
+      "昌邑市"
+    ],
+    "济宁市": [
+      "市中区",
+      "任城区",
+      "微山县",
+      "鱼台县",
+      "金乡县",
+      "嘉祥县",
+      "汶上县",
+      "泗水县",
+      "梁山县",
+      "曲阜市",
+      "兖州市",
+      "邹城市"
+    ],
+    "泰安市": [
+      "泰山区",
+      "岱岳区",
+      "宁阳县",
+      "东平县",
+      "新泰市",
+      "肥城市"
+    ],
+    "威海市": [
+      "环翠区",
+      "文登市",
+      "荣成市",
+      "乳山市"
+    ],
+    "日照市": [
+      "东港区",
+      "岚山区",
+      "五莲县",
+      "莒县"
+    ],
+    "莱芜市": [
+      "莱城区",
+      "钢城区"
+    ],
+    "临沂市": [
+      "兰山区",
+      "罗庄区",
+      "河东区",
+      "沂南县",
+      "郯城县",
+      "沂水县",
+      "苍山县",
+      "费县",
+      "平邑县",
+      "莒南县",
+      "蒙阴县",
+      "临沭县"
+    ],
+    "德州市": [
+      "德城区",
+      "陵县",
+      "宁津县",
+      "庆云县",
+      "临邑县",
+      "齐河县",
+      "平原县",
+      "夏津县",
+      "武城县",
+      "乐陵市",
+      "禹城市"
+    ],
+    "聊城市": [
+      "东昌府区",
+      "阳谷县",
+      "莘县",
+      "茌平县",
+      "东阿县",
+      "冠县",
+      "高唐县",
+      "临清市"
+    ],
+    "滨州市": [
+      "滨城区",
+      "惠民县",
+      "阳信县",
+      "无棣县",
+      "沾化县",
+      "博兴县",
+      "邹平县"
+    ],
+    "菏泽市": [
+      "牡丹区",
+      "曹县",
+      "单县",
+      "成武县",
+      "巨野县",
+      "郓城县",
+      "鄄城县",
+      "定陶县",
+      "东明县"
+    ]
+  },
+  "河南": {
+    "郑州市": [
+      "中原区",
+      "二七区",
+      "管城回族区",
+      "金水区",
+      "上街区",
+      "惠济区",
+      "中牟县",
+      "巩义市",
+      "荥阳市",
+      "新密市",
+      "新郑市",
+      "登封市"
+    ],
+    "开封市": [
+      "龙亭区",
+      "顺河回族区",
+      "鼓楼区",
+      "禹王台区",
+      "金明区",
+      "杞县",
+      "通许县",
+      "尉氏县",
+      "开封县",
+      "兰考县"
+    ],
+    "洛阳市": [
+      "老城区",
+      "西工区",
+      "瀍河回族区",
+      "涧西区",
+      "吉利区",
+      "洛龙区",
+      "孟津县",
+      "新安县",
+      "栾川县",
+      "嵩县",
+      "汝阳县",
+      "宜阳县",
+      "洛宁县",
+      "伊川县",
+      "偃师市"
+    ],
+    "平顶山市": [
+      "新华区",
+      "卫东区",
+      "石龙区",
+      "湛河区",
+      "宝丰县",
+      "叶县",
+      "鲁山县",
+      "郏县",
+      "舞钢市",
+      "汝州市"
+    ],
+    "安阳市": [
+      "文峰区",
+      "北关区",
+      "殷都区",
+      "龙安区",
+      "安阳县",
+      "汤阴县",
+      "滑县",
+      "内黄县",
+      "林州市"
+    ],
+    "鹤壁市": [
+      "鹤山区",
+      "山城区",
+      "淇滨区",
+      "浚县",
+      "淇县"
+    ],
+    "新乡市": [
+      "红旗区",
+      "卫滨区",
+      "凤泉区",
+      "牧野区",
+      "新乡县",
+      "获嘉县",
+      "原阳县",
+      "延津县",
+      "封丘县",
+      "长垣县",
+      "卫辉市",
+      "辉县市"
+    ],
+    "焦作市": [
+      "解放区",
+      "中站区",
+      "马村区",
+      "山阳区",
+      "修武县",
+      "博爱县",
+      "武陟县",
+      "温县",
+      "沁阳市",
+      "孟州市"
+    ],
+    "濮阳市": [
+      "华龙区",
+      "清丰县",
+      "南乐县",
+      "范县",
+      "台前县",
+      "濮阳县"
+    ],
+    "许昌市": [
+      "魏都区",
+      "许昌县",
+      "鄢陵县",
+      "襄城县",
+      "禹州市",
+      "长葛市"
+    ],
+    "漯河市": [
+      "源汇区",
+      "郾城区",
+      "召陵区",
+      "舞阳县",
+      "临颍县"
+    ],
+    "三门峡市": [
+      "湖滨区",
+      "渑池县",
+      "陕县",
+      "卢氏县",
+      "义马市",
+      "灵宝市"
+    ],
+    "南阳市": [
+      "宛城区",
+      "卧龙区",
+      "南召县",
+      "方城县",
+      "西峡县",
+      "镇平县",
+      "内乡县",
+      "淅川县",
+      "社旗县",
+      "唐河县",
+      "新野县",
+      "桐柏县",
+      "邓州市"
+    ],
+    "商丘市": [
+      "梁园区",
+      "睢阳区",
+      "民权县",
+      "睢县",
+      "宁陵县",
+      "柘城县",
+      "虞城县",
+      "夏邑县",
+      "永城市"
+    ],
+    "信阳市": [
+      "浉河区",
+      "平桥区",
+      "罗山县",
+      "光山县",
+      "新县",
+      "商城县",
+      "固始县",
+      "潢川县",
+      "淮滨县",
+      "息县"
+    ],
+    "周口市": [
+      "川汇区",
+      "扶沟县",
+      "西华县",
+      "商水县",
+      "沈丘县",
+      "郸城县",
+      "淮阳县",
+      "太康县",
+      "鹿邑县",
+      "项城市"
+    ],
+    "驻马店市": [
+      "驿城区",
+      "西平县",
+      "上蔡县",
+      "平舆县",
+      "正阳县",
+      "确山县",
+      "泌阳县",
+      "汝南县",
+      "遂平县",
+      "新蔡县"
+    ],
+    "省直辖县级行政区划": [
+      "济源市"
+    ]
+  },
+  "湖北": {
+    "武汉市": [
+      "江岸区",
+      "江汉区",
+      "硚口区",
+      "汉阳区",
+      "武昌区",
+      "青山区",
+      "洪山区",
+      "东西湖区",
+      "汉南区",
+      "蔡甸区",
+      "江夏区",
+      "黄陂区",
+      "新洲区"
+    ],
+    "黄石市": [
+      "黄石港区",
+      "西塞山区",
+      "下陆区",
+      "铁山区",
+      "阳新县",
+      "大冶市"
+    ],
+    "十堰市": [
+      "茅箭区",
+      "张湾区",
+      "郧县",
+      "郧西县",
+      "竹山县",
+      "竹溪县",
+      "房县",
+      "丹江口市"
+    ],
+    "宜昌市": [
+      "西陵区",
+      "伍家岗区",
+      "点军区",
+      "猇亭区",
+      "夷陵区",
+      "远安县",
+      "兴山县",
+      "秭归县",
+      "长阳土家族自治县",
+      "五峰土家族自治县",
+      "宜都市",
+      "当阳市",
+      "枝江市"
+    ],
+    "襄阳市": [
+      "襄城区",
+      "樊城区",
+      "襄州区",
+      "南漳县",
+      "谷城县",
+      "保康县",
+      "老河口市",
+      "枣阳市",
+      "宜城市"
+    ],
+    "鄂州市": [
+      "梁子湖区",
+      "华容区",
+      "鄂城区"
+    ],
+    "荆门市": [
+      "东宝区",
+      "掇刀区",
+      "京山县",
+      "沙洋县",
+      "钟祥市"
+    ],
+    "孝感市": [
+      "孝南区",
+      "孝昌县",
+      "大悟县",
+      "云梦县",
+      "应城市",
+      "安陆市",
+      "汉川市"
+    ],
+    "荆州市": [
+      "沙市区",
+      "荆州区",
+      "公安县",
+      "监利县",
+      "江陵县",
+      "石首市",
+      "洪湖市",
+      "松滋市"
+    ],
+    "黄冈市": [
+      "黄州区",
+      "团风县",
+      "红安县",
+      "罗田县",
+      "英山县",
+      "浠水县",
+      "蕲春县",
+      "黄梅县",
+      "麻城市",
+      "武穴市"
+    ],
+    "咸宁市": [
+      "咸安区",
+      "嘉鱼县",
+      "通城县",
+      "崇阳县",
+      "通山县",
+      "赤壁市"
+    ],
+    "随州市": [
+      "曾都区",
+      "随县",
+      "广水市"
+    ],
+    "恩施土家族苗族自治州": [
+      "恩施市",
+      "利川市",
+      "建始县",
+      "巴东县",
+      "宣恩县",
+      "咸丰县",
+      "来凤县",
+      "鹤峰县"
+    ],
+    "省直辖县级行政区划": [
+      "仙桃市",
+      "潜江市",
+      "天门市",
+      "神农架林区"
+    ]
+  },
+  "湖南": {
+    "长沙市": [
+      "芙蓉区",
+      "天心区",
+      "岳麓区",
+      "开福区",
+      "雨花区",
+      "望城区",
+      "长沙县",
+      "宁乡县",
+      "浏阳市"
+    ],
+    "株洲市": [
+      "荷塘区",
+      "芦淞区",
+      "石峰区",
+      "天元区",
+      "株洲县",
+      "攸县",
+      "茶陵县",
+      "炎陵县",
+      "醴陵市"
+    ],
+    "湘潭市": [
+      "雨湖区",
+      "岳塘区",
+      "湘潭县",
+      "湘乡市",
+      "韶山市"
+    ],
+    "衡阳市": [
+      "珠晖区",
+      "雁峰区",
+      "石鼓区",
+      "蒸湘区",
+      "南岳区",
+      "衡阳县",
+      "衡南县",
+      "衡山县",
+      "衡东县",
+      "祁东县",
+      "耒阳市",
+      "常宁市"
+    ],
+    "邵阳市": [
+      "双清区",
+      "大祥区",
+      "北塔区",
+      "邵东县",
+      "新邵县",
+      "邵阳县",
+      "隆回县",
+      "洞口县",
+      "绥宁县",
+      "新宁县",
+      "城步苗族自治县",
+      "武冈市"
+    ],
+    "岳阳市": [
+      "岳阳楼区",
+      "云溪区",
+      "君山区",
+      "岳阳县",
+      "华容县",
+      "湘阴县",
+      "平江县",
+      "汨罗市",
+      "临湘市"
+    ],
+    "常德市": [
+      "武陵区",
+      "鼎城区",
+      "安乡县",
+      "汉寿县",
+      "澧县",
+      "临澧县",
+      "桃源县",
+      "石门县",
+      "津市市"
+    ],
+    "张家界市": [
+      "永定区",
+      "武陵源区",
+      "慈利县",
+      "桑植县"
+    ],
+    "益阳市": [
+      "资阳区",
+      "赫山区",
+      "南县",
+      "桃江县",
+      "安化县",
+      "沅江市"
+    ],
+    "郴州市": [
+      "北湖区",
+      "苏仙区",
+      "桂阳县",
+      "宜章县",
+      "永兴县",
+      "嘉禾县",
+      "临武县",
+      "汝城县",
+      "桂东县",
+      "安仁县",
+      "资兴市"
+    ],
+    "永州市": [
+      "零陵区",
+      "冷水滩区",
+      "祁阳县",
+      "东安县",
+      "双牌县",
+      "道县",
+      "江永县",
+      "宁远县",
+      "蓝山县",
+      "新田县",
+      "江华瑶族自治县"
+    ],
+    "怀化市": [
+      "鹤城区",
+      "中方县",
+      "沅陵县",
+      "辰溪县",
+      "溆浦县",
+      "会同县",
+      "麻阳苗族自治县",
+      "新晃侗族自治县",
+      "芷江侗族自治县",
+      "靖州苗族侗族自治县",
+      "通道侗族自治县",
+      "洪江市"
+    ],
+    "娄底市": [
+      "娄星区",
+      "双峰县",
+      "新化县",
+      "冷水江市",
+      "涟源市"
+    ],
+    "湘西土家族苗族自治州": [
+      "吉首市",
+      "泸溪县",
+      "凤凰县",
+      "花垣县",
+      "保靖县",
+      "古丈县",
+      "永顺县",
+      "龙山县"
+    ]
+  },
+  "广东": {
+    "广州市": [
+      "荔湾区",
+      "越秀区",
+      "海珠区",
+      "天河区",
+      "白云区",
+      "黄埔区",
+      "番禺区",
+      "花都区",
+      "南沙区",
+      "萝岗区",
+      "增城市",
+      "从化市"
+    ],
+    "韶关市": [
+      "武江区",
+      "浈江区",
+      "曲江区",
+      "始兴县",
+      "仁化县",
+      "翁源县",
+      "乳源瑶族自治县",
+      "新丰县",
+      "乐昌市",
+      "南雄市"
+    ],
+    "深圳市": [
+      "罗湖区",
+      "福田区",
+      "南山区",
+      "宝安区",
+      "龙岗区",
+      "盐田区"
+    ],
+    "珠海市": [
+      "香洲区",
+      "斗门区",
+      "金湾区"
+    ],
+    "汕头市": [
+      "龙湖区",
+      "金平区",
+      "濠江区",
+      "潮阳区",
+      "潮南区",
+      "澄海区",
+      "南澳县"
+    ],
+    "佛山市": [
+      "禅城区",
+      "南海区",
+      "顺德区",
+      "三水区",
+      "高明区"
+    ],
+    "江门市": [
+      "蓬江区",
+      "江海区",
+      "新会区",
+      "台山市",
+      "开平市",
+      "鹤山市",
+      "恩平市"
+    ],
+    "湛江市": [
+      "赤坎区",
+      "霞山区",
+      "坡头区",
+      "麻章区",
+      "遂溪县",
+      "徐闻县",
+      "廉江市",
+      "雷州市",
+      "吴川市"
+    ],
+    "茂名市": [
+      "茂南区",
+      "茂港区",
+      "电白县",
+      "高州市",
+      "化州市",
+      "信宜市"
+    ],
+    "肇庆市": [
+      "端州区",
+      "鼎湖区",
+      "广宁县",
+      "怀集县",
+      "封开县",
+      "德庆县",
+      "高要市",
+      "四会市"
+    ],
+    "惠州市": [
+      "惠城区",
+      "惠阳区",
+      "博罗县",
+      "惠东县",
+      "龙门县"
+    ],
+    "梅州市": [
+      "梅江区",
+      "梅县",
+      "大埔县",
+      "丰顺县",
+      "五华县",
+      "平远县",
+      "蕉岭县",
+      "兴宁市"
+    ],
+    "汕尾市": [
+      "城区",
+      "海丰县",
+      "陆河县",
+      "陆丰市"
+    ],
+    "河源市": [
+      "源城区",
+      "紫金县",
+      "龙川县",
+      "连平县",
+      "和平县",
+      "东源县"
+    ],
+    "阳江市": [
+      "江城区",
+      "阳西县",
+      "阳东县",
+      "阳春市"
+    ],
+    "清远市": [
+      "清城区",
+      "清新区",
+      "佛冈县",
+      "阳山县",
+      "连山壮族瑶族自治县",
+      "连南瑶族自治县",
+      "英德市",
+      "连州市"
+    ],
+    "东莞市": [
+    ],
+    "中山市": [
+    ],
+    "潮州市": [
+      "湘桥区",
+      "潮安区",
+      "饶平县"
+    ],
+    "揭阳市": [
+      "榕城区",
+      "揭东区",
+      "揭西县",
+      "惠来县",
+      "普宁市"
+    ],
+    "云浮市": [
+      "云城区",
+      "新兴县",
+      "郁南县",
+      "云安县",
+      "罗定市"
+    ]
+  },
+  "广西": {
+    "南宁市": [
+      "兴宁区",
+      "青秀区",
+      "江南区",
+      "西乡塘区",
+      "良庆区",
+      "邕宁区",
+      "武鸣县",
+      "隆安县",
+      "马山县",
+      "上林县",
+      "宾阳县",
+      "横县"
+    ],
+    "柳州市": [
+      "城中区",
+      "鱼峰区",
+      "柳南区",
+      "柳北区",
+      "柳江县",
+      "柳城县",
+      "鹿寨县",
+      "融安县",
+      "融水苗族自治县",
+      "三江侗族自治县"
+    ],
+    "桂林市": [
+      "秀峰区",
+      "叠彩区",
+      "象山区",
+      "七星区",
+      "雁山区",
+      "临桂区",
+      "阳朔县",
+      "灵川县",
+      "全州县",
+      "兴安县",
+      "永福县",
+      "灌阳县",
+      "龙胜各族自治县",
+      "资源县",
+      "平乐县",
+      "荔浦县",
+      "恭城瑶族自治县"
+    ],
+    "梧州市": [
+      "万秀区",
+      "长洲区",
+      "龙圩区",
+      "苍梧县",
+      "藤县",
+      "蒙山县",
+      "岑溪市"
+    ],
+    "北海市": [
+      "海城区",
+      "银海区",
+      "铁山港区",
+      "合浦县"
+    ],
+    "防城港市": [
+      "港口区",
+      "防城区",
+      "上思县",
+      "东兴市"
+    ],
+    "钦州市": [
+      "钦南区",
+      "钦北区",
+      "灵山县",
+      "浦北县"
+    ],
+    "贵港市": [
+      "港北区",
+      "港南区",
+      "覃塘区",
+      "平南县",
+      "桂平市"
+    ],
+    "玉林市": [
+      "玉州区",
+      "福绵区",
+      "容县",
+      "陆川县",
+      "博白县",
+      "兴业县",
+      "北流市"
+    ],
+    "百色市": [
+      "右江区",
+      "田阳县",
+      "田东县",
+      "平果县",
+      "德保县",
+      "靖西县",
+      "那坡县",
+      "凌云县",
+      "乐业县",
+      "田林县",
+      "西林县",
+      "隆林各族自治县"
+    ],
+    "贺州市": [
+      "八步区",
+      "昭平县",
+      "钟山县",
+      "富川瑶族自治县"
+    ],
+    "河池市": [
+      "金城江区",
+      "南丹县",
+      "天峨县",
+      "凤山县",
+      "东兰县",
+      "罗城仫佬族自治县",
+      "环江毛南族自治县",
+      "巴马瑶族自治县",
+      "都安瑶族自治县",
+      "大化瑶族自治县",
+      "宜州市"
+    ],
+    "来宾市": [
+      "兴宾区",
+      "忻城县",
+      "象州县",
+      "武宣县",
+      "金秀瑶族自治县",
+      "合山市"
+    ],
+    "崇左市": [
+      "江州区",
+      "扶绥县",
+      "宁明县",
+      "龙州县",
+      "大新县",
+      "天等县",
+      "凭祥市"
+    ]
+  },
+  "海南": {
+    "海口市": [
+      "秀英区",
+      "龙华区",
+      "琼山区",
+      "美兰区"
+    ],
+    "三亚市": [
+    ],
+    "三沙市": [
+      "西沙群岛",
+      "南沙群岛",
+      "中沙群岛的岛礁及其海域"
+    ],
+    "省直辖县级行政区划": [
+      "五指山市",
+      "琼海市",
+      "儋州市",
+      "文昌市",
+      "万宁市",
+      "东方市",
+      "定安县",
+      "屯昌县",
+      "澄迈县",
+      "临高县",
+      "白沙黎族自治县",
+      "昌江黎族自治县",
+      "乐东黎族自治县",
+      "陵水黎族自治县",
+      "保亭黎族苗族自治县",
+      "琼中黎族苗族自治县"
+    ]
+  },
+  "重庆": {
+    "重庆": [
+      "万州区",
+      "涪陵区",
+      "渝中区",
+      "大渡口区",
+      "江北区",
+      "沙坪坝区",
+      "九龙坡区",
+      "南岸区",
+      "北碚区",
+      "綦江区",
+      "大足区",
+      "渝北区",
+      "巴南区",
+      "黔江区",
+      "长寿区",
+      "江津区",
+      "合川区",
+      "永川区",
+      "南川区",
+      "潼南县",
+      "铜梁县",
+      "荣昌县",
+      "璧山县",
+      "梁平县",
+      "城口县",
+      "丰都县",
+      "垫江县",
+      "武隆县",
+      "忠县",
+      "开县",
+      "云阳县",
+      "奉节县",
+      "巫山县",
+      "巫溪县",
+      "石柱土家族自治县",
+      "秀山土家族苗族自治县",
+      "酉阳土家族苗族自治县",
+      "彭水苗族土家族自治县"
+    ]
+  },
+  "四川": {
+    "成都市": [
+      "锦江区",
+      "青羊区",
+      "金牛区",
+      "武侯区",
+      "成华区",
+      "龙泉驿区",
+      "青白江区",
+      "新都区",
+      "温江区",
+      "金堂县",
+      "双流县",
+      "郫县",
+      "大邑县",
+      "蒲江县",
+      "新津县",
+      "都江堰市",
+      "彭州市",
+      "邛崃市",
+      "崇州市"
+    ],
+    "自贡市": [
+      "自流井区",
+      "贡井区",
+      "大安区",
+      "沿滩区",
+      "荣县",
+      "富顺县"
+    ],
+    "攀枝花市": [
+      "东区",
+      "西区",
+      "仁和区",
+      "米易县",
+      "盐边县"
+    ],
+    "泸州市": [
+      "江阳区",
+      "纳溪区",
+      "龙马潭区",
+      "泸县",
+      "合江县",
+      "叙永县",
+      "古蔺县"
+    ],
+    "德阳市": [
+      "旌阳区",
+      "中江县",
+      "罗江县",
+      "广汉市",
+      "什邡市",
+      "绵竹市"
+    ],
+    "绵阳市": [
+      "涪城区",
+      "游仙区",
+      "三台县",
+      "盐亭县",
+      "安县",
+      "梓潼县",
+      "北川羌族自治县",
+      "平武县",
+      "江油市"
+    ],
+    "广元市": [
+      "利州区",
+      "元坝区",
+      "朝天区",
+      "旺苍县",
+      "青川县",
+      "剑阁县",
+      "苍溪县"
+    ],
+    "遂宁市": [
+      "船山区",
+      "安居区",
+      "蓬溪县",
+      "射洪县",
+      "大英县"
+    ],
+    "内江市": [
+      "市中区",
+      "东兴区",
+      "威远县",
+      "资中县",
+      "隆昌县"
+    ],
+    "乐山市": [
+      "市中区",
+      "沙湾区",
+      "五通桥区",
+      "金口河区",
+      "犍为县",
+      "井研县",
+      "夹江县",
+      "沐川县",
+      "峨边彝族自治县",
+      "马边彝族自治县",
+      "峨眉山市"
+    ],
+    "南充市": [
+      "顺庆区",
+      "高坪区",
+      "嘉陵区",
+      "南部县",
+      "营山县",
+      "蓬安县",
+      "仪陇县",
+      "西充县",
+      "阆中市"
+    ],
+    "眉山市": [
+      "东坡区",
+      "仁寿县",
+      "彭山县",
+      "洪雅县",
+      "丹棱县",
+      "青神县"
+    ],
+    "宜宾市": [
+      "翠屏区",
+      "南溪区",
+      "宜宾县",
+      "江安县",
+      "长宁县",
+      "高县",
+      "珙县",
+      "筠连县",
+      "兴文县",
+      "屏山县"
+    ],
+    "广安市": [
+      "广安区",
+      "前锋区",
+      "岳池县",
+      "武胜县",
+      "邻水县",
+      "华蓥市"
+    ],
+    "达州市": [
+      "通川区",
+      "达川区",
+      "宣汉县",
+      "开江县",
+      "大竹县",
+      "渠县",
+      "万源市"
+    ],
+    "雅安市": [
+      "雨城区",
+      "名山区",
+      "荥经县",
+      "汉源县",
+      "石棉县",
+      "天全县",
+      "芦山县",
+      "宝兴县"
+    ],
+    "巴中市": [
+      "巴州区",
+      "恩阳区",
+      "通江县",
+      "南江县",
+      "平昌县"
+    ],
+    "资阳市": [
+      "雁江区",
+      "安岳县",
+      "乐至县",
+      "简阳市"
+    ],
+    "阿坝藏族羌族自治州": [
+      "汶川县",
+      "理县",
+      "茂县",
+      "松潘县",
+      "九寨沟县",
+      "金川县",
+      "小金县",
+      "黑水县",
+      "马尔康县",
+      "壤塘县",
+      "阿坝县",
+      "若尔盖县",
+      "红原县"
+    ],
+    "甘孜藏族自治州": [
+      "康定县",
+      "泸定县",
+      "丹巴县",
+      "九龙县",
+      "雅江县",
+      "道孚县",
+      "炉霍县",
+      "甘孜县",
+      "新龙县",
+      "德格县",
+      "白玉县",
+      "石渠县",
+      "色达县",
+      "理塘县",
+      "巴塘县",
+      "乡城县",
+      "稻城县",
+      "得荣县"
+    ],
+    "凉山彝族自治州": [
+      "西昌市",
+      "木里藏族自治县",
+      "盐源县",
+      "德昌县",
+      "会理县",
+      "会东县",
+      "宁南县",
+      "普格县",
+      "布拖县",
+      "金阳县",
+      "昭觉县",
+      "喜德县",
+      "冕宁县",
+      "越西县",
+      "甘洛县",
+      "美姑县",
+      "雷波县"
+    ]
+  },
+  "贵州": {
+    "贵阳市": [
+      "南明区",
+      "云岩区",
+      "花溪区",
+      "乌当区",
+      "白云区",
+      "观山湖区",
+      "开阳县",
+      "息烽县",
+      "修文县",
+      "清镇市"
+    ],
+    "六盘水市": [
+      "钟山区",
+      "六枝特区",
+      "水城县",
+      "盘县"
+    ],
+    "遵义市": [
+      "红花岗区",
+      "汇川区",
+      "遵义县",
+      "桐梓县",
+      "绥阳县",
+      "正安县",
+      "道真仡佬族苗族自治县",
+      "务川仡佬族苗族自治县",
+      "凤冈县",
+      "湄潭县",
+      "余庆县",
+      "习水县",
+      "赤水市",
+      "仁怀市"
+    ],
+    "安顺市": [
+      "西秀区",
+      "平坝县",
+      "普定县",
+      "镇宁布依族苗族自治县",
+      "关岭布依族苗族自治县",
+      "紫云苗族布依族自治县"
+    ],
+    "毕节市": [
+      "七星关区",
+      "大方县",
+      "黔西县",
+      "金沙县",
+      "织金县",
+      "纳雍县",
+      "威宁彝族回族苗族自治县",
+      "赫章县"
+    ],
+    "铜仁市": [
+      "碧江区",
+      "万山区",
+      "江口县",
+      "玉屏侗族自治县",
+      "石阡县",
+      "思南县",
+      "印江土家族苗族自治县",
+      "德江县",
+      "沿河土家族自治县",
+      "松桃苗族自治县"
+    ],
+    "黔西南布依族苗族自治州": [
+      "兴义市",
+      "兴仁县",
+      "普安县",
+      "晴隆县",
+      "贞丰县",
+      "望谟县",
+      "册亨县",
+      "安龙县"
+    ],
+    "黔东南苗族侗族自治州": [
+      "凯里市",
+      "黄平县",
+      "施秉县",
+      "三穗县",
+      "镇远县",
+      "岑巩县",
+      "天柱县",
+      "锦屏县",
+      "剑河县",
+      "台江县",
+      "黎平县",
+      "榕江县",
+      "从江县",
+      "雷山县",
+      "麻江县",
+      "丹寨县"
+    ],
+    "黔南布依族苗族自治州": [
+      "都匀市",
+      "福泉市",
+      "荔波县",
+      "贵定县",
+      "瓮安县",
+      "独山县",
+      "平塘县",
+      "罗甸县",
+      "长顺县",
+      "龙里县",
+      "惠水县",
+      "三都水族自治县"
+    ]
+  },
+  "云南": {
+    "昆明市": [
+      "五华区",
+      "盘龙区",
+      "官渡区",
+      "西山区",
+      "东川区",
+      "呈贡区",
+      "晋宁县",
+      "富民县",
+      "宜良县",
+      "石林彝族自治县",
+      "嵩明县",
+      "禄劝彝族苗族自治县",
+      "寻甸回族彝族自治县",
+      "安宁市"
+    ],
+    "曲靖市": [
+      "麒麟区",
+      "马龙县",
+      "陆良县",
+      "师宗县",
+      "罗平县",
+      "富源县",
+      "会泽县",
+      "沾益县",
+      "宣威市"
+    ],
+    "玉溪市": [
+      "红塔区",
+      "江川县",
+      "澄江县",
+      "通海县",
+      "华宁县",
+      "易门县",
+      "峨山彝族自治县",
+      "新平彝族傣族自治县",
+      "元江哈尼族彝族傣族自治县"
+    ],
+    "保山市": [
+      "隆阳区",
+      "施甸县",
+      "腾冲县",
+      "龙陵县",
+      "昌宁县"
+    ],
+    "昭通市": [
+      "昭阳区",
+      "鲁甸县",
+      "巧家县",
+      "盐津县",
+      "大关县",
+      "永善县",
+      "绥江县",
+      "镇雄县",
+      "彝良县",
+      "威信县",
+      "水富县"
+    ],
+    "丽江市": [
+      "古城区",
+      "玉龙纳西族自治县",
+      "永胜县",
+      "华坪县",
+      "宁蒗彝族自治县"
+    ],
+    "普洱市": [
+      "思茅区",
+      "宁洱哈尼族彝族自治县",
+      "墨江哈尼族自治县",
+      "景东彝族自治县",
+      "景谷傣族彝族自治县",
+      "镇沅彝族哈尼族拉祜族自治县",
+      "江城哈尼族彝族自治县",
+      "孟连傣族拉祜族佤族自治县",
+      "澜沧拉祜族自治县",
+      "西盟佤族自治县"
+    ],
+    "临沧市": [
+      "临翔区",
+      "凤庆县",
+      "云县",
+      "永德县",
+      "镇康县",
+      "双江拉祜族佤族布朗族傣族自治县",
+      "耿马傣族佤族自治县",
+      "沧源佤族自治县"
+    ],
+    "楚雄彝族自治州": [
+      "楚雄市",
+      "双柏县",
+      "牟定县",
+      "南华县",
+      "姚安县",
+      "大姚县",
+      "永仁县",
+      "元谋县",
+      "武定县",
+      "禄丰县"
+    ],
+    "红河哈尼族彝族自治州": [
+      "个旧市",
+      "开远市",
+      "蒙自市",
+      "弥勒市",
+      "屏边苗族自治县",
+      "建水县",
+      "石屏县",
+      "泸西县",
+      "元阳县",
+      "红河县",
+      "金平苗族瑶族傣族自治县",
+      "绿春县",
+      "河口瑶族自治县"
+    ],
+    "文山壮族苗族自治州": [
+      "文山市",
+      "砚山县",
+      "西畴县",
+      "麻栗坡县",
+      "马关县",
+      "丘北县",
+      "广南县",
+      "富宁县"
+    ],
+    "西双版纳傣族自治州": [
+      "景洪市",
+      "勐海县",
+      "勐腊县"
+    ],
+    "大理白族自治州": [
+      "大理市",
+      "漾濞彝族自治县",
+      "祥云县",
+      "宾川县",
+      "弥渡县",
+      "南涧彝族自治县",
+      "巍山彝族回族自治县",
+      "永平县",
+      "云龙县",
+      "洱源县",
+      "剑川县",
+      "鹤庆县"
+    ],
+    "德宏傣族景颇族自治州": [
+      "瑞丽市",
+      "芒市",
+      "梁河县",
+      "盈江县",
+      "陇川县"
+    ],
+    "怒江傈僳族自治州": [
+      "泸水县",
+      "福贡县",
+      "贡山独龙族怒族自治县",
+      "兰坪白族普米族自治县"
+    ],
+    "迪庆藏族自治州": [
+      "香格里拉县",
+      "德钦县",
+      "维西傈僳族自治县"
+    ]
+  },
+  "西藏": {
+    "拉萨市": [
+      "城关区",
+      "林周县",
+      "当雄县",
+      "尼木县",
+      "曲水县",
+      "堆龙德庆县",
+      "达孜县",
+      "墨竹工卡县"
+    ],
+    "昌都地区": [
+      "昌都县",
+      "江达县",
+      "贡觉县",
+      "类乌齐县",
+      "丁青县",
+      "察雅县",
+      "八宿县",
+      "左贡县",
+      "芒康县",
+      "洛隆县",
+      "边坝县"
+    ],
+    "山南地区": [
+      "乃东县",
+      "扎囊县",
+      "贡嘎县",
+      "桑日县",
+      "琼结县",
+      "曲松县",
+      "措美县",
+      "洛扎县",
+      "加查县",
+      "隆子县",
+      "错那县",
+      "浪卡子县"
+    ],
+    "日喀则地区": [
+      "日喀则市",
+      "南木林县",
+      "江孜县",
+      "定日县",
+      "萨迦县",
+      "拉孜县",
+      "昂仁县",
+      "谢通门县",
+      "白朗县",
+      "仁布县",
+      "康马县",
+      "定结县",
+      "仲巴县",
+      "亚东县",
+      "吉隆县",
+      "聂拉木县",
+      "萨嘎县",
+      "岗巴县"
+    ],
+    "那曲地区": [
+      "那曲县",
+      "嘉黎县",
+      "比如县",
+      "聂荣县",
+      "安多县",
+      "申扎县",
+      "索县",
+      "班戈县",
+      "巴青县",
+      "尼玛县",
+      "双湖县"
+    ],
+    "阿里地区": [
+      "普兰县",
+      "札达县",
+      "噶尔县",
+      "日土县",
+      "革吉县",
+      "改则县",
+      "措勤县"
+    ],
+    "林芝地区": [
+      "林芝县",
+      "工布江达县",
+      "米林县",
+      "墨脱县",
+      "波密县",
+      "察隅县",
+      "朗县"
+    ]
+  },
+  "陕西": {
+    "西安市": [
+      "新城区",
+      "碑林区",
+      "莲湖区",
+      "灞桥区",
+      "未央区",
+      "雁塔区",
+      "阎良区",
+      "临潼区",
+      "长安区",
+      "蓝田县",
+      "周至县",
+      "户县",
+      "高陵县"
+    ],
+    "铜川市": [
+      "王益区",
+      "印台区",
+      "耀州区",
+      "宜君县"
+    ],
+    "宝鸡市": [
+      "渭滨区",
+      "金台区",
+      "陈仓区",
+      "凤翔县",
+      "岐山县",
+      "扶风县",
+      "眉县",
+      "陇县",
+      "千阳县",
+      "麟游县",
+      "凤县",
+      "太白县"
+    ],
+    "咸阳市": [
+      "秦都区",
+      "杨陵区",
+      "渭城区",
+      "三原县",
+      "泾阳县",
+      "乾县",
+      "礼泉县",
+      "永寿县",
+      "彬县",
+      "长武县",
+      "旬邑县",
+      "淳化县",
+      "武功县",
+      "兴平市"
+    ],
+    "渭南市": [
+      "临渭区",
+      "华县",
+      "潼关县",
+      "大荔县",
+      "合阳县",
+      "澄城县",
+      "蒲城县",
+      "白水县",
+      "富平县",
+      "韩城市",
+      "华阴市"
+    ],
+    "延安市": [
+      "宝塔区",
+      "延长县",
+      "延川县",
+      "子长县",
+      "安塞县",
+      "志丹县",
+      "吴起县",
+      "甘泉县",
+      "富县",
+      "洛川县",
+      "宜川县",
+      "黄龙县",
+      "黄陵县"
+    ],
+    "汉中市": [
+      "汉台区",
+      "南郑县",
+      "城固县",
+      "洋县",
+      "西乡县",
+      "勉县",
+      "宁强县",
+      "略阳县",
+      "镇巴县",
+      "留坝县",
+      "佛坪县"
+    ],
+    "榆林市": [
+      "榆阳区",
+      "神木县",
+      "府谷县",
+      "横山县",
+      "靖边县",
+      "定边县",
+      "绥德县",
+      "米脂县",
+      "佳县",
+      "吴堡县",
+      "清涧县",
+      "子洲县"
+    ],
+    "安康市": [
+      "汉滨区",
+      "汉阴县",
+      "石泉县",
+      "宁陕县",
+      "紫阳县",
+      "岚皋县",
+      "平利县",
+      "镇坪县",
+      "旬阳县",
+      "白河县"
+    ],
+    "商洛市": [
+      "商州区",
+      "洛南县",
+      "丹凤县",
+      "商南县",
+      "山阳县",
+      "镇安县",
+      "柞水县"
+    ]
+  },
+  "甘肃": {
+    "兰州市": [
+      "城关区",
+      "七里河区",
+      "西固区",
+      "安宁区",
+      "红古区",
+      "永登县",
+      "皋兰县",
+      "榆中县"
+    ],
+    "嘉峪关市": [
+    ],
+    "金昌市": [
+      "金川区",
+      "永昌县"
+    ],
+    "白银市": [
+      "白银区",
+      "平川区",
+      "靖远县",
+      "会宁县",
+      "景泰县"
+    ],
+    "天水市": [
+      "秦州区",
+      "麦积区",
+      "清水县",
+      "秦安县",
+      "甘谷县",
+      "武山县",
+      "张家川回族自治县"
+    ],
+    "武威市": [
+      "凉州区",
+      "民勤县",
+      "古浪县",
+      "天祝藏族自治县"
+    ],
+    "张掖市": [
+      "甘州区",
+      "肃南裕固族自治县",
+      "民乐县",
+      "临泽县",
+      "高台县",
+      "山丹县"
+    ],
+    "平凉市": [
+      "崆峒区",
+      "泾川县",
+      "灵台县",
+      "崇信县",
+      "华亭县",
+      "庄浪县",
+      "静宁县"
+    ],
+    "酒泉市": [
+      "肃州区",
+      "金塔县",
+      "瓜州县",
+      "肃北蒙古族自治县",
+      "阿克塞哈萨克族自治县",
+      "玉门市",
+      "敦煌市"
+    ],
+    "庆阳市": [
+      "西峰区",
+      "庆城县",
+      "环县",
+      "华池县",
+      "合水县",
+      "正宁县",
+      "宁县",
+      "镇原县"
+    ],
+    "定西市": [
+      "安定区",
+      "通渭县",
+      "陇西县",
+      "渭源县",
+      "临洮县",
+      "漳县",
+      "岷县"
+    ],
+    "陇南市": [
+      "武都区",
+      "成县",
+      "文县",
+      "宕昌县",
+      "康县",
+      "西和县",
+      "礼县",
+      "徽县",
+      "两当县"
+    ],
+    "临夏回族自治州": [
+      "临夏市",
+      "临夏县",
+      "康乐县",
+      "永靖县",
+      "广河县",
+      "和政县",
+      "东乡族自治县",
+      "积石山保安族东乡族撒拉族自治县"
+    ],
+    "甘南藏族自治州": [
+      "合作市",
+      "临潭县",
+      "卓尼县",
+      "舟曲县",
+      "迭部县",
+      "玛曲县",
+      "碌曲县",
+      "夏河县"
+    ]
+  },
+  "青海": {
+    "西宁市": [
+      "城东区",
+      "城中区",
+      "城西区",
+      "城北区",
+      "大通回族土族自治县",
+      "湟中县",
+      "湟源县"
+    ],
+    "海东市": [
+      "乐都区",
+      "平安县",
+      "民和回族土族自治县",
+      "互助土族自治县",
+      "化隆回族自治县",
+      "循化撒拉族自治县"
+    ],
+    "海北藏族自治州": [
+      "门源回族自治县",
+      "祁连县",
+      "海晏县",
+      "刚察县"
+    ],
+    "黄南藏族自治州": [
+      "同仁县",
+      "尖扎县",
+      "泽库县",
+      "河南蒙古族自治县"
+    ],
+    "海南藏族自治州": [
+      "共和县",
+      "同德县",
+      "贵德县",
+      "兴海县",
+      "贵南县"
+    ],
+    "果洛藏族自治州": [
+      "玛沁县",
+      "班玛县",
+      "甘德县",
+      "达日县",
+      "久治县",
+      "玛多县"
+    ],
+    "玉树藏族自治州": [
+      "玉树市",
+      "杂多县",
+      "称多县",
+      "治多县",
+      "囊谦县",
+      "曲麻莱县"
+    ],
+    "海西蒙古族藏族自治州": [
+      "格尔木市",
+      "德令哈市",
+      "乌兰县",
+      "都兰县",
+      "天峻县"
+    ]
+  },
+  "宁夏": {
+    "银川市": [
+      "兴庆区",
+      "西夏区",
+      "金凤区",
+      "永宁县",
+      "贺兰县",
+      "灵武市"
+    ],
+    "石嘴山市": [
+      "大武口区",
+      "惠农区",
+      "平罗县"
+    ],
+    "吴忠市": [
+      "利通区",
+      "红寺堡区",
+      "盐池县",
+      "同心县",
+      "青铜峡市"
+    ],
+    "固原市": [
+      "原州区",
+      "西吉县",
+      "隆德县",
+      "泾源县",
+      "彭阳县"
+    ],
+    "中卫市": [
+      "沙坡头区",
+      "中宁县",
+      "海原县"
+    ]
+  },
+  "新疆": {
+    "乌鲁木齐市": [
+      "天山区",
+      "沙依巴克区",
+      "新市区",
+      "水磨沟区",
+      "头屯河区",
+      "达坂城区",
+      "米东区",
+      "乌鲁木齐县"
+    ],
+    "克拉玛依市": [
+      "独山子区",
+      "克拉玛依区",
+      "白碱滩区",
+      "乌尔禾区"
+    ],
+    "吐鲁番地区": [
+      "吐鲁番市",
+      "鄯善县",
+      "托克逊县"
+    ],
+    "哈密地区": [
+      "哈密市",
+      "巴里坤哈萨克自治县",
+      "伊吾县"
+    ],
+    "昌吉回族自治州": [
+      "昌吉市",
+      "阜康市",
+      "呼图壁县",
+      "玛纳斯县",
+      "奇台县",
+      "吉木萨尔县",
+      "木垒哈萨克自治县"
+    ],
+    "博尔塔拉蒙古自治州": [
+      "博乐市",
+      "阿拉山口市",
+      "精河县",
+      "温泉县"
+    ],
+    "巴音郭楞蒙古自治州": [
+      "库尔勒市",
+      "轮台县",
+      "尉犁县",
+      "若羌县",
+      "且末县",
+      "焉耆回族自治县",
+      "和静县",
+      "和硕县",
+      "博湖县"
+    ],
+    "阿克苏地区": [
+      "阿克苏市",
+      "温宿县",
+      "库车县",
+      "沙雅县",
+      "新和县",
+      "拜城县",
+      "乌什县",
+      "阿瓦提县",
+      "柯坪县"
+    ],
+    "克孜勒苏柯尔克孜自治州": [
+      "阿图什市",
+      "阿克陶县",
+      "阿合奇县",
+      "乌恰县"
+    ],
+    "喀什地区": [
+      "喀什市",
+      "疏附县",
+      "疏勒县",
+      "英吉沙县",
+      "泽普县",
+      "莎车县",
+      "叶城县",
+      "麦盖提县",
+      "岳普湖县",
+      "伽师县",
+      "巴楚县",
+      "塔什库尔干塔吉克自治县"
+    ],
+    "和田地区": [
+      "和田市",
+      "和田县",
+      "墨玉县",
+      "皮山县",
+      "洛浦县",
+      "策勒县",
+      "于田县",
+      "民丰县"
+    ],
+    "伊犁哈萨克自治州": [
+      "伊宁市",
+      "奎屯市",
+      "伊宁县",
+      "察布查尔锡伯自治县",
+      "霍城县",
+      "巩留县",
+      "新源县",
+      "昭苏县",
+      "特克斯县",
+      "尼勒克县"
+    ],
+    "塔城地区": [
+      "塔城市",
+      "乌苏市",
+      "额敏县",
+      "沙湾县",
+      "托里县",
+      "裕民县",
+      "和布克赛尔蒙古自治县"
+    ],
+    "阿勒泰地区": [
+      "阿勒泰市",
+      "布尔津县",
+      "富蕴县",
+      "福海县",
+      "哈巴河县",
+      "青河县",
+      "吉木乃县"
+    ],
+    "自治区直辖县级行政区划": [
+      "石河子市",
+      "阿拉尔市",
+      "图木舒克市",
+      "五家渠市"
+    ]
+  }
+}
+;
+                        window.cnHost = 'https://www.tesla.cn/';
+            window.currentLocale = 'en_US';
+            window.isEUOther = false;
+            window.isEmployee = false;
+            window.Drupal = {};
+			window.skipLeadWhenEventOver = true;
+            Drupal.settings = {};
+            Drupal.settings.tesla = {};
+            Drupal.settings.tesla.isProduction = true;
+
+                        window.eventOver = true;
+                    </script>
+        <script type="text/javascript" src="/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="/assets/js/parsley.min.js"></script>
+        <script type="text/javascript" src="/assets/js/words.js"></script>
+        <script type="text/javascript" src="/assets/js/geoip.js"></script>
+        <script type="text/javascript" src="/assets/js/browser_detect.js"></script>
+        <script type="text/javascript" src="/assets/js/countdown.js"></script>
+        <script type="text/javascript" src="/assets/js/locale.js"></script>
+        <script type="text/javascript" src="/assets/js/china_dropdowns.js"></script>
+        <script type="text/javascript" src="/assets/js/scripts.js"></script>
+		<!-- Build v1.0 -->
+    <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"af51bd774d","applicationID":"194553216","transactionName":"Z1JUNkRTDEJVVkBeDl4YdwFCWw1fGw==","queueTime":0,"applicationTime":31,"atts":"SxVXQAxJH0w=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

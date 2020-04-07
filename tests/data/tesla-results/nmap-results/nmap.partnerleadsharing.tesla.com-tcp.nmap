@@ -1,0 +1,16 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.partnerleadsharing.tesla.com-tcp partnerleadsharing.tesla.com
+Nmap scan report for partnerleadsharing.tesla.com (199.66.9.47)
+Host is up (0.057s latency).
+
+PORT    STATE SERVICE        VERSION
+443/tcp open  ssl/http-proxy Varnish http accelerator
+|_http-server-header: Varnish
+|_http-title: 403 Not allowed
+| ssl-cert: Subject: commonName=*.tesla.com/organizationName=Tesla, Inc./stateOrProvinceName=California/countryName=US
+| Subject Alternative Name: DNS:*.tesla.com, DNS:tesla.com
+| Not valid before: 2020-02-07T00:00:00
+|_Not valid after:  2022-04-08T12:00:00
+|_ssl-date: TLS randomness does not represent time
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:35 2020 -- 1 IP address (1 host up) scanned in 15.60 seconds

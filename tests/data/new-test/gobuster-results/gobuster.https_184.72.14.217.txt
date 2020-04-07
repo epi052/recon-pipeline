@@ -1,0 +1,7 @@
+https://184.72.14.217/css (Status: 301)
+https://184.72.14.217/dist (Status: 301)
+https://184.72.14.217/fonts (Status: 301)
+https://184.72.14.217/homepage (Status: 301)
+https://184.72.14.217/images (Status: 301)
+https://184.72.14.217/js (Status: 301)
+https://184.72.14.217/robots.txt (Status: 200)

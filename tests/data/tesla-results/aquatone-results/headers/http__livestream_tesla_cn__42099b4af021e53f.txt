@@ -1,0 +1,14 @@
+200 OK
+Strict-Transport-Security: max-age=15768000
+Etag: "5b675ff6b80376940cec0182f9952e4a:1552520432"
+Last-Modified: Wed, 13 Mar 2019 23:40:32 GMT
+Server: Apache
+Accept-Ranges: bytes
+Content-Type: text/html
+X-Akamai-Transformed: 9 - 0 pmb=mRUM,3
+Expires: Mon, 06 Apr 2020 14:54:55 GMT
+Date: Mon, 06 Apr 2020 13:54:55 GMT
+Vary: Accept-Encoding
+Cache-Control: max-age=3600
+Server-Timing: cdn-cache; desc=HIT edge; dur=1
+Retry-Count: 0

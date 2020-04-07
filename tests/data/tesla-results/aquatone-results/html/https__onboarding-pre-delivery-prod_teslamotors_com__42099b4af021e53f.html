@@ -1,0 +1,64 @@
+<!doctype html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"/><meta name="format-detection" content="telephone=no"/><script>const storageKeys = [
+        "vin",
+        "authToken",
+        "deviceLanguage",
+        "deviceCountry"
+      ];
+      const storage = {};
+      storageKeys.forEach(item => {
+        const value = localStorage.getItem(item);
+        if (value) {
+          storage[item] = value;
+        } else {
+          alert("Please add value for " + item + " on local storage");
+        }
+      });
+      function loadScriptDynamically(item) {
+        var scriptElement=document.createElement('script');
+        scriptElement.type = 'text/javascript';
+        scriptElement.src = item.src;
+        document.head.appendChild(scriptElement);
+      }
+
+      // List of libraries that is not needed on load
+      function loadHelperScripts() {
+        const sources = [
+        {src: 'https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.7.29/libphonenumber-js.min.js'},
+        { src: 'https://browser.sentry-cdn.com/5.9.1/bundle.min.js' },
+        ];
+        sources.map(item => loadScriptDynamically(item))
+      }
+      window.bundleURL = `${window.location.origin}/` // don't forget the trailing slash
+      document.addEventListener("DOMContentLoaded", () => {
+        const { deviceCountry, deviceLanguage } = storage;
+        const initialArguments = {
+          env: "Dev", // For environment specific logic for the app
+          teslaAppVersion: "3.9.1",
+          deviceLocale: deviceLanguage + "_" + deviceCountry,
+          divId: "root", // Id of the div where the app will be injected
+          hostURL: "proxysvc-referral-stage.teslamotors.com",
+          // hostURL: "localhost:3002",
+          bundleURL: window.origin,
+          route: "/roadside-assistance",
+          isOwner: true,
+          showMobileService: true,
+          user: {"country":"US"},
+          ...storage
+        };
+        loadHelperScripts();
+        window.__TESLA_MOBILE_APP_ACCOUNT__(initialArguments);
+      });</script><script>(function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          "gtm.start": new Date().getTime(),
+          event: "gtm.js"
+        });
+        let f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-KMG5DM");</script><title>%REACT_APP_DOC_TITLE%</title><link href="/static/css/main.72deb3b4.chunk.css" rel="stylesheet">
+  <script>!function(){function o(n,i){if(n&&i)for(var r in i)i.hasOwnProperty(r)&&(void 0===n[r]?n[r]=i[r]:n[r].constructor===Object&&i[r].constructor===Object?o(n[r],i[r]):n[r]=i[r])}try{var n=decodeURIComponent("");if(n.length>0&&window.JSON&&"function"==typeof window.JSON.parse){var i=JSON.parse(n);void 0!==window.BOOMR_config?o(window.BOOMR_config,i):window.BOOMR_config=i}}catch(r){window.console&&"function"==typeof window.console.error&&console.error("mPulse: Could not parse configuration",r)}}();</script>
+  <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="65URP-FBPU4-LGHQX-7B4FR-PRWYR",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,o,_,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",_=document.getElementsByTagName("script")[0],_.parentNode.insertBefore(r,_);try{o=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",o=r.contentWindow.document}o.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"65URP-FBPU4-LGHQX-7B4FR-PRWYR",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},o.write("<bo"+'dy onload="document._l();">'),o.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="eyaboaaq4b6sajqacqcaaiybszpiwnic-f-70d0d7569-clienttons-s.akamaihd.net",i={"ak.v":"26","ak.cp":"891169","ak.ai":parseInt("569634",10),"ak.ol":"0","ak.cr":29,"ak.ipv":6,"ak.proto":"","ak.rid":"18843948","ak.r":20224,"ak.a2":e,"ak.m":"dscx","ak.n":"essl","ak.bpcip":"92.158.229.0","ak.cport":36704,"ak.gh":"63.239.233.31","ak.quicv":"","ak.tlsv":"tls1.2","ak.0rtt":"","ak.csrc":"-","ak.acc":"reno","ak.t":"1586181378","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==D4zh02fC3XRo1GqYhloTBh1+va8Bppd4OCCs2anCOBdMf3ftXBk+ETJ5MGTwsoi8kmgq8uwIB/qGkJRzyYbAuHcV785J//dAM5+aMo4B6D93FeMFkgHPrJUqck6fykKhZMGIjUU70IJi4zVp/n1+D8N9gL4TJrBfB8fbTAmR1apvYgC7C2+R2W8YzgU+53vM5OhvkWBo9Uobw/n24Kru+tWjRTjdqdVv7ik/zOI0ajPMuoDDp4EE6szQOE0BeEaTAseszk8VY8Wv3Tqtv9AYITKWd4c8Qjhtx5pyVxbjCYX9uFaOegt0W+56vnqvsMTA7nfDmzkjQjPLpdglVKAHzIxuOZckOAGAhzJCmNm5JXn/ZCL0ZOl313+i9nYRkw1yzDXTdsgTTXR06x19OwvwjEUdJUs3JjRzFHxkRPE3zDI="};if(""!==t)i["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))i["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(i)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:i,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head><body class="default"><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KMG5DM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="root"><div style="display:flex;justify-content:center;align-items:center;height:100vh"><p>Getting application detail...</p></div></div><style>.default{background:#000;background-image:url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDEuMjYgMjk5Ljk5Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2NjYzt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPnRlczwvdGl0bGU+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMTUwLjY1LDMwMCwxOTIuNzksNjNjNDAuMTgsMCw1Mi44NCw0LjQxLDU0LjY3LDIyLjM4LDAsMCwyNy0xMCw0MC41NS0zMC40NUMyMzUsMzAuMzQsMTgxLjY3LDI5LjIzLDE4MS42NywyOS4yM0wxNTAuNTcsNjcuMWguMDdsLTMxLjEtMzcuODdTNjYuMjUsMzAuMywxMy4yMiw1NC44OEMyNi44LDc1LjI5LDUzLjc3LDg1LjM0LDUzLjc3LDg1LjM0YzEuODMtMTgsMTQuNS0yMi4zOCw1NC40LTIyLjQyWiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE1MC42MywxOC4yNmM0Mi44Ny0uMzMsOTIsNi42MywxNDIuMTksMjguNTMsNi43Mi0xMi4wOCw4LjQ0LTE3LjQyLDguNDQtMTcuNDJBNDEyLjQ2LDQxMi40NiwwLDAsMCwxNTAuNjMsMGgwQTQxMi40NSw0MTIuNDUsMCwwLDAsMCwyOS4zNiwxNDUuOTIsMTQ1LjkyLDAsMCwwLDguNDMsNDYuNzhDNTguNjcsMjQuODksMTA3Ljc1LDE3LjkzLDE1MC42MywxOC4yNloiLz48L3N2Zz4=);background-size:100px;background-repeat:no-repeat;background-position-x:center;background-position-y:200px}</style><script>!function(i){function e(e){for(var t,r,n=e[0],o=e[1],a=e[2],c=0,u=[];c<n.length;c++)r=n[c],Object.prototype.hasOwnProperty.call(s,r)&&s[r]&&u.push(s[r][0]),s[r]=0;for(t in o)Object.prototype.hasOwnProperty.call(o,t)&&(i[t]=o[t]);for(b&&b(e);u.length;)u.shift()();return l.push.apply(l,a||[]),f()}function f(){for(var e,t=0;t<l.length;t++){for(var r=l[t],n=!0,o=1;o<r.length;o++){var a=r[o];0!==s[a]&&(n=!1)}n&&(l.splice(t--,1),e=p(p.s=r[0]))}return e}var r={},d={2:0},s={2:0},l=[];function p(e){if(r[e])return r[e].exports;var t=r[e]={i:e,l:!1,exports:{}};return i[e].call(t.exports,t,t.exports,p),t.l=!0,t.exports}p.e=function(l){var e=[];d[l]?e.push(d[l]):0!==d[l]&&{0:1,4:1,5:1,6:1,7:1,8:1,9:1,10:1,11:1,12:1,16:1,17:1,18:1,19:1,20:1}[l]&&e.push(d[l]=new Promise(function(e,n){for(var t="static/css/"+({}[l]||l)+"."+{0:"88a9ba18",4:"a3d530c6",5:"ed11a06b",6:"9bcbf074",7:"95039c23",8:"4396d26e",9:"a6edbe59",10:"9b182051",11:"9e81167a",12:"2fc987a8",13:"31d6cfe0",14:"31d6cfe0",15:"31d6cfe0",16:"c894ffdb",17:"88b764b2",18:"b0506f58",19:"9e81167a",20:"9e81167a",21:"31d6cfe0"}[l]+".chunk.css",o=p.p+t,r=document.getElementsByTagName("link"),a=0;a<r.length;a++){var c=(i=r[a]).getAttribute("data-href")||i.getAttribute("href");if("stylesheet"===i.rel&&(c===t||c===o))return e()}var u=document.getElementsByTagName("style");for(a=0;a<u.length;a++){var i;if((c=(i=u[a]).getAttribute("data-href"))===t||c===o)return e()}var f=document.createElement("link");f.rel="stylesheet",f.type="text/css",f.onload=e,f.onerror=function(e){var t=e&&e.target&&e.target.src||o,r=new Error("Loading CSS chunk "+l+" failed.\n("+t+")");r.code="CSS_CHUNK_LOAD_FAILED",r.request=t,delete d[l],f.parentNode.removeChild(f),n(r)},f.href=o,document.getElementsByTagName("head")[0].appendChild(f)}).then(function(){d[l]=0}));var r=s[l];if(0!==r)if(r)e.push(r[2]);else{var t=new Promise(function(e,t){r=s[l]=[e,t]});e.push(r[2]=t);var n,o=document.createElement("script");o.charset="utf-8",o.timeout=120,p.nc&&o.setAttribute("nonce",p.nc),o.src=p.p+"static/js/"+({}[l]||l)+"."+{0:"209f988c",4:"883bd22c",5:"fc3ed7a0",6:"8aaba068",7:"e14cc253",8:"2d1e8093",9:"650a6dc1",10:"aa974c98",11:"cb5d1b6f",12:"604ca48c",13:"78ca2dff",14:"e1284784",15:"31e3f416",16:"8ee13200",17:"46b8f2e0",18:"67ed1b4e",19:"1720e435",20:"6d0f9f53",21:"59db2044"}[l]+".chunk.js";var a=new Error;n=function(e){o.onerror=o.onload=null,clearTimeout(c);var t=s[l];if(0!==t){if(t){var r=e&&("load"===e.type?"missing":e.type),n=e&&e.target&&e.target.src;a.message="Loading chunk "+l+" failed.\n("+r+": "+n+")",a.name="ChunkLoadError",a.type=r,a.request=n,t[1](a)}s[l]=void 0}};var c=setTimeout(function(){n({type:"timeout",target:o})},12e4);o.onerror=o.onload=n,document.head.appendChild(o)}return Promise.all(e)},p.m=i,p.c=r,p.d=function(e,t,r){p.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},p.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},p.t=function(t,e){if(1&e&&(t=p(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(p.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var n in t)p.d(r,n,function(e){return t[e]}.bind(null,n));return r},p.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return p.d(t,"a",t),t},p.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},p.p="/",p.oe=function(e){throw console.error(e),e};var t=this["webpackJsonptesla-pre-delivery-onboarding"]=this["webpackJsonptesla-pre-delivery-onboarding"]||[],n=t.push.bind(t);t.push=e,t=t.slice();for(var o=0;o<t.length;o++)e(t[o]);var b=n;f()}([])</script><script src="/static/js/3.b53d2ed3.chunk.js"></script><script src="/static/js/main.5e47cbc9.chunk.js"></script></body></html>

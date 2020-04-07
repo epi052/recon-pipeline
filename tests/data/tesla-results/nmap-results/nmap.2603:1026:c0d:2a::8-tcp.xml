@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:15:54 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2603:1026:c0d:2a::8-tcp 2603:1026:c0d:2a::8 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2603:1026:c0d:2a::8-tcp 2603:1026:c0d:2a::8" start="1586182554" startstr="Mon Apr  6 09:15:54 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182554" endtime="1586182564"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="2603:1026:c0d:2a::8" addrtype="ipv6"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="10.0" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:iis:10.0</cpe><cpe>cpe:/o:microsoft:windows</cpe></service><script id="http-server-header" output="&#xa;  Microsoft-HTTPAPI/2.0&#xa;  Microsoft-IIS/10.0"><elem>Microsoft-HTTPAPI/2.0</elem>
+<elem>Microsoft-IIS/10.0</elem>
+</script><script id="http-title" output="Bad Request"><elem key="title">Bad Request</elem>
+</script></port>
+</ports>
+<times srtt="125908" rttvar="125908" to="629540"/>
+</host>
+<runstats><finished time="1586182564" timestr="Mon Apr  6 09:16:04 2020" elapsed="9.68" summary="Nmap done at Mon Apr  6 09:16:04 2020; 1 IP address (1 host up) scanned in 9.68 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

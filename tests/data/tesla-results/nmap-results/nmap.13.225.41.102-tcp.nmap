@@ -1,0 +1,11 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:46 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.13.225.41.102-tcp 13.225.41.102
+Nmap scan report for 13.225.41.102
+Host is up (0.013s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Amazon CloudFront httpd
+|_http-server-header: CloudFront
+|_http-title: ERROR: The request could not be satisfied
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:52 2020 -- 1 IP address (1 host up) scanned in 6.77 seconds

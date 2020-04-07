@@ -1,0 +1,7 @@
+http://shop.uk.teslamotors.com/.well-known/apple-developer-merchantid-domain-association (Status: 200)
+http://shop.uk.teslamotors.com/admin (Status: 302)
+http://shop.uk.teslamotors.com/admin.php (Status: 302)
+http://shop.uk.teslamotors.com/admin.cgi (Status: 302)
+http://shop.uk.teslamotors.com/admin.pl (Status: 302)
+http://shop.uk.teslamotors.com/assets (Status: 301)
+http://shop.uk.teslamotors.com/crossdomain.xml (Status: 200)

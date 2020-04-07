@@ -1,0 +1,7 @@
+
+Host,Category,App,Version
+https://209.10.208.39,Web frameworks,Ruby on Rails,
+https://209.10.208.39,Programming languages,Ruby,
+https://209.10.208.39,"Web servers,Reverse proxies",Nginx,1.8.1
+https://209.10.208.39,Web servers,Phusion Passenger,5.0.27
+https://209.10.208.39,CMS,NivCMS,

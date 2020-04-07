@@ -1,0 +1,6 @@
+http://52.8.166.143/
+https://52.8.166.143/
+https://184.72.14.217/
+http://184.72.14.217/
+https://staging.bitdiscovery.com/
+http://staging.bitdiscovery.com/

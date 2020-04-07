@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- Pi-hole: A black hole for Internet advertisements
+*  (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*  Network-wide ad blocking via your own hardware.
+*
+*  This file is copyright under the latest version of the EUPL. -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>  <meta name="robots" content="noindex,nofollow"/>
+  <meta http-equiv="x-dns-prefetch-control" content="off">
+  <link rel="shortcut icon" href="//pi.hole/admin/img/favicon.png" type="image/x-icon"/>
+  <link rel="stylesheet" href="//pi.hole/pihole/blockingpage.css" type="text/css"/>
+  <title>● vitals.dev.teslamotors.com</title>
+  <script src="//pi.hole/admin/scripts/vendor/jquery.min.js"></script>
+  <script>
+    window.onload = function () {
+          }
+  </script>
+</head>
+<body id="blockpage"><div id="bpWrapper">
+<header>
+  <h1 id="bpTitle">
+    <a class="title" href="/"></a>
+  </h1>
+  <div class="spc"></div>
+
+  <input id="bpAboutToggle" type="checkbox"/>
+  <div id="bpAbout">
+    <div class="aboutPH">
+      <div class="aboutImg"/></div>
+      <p>Open Source Ad Blocker
+        <small>Designed for Raspberry Pi</small>
+      </p>
+    </div>
+    <div class="aboutLink">
+      <a class="linkPH" href="https://github.com/pi-hole/pi-hole/wiki/What-is-Pi-hole%3F-A-simple-explanation"></a>
+          </div>
+  </div>
+
+  <div id="bpAlt">
+    <label class="altBtn" for="bpAboutToggle"></label>
+  </div>
+</header>
+
+<main>
+  <div id="bpOutput" class="hidden"><a href='http://unknown'>unknown</a></div>
+  <div id="bpBlock">
+    <p class="blockMsg">vitals.dev.teslamotors.com</p>
+  </div>
+      <div id="bpFlag">
+        <p class="flagMsg noblock"></p>
+    </div>
+    <div id="bpHelpTxt"><span/></div>
+  <div id="bpButtons" class="buttons">
+    <a id="bpBack" onclick="javascript:history.back()" href="about:home"></a>
+      </div>
+  <input id="bpMoreToggle" type="checkbox">
+  <div id="bpMoreInfo">
+    <span id="bpFoundIn"><span>0</span>9</span>
+    <pre id='bpQueryOutput'></pre>
+
+    <form id="bpWLButtons" class="buttons">
+      <input id="bpWLDomain" type="text" value="vitals.dev.teslamotors.com" disabled/>
+      <input id="bpWLPassword" type="password" placeholder="Javascript disabled" disabled/><button id="bpWhitelist" type="button" disabled></button>
+    </form>
+  </div>
+</main>
+
+<footer><span>Monday 2:54 PM, April 06th.</span> Pi-hole v4.3.2-0-ge41c4b5 (blackhole/192.168.1.1)</footer>
+</div>
+
+<script>
+  function add() {
+    $("#bpOutput").removeClass("hidden error exception");
+    $("#bpOutput").addClass("add");
+    var domain = "vitals.dev.teslamotors.com";
+    var pw = $("#bpWLPassword");
+    if(domain.length === 0) {
+      return;
+    }
+    $.ajax({
+      url: "/admin/scripts/pi-hole/php/add.php",
+      method: "post",
+      data: {"domain":domain, "list":"white", "pw":pw.val()},
+      success: function(response) {
+        if(response.indexOf("Pi-hole blocking") !== -1) {
+          setTimeout(function(){window.location.reload(1);}, 10000);
+          $("#bpOutput").removeClass("add");
+          $("#bpOutput").addClass("success");
+          $("#bpOutput").html("");
+        } else {
+          $("#bpOutput").removeClass("add");
+          $("#bpOutput").addClass("error");
+          $("#bpOutput").html(""+response+"");
+        }
+      },
+      error: function(jqXHR, exception) {
+        $("#bpOutput").removeClass("add");
+        $("#bpOutput").addClass("exception");
+        $("#bpOutput").html("");
+      }
+    });
+  }
+  </script>
+</body></html>

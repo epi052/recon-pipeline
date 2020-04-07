@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:14:12 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.209.133.79.101-tcp 209.133.79.101
+Host: 209.133.79.101 ()	Status: Up
+Host: 209.133.79.101 ()	Ports: 443/open/tcp//ssl|http//Splunkd httpd/
+# Nmap done at Mon Apr  6 09:14:27 2020 -- 1 IP address (1 host up) scanned in 15.24 seconds

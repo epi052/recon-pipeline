@@ -1,0 +1,23 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:33 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80,53,22 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.vitals.dev.teslamotors.com-tcp vitals.dev.teslamotors.com
+Nmap scan report for vitals.dev.teslamotors.com (192.168.1.1)
+Host is up (0.00053s latency).
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.9p1 Raspbian 10 (protocol 2.0)
+| ssh-hostkey:
+|   2048 5f:96:a7:11:58:7d:83:3f:31:2a:3e:2a:c2:fe:49:3b (RSA)
+|   256 2f:76:6b:fc:d1:9c:12:57:bc:f3:4c:1a:c2:4f:da:ad (ECDSA)
+|_  256 ba:c4:07:49:7d:8a:eb:72:4e:df:78:ad:8f:d5:89:1a (ED25519)
+53/tcp open  domain  dnsmasq pi-hole-2.80
+| dns-nsid:
+|   NSID: res111.mia.rrdns.pch.net (7265733131312e6d69612e7272646e732e7063682e6e6574)
+|   id.server: res111.mia.rrdns.pch.net
+|_  bind.version: dnsmasq-pi-hole-2.80
+80/tcp open  http    lighttpd 1.4.53
+|_http-server-header: lighttpd/1.4.53
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+|_http-trane-info: Problem with XML parsing of /evox/about
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:48 2020 -- 1 IP address (1 host up) scanned in 15.05 seconds

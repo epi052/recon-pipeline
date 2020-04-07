@@ -1,0 +1,8 @@
+https://209.11.133.37/.hta (Status: 403)
+https://209.11.133.37/.htaccess (Status: 403)
+https://209.11.133.37/.htpasswd (Status: 403)
+https://209.11.133.37/cgi-bin (Status: 301)
+https://209.11.133.37/cgi-bin/ (Status: 403)
+https://209.11.133.37/server-status (Status: 403)
+https://209.11.133.37/web.config (Status: 403)
+https://209.11.133.37/xmlrpc.php (Status: 403)

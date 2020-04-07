@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:35 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,8080 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.104.22.11.42-tcp 104.22.11.42
+Host: 104.22.11.42 ()	Status: Up
+Host: 104.22.11.42 ()	Ports: 8080/open/tcp//http-proxy//cloudflare/, 8443/open/tcp//ssl|https-alt//cloudflare/
+# Nmap done at Mon Apr  6 09:15:20 2020 -- 1 IP address (1 host up) scanned in 104.79 seconds

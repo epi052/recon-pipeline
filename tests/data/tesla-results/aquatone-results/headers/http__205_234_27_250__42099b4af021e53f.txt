@@ -1,0 +1,6 @@
+200 OK
+Date: Mon, 06 Apr 2020 13:54:33 GMT
+Server: Apache/2.2.15 (Oracle) DAV/2
+Retry-Count: 0
+Content-Type: text/html; charset=UTF-8
+Set-Cookie: BIGipServerupload-pool=!ynduzlhP10c5firhYXb12dEjrs2ohaW6dmsnQqkaGiYQ4MIHpSEBP3q3X5XUxgkpQe2YXy18nlXhU+U=; path=/

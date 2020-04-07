@@ -1,0 +1,119 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:35 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,8080 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.104.22.11.42-tcp 104.22.11.42
+Nmap scan report for 104.22.11.42
+Host is up (0.014s latency).
+
+PORT     STATE SERVICE       VERSION
+8080/tcp open  http-proxy    cloudflare
+| fingerprint-strings:
+|   FourOhFourRequest:
+|     HTTP/1.1 400 Bad Request
+|     Date: Mon, 06 Apr 2020 14:13:41 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     Server: cloudflare
+|     CF-RAY: 57fc1c68fe599b06-DFW
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   GetRequest:
+|     HTTP/1.1 400 Bad Request
+|     Date: Mon, 06 Apr 2020 14:13:41 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     Server: cloudflare
+|     CF-RAY: 57fc1c684b02eccb-DFW
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   HTTPOptions:
+|     HTTP/1.1 400 Bad Request
+|     Date: Mon, 06 Apr 2020 14:13:41 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     Server: cloudflare
+|     CF-RAY: 57fc1c688cfeec9e-DFW
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   RTSPRequest:
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|     </html>
+|   Socks4, Socks5:
+|     HTTP/1.1 400 Bad Request
+|     Server: cloudflare
+|     Date: Mon, 06 Apr 2020 14:13:41 GMT
+|     Content-Type: text/html
+|     Content-Length: 155
+|     Connection: close
+|     CF-RAY: -
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body>
+|     <center><h1>400 Bad Request</h1></center>
+|     <hr><center>cloudflare</center>
+|     </body>
+|_    </html>
+|_http-server-header: cloudflare
+|_http-title: Site doesn't have a title (text/plain; charset=UTF-8).
+8443/tcp open  ssl/https-alt cloudflare
+|_http-server-header: cloudflare
+|_http-title: 400 The plain HTTP request was sent to HTTPS port
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8080-TCP:V=7.80%I=7%D=4/6%Time=5E8B3915%P=x86_64-pc-linux-gnu%r(Get
+SF:Request,14F,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nDate:\x20Mon,\x2006\
+SF:x20Apr\x202020\x2014:13:41\x20GMT\r\nContent-Type:\x20text/html\r\nCont
+SF:ent-Length:\x20155\r\nConnection:\x20close\r\nServer:\x20cloudflare\r\n
+SF:CF-RAY:\x2057fc1c684b02eccb-DFW\r\n\r\n<html>\r\n<head><title>400\x20Ba
+SF:d\x20Request</title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x20Requ
+SF:est</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</ht
+SF:ml>\r\n")%r(HTTPOptions,14F,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nDate
+SF::\x20Mon,\x2006\x20Apr\x202020\x2014:13:41\x20GMT\r\nContent-Type:\x20t
+SF:ext/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r\nServer:\x
+SF:20cloudflare\r\nCF-RAY:\x2057fc1c688cfeec9e-DFW\r\n\r\n<html>\r\n<head>
+SF:<title>400\x20Bad\x20Request</title></head>\r\n<body>\r\n<center><h1>40
+SF:0\x20Bad\x20Request</h1></center>\r\n<hr><center>cloudflare</center>\r\
+SF:n</body>\r\n</html>\r\n")%r(RTSPRequest,9B,"<html>\r\n<head><title>400\
+SF:x20Bad\x20Request</title></head>\r\n<body>\r\n<center><h1>400\x20Bad\x2
+SF:0Request</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\
+SF:n</html>\r\n")%r(FourOhFourRequest,14F,"HTTP/1\.1\x20400\x20Bad\x20Requ
+SF:est\r\nDate:\x20Mon,\x2006\x20Apr\x202020\x2014:13:41\x20GMT\r\nContent
+SF:-Type:\x20text/html\r\nContent-Length:\x20155\r\nConnection:\x20close\r
+SF:\nServer:\x20cloudflare\r\nCF-RAY:\x2057fc1c68fe599b06-DFW\r\n\r\n<html
+SF:>\r\n<head><title>400\x20Bad\x20Request</title></head>\r\n<body>\r\n<ce
+SF:nter><h1>400\x20Bad\x20Request</h1></center>\r\n<hr><center>cloudflare<
+SF:/center>\r\n</body>\r\n</html>\r\n")%r(Socks5,13C,"HTTP/1\.1\x20400\x20
+SF:Bad\x20Request\r\nServer:\x20cloudflare\r\nDate:\x20Mon,\x2006\x20Apr\x
+SF:202020\x2014:13:41\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Leng
+SF:th:\x20155\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n<html>\r\n<he
+SF:ad><title>400\x20Bad\x20Request</title></head>\r\n<body>\r\n<center><h1
+SF:>400\x20Bad\x20Request</h1></center>\r\n<hr><center>cloudflare</center>
+SF:\r\n</body>\r\n</html>\r\n")%r(Socks4,13C,"HTTP/1\.1\x20400\x20Bad\x20R
+SF:equest\r\nServer:\x20cloudflare\r\nDate:\x20Mon,\x2006\x20Apr\x202020\x
+SF:2014:13:41\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x201
+SF:55\r\nConnection:\x20close\r\nCF-RAY:\x20-\r\n\r\n<html>\r\n<head><titl
+SF:e>400\x20Bad\x20Request</title></head>\r\n<body>\r\n<center><h1>400\x20
+SF:Bad\x20Request</h1></center>\r\n<hr><center>cloudflare</center>\r\n</bo
+SF:dy>\r\n</html>\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:15:20 2020 -- 1 IP address (1 host up) scanned in 104.79 seconds

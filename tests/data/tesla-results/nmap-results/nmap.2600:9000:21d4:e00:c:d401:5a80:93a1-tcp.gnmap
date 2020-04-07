@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:53 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:9000:21d4:e00:c:d401:5a80:93a1-tcp 2600:9000:21d4:e00:c:d401:5a80:93a1
+Host: 2600:9000:21d4:e00:c:d401:5a80:93a1 ()	Status: Up
+Host: 2600:9000:21d4:e00:c:d401:5a80:93a1 ()	Ports: 80/open/tcp//http//Amazon CloudFront httpd/
+# Nmap done at Mon Apr  6 09:15:59 2020 -- 1 IP address (1 host up) scanned in 6.69 seconds

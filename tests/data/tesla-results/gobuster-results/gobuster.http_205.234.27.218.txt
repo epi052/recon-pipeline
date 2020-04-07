@@ -1,0 +1,5 @@
+http://205.234.27.218/ADMIN (Status: 301)
+http://205.234.27.218/Admin (Status: 301)
+http://205.234.27.218/admin (Status: 301)
+http://205.234.27.218/robots.txt (Status: 200)
+http://205.234.27.218/sso (Status: 301)

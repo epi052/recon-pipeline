@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:13:27 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.teslacdpna0.tesla.com-tcp teslacdpna0.tesla.com -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.teslacdpna0.tesla.com-tcp teslacdpna0.tesla.com" start="1586182407" startstr="Mon Apr  6 09:13:27 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182407" endtime="1586182422"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.42.180.142" addrtype="ipv4"/>
+<hostnames>
+<hostname name="teslacdpna0.tesla.com" type="user"/>
+</hostnames>
+<ports><port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="8.5" ostype="Windows" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:microsoft:iis:8.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service><script id="http-methods" output="&#xa;  Potentially risky methods: TRACE"><table key="Potentially risky methods">
+<elem>TRACE</elem>
+</table>
+</script><script id="http-server-header" output="Microsoft-IIS/8.5"><elem>Microsoft-IIS/8.5</elem>
+</script><script id="http-title" output="403 - Forbidden: Access is denied."><elem key="title">403 - Forbidden: Access is denied.</elem>
+</script><script id="ssl-cert" output="Subject: commonName=teslacdpna0.tesla.com&#xa;Subject Alternative Name: DNS:teslacdpna0.tesla.com&#xa;Not valid before: 2018-08-13T23:20:46&#xa;Not valid after:  2020-08-12T23:20:46"><table key="subject">
+<elem key="commonName">teslacdpna0.tesla.com</elem>
+</table>
+<table key="issuer">
+<elem key="countryName">US</elem>
+<elem key="organizationalUnitName">PKI</elem>
+<elem key="organizationName">Tesla, Inc.</elem>
+<elem key="commonName">Corporate NA Device Issuing CA 01</elem>
+</table>
+<table key="pubkey">
+<elem key="exponent">userdata: 0x5563bf4fe3e8</elem>
+<elem key="modulus">userdata: 0x5563bf4fe428</elem>
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">1.3.6.1.4.1.311.21.7</elem>
+<elem key="error">true</elem>
+</table>
+<table>
+<elem key="value">TLS Web Server Authentication</elem>
+<elem key="name">X509v3 Extended Key Usage</elem>
+</table>
+<table>
+<elem key="value">Digital Signature, Key Encipherment</elem>
+<elem key="name">X509v3 Key Usage</elem>
+</table>
+<table>
+<elem key="value">Policy: 1.3.6.1.4.1.49279.2.1.2&#xa;  CPS: http://pki.tesla.com/policies/basic.html&#xa;</elem>
+<elem key="name">X509v3 Certificate Policies</elem>
+</table>
+<table>
+<elem key="name">1.3.6.1.4.1.311.21.10</elem>
+<elem key="error">true</elem>
+</table>
+<table>
+<elem key="value">2E:80:62:9B:3F:4B:C8:26:AE:C7:DE:17:2A:32:9A:60:EC:6B:A8:33</elem>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+</table>
+<table>
+<elem key="value">DNS:teslacdpna0.tesla.com</elem>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+</table>
+<table>
+<elem key="value">keyid:3E:8B:5E:E3:BF:6D:02:6D:69:F3:00:5C:CE:08:BE:60:C2:45:F3:EE&#xa;</elem>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+</table>
+<table>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://pki.tesla.com/pki/Corporate%20NA%20Device%20Issuing%20CA%2001.crl&#xa;</elem>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+</table>
+<table>
+<elem key="value">CA Issuers - URI:http://pki.tesla.com/pki/sjc04p1adcic02.teslamotors.com_Corporate%20NA%20Device%20Issuing%20CA%2001.crt&#xa;OCSP - URI:http://ocsp.tesla.com/ocsp&#xa;</elem>
+<elem key="name">Authority Information Access</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2018-08-13T23:20:46</elem>
+<elem key="notAfter">2020-08-12T23:20:46</elem>
+</table>
+<elem key="md5">2c45ceeb098ffd6dfe7a95a7a5515a43</elem>
+<elem key="sha1">5627fd47c5821bd5656c2b3727d458ab9a0af045</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIFTTCCBDWgAwIBAgITPgABIUNi2awLlnXKrAAAAAEhQzANBgkqhkiG9w0BAQsF&#xa;ADBdMQswCQYDVQQGEwJVUzEUMBIGA1UEChMLVGVzbGEsIEluYy4xDDAKBgNVBAsT&#xa;A1BLSTEqMCgGA1UEAxMhQ29ycG9yYXRlIE5BIERldmljZSBJc3N1aW5nIENBIDAx&#xa;MB4XDTE4MDgxMzIzMjA0NloXDTIwMDgxMjIzMjA0NlowIDEeMBwGA1UEAxMVdGVz&#xa;bGFjZHBuYTAudGVzbGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC&#xa;AQEAnwptVxZnXVG8xE/4jncMxHbPuTePPGmhZnw6zOJfsnd/atLmpXzoCVuwfhob&#xa;U+VOmMABeVMymQQ8TptXoJvkvosScSlkLRJlhkXXN6b7yvcTptpFn/1H82qiESaU&#xa;THhDD8E9z5JMYybje7mUOE2idtqiXTOXVqkMtcC3h1TReUUKyNfq1dkl8kWdjP+n&#xa;7HhGjMbbcUjst+MYB/cf1GAUH1Dw9Wp/0ZtH8SgNqsxPMTDqjm0j9dZV1TQGLZ9D&#xa;igUE9QHFwjJAIRuEoqAdfq6iEXM6r1aIH2PyaIwT0Fe5FOZHXI1/ZNR/oRxG2XCl&#xa;EhaHqThAwddNz1odNTrd88mvMwIDAQABo4ICQTCCAj0wPQYJKwYBBAGCNxUHBDAw&#xa;LgYmKwYBBAGCNxUIh+mEQ4WYuEDdmzeHkbkTg+emQIEtg/exBoPvmy4CAWQCAQQw&#xa;EwYDVR0lBAwwCgYIKwYBBQUHAwEwCwYDVR0PBAQDAgWgMFAGA1UdIARJMEcwRQYL&#xa;KwYBBAGDgH8CAQIwNjA0BggrBgEFBQcCARYoaHR0cDovL3BraS50ZXNsYS5jb20v&#xa;cG9saWNpZXMvYmFzaWMuaHRtbDAbBgkrBgEEAYI3FQoEDjAMMAoGCCsGAQUFBwMB&#xa;MB0GA1UdDgQWBBQugGKbP0vIJq7H3hcqMppg7GuoMzAgBgNVHREEGTAXghV0ZXNs&#xa;YWNkcG5hMC50ZXNsYS5jb20wHwYDVR0jBBgwFoAUPote479tAm1p8wBczgi+YMJF&#xa;8+4wWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3BraS50ZXNsYS5jb20vcGtpL0Nv&#xa;cnBvcmF0ZSUyME5BJTIwRGV2aWNlJTIwSXNzdWluZyUyMENBJTIwMDEuY3JsMIGt&#xa;BggrBgEFBQcBAQSBoDCBnTBzBggrBgEFBQcwAoZnaHR0cDovL3BraS50ZXNsYS5j&#xa;b20vcGtpL3NqYzA0cDFhZGNpYzAyLnRlc2xhbW90b3JzLmNvbV9Db3Jwb3JhdGUl&#xa;MjBOQSUyMERldmljZSUyMElzc3VpbmclMjBDQSUyMDAxLmNydDAmBggrBgEFBQcw&#xa;AYYaaHR0cDovL29jc3AudGVzbGEuY29tL29jc3AwDQYJKoZIhvcNAQELBQADggEB&#xa;AAX9XR53++3n3lY0ANw11PstacWZor4NZ9+EWOOlWyHsyWxb593nggr6V2XSXxj0&#xa;9sFUXxRVOYPYeOzzyOdG2emGJb50lUXmQpyeT74awjExz/pVPOtIoz1W9MpGdQty&#xa;Sz0fQahjxG8FR+GCWLQjRG/tw+Ct/mJc74NyyRUlXySo6OBd91/+LldlS+R5cK8E&#xa;QxLIXpbW11XNZQYl1TqkGQNyC/P9oZcsRN6xQI9YGkbGxGLlYTri5p8GfOi2gsDA&#xa;EmSF6c6nsGKSOqT361lxjSzgIU729RXmo2+NoeX2Xwh5eskGSXWfXNMnxiYIEmcH&#xa;aL5n8nw9WE6E7uhAI7OYKZU=&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script></port>
+</ports>
+<times srtt="40314" rttvar="40314" to="201570"/>
+</host>
+<runstats><finished time="1586182422" timestr="Mon Apr  6 09:13:42 2020" elapsed="15.05" summary="Nmap done at Mon Apr  6 09:13:42 2020; 1 IP address (1 host up) scanned in 15.05 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

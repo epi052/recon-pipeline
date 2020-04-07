@@ -1,0 +1,20 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:58:17 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/new-test/nmap-results/nmap.staging.bitdiscovery.com-tcp staging.bitdiscovery.com
+Nmap scan report for staging.bitdiscovery.com (184.72.14.217)
+Host is up (0.041s latency).
+Other addresses for staging.bitdiscovery.com (not scanned): 52.8.166.143
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Did not follow redirect to https://staging.bitdiscovery.com/
+443/tcp open  ssl/http nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Bit Discovery - Secure everything.
+| ssl-cert: Subject: commonName=bitdiscovery.com
+| Subject Alternative Name: DNS:bitdiscovery.com, DNS:*.bitdiscovery.com
+| Not valid before: 2019-07-20T00:00:00
+|_Not valid after:  2020-08-20T12:00:00
+|_ssl-date: TLS randomness does not represent time
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:58:31 2020 -- 1 IP address (1 host up) scanned in 14.16 seconds

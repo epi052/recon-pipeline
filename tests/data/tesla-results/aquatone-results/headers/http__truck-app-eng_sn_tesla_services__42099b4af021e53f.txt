@@ -1,0 +1,7 @@
+401 Unauthorized
+Date: Mon, 06 Apr 2020 13:54:24 GMT
+Content-Type: text/html
+Content-Length: 578
+Retry-Count: 0
+Www-Authenticate: Basic realm="truck-app-auth"
+Strict-Transport-Security: max-age=15724800; includeSubDomains

@@ -1,0 +1,15 @@
+500 Internal Server Error
+X-Xss-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Server: nginx/1.16.1
+Access-Control-Allow-Origin: *
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+Etag: W/"25-FJs8qf7Gj2hoxpvMuuUdWSjYlfg"
+Date: Mon, 06 Apr 2020 14:58:12 GMT
+Content-Length: 37
+Access-Control-Allow-Headers: X-Requested-With
+X-Content-Type-Options: nosniff
+Retry-Count: 0
+Content-Type: text/html; charset=utf-8
+Referrer-Policy: origin-when-cross-origin

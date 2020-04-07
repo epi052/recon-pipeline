@@ -1,0 +1,14 @@
+200 OK
+X-Amz-Request-Id: 69549B3B232779B0
+Last-Modified: Thu, 07 Jun 2018 00:35:08 GMT
+Content-Length: 0
+Server: AmazonS3
+X-Edgeconnect-Midmile-Rtt: 146
+X-Edgeconnect-Origin-Mex-Latency: 1381
+Date: Mon, 06 Apr 2020 13:54:57 GMT
+X-Amz-Id-2: wNWP8ZvXprUvDLIqdxbib4E+Gc8qvK3EbDZT21jmAWaotGmLvHtKgYn+vryIYA4+85W1mzaB++M=
+Etag: "d41d8cd98f00b204e9800998ecf8427e"
+X-Amz-Version-Id: ugpEXcEVp7K9M8kp1P6016fALYkhNBfc
+Accept-Ranges: bytes
+Content-Type: application/x-directory
+Retry-Count: 0

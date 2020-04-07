@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 5061 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.sip.tesla.cn-tcp sip.tesla.cn -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 5061 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.sip.tesla.cn-tcp sip.tesla.cn" start="1586182400" startstr="Mon Apr  6 09:13:20 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="5061"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182400" endtime="1586182410"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="52.112.64.75" addrtype="ipv4"/>
+<hostnames>
+<hostname name="sip.tesla.cn" type="user"/>
+</hostnames>
+<ports><port protocol="tcp" portid="5061"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="sip-tls" tunnel="ssl" method="table" conf="3"/><script id="ssl-cert" output="Subject: commonName=sipfed.online.lync.com&#xa;Subject Alternative Name: DNS:sipfed.online.lync.com, DNS:*.online.lync.com, DNS:*.infra.lync.com, DNS:*.lync.com&#xa;Not valid before: 2019-06-18T18:32:46&#xa;Not valid after:  2021-06-18T18:32:46"><table key="subject">
+<elem key="commonName">sipfed.online.lync.com</elem>
+</table>
+<table key="issuer">
+<elem key="organizationName">Microsoft Corporation</elem>
+<elem key="commonName">Microsoft IT TLS CA 2</elem>
+<elem key="countryName">US</elem>
+<elem key="stateOrProvinceName">Washington</elem>
+<elem key="organizationalUnitName">Microsoft IT</elem>
+<elem key="localityName">Redmond</elem>
+</table>
+<table key="pubkey">
+<elem key="exponent">userdata: 0x56236b9e2f98</elem>
+<elem key="modulus">userdata: 0x56236b9e2fd8</elem>
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">S/MIME Capabilities</elem>
+<elem key="error">true</elem>
+</table>
+<table>
+<elem key="name">CT Precertificate SCTs</elem>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : EE:4B:BD:B7:75:CE:60:BA:E1:42:69:1F:AB:E1:9E:66:&#xa;                A3:0F:7E:5F:B0:72:D8:83:00:C4:7B:89:7A:A8:FD:CB&#xa;    Timestamp : Jun 18 18:42:49.739 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:20:79:DD:53:44:27:A6:DE:58:F6:7D:4C:DC:&#xa;                4D:88:7D:4E:BC:79:2E:D3:47:98:1C:07:D2:E1:BC:D2:&#xa;                B3:11:A8:9E:02:21:00:CA:E2:79:73:2F:E2:37:2D:80:&#xa;                12:5D:6E:E2:B1:2E:9B:15:B4:AD:26:47:74:AC:22:07:&#xa;                0D:FE:27:C9:F7:4B:D7&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : BB:D9:DF:BC:1F:8A:71:B5:93:94:23:97:AA:92:7B:47:&#xa;                38:57:95:0A:AB:52:E8:1A:90:96:64:36:8E:1E:D1:85&#xa;    Timestamp : Jun 18 18:42:49.739 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:02:B2:86:01:81:F9:8F:73:4F:4C:BB:02:&#xa;                A7:20:F9:C3:EF:A6:40:F5:43:11:3C:B6:87:F2:90:B2:&#xa;                C2:89:B9:C5:02:20:6C:8F:AA:14:04:2F:72:98:CC:F8:&#xa;                9D:A3:93:38:9B:BA:30:F0:A2:E6:E1:4C:BF:11:15:44:&#xa;                F8:9A:FD:50:07:15&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 44:94:65:2E:B0:EE:CE:AF:C4:40:07:D8:A8:FE:28:C0:&#xa;                DA:E6:82:BE:D8:CB:31:B5:3F:D3:33:96:B5:B6:81:A8&#xa;    Timestamp : Jun 18 18:42:49.393 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:20:40:85:83:0B:17:B9:95:9D:F7:8B:08:C9:&#xa;                A3:CD:9C:5C:0C:34:9F:9A:36:6B:1C:FC:72:FF:4C:20:&#xa;                48:1B:ED:0F:02:21:00:C5:33:21:D3:02:02:B8:DC:87:&#xa;                7A:89:38:06:B4:27:29:AC:21:49:C4:60:64:E1:5F:96:&#xa;                A3:9F:9A:D4:A7:F9:4D&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 55:81:D4:C2:16:90:36:01:4A:EA:0B:9B:57:3C:53:F0:&#xa;                C0:E4:38:78:70:25:08:17:2F:A3:AA:1D:07:13:D3:0C&#xa;    Timestamp : Jun 18 18:42:49.721 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:61:0F:E8:D9:A4:BB:0C:45:EA:59:83:B2:&#xa;                A3:5B:C2:C1:BA:AF:D0:18:42:5C:C2:E8:5B:86:69:A5:&#xa;                8E:15:7D:EA:02:20:50:4A:5B:22:88:ED:6A:3E:9E:CE:&#xa;                40:7D:ED:5E:D7:02:8D:69:1C:0F:39:16:FC:74:FD:12:&#xa;                87:48:98:A2:1A:6A</elem>
+</table>
+<table>
+<elem key="name">1.3.6.1.4.1.311.21.10</elem>
+<elem key="error">true</elem>
+</table>
+<table>
+<elem key="name">1.3.6.1.4.1.311.21.7</elem>
+<elem key="error">true</elem>
+</table>
+<table>
+<elem key="name">Authority Information Access</elem>
+<elem key="value">CA Issuers - URI:http://www.microsoft.com/pki/mscorp/Microsoft%20IT%20TLS%20CA%202.crt&#xa;OCSP - URI:http://ocsp.msocsp.com&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+<elem key="value">3D:8C:6D:F6:F7:D4:BD:3D:8F:21:5B:F5:6E:3F:B4:95:1F:F8:1F:04</elem>
+</table>
+<table>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="value">Digital Signature, Key Encipherment, Data Encipherment</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+<elem key="value">DNS:sipfed.online.lync.com, DNS:*.online.lync.com, DNS:*.infra.lync.com, DNS:*.lync.com</elem>
+</table>
+<table>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://mscrl.microsoft.com/pki/mscorp/crl/Microsoft%20IT%20TLS%20CA%202.crl&#xa;  URI:http://crl.microsoft.com/pki/mscorp/crl/Microsoft%20IT%20TLS%20CA%202.crl&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Certificate Policies</elem>
+<elem key="value">Policy: 1.3.6.1.4.1.311.42.1&#xa;  CPS: http://www.microsoft.com/pki/mscorp/cps&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+<elem key="value">keyid:91:9E:3B:44:6C:3D:57:9C:42:77:2A:34:D7:4F:D1:CC:4A:97:2C:DA&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Extended Key Usage</elem>
+<elem key="value">TLS Web Client Authentication, TLS Web Server Authentication</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2019-06-18T18:32:46</elem>
+<elem key="notAfter">2021-06-18T18:32:46</elem>
+</table>
+<elem key="md5">1c8f7c6ce8a2522212052bdc45783a8d</elem>
+<elem key="sha1">1e42a5ee87fe8dfa0348b67f86fea0b8f957408f</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIJYTCCB0mgAwIBAgITIAAGmUwyriPNrJBuTAAAAAaZTDANBgkqhkiG9w0BAQsF&#xa;ADCBizELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT&#xa;B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEVMBMGA1UE&#xa;CxMMTWljcm9zb2Z0IElUMR4wHAYDVQQDExVNaWNyb3NvZnQgSVQgVExTIENBIDIw&#xa;HhcNMTkwNjE4MTgzMjQ2WhcNMjEwNjE4MTgzMjQ2WjAhMR8wHQYDVQQDExZzaXBm&#xa;ZWQub25saW5lLmx5bmMuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC&#xa;AQEAj1KoENJUqPp1owpJn8+oWrqA5GAks6XkxYGxpMoqg/s8LE/4pr1ZJReNYDX1&#xa;DC87N7QQDeM+tD6zjJjquxjeDRxzGMHhjG8J+QWKZO+IQHvwRcL20Iy7nU+5c4xC&#xa;g0MSxF6DejTQrYibSmjRCf0yb5l/3yTsoPcwK1k8iHBicMyldXHpfmeywDPUuA5U&#xa;GE+pxmsHaayl7GUld/v5bsBefVZGNvYlT4Xqq2n1LUuMx67ZYdiuIWFEdYVMrIj/&#xa;1CVjFeNZcw/RQuSFN4dRtFmO+8X5wjg12SdGCyqIdl+CEI7H9YEmpHPyxsCYS4VO&#xa;ju/6CSfLEK5sC5CRxeAPJbVBkwIDAQABo4IFJTCCBSEweAYJKoZIhvcNAQkPBGsw&#xa;aTAOBggqhkiG9w0DAgICAIAwDgYIKoZIhvcNAwQCAgCAMAsGCWCGSAFlAwQBKjAL&#xa;BglghkgBZQMEAS0wCwYJYIZIAWUDBAECMAsGCWCGSAFlAwQBBTAHBgUrDgMCBzAK&#xa;BggqhkiG9w0DBzCCAfQGCisGAQQB1nkCBAIEggHkBIIB4AHeAHYA7ku9t3XOYLrh&#xa;Qmkfq+GeZqMPfl+wctiDAMR7iXqo/csAAAFra+YXCwAABAMARzBFAiB53VNEJ6be&#xa;WPZ9TNxNiH1OvHku00eYHAfS4bzSsxGongIhAMrieXMv4jctgBJdbuKxLpsVtK0m&#xa;R3SsIgcN/ifJ90vXAHUAu9nfvB+KcbWTlCOXqpJ7RzhXlQqrUugakJZkNo4e0YUA&#xa;AAFra+YXCwAABAMARjBEAiACsoYBgfmPc09MuwKnIPnD76ZA9UMRPLaH8pCywom5&#xa;xQIgbI+qFAQvcpjM+J2jkzibujDwoubhTL8RFUT4mv1QBxUAdgBElGUusO7Or8RA&#xa;B9io/ijA2uaCvtjLMbU/0zOWtbaBqAAAAWtr5hWxAAAEAwBHMEUCIECFgwsXuZWd&#xa;94sIyaPNnFwMNJ+aNmsc/HL/TCBIG+0PAiEAxTMh0wICuNyHeok4BrQnKawhScRg&#xa;ZOFflqOfmtSn+U0AdQBVgdTCFpA2AUrqC5tXPFPwwOQ4eHAlCBcvo6odBxPTDAAA&#xa;AWtr5hb5AAAEAwBGMEQCIGEP6NmkuwxF6lmDsqNbwsG6r9AYQlzC6FuGaaWOFX3q&#xa;AiBQSlsiiO1qPp7OQH3tXtcCjWkcDzkW/HT9EodImKIaajAnBgkrBgEEAYI3FQoE&#xa;GjAYMAoGCCsGAQUFBwMCMAoGCCsGAQUFBwMBMD4GCSsGAQQBgjcVBwQxMC8GJysG&#xa;AQQBgjcVCIfahnWD7tkBgsmFG4G1nmGF9OtggV2E0t9CgueTegIBZAIBHTCBhQYI&#xa;KwYBBQUHAQEEeTB3MFEGCCsGAQUFBzAChkVodHRwOi8vd3d3Lm1pY3Jvc29mdC5j&#xa;b20vcGtpL21zY29ycC9NaWNyb3NvZnQlMjBJVCUyMFRMUyUyMENBJTIwMi5jcnQw&#xa;IgYIKwYBBQUHMAGGFmh0dHA6Ly9vY3NwLm1zb2NzcC5jb20wHQYDVR0OBBYEFD2M&#xa;bfb31L09jyFb9W4/tJUf+B8EMAsGA1UdDwQEAwIEsDBSBgNVHREESzBJghZzaXBm&#xa;ZWQub25saW5lLmx5bmMuY29tghEqLm9ubGluZS5seW5jLmNvbYIQKi5pbmZyYS5s&#xa;eW5jLmNvbYIKKi5seW5jLmNvbTCBrAYDVR0fBIGkMIGhMIGeoIGboIGYhktodHRw&#xa;Oi8vbXNjcmwubWljcm9zb2Z0LmNvbS9wa2kvbXNjb3JwL2NybC9NaWNyb3NvZnQl&#xa;MjBJVCUyMFRMUyUyMENBJTIwMi5jcmyGSWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNv&#xa;bS9wa2kvbXNjb3JwL2NybC9NaWNyb3NvZnQlMjBJVCUyMFRMUyUyMENBJTIwMi5j&#xa;cmwwTQYDVR0gBEYwRDBCBgkrBgEEAYI3KgEwNTAzBggrBgEFBQcCARYnaHR0cDov&#xa;L3d3dy5taWNyb3NvZnQuY29tL3BraS9tc2NvcnAvY3BzMB8GA1UdIwQYMBaAFJGe&#xa;O0RsPVecQncqNNdP0cxKlyzaMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD&#xa;ATANBgkqhkiG9w0BAQsFAAOCAgEATHwXIyGNkP4mLATajhfRlnPe2LBSsVx2lS29&#xa;XWx+ULVvtQTOgA7JfXIEyVFrgKpwxK2YB/xEUMv31VoTKyRF99lxn1yTicVxVolY&#xa;eVeGljqZA6mSCex2s0DlKthSKn9OfjBNwolIbl+JknRqCIqFr0dDdfU27vVoZhG9&#xa;rwMYFxPxWsptfZeg4ZkkArA8rYcCv+wgWYzZxLVrK9Oku48Ud1qD0NQHUKyRMs13&#xa;mom8wmndII5xKoPW9rW9y8lMh8EiRF5bmHIWiql1y/y+050Cs/4sPSjcQxALMUlI&#xa;/OuppdREhC9uT7woyrxazG/4UlklXowa38m0SmOO0CAbzOLV7zS6mw5FQr3gzhJT&#xa;NwG0jHLJHP177s29dydEdYrLd/RbFRWTV9WsAyw+IGxkzLKMxvQsMQWc7ZdJoNTk&#xa;bvDAvMZ9SZIW7/4W6mru0Q0oDWsvkroKVN+DjwzNa0fpbNMJx6kfb2uEw3pZWpmO&#xa;jxJu8z6tAQpxhHA18uE8JvGQ0nzV73CuHlBjHSuigrvD5XKbe8UKy2/DWsswLqaA&#xa;Cnz3MDT4exQ+cVRv89yAYULzLNErTqLLdpYn+OcW30zFge/rU74kxSXFQNlSCUuk&#xa;AANbjmdSBCudlJ2RjLrjfDQ6566Yu/8u7R+hv0lqorsbwriMwtrk84zzejXfTzBJ&#xa;G8bOEKM=&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script></port>
+</ports>
+<times srtt="38115" rttvar="38115" to="190575"/>
+</host>
+<runstats><finished time="1586182410" timestr="Mon Apr  6 09:13:30 2020" elapsed="10.69" summary="Nmap done at Mon Apr  6 09:13:30 2020; 1 IP address (1 host up) scanned in 10.69 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

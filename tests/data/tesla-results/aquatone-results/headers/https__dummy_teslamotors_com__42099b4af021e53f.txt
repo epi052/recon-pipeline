@@ -1,0 +1,6 @@
+200 OK
+Retry-Count: 0
+Set-Cookie: csrf_cookie_name=2080ae6dfc7bfab46be69ed2e454a7ee; expires=Mon, 06-Apr-2020 15:55:36 GMT; Max-Age=7200; path=/ ci_session=IXtUrOkiuG7YlBvwDv3bwlNiItrXA2C23r6eeqUHAW%2BNSQjv2maqXjNCb7eKveVmXO2SoKjqQ3HQXSDO%2BRO76HC8TkBQODXVdpfCQSOG%2FdGPkLFFBqh4TsNEJ1kPybjlSgEi8aNiP8mpmP1PMB%2FODufBoZ04oll1O8QXaPFwrQDrKBgGwSpi0qHleh7qfccAJmvX1IBXOENKScCnCLohduPVCK2ogMQKME%2BT3BIz419Fodq7FCQjkU9ESOXjXcPFthIXVcKafGK5qQcg1bfkLzGfZe7oh8blMDQfEXuT7r8%2BRoUdo5Xb28fNtEbX3RImupRsD72exBAU3ZFHtby6LUiJ8Qk%2F3L9tclz4fwXATiWSs77BcZqGJF5n7C%2B8YuMyBp8u7btK0C2E6tVhPlRHnHdcsWHin7sByXzYlYQtJ%2BAGioSwIZ5U%2FmFBmyPkgoIM%2F5Mqf%2B8%2BpMFKT1Wx8tqldw%3D%3D; expires=Mon, 06-Apr-2020 15:55:36 GMT; Max-Age=7200; path=/; HttpOnly BIGipServerINT-ORIGIN-PROD-TRT-APP-HTTP=35660042.20480.0000; path=/
+Server: nginx/1.14.1
+Date: Mon, 06 Apr 2020 13:55:36 GMT
+Content-Type: text/html; charset=utf-8

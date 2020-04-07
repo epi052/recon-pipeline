@@ -1,0 +1,4 @@
+
+Host,Category,App,Version
+https://static-assets.tesla.com,Caching,Varnish,
+https://static-assets.tesla.com,"Web servers,Reverse proxies",Nginx,1.10.2

@@ -1,0 +1,30 @@
+204 No Content
+X-Tzla-Edge-Grace-Backend-Healthy: 3600.000
+Pragma: no-cache
+Content-Encoding: gzip
+Expires: 0
+X-Tzla-Edge-Backend-Ttfb: 0.000
+X-Frame-Options: SAMEORIGIN
+X-Tzla-Edge-Ttl: 120.000
+X-Tzla-Edge-Server: sjc04p1tegvr64.teslamotors.com
+X-Xss-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+X-Tzla-Edge-Backend-Stream: true
+Date: Mon, 06 Apr 2020 13:56:18 GMT
+X-Tzla-Edge-Backend-Retry: 0
+X-Tzla-Edge-Backend-Status: 200
+X-Varnish: 232023979
+Retry-Count: 0
+X-Tzla-Edge-Hostname-Vcl: inventory-assets.tesla.com.vcl
+X-Tzla-Edge-Was-304: false
+X-Tzla-Edge-Client-Req-Ttl: -1.000
+Vary: Accept-Encoding
+X-Tzla-Edge-Grace: 10.000
+X-Tzla-Edge-Client-Restarts: 0
+X-Tzla-Edge-Cache-Hits: 0
+X-Tzla-Edge-Backend-Fetch-If-Stale: false
+X-Content-Type-Options: nosniff
+Accept-Ranges: bytes
+X-Tzla-Edge-Backend-Reason: OK
+Content-Type: application/hal+json;charset=UTF-8
+X-Tzla-Edge-Backend-Conn-Time: 0.000

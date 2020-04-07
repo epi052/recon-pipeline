@@ -1,0 +1,14 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 5061 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.sip.tesla.cn-tcp sip.tesla.cn
+Nmap scan report for sip.tesla.cn (52.112.64.75)
+Host is up (0.038s latency).
+Other addresses for sip.tesla.cn (not scanned): 2603:1037:0:1::b
+
+PORT     STATE SERVICE      VERSION
+5061/tcp open  ssl/sip-tls?
+| ssl-cert: Subject: commonName=sipfed.online.lync.com
+| Subject Alternative Name: DNS:sipfed.online.lync.com, DNS:*.online.lync.com, DNS:*.infra.lync.com, DNS:*.lync.com
+| Not valid before: 2019-06-18T18:32:46
+|_Not valid after:  2021-06-18T18:32:46
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:30 2020 -- 1 IP address (1 host up) scanned in 10.69 seconds

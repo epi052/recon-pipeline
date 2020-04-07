@@ -1,0 +1,18 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:33 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.toolbox.tb.tesla.services-tcp toolbox.tb.tesla.services
+Nmap scan report for toolbox.tb.tesla.services (143.204.160.22)
+Host is up (0.012s latency).
+Other addresses for toolbox.tb.tesla.services (not scanned): 143.204.160.39 143.204.160.92 143.204.160.95
+
+PORT    STATE SERVICE  VERSION
+443/tcp open  ssl/http Amazon CloudFront httpd
+| http-server-header:
+|   AmazonS3
+|_  CloudFront
+|_http-title: Tesla | Toolbox
+| ssl-cert: Subject: commonName=toolbox.tesla.com/organizationName=Tesla Motors, Inc./stateOrProvinceName=California/countryName=US
+| Subject Alternative Name: DNS:api.toolbox.tb.tesla.services, DNS:api-toolbox.tesla.com, DNS:toolbox.tb.tesla.services, DNS:toolbox.tesla.com
+| Not valid before: 2018-10-18T00:00:00
+|_Not valid after:  2020-10-22T12:00:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:48 2020 -- 1 IP address (1 host up) scanned in 15.22 seconds

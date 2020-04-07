@@ -1,0 +1,35 @@
+200 OK
+X-Tzla-Edge-Hostname-Vcl: onboarding-pre-delivery-prod
+X-Tzla-Edge-Was-304: false
+X-Tzla-Edge-Grace: 86400.000
+X-Tzla-Edge-Backend-Reason: OK
+X-Tzla-Edge-Server: sjc04p1tegvr66.teslamotors.com
+Strict-Transport-Security: max-age=15768000
+Retry-Count: 0
+X-Tzla-Edge-Backend-Retry: 0
+X-Varnish: 302317657
+X-Content-Type-Options: nosniff
+X-Tzla-Edge-Cache-Hits: 0
+Vary: Accept-Encoding
+Content-Type: text/html
+Cache-Control: no-cache
+X-Tzla-Edge-Client-Restarts: 0
+X-Tzla-Edge-Client-Req-Ttl: -1.000
+X-Tzla-Edge-Age: 60.000
+X-Tzla-Edge-Backend-Ttfb: 0.000
+X-Frame-Options: SAMEORIGIN
+X-Edgeconnect-Origin-Mex-Latency: 76
+Server-Timing: cdn-cache; desc=MISS edge; dur=173 origin; dur=76
+X-Tzla-Edge-Backend-Fetch-If-Stale: false
+X-Tzla-Edge-Cache-Hit:
+Date: Mon, 06 Apr 2020 13:54:51 GMT
+Etag: W/"5e7ced9e-1f51"
+X-Tzla-Edge-Backend-Stream: true
+X-Edgeconnect-Midmile-Rtt: 35
+Last-Modified: Thu, 26 Mar 2020 17:59:58 GMT
+X-Tzla-Edge-Backend-Status: 200
+X-Tzla-Edge-Ttl: 120.000
+X-Tzla-Edge-Grace-Backend-Unhealthy: 86400.000
+X-Akamai-Transformed: 9 3968 0 pmb=mRUM,2
+Accept-Ranges: bytes
+X-Tzla-Edge-Backend-Conn-Time: 0.000

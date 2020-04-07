@@ -1,0 +1,4 @@
+
+Host,Category,App,Version
+http://[2600:9000:21d4:e00:c:d401:5a80:93a1],CDN,Amazon Cloudfront,
+http://[2600:9000:21d4:e00:c:d401:5a80:93a1],PaaS,Amazon Web Services,

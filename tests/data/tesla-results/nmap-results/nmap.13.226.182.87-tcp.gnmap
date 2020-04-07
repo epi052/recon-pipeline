@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:54 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.13.226.182.87-tcp 13.226.182.87
+Host: 13.226.182.87 ()	Status: Up
+Host: 13.226.182.87 ()	Ports: 443/open/tcp//ssl|https//CloudFront/
+# Nmap done at Mon Apr  6 09:15:39 2020 -- 1 IP address (1 host up) scanned in 104.45 seconds

@@ -1,0 +1,5 @@
+http://westream.teslamotors.com/blog (Status: 200)
+http://westream.teslamotors.com/crossdomain.xml (Status: 200)
+http://westream.teslamotors.com/maintenance (Status: 200)
+http://westream.teslamotors.com/offline (Status: 200)
+http://westream.teslamotors.com/y (Status: 200)

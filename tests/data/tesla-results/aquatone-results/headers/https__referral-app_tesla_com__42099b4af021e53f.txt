@@ -1,0 +1,18 @@
+401 Unauthorized
+X-Download-Options: noopen
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Methods: GET,PUT,POST,OPTIONS,PATCH
+X-Frame-Options: SAMEORIGIN
+X-Edgeconnect-Midmile-Rtt: 24
+Server-Timing: cdn-cache; desc=MISS edge; dur=53 origin; dur=67
+Etag: W/"18-XPDV80vbMk4yY1/PADG4jYM4rSI"
+X-Edgeconnect-Origin-Mex-Latency: 67
+Date: Mon, 06 Apr 2020 13:56:10 GMT
+X-Dns-Prefetch-Control: off
+X-Xss-Protection: 1; mode=block
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization , Accept-Language, Content-Language
+Content-Type: application/json; charset=utf-8
+Retry-Count: 0
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+Content-Length: 24

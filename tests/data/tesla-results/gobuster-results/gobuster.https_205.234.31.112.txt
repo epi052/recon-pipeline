@@ -1,0 +1,3 @@
+https://205.234.31.112/connect (Status: 301)
+https://205.234.31.112/status (Status: 200)
+https://205.234.31.112/stream (Status: 301)

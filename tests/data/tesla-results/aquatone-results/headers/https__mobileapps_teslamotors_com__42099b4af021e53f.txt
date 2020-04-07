@@ -1,0 +1,11 @@
+200 OK
+Content-Type: text/html; charset=utf-8
+Request-Context: appId=cid-v1:ecafc92d-e60a-43a1-a158-6935c6122fd5
+Date: Mon, 06 Apr 2020 13:55:47 GMT
+Retry-Count: 0
+Cache-Control: no-cache, no-store
+Server: Kestrel
+Set-Cookie: .AspNetCore.Antiforgery.rjcC8NZ7ugU=CfDJ8PkfVICL959Ovno2meoycFCYH9bj6GTjulRRQ20AZ8RT2kjXz61YuNIcuf8tVYDwztfHa4Ur9ixmba6rlLxWBGO8urlEc2nt2VKh-s1Rzra6F2Zcyjc6cP-Uvd7b1QpcBky3cq5NeaEBv9tOhH4uSro; path=/AppStore; samesite=strict; httponly
+X-Frame-Options: SAMEORIGIN
+X-Powered-By: ASP.NET
+Pragma: no-cache

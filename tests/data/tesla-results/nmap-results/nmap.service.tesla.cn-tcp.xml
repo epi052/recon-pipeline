@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.service.tesla.cn-tcp service.tesla.cn -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.service.tesla.cn-tcp service.tesla.cn" start="1586182400" startstr="Mon Apr  6 09:13:20 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182400" endtime="1586182547"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="209.11.133.37" addrtype="ipv4"/>
+<hostnames>
+<hostname name="service.tesla.cn" type="user"/>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="BigIP" servicefp="SF-Port80-TCP:V=7.80%I=7%D=4/6%Time=5E8B3906%P=x86_64-pc-linux-gnu%r(GetRequest,76,&quot;HTTP/1\.0\x20302\x20Found\r\nLocation:\x20https://service\.teslamotors\.com\r\nServer:\x20BigIP\r\nConnection:\x20close\r\nContent-Length:\x200\r\n\r\n&quot;)%r(HTTPOptions,A1,&quot;HTTP/1\.0\x20302\x20Security\x20Redirect\r\nLocation:\x20http://assets\.teslastatic\.com/index1\.html\r\nCache-Control:\x20no-cache\r\nPragma:\x20no-cache\r\nExpires:\x200\r\nConnection:\x20close\r\n\r\n&quot;)%r(RTSPRequest,A1,&quot;HTTP/1\.0\x20302\x20Security\x20Redirect\r\nLocation:\x20http://assets\.teslastatic\.com/index1\.html\r\nCache-Control:\x20no-cache\r\nPragma:\x20no-cache\r\nExpires:\x200\r\nConnection:\x20close\r\n\r\n&quot;)%r(FourOhFourRequest,76,&quot;HTTP/1\.0\x20302\x20Found\r\nLocation:\x20https://service\.teslamotors\.com\r\nServer:\x20BigIP\r\nConnection:\x20close\r\nContent-Length:\x200\r\n\r\n&quot;)%r(SIPOptions,A1,&quot;HTTP/1\.0\x20302\x20Security\x20Redirect\r\nLocation:\x20http://assets\.teslastatic\.com/index1\.html\r\nCache-Control:\x20no-cache\r\nPragma:\x20no-cache\r\nExpires:\x200\r\nConnection:\x20close\r\n\r\n&quot;);" method="probed" conf="10"/><script id="fingerprint-strings" output="&#xa;  FourOhFourRequest, GetRequest: &#xa;    HTTP/1.0 302 Found&#xa;    Location: https://service.teslamotors.com&#xa;    Server: BigIP&#xa;    Connection: close&#xa;    Content-Length: 0&#xa;  HTTPOptions, RTSPRequest, SIPOptions: &#xa;    HTTP/1.0 302 Security Redirect&#xa;    Location: http://assets.teslastatic.com/index1.html&#xa;    Cache-Control: no-cache&#xa;    Pragma: no-cache&#xa;    Expires: 0&#xa;    Connection: close"><elem key="FourOhFourRequest, GetRequest">&#xa;    HTTP/1.0 302 Found&#xa;    Location: https://service.teslamotors.com&#xa;    Server: BigIP&#xa;    Connection: close&#xa;    Content-Length: 0</elem>
+<elem key="HTTPOptions, RTSPRequest, SIPOptions">&#xa;    HTTP/1.0 302 Security Redirect&#xa;    Location: http://assets.teslastatic.com/index1.html&#xa;    Cache-Control: no-cache&#xa;    Pragma: no-cache&#xa;    Expires: 0&#xa;    Connection: close</elem>
+</script><script id="http-server-header" output="BigIP"><elem>BigIP</elem>
+</script><script id="http-title" output="Did not follow redirect to http://assets.teslastatic.com/index1.html"><elem key="redirect_url">http://assets.teslastatic.com/index1.html</elem>
+</script></port>
+</ports>
+<times srtt="47649" rttvar="47649" to="238245"/>
+</host>
+<runstats><finished time="1586182547" timestr="Mon Apr  6 09:15:47 2020" elapsed="147.58" summary="Nmap done at Mon Apr  6 09:15:47 2020; 1 IP address (1 host up) scanned in 147.58 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

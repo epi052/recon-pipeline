@@ -1,0 +1,5 @@
+https://owner-api.teslamotors.com/404 (Status: 200)
+https://owner-api.teslamotors.com/500 (Status: 200)
+https://owner-api.teslamotors.com/favicon.ico (Status: 200)
+https://owner-api.teslamotors.com/robots.txt (Status: 200)
+https://owner-api.teslamotors.com/status (Status: 200)

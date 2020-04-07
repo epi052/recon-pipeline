@@ -1,0 +1,6 @@
+http://205.234.27.212/.hta (Status: 403)
+http://205.234.27.212/.htpasswd (Status: 403)
+http://205.234.27.212/.htaccess (Status: 403)
+http://205.234.27.212/cgi-bin/ (Status: 403)
+http://205.234.27.212/index.html (Status: 200)
+http://205.234.27.212/manual (Status: 301)

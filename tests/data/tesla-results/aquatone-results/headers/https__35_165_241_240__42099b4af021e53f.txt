@@ -1,0 +1,8 @@
+403 Forbidden
+Date: Mon, 06 Apr 2020 13:55:12 GMT
+Content-Type: application/json
+Content-Length: 23
+Retry-Count: 0
+X-Amzn-Requestid: d0e1677a-c769-4d83-baf5-d635b1f9b18a
+X-Amzn-Errortype: ForbiddenException
+X-Amz-Apigw-Id: KkUuEHdBvHcFsRA=

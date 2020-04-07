@@ -1,0 +1,15 @@
+200 OK
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Download-Options: noopen
+Access-Control-Allow-Credentials: true
+Content-Type: text/plain; charset=utf-8
+Content-Length: 2
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept-Language, Authorization, X-TXID, X-Initial-Request-ID, X-Parent-Request-ID
+Retry-Count: 0
+X-Xss-Protection: 1; mode=block
+Access-Control-Allow-Methods: POST, GET, PUT, PATCH, OPTIONS
+Etag: W/"2-nOO9QiTIwXgNtWtBJezz8kv3SLc"
+Date: Mon, 06 Apr 2020 13:55:20 GMT
+X-Dns-Prefetch-Control: off
+X-Frame-Options: SAMEORIGIN

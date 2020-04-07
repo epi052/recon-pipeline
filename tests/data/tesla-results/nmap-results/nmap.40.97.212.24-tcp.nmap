@@ -1,0 +1,12 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:26 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.40.97.212.24-tcp 40.97.212.24
+Nmap scan report for 40.97.212.24
+Host is up (0.0057s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Did not follow redirect to https://40.97.212.24/owa/
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:15:33 2020 -- 1 IP address (1 host up) scanned in 6.52 seconds

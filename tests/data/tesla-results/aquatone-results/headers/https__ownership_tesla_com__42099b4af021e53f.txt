@@ -1,0 +1,18 @@
+200 OK
+X-Dns-Prefetch-Control: off
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Methods: POST, GET, PUT, PATCH, OPTIONS
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept-Language, Authorization, X-TXID, X-Initial-Request-ID, X-Parent-Request-ID
+Etag: W/"2-nOO9QiTIwXgNtWtBJezz8kv3SLc"
+Date: Mon, 06 Apr 2020 13:56:21 GMT
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 1; mode=block
+Server-Timing: cdn-cache; desc=MISS edge; dur=50 origin; dur=13
+Strict-Transport-Security: max-age=86400 ; includeSubDomains
+Content-Type: text/plain; charset=utf-8
+X-Edgeconnect-Origin-Mex-Latency: 13
+Access-Control-Allow-Credentials: true
+X-Edgeconnect-Midmile-Rtt: 35
+Retry-Count: 0
+Content-Length: 2
+X-Download-Options: noopen

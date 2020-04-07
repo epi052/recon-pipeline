@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:56 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.199.66.9.47-tcp 199.66.9.47
+Host: 199.66.9.47 ()	Status: Up
+Host: 199.66.9.47 ()	Ports: 443/open/tcp//ssl|http-proxy//Varnish http accelerator/
+# Nmap done at Mon Apr  6 09:14:11 2020 -- 1 IP address (1 host up) scanned in 15.93 seconds

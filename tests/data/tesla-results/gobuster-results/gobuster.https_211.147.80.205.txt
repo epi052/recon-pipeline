@@ -1,0 +1,6 @@
+https://211.147.80.205/.hta (Status: 403)
+https://211.147.80.205/.htaccess (Status: 403)
+https://211.147.80.205/.htpasswd (Status: 403)
+https://211.147.80.205/cgi-bin/ (Status: 403)
+https://211.147.80.205/index.html (Status: 200)
+https://211.147.80.205/stage (Status: 301)

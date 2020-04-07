@@ -1,0 +1,6 @@
+200 OK
+Set-Cookie: csrf_cookie_name=258a4518993203340c24f7d900447aad; expires=Mon, 06-Apr-2020 15:54:48 GMT; Max-Age=7200; path=/ ci_session=uGSCYoZ2Xna%2FnxvMwNIuI5wkW04nj70uesNB4khrAQ7%2FFpT4wjC02dkoqnErCVch8cuwTIEKo31k%2FFZmAMIcSXFSEBvsoNPWqmhvSIuu3HE1D0OvNA30DB6FbU8Odsx9wwvy1M7pb84bJInwMKv9dLtbSGaxbr7I7Rut89iV0npDRPzmrr%2FIPmhAYaEMTNw9r9HqmSzOfq32AM8C4DncuejmOwm%2BDhoB7kSMBwFBGGbyC8L5v0T%2BfrRje%2FyRpPjKbzdvotyVnjE8%2Bu7QyEzH3kttTXy7Tl6qkMNm%2BJig18zNgiNbaV5dCPmCTqF9lachRBXLEXfHIdQcqISuo2DAtEi64ILYJ8AcuEC1Xu1zLGzG1GJENp9QPLbB8LuB9pYT; expires=Mon, 06-Apr-2020 15:54:48 GMT; Max-Age=7200; path=/; HttpOnly BIGipServerINT-ORIGIN-PROD-TRT-APP-HTTP=35660042.20480.0000; path=/
+Server: nginx/1.14.1
+Date: Mon, 06 Apr 2020 13:54:48 GMT
+Content-Type: text/html; charset=utf-8
+Retry-Count: 0

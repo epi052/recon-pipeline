@@ -1,0 +1,8 @@
+403
+Content-Length: 290
+Date: Mon, 06 Apr 2020 13:59:00 GMT
+Retry-Count: 0
+Server: Apache Tomcat
+X-Frame-Options: SAMEORIGIN
+Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0
+Set-Cookie: JSESSIONID=E29B4A232098DCA7D3FF097525970209; Path=/; Secure; HttpOnly

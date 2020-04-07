@@ -1,0 +1,16 @@
+200 OK
+X-Xss-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+Strict-Transport-Security: max-age=31536000
+X-Frame-Options: SAMEORIGIN
+Server: nginx
+Status: 200 OK
+X-Txid: 34b299269e41008cc179a6aa4e8cf6f7
+X-Request-Id: 65f69d02-56df-4acf-bdd5-376ca2dfbcef
+X-Runtime: 0.034166
+Etag: W/"f31108d2af73b6dcef455549ea531940"
+Retry-Count: 0
+Date: Mon, 06 Apr 2020 13:54:47 GMT
+Cache-Control: max-age=0, private, must-revalidate
+Set-Cookie: _power_hub_session=5675f7c326d53fa1e231fbfe6dd5c945; path=/; secure; HttpOnly

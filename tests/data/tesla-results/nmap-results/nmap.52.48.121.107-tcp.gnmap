@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:35 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.52.48.121.107-tcp 52.48.121.107
+Host: 52.48.121.107 ()	Status: Up
+Host: 52.48.121.107 ()	Ports: 443/open/tcp//ssl|http//nginx 1.16.0/
+# Nmap done at Mon Apr  6 09:15:55 2020 -- 1 IP address (1 host up) scanned in 19.63 seconds

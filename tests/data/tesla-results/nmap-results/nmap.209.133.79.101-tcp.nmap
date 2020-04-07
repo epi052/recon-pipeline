@@ -1,0 +1,18 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:14:12 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.209.133.79.101-tcp 209.133.79.101
+Nmap scan report for 209.133.79.101
+Host is up (0.059s latency).
+
+PORT    STATE SERVICE  VERSION
+443/tcp open  ssl/http Splunkd httpd
+| http-robots.txt: 1 disallowed entry
+|_/
+|_http-server-header: Splunkd
+|_http-title: 404 Not Found
+| ssl-cert: Subject: commonName=*.teslamotors.com/organizationName=Tesla Motors, Inc./stateOrProvinceName=California/countryName=US
+| Subject Alternative Name: DNS:*.teslamotors.com, DNS:teslamotors.com
+| Not valid before: 2019-01-17T00:00:00
+|_Not valid after:  2021-02-03T12:00:00
+|_ssl-date: TLS randomness does not represent time
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:14:27 2020 -- 1 IP address (1 host up) scanned in 15.24 seconds

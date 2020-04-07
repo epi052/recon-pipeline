@@ -1,0 +1,4 @@
+https://209.10.208.24/assets (Status: 301)
+https://209.10.208.24/favicon.ico (Status: 200)
+https://209.10.208.24/robots.txt (Status: 200)
+https://209.10.208.24/status (Status: 200)

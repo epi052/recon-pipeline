@@ -241,7 +241,7 @@ class TestReconShell:
             ("searchsploit-results --type webapps", "webapps  | 37450.txt|  Amazon S3"),
             ("searchsploit-results --host synopsys.bitdiscovery.com --fullpath", "exploits/linux/local/40768.sh"),
             ("targets", "email.assetinventory.bugcrowd.com"),
-            ("targets --vuln-to-subdomain-takeover", "[\x1b[91mnot vulnerable\x1b[39m] ibm.bitdiscovery.com"),
+            ("targets --vuln-to-subdomain-takeover --paged", ""),
             ("web-technologies", "CloudFlare (CDN)"),
             ("web-technologies --host blog.bitdiscovery.com --paged", "MySQL (Databases)"),
         ],

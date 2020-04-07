@@ -106,4 +106,4 @@ jobs:
       - name: Test with pytest
         run: |
           pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-          pipenv run python -m pytest tests/test_shell
+          pipenv run python -m pytest tests/test_models

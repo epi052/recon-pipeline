@@ -1,0 +1,42 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:14:09 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.209.11.133.37-tcp 209.11.133.37
+Nmap scan report for 209.11.133.37
+Host is up (0.048s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    BigIP
+| fingerprint-strings:
+|   FourOhFourRequest, GetRequest:
+|     HTTP/1.0 302 Found
+|     Location: https://service.teslamotors.com
+|     Server: BigIP
+|     Connection: close
+|     Content-Length: 0
+|   HTTPOptions, RTSPRequest, SIPOptions:
+|     HTTP/1.0 302 Security Redirect
+|     Location: http://assets.teslastatic.com/index1.html
+|     Cache-Control: no-cache
+|     Pragma: no-cache
+|     Expires: 0
+|_    Connection: close
+|_http-server-header: BigIP
+|_http-title: Did not follow redirect to http://assets.teslastatic.com/index1.html
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port80-TCP:V=7.80%I=7%D=4/6%Time=5E8B3938%P=x86_64-pc-linux-gnu%r(GetRe
+SF:quest,76,"HTTP/1\.0\x20302\x20Found\r\nLocation:\x20https://service\.te
+SF:slamotors\.com\r\nServer:\x20BigIP\r\nConnection:\x20close\r\nContent-L
+SF:ength:\x200\r\n\r\n")%r(HTTPOptions,A1,"HTTP/1\.0\x20302\x20Security\x2
+SF:0Redirect\r\nLocation:\x20http://assets\.teslastatic\.com/index1\.html\
+SF:r\nCache-Control:\x20no-cache\r\nPragma:\x20no-cache\r\nExpires:\x200\r
+SF:\nConnection:\x20close\r\n\r\n")%r(RTSPRequest,A1,"HTTP/1\.0\x20302\x20
+SF:Security\x20Redirect\r\nLocation:\x20http://assets\.teslastatic\.com/in
+SF:dex1\.html\r\nCache-Control:\x20no-cache\r\nPragma:\x20no-cache\r\nExpi
+SF:res:\x200\r\nConnection:\x20close\r\n\r\n")%r(FourOhFourRequest,76,"HTT
+SF:P/1\.0\x20302\x20Found\r\nLocation:\x20https://service\.teslamotors\.co
+SF:m\r\nServer:\x20BigIP\r\nConnection:\x20close\r\nContent-Length:\x200\r
+SF:\n\r\n")%r(SIPOptions,A1,"HTTP/1\.0\x20302\x20Security\x20Redirect\r\nL
+SF:ocation:\x20http://assets\.teslastatic\.com/index1\.html\r\nCache-Contr
+SF:ol:\x20no-cache\r\nPragma:\x20no-cache\r\nExpires:\x200\r\nConnection:\
+SF:x20close\r\n\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:16:38 2020 -- 1 IP address (1 host up) scanned in 148.19 seconds
