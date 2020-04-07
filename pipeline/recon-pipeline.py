@@ -648,6 +648,8 @@ class ReconShell(cmd2.Cmd):
         if self.db_mgr is None:
             return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
 
+        self.add_dynamic_parser_arguments()
+
         func = getattr(args, "func", None)
 
         if func is not None:
