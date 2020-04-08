@@ -1,10 +1,13 @@
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
 .. _models-ref-label:
 
 Database Models
 ===============
 
 .. image:: ../img/database-design.png
-
 
 Target Model
 ############

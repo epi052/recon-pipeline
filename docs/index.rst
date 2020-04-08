@@ -28,10 +28,14 @@ Changing the Code
 API Reference
 =============
 
-* :ref:`scanners-ref-label`
-* :ref:`parsers-ref-label`
-* :ref:`commands-ref-label`
-* :ref:`models-ref-label`
+.. toctree::
+    :maxdepth: 2
+
+    api/commands
+    api/manager
+    api/models
+    api/parsers
+    api/scanners
 
 Indices and tables
 ==================

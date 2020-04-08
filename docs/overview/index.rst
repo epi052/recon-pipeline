@@ -8,6 +8,7 @@ Getting Started
     installation
     scope
     running_scans
+    viewing_results
     scheduler
     visualization
 

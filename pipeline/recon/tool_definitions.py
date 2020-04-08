@@ -16,7 +16,6 @@ tools = {
         ],
         "shell": True,
     },
-    "luigi": {"installed": False, "dependencies": None, "commands": ["pip install luigi"]},
     "seclists": {
         "installed": False,
         "dependencies": None,

@@ -19,6 +19,8 @@ from ..recon.helpers import get_ip_address_version, is_ip_address
 
 
 class DBManager:
+    """ Class that encapsulates database transactions and queries """
+
     def __init__(self, db_location):
         self.location = Path(db_location).resolve()
         self.connection_string = f"sqlite:///{self.location}"

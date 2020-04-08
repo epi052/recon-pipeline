@@ -18,13 +18,13 @@ following individual scans are available
 - :class:`pipeline.recon.web.subdomain_takeover.TKOSubsScan`
 - :class:`pipeline.recon.web.webanalyze.WebanalyzeScan`
 
-Additionally, two wrapper scans are made available as well.
+Additionally, two wrapper scans are made available as well.  These execute multiple scans in a pipeline.
 
 - :class:`pipeline.recon.wrappers.FullScan` - runs the entire pipeline
 - :class:`pipeline.recon.wrappers.HTBScan` - nicety for hackthebox players (myself included) that omits the scans in FullScan that don't make sense for HTB
 
 Example Scan
-============
+############
 
 .. raw:: html
 

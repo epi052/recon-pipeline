@@ -257,6 +257,8 @@ class ReconShell(cmd2.Cmd):
             # add stderr to the selector loop for processing when there's something to read from the fd
             selector.register(proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer)
 
+        self.add_dynamic_parser_arguments()
+
     @cmd2.with_argparser(install_parser)
     def do_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
@@ -659,8 +661,6 @@ class ReconShell(cmd2.Cmd):
         """ View results of completed scans """
         if self.db_mgr is None:
             return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
-
-        self.add_dynamic_parser_arguments()
 
         func = getattr(args, "func", None)
 

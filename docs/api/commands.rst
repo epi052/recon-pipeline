@@ -1,3 +1,7 @@
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
 .. _commands-ref-label:
 
 Commands
@@ -23,7 +27,6 @@ install
     :func: install_parser
     :prog: install
 
-.. _scan_command:
 
 .. _database_command:
 
@@ -34,6 +37,8 @@ database
     :module: pipeline.recon
     :func: database_parser
     :prog: database
+
+.. _scan_command:
 
 scan
 ####
