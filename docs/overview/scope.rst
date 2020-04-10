@@ -4,8 +4,8 @@ Defining Target Scope
 =====================
 
 The pipeline expects a file that describes the target's scope to be provided as an argument to the
-``--target-file`` option. The target file can consist of domains, ip addresses, and ip ranges, one per line.  Ip
-addresses and ip ranges can be mixed/matched, but domains cannot.
+``--target-file`` option. The target file can consist of domains, ip addresses, and ip ranges, one per line.  Domains, ip
+addresses and ip ranges can be mixed/matched within the scope file.
 
 .. code-block:: console
 

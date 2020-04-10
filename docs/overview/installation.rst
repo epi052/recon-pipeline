@@ -11,7 +11,7 @@ There are two primary phases for installation:
 Manual Steps
 ############
 
-First, the manual steps to get cmd2 installed in a virtual environment are as follows (and shown below)
+First, the steps to get python dependencies installed in a virtual environment are as follows (and shown below)
 
 Kali
 ----
@@ -43,7 +43,7 @@ Both OSs After ``pipenv`` Install
 
 .. raw:: html
 
-    <script id="asciicast-293306" src="https://asciinema.org/a/293306.js" async></script>
+    <script id="asciicast-318395" src="https://asciinema.org/a/318395.js" async></script>
 
 Everything Else
 ###############
@@ -58,7 +58,7 @@ up the pipeline.
 
 The installer maintains a (naive) list of installed tools at ``~/.cache/.tool-dict.pkl``.  The installer in no way
 attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's
-like Jon Snow, it knows nothing.
+like Jon Snow, **it knows nothing**.
 
 .. raw:: html
 

@@ -17,8 +17,8 @@ Getting Started
 
     overview/index
 
-Changing the Code
-=================
+Personalization
+===============
 
 .. toctree::
     :maxdepth: 1

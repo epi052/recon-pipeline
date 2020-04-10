@@ -197,6 +197,7 @@ class TestReconShell:
             ("ports --paged", "blog.bitdiscovery.com: 443,80"),
             ("ports --host assetinventory.bugcrowd.com", "assetinventory.bugcrowd.com: 8443,8080,443,80"),
             ("ports --host assetinventory.bugcrowd.com --paged", "assetinventory.bugcrowd.com: 8443,8080,443,80"),
+            ("ports --port-number 8443", "assetinventory.bugcrowd.com: 8443,8080,443,80"),
             ("endpoints", " https://ibm.bitdiscovery.com/user\n[\x1b[91m403\x1b[39m] https://52.8.186.88/ADMIN"),
             ("endpoints --host 52.8.186.88", "[\x1b[32m200\x1b[39m] https://52.8.186.88/favicon.ico"),
             ("endpoints --host 52.8.186.88 --status-code 200", "[\x1b[32m200\x1b[39m] https://52.8.186.88/favicon.ico"),
@@ -242,8 +243,14 @@ class TestReconShell:
             ("searchsploit-results --host synopsys.bitdiscovery.com --fullpath", "exploits/linux/local/40768.sh"),
             ("targets", "email.assetinventory.bugcrowd.com"),
             ("targets --vuln-to-subdomain-takeover --paged", ""),
+            ("targets --type ipv4 --paged", "13.226.182.120"),
+            ("targets --type ipv6", "2606:4700:10::6814:3c33"),
+            ("targets --type domain-name --paged", "email.assetinventory.bugcrowd.com"),
             ("web-technologies", "CloudFlare (CDN)"),
-            ("web-technologies --host blog.bitdiscovery.com --paged", "MySQL (Databases)"),
+            ("web-technologies --host blog.bitdiscovery.com --type CDN", "Amazon Cloudfront (CDN)"),
+            ("web-technologies --host blog.bitdiscovery.com --product WordPress", "WordPress (CMS,Blogs)"),
+            ("web-technologies --product WordPress", "13.226.191.61"),
+            ("web-technologies  --type Miscellaneous", "13.226.191.85"),
         ],
     )
     def test_do_view_with_real_database(self, test_input, expected, capsys):
@@ -283,15 +290,20 @@ class TestReconShell:
         self.shell.do_status("--host 127.0.0.1 --port 1111")
         assert mock_browser.called
 
-    @pytest.mark.parametrize("test_input, expected", [("all", "is already installed")])
-    def test_do_install(self, test_input, expected, capsys, tmp_path):
+    # ("all", "commands failed and may have not installed properly", 1)
+    # after tools moved to DB, update this test
+    @pytest.mark.parametrize("test_input, expected, return_code", [("all", "is already installed", 0)])
+    def test_do_install(self, test_input, expected, return_code, capsys, tmp_path, monkeypatch):
         process_mock = MagicMock()
-        attrs = {"communicate.return_value": (b"output", b"error"), "returncode": 0}
+        attrs = {"communicate.return_value": (b"output", b"error"), "returncode": return_code}
         process_mock.configure_mock(**attrs)
 
-        with patch("subprocess.Popen", autospec=True) as mocked_popen, patch.object(
-            Path, "home", return_value=tmp_path
-        ):
+        def mockreturn():
+            return tmp_path
+
+        monkeypatch.setattr(Path, "home", mockreturn)
+
+        with patch("subprocess.Popen", autospec=True) as mocked_popen:
             mocked_popen.return_value = process_mock
             self.shell.do_install(test_input)
             out = capsys.readouterr().out

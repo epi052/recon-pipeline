@@ -6,7 +6,7 @@ from .config import tool_paths, defaults
 tools = {
     "luigi-service": {
         "installed": False,
-        "dependencies": ["luigi"],
+        "dependencies": None,
         "commands": [
             f"sudo cp {str(Path(__file__).parents[2] / 'luigid.service')} /lib/systemd/system/luigid.service",
             f"sudo cp $(which luigid) /usr/local/bin",

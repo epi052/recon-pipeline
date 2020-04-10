@@ -14,6 +14,7 @@ from .target_model import Target
 from .nmap_model import NmapResult
 from .endpoint_model import Endpoint
 from .ip_address_model import IPAddress
+from .technology_model import Technology
 from .searchsploit_model import SearchsploitResult
 from ..recon.helpers import get_ip_address_version, is_ip_address
 
@@ -202,3 +203,9 @@ class DBManager:
 
     def get_all_searchsploit_results(self):
         return self.get_and_filter(SearchsploitResult)
+
+    def get_all_web_technology_types(self):
+        return set(str(x[0]) for x in self.session.query(Technology.type).all())
+
+    def get_all_web_technology_products(self):
+        return set(str(x[0]) for x in self.session.query(Technology.text).all())

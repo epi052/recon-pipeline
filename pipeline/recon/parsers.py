@@ -117,6 +117,7 @@ target_results_parser.add_argument(
     default=False,
     help="show targets identified as vulnerable to subdomain takeover",
 )
+target_results_parser.add_argument("--type", choices=["ipv4", "ipv6", "domain-name"], help="filter by target type")
 target_results_parser.add_argument(
     "--paged", action="store_true", default=False, help="display output page-by-page (default: False)"
 )
@@ -175,6 +176,7 @@ port_results_parser.add_argument(
 # all options below this line will be updated with a choices option in recon-pipeline.py's
 # add_dynamic_parser_arguments function.  They're included here primarily to ease auto documentation of the commands
 port_results_parser.add_argument("--host", help="filter results by host")
+port_results_parser.add_argument("--port-number", help="filter results by port number")
 endpoint_results_parser.add_argument("--status-code", help="filter results by status code")
 endpoint_results_parser.add_argument("--host", help="filter results by host")
 nmap_results_parser.add_argument("--host", help="filter results by host")
@@ -182,5 +184,7 @@ nmap_results_parser.add_argument("--nse-script", help="filter results by nse scr
 nmap_results_parser.add_argument("--port", help="filter results by port scanned")
 nmap_results_parser.add_argument("--product", help="filter results by reported product")
 technology_results_parser.add_argument("--host", help="filter results by host")
+technology_results_parser.add_argument("--type", help="filter results by type")
+technology_results_parser.add_argument("--product", help="filter results by product")
 searchsploit_results_parser.add_argument("--host", help="filter results by host")
 searchsploit_results_parser.add_argument("--type", help="filter results by exploit type")

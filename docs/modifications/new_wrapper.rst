@@ -1,5 +1,5 @@
-Personalization: Creating a New Wrapper Scan
-============================================
+Creating a New Wrapper Scan
+===========================
 
 If for whatever reason you want something other than FullScan, the process for defining a new scan is relatively simple.
 The ``HTBScan`` is a good example.

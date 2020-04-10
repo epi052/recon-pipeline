@@ -3,7 +3,7 @@
 Running Scans
 =============
 
-All scans are ran from within ``recon-pipeline``'s shell.  There are a number of individual scans, however to execute
+All scans are run from within ``recon-pipeline``'s shell.  There are a number of individual scans, however to execute
 multiple scans at once, ``recon-pipeline`` includes wrappers around multiple commands.  As of version |version|, the
 following individual scans are available
 
@@ -18,7 +18,7 @@ following individual scans are available
 - :class:`pipeline.recon.web.subdomain_takeover.TKOSubsScan`
 - :class:`pipeline.recon.web.webanalyze.WebanalyzeScan`
 
-Additionally, two wrapper scans are made available as well.  These execute multiple scans in a pipeline.
+Additionally, two wrapper scans are made available.  These execute multiple scans in a pipeline.
 
 - :class:`pipeline.recon.wrappers.FullScan` - runs the entire pipeline
 - :class:`pipeline.recon.wrappers.HTBScan` - nicety for hackthebox players (myself included) that omits the scans in FullScan that don't make sense for HTB
@@ -28,4 +28,4 @@ Example Scan
 
 .. raw:: html
 
-    <script id="asciicast-293302" src="https://asciinema.org/a/293302.js" async></script>
+    <script id="asciicast-318397" src="https://asciinema.org/a/318397.js" async></script>

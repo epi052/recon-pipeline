@@ -267,7 +267,7 @@ class ReconShell(cmd2.Cmd):
         global tools
 
         # create .cache dir in the home directory, on the off chance it doesn't exist
-        cachedir = Path.home() / ".cache/"
+        cachedir = Path.home() / ".cache"
         cachedir.mkdir(parents=True, exist_ok=True)
 
         persistent_tool_dict = cachedir / ".tool-dict.pkl"
@@ -420,6 +420,9 @@ class ReconShell(cmd2.Cmd):
     def add_dynamic_parser_arguments(self):
         """ Populate command parsers with information from the currently attached database """
         port_results_parser.add_argument("--host", choices=self.db_mgr.get_all_targets(), help="filter results by host")
+        port_results_parser.add_argument(
+            "--port-number", choices=self.db_mgr.get_all_port_numbers(), help="filter results by port number"
+        )
         endpoint_results_parser.add_argument(
             "--status-code", choices=self.db_mgr.get_status_codes(), help="filter results by status code"
         )
@@ -438,6 +441,12 @@ class ReconShell(cmd2.Cmd):
         )
         technology_results_parser.add_argument(
             "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
+        )
+        technology_results_parser.add_argument(
+            "--type", choices=self.db_mgr.get_all_web_technology_types(), help="filter results by type"
+        )
+        technology_results_parser.add_argument(
+            "--product", choices=self.db_mgr.get_all_web_technology_products(), help="filter results by product"
         )
         searchsploit_results_parser.add_argument(
             "--host", choices=self.db_mgr.get_all_targets(), help="filter results by host"
@@ -487,7 +496,16 @@ class ReconShell(cmd2.Cmd):
         results = list()
         printer = self.ppaged if args.paged else print
 
-        for target in self.db_mgr.get_all_targets():
+        if args.type == "ipv4":
+            targets = self.db_mgr.get_all_ipv4_addresses()
+        elif args.type == "ipv6":
+            targets = self.db_mgr.get_all_ipv6_addresses()
+        elif args.type == "domain-name":
+            targets = self.db_mgr.get_all_hostnames()
+        else:
+            targets = self.db_mgr.get_all_targets()
+
+        for target in targets:
             if args.vuln_to_subdomain_takeover:
                 tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(target)
                 if not tgt.vuln_to_sub_takeover:
@@ -586,11 +604,25 @@ class ReconShell(cmd2.Cmd):
         results = list()
         printer = self.ppaged if args.paged else print
 
-        for webanalyze_scan in self.db_mgr.get_and_filter(Technology):
-            for target in webanalyze_scan.targets:
-                if args.host is not None and self.db_mgr.get_or_create_target_by_ip_or_hostname(args.host) != target:
+        filters = dict()
+        if args.type is not None:
+            filters["type"] = args.type
+        if args.product is not None:
+            filters["text"] = args.product
+
+        if args.host:
+            tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(args.host)
+            print(args.host)
+            print("=" * len(args.host))
+            for tech in tgt.technologies:
+                if args.product is not None and args.product != tech.text:
                     continue
-                results.append(webanalyze_scan.pretty(padlen=1))
+                if args.type is not None and args.type != tech.type:
+                    continue
+                print(f"   - {tech.text} ({tech.type})")
+        else:
+            for scan in self.db_mgr.get_and_filter(Technology, **filters):
+                results.append(scan.pretty(padlen=1))
 
         if results:
             printer("\n".join(results))
@@ -649,6 +681,9 @@ class ReconShell(cmd2.Cmd):
             ports = [
                 str(port.port_number) for port in self.db_mgr.get_or_create_target_by_ip_or_hostname(target).open_ports
             ]
+
+            if args.port_number and args.port_number not in ports:
+                continue
 
             if ports:
                 results.append(f"{target}: {','.join(ports)}")
