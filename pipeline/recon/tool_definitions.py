@@ -21,7 +21,7 @@ tools = {
         "dependencies": None,
         "shell": True,
         "commands": [
-            f"bash -c 'if [[ -d {defaults.get('tools-dir')}/seclists ]] ; then cd {defaults.get('tools-dir')}/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists; fi'"
+            f"bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists {defaults.get('tools-dir')}/seclists; elif [[ -d {defaults.get('tools-dir')}/seclists ]] ; then cd {defaults.get('tools-dir')}/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists; fi'"
         ],
     },
     "searchsploit": {
