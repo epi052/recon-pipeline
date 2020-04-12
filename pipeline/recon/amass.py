@@ -182,6 +182,10 @@ class ParseAmassOutput(luigi.Task):
         """
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
+        if Path(self.input().path).stat().st_size == 0:
+            self.output().touch()
+            return
+
         amass_json = self.input().open()
 
         with amass_json as amass_json_file:
