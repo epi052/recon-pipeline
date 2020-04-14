@@ -62,9 +62,11 @@ tools = {
         "commands": [
             "mkdir /tmp/aquatone",
             "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
-            "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
+            "bash -c 'if [[ ! $(which unzip) ]]; then sudo apt install -y zip; fi'",
+            "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone"
             f"mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
             "rm -rf /tmp/aquatone",
+            "bash -c 'found=false; for loc in {/usr/bin/google-chrome,/usr/bin/google-chrome-beta,/usr/bin/google-chrome-unstable,/usr/bin/chromium-browser,/usr/bin/chromium}; do if [[ $(which $loc) ]]; then found=true; break; fi ; done; if [[ $found = false ]]; then sudo apt install -y chromium-browser ; fi'",
         ],
     },
     "gobuster": {

@@ -325,7 +325,7 @@ class TestReconShell:
             ("FullScan --target-file required ", "If anything goes wrong, rerun your command with --verbose", True),
         ],
     )
-    def test_do_scan(self, test_input, expected, db_mgr, capsys):
+    def test_do_scan(self, test_input, expected, db_mgr, capsys, tmp_path):
         process_mock = MagicMock()
         attrs = {"communicate.return_value": (b"output", b"error"), "returncode": 0}
         process_mock.configure_mock(**attrs)
@@ -339,7 +339,7 @@ class TestReconShell:
                 assert expected in capsys.readouterr().out
             else:
                 self.shell.db_mgr = MagicMock()
-                self.shell.db_mgr.location = "stuff"
+                self.shell.db_mgr.location = tmp_path / "stuff"
                 self.shell.do_scan(test_input)
                 if "--sausage" in test_input:
                     assert mocked_web.called

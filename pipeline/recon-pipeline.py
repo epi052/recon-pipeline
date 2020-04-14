@@ -368,7 +368,7 @@ class ReconShell(cmd2.Cmd):
     @cmd2.with_argparser(status_parser)
     def do_status(self, args):
         """ Open a web browser to Luigi's central scheduler's visualization site """
-        webbrowser.open(f"{args.host}:{args.port}")
+        webbrowser.open(f"http://{args.host}:{args.port}")
 
     @staticmethod
     def get_databases():
@@ -494,7 +494,7 @@ class ReconShell(cmd2.Cmd):
     def print_target_results(self, args):
         """ Display all Targets from the database, ipv4/6 and hostname """
         results = list()
-        printer = self.ppaged if args.paged else print
+        printer = self.ppaged if args.paged else self.poutput
 
         if args.type == "ipv4":
             targets = self.db_mgr.get_all_ipv4_addresses()
@@ -523,6 +523,7 @@ class ReconShell(cmd2.Cmd):
     def print_endpoint_results(self, args):
         """ Display all Endpoints from the database """
         host_endpoints = status_endpoints = None
+        printer = self.ppaged if args.paged else self.poutput
 
         color_map = {"2": "green", "3": "blue", "4": "bright_red", "5": "bright_magenta"}
 
@@ -556,16 +557,13 @@ class ReconShell(cmd2.Cmd):
                 else:
                     results.append(style(f"  {header.name}:", fg="cyan") + f" {header.value}")
 
-        if args.paged:
-            self.ppaged("\n".join(results))
-        else:
-            for result in results:
-                self.poutput(result)
+        if results:
+            printer("\n".join(results))
 
     def print_nmap_results(self, args):
         """ Display all NmapResults from the database """
         results = list()
-        printer = self.ppaged if args.paged else print
+        printer = self.ppaged if args.paged else self.poutput
 
         if args.host is not None:
             # limit by host, if necessary
@@ -602,7 +600,7 @@ class ReconShell(cmd2.Cmd):
     def print_webanalyze_results(self, args):
         """ Display all NmapResults from the database """
         results = list()
-        printer = self.ppaged if args.paged else print
+        printer = self.ppaged if args.paged else self.poutput
 
         filters = dict()
         if args.type is not None:
@@ -612,14 +610,14 @@ class ReconShell(cmd2.Cmd):
 
         if args.host:
             tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(args.host)
-            print(args.host)
-            print("=" * len(args.host))
+            printer(args.host)
+            printer("=" * len(args.host))
             for tech in tgt.technologies:
                 if args.product is not None and args.product != tech.text:
                     continue
                 if args.type is not None and args.type != tech.type:
                     continue
-                print(f"   - {tech.text} ({tech.type})")
+                printer(f"   - {tech.text} ({tech.type})")
         else:
             for scan in self.db_mgr.get_and_filter(Technology, **filters):
                 results.append(scan.pretty(padlen=1))
@@ -631,7 +629,7 @@ class ReconShell(cmd2.Cmd):
         """ Display all NmapResults from the database """
         results = list()
         targets = self.db_mgr.get_all_targets()
-        printer = self.ppaged if args.paged else print
+        printer = self.ppaged if args.paged else self.poutput
 
         for ss_scan in self.db_mgr.get_and_filter(SearchsploitResult):
             tmp_targets = set()
@@ -671,7 +669,7 @@ class ReconShell(cmd2.Cmd):
         """ Display all Ports from the database """
         results = list()
         targets = self.db_mgr.get_all_targets()
-        printer = self.ppaged if args.paged else print
+        printer = self.ppaged if args.paged else self.poutput
 
         for target in targets:
             if args.host is not None and target != args.host:
