@@ -39,6 +39,7 @@ Both OSs After ``pipenv`` Install
     git clone https://github.com/epi052/recon-pipeline.git
     cd recon-pipeline
     pipenv install
+    pipenv shell
 
 
 .. raw:: html
