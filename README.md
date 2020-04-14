@@ -44,6 +44,7 @@ bash
 git clone https://github.com/epi052/recon-pipeline.git
 cd recon-pipeline
 pipenv install
+pipenv shell
 ```
 
 After installing the python dependencies, the `recon-pipeline` shell provides its own [install](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#install) command (seen below).  A simple `install all` will handle all additional installation steps.
