@@ -8,7 +8,6 @@ def test_get_scans():
 
     scan_names = [
         "AmassScan",
-        "CORScannerScan",
         "GobusterScan",
         "MasscanScan",
         "SubjackScan",

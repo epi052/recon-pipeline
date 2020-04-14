@@ -23,7 +23,6 @@ tool_paths = {
     "tko-subs-dir": f"{Path.home()}/go/src/github.com/anshumanbh/tko-subs",
     "subjack": f"{Path.home()}/go/bin/subjack",
     "subjack-fingerprints": f"{Path.home()}/go/src/github.com/haccer/subjack/fingerprints.json",
-    "CORScanner": f"{defaults.get('tools-dir')}/CORScanner/cors_scan.py",
     "gobuster": f"{Path.home()}/go/bin/gobuster",
     "recursive-gobuster": f"{defaults.get('tools-dir')}/recursive-gobuster/recursive-gobuster.pyz",
     "webanalyze": f"{Path.home()}/go/bin/webanalyze",

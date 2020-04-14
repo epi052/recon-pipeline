@@ -5,11 +5,10 @@ from .nmap import SearchsploitScan
 from .web import AquatoneScan
 from .web import GobusterScan
 from .web import WebanalyzeScan
-from .web import CORScannerScan
 from .web import TKOSubsScan, SubjackScan
 
 
-@inherits(SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, CORScannerScan, GobusterScan, WebanalyzeScan)
+@inherits(SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, GobusterScan, WebanalyzeScan)
 class FullScan(luigi.WrapperTask):
     """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
 
@@ -64,7 +63,6 @@ class FullScan(luigi.WrapperTask):
 
         yield SubjackScan(**args)
         yield SearchsploitScan(**args)
-        yield CORScannerScan(**args)
         yield WebanalyzeScan(**args)
 
         del args["threads"]

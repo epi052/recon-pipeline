@@ -19,12 +19,6 @@ Aquatone Scanner
 .. autoclass:: pipeline.recon.web.aquatone.AquatoneScan
     :members:
 
-CORS Scanner
-############
-
-.. autoclass:: pipeline.recon.web.corscanner.CORScannerScan
-    :members:
-
 Full Scanner
 ############
 

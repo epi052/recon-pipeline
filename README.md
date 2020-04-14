@@ -101,7 +101,6 @@ Scan the target
 [-] ParseMasscanOutput queued
 [-] MasscanScan queued
 [-] WebanalyzeScan queued
-[-] CORScannerScan queued
 [-] SearchsploitScan queued
 [-] ThreadedNmapScan queued
 [-] SubjackScan queued

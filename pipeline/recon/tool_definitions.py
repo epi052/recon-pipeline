@@ -67,16 +67,6 @@ tools = {
             "rm -rf /tmp/aquatone",
         ],
     },
-    "corscanner": {
-        "installed": False,
-        "dependencies": None,
-        "shell": True,
-        "commands": [
-            f"bash -c 'if [[ -d {Path(tool_paths.get('CORScanner')).parent} ]] ; then cd {Path(tool_paths.get('CORScanner')).parent} && git fetch --all && git pull; else git clone https://github.com/chenjj/CORScanner.git {Path(tool_paths.get('CORScanner')).parent}; fi'",
-            f"pip install -r {Path(tool_paths.get('CORScanner')).parent / 'requirements.txt'}",
-            "pip install future",
-        ],
-    },
     "gobuster": {
         "installed": False,
         "dependencies": ["go", "seclists"],

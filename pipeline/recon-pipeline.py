@@ -209,7 +209,7 @@ class ReconShell(cmd2.Cmd):
         """ Scan something.
 
         Possible scans include
-            AmassScan           CORScannerScan      GobusterScan        SearchsploitScan
+            AmassScan           GobusterScan        SearchsploitScan
             ThreadedNmapScan    WebanalyzeScan      AquatoneScan        FullScan
             MasscanScan         SubjackScan         TKOSubsScan         HTBScan
         """
@@ -227,7 +227,7 @@ class ReconShell(cmd2.Cmd):
         )
 
         # get_scans() returns mapping of {classname: [modulename, ...]} in the recon module
-        # each classname corresponds to a potential recon-pipeline command, i.e. AmassScan, CORScannerScan ...
+        # each classname corresponds to a potential recon-pipeline command, i.e. AmassScan, GobusterScan ...
         scans = get_scans()
 
         # command is a list that will end up looking something like what's below
