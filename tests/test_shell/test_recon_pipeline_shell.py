@@ -361,9 +361,13 @@ class TestReconShell:
     def test_remove_old_recon_tools(self, test_input, tmp_path):
         tooldict = tmp_path / ".tool-dict.pkl"
         tooldir = tmp_path / ".recon-tools"
+        searchsploit_rc = tmp_path / ".searchsploit_rc"
 
         tooldict.touch()
         assert tooldict.exists()
+
+        searchsploit_rc.touch()
+        assert searchsploit_rc.exists()
 
         tooldir.mkdir()
         assert tooldir.exists()
@@ -375,9 +379,11 @@ class TestReconShell:
 
         with patch("cmd2.Cmd.cmdloop"), patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
             mocked_select.return_value = test_input
-            recon_shell.main(name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict)
+            recon_shell.main(
+                name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict, old_searchsploit_rc=searchsploit_rc
+            )
 
-        for file in [subfile, tooldir, tooldict]:
+        for file in [subfile, tooldir, tooldict, searchsploit_rc]:
             if test_input == "Yes":
                 assert not file.exists()
             else:

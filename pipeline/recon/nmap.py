@@ -291,6 +291,14 @@ class SearchsploitScan(luigi.Task):
                 for line in contents.splitlines():
                     if "Title" in line:
                         # {'Title': "Nginx (Debian Based Distros + Gentoo) ... }
+
+                        # oddity introduced on 15 Apr 2020 from an exploitdb update
+                        #   entries have two double quotes in a row for no apparent reason
+                        #   {"Title":"PHP-FPM + Nginx - Remote Code Execution"", ...
+                        #   seems to affect all entries at the moment. will remove this line if it
+                        #   ever returns to normal
+                        line = line.replace('""', '"')
+
                         if line.endswith(","):
                             # result would be a tuple if the comma is left on the line; remove it
                             tmp_result = ast.literal_eval(line.strip()[:-1])

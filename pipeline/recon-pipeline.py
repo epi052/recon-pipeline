@@ -276,7 +276,7 @@ class ReconShell(cmd2.Cmd):
         if args.tool == "all":
             # show all tools have been queued for installation
             [
-                self.async_alert(style(f"[-] {x} queued", fg="bright_white"))
+                self.poutput(style(f"[-] {x} queued", fg="bright_white"))
                 for x in tools.keys()
                 if not tools.get(x).get("installed")
             ]
@@ -297,7 +297,7 @@ class ReconShell(cmd2.Cmd):
                     # already installed, skip it
                     continue
 
-                self.async_alert(
+                self.poutput(
                     style(f"[!] {args.tool} has an unmet dependency; installing {dependency}", fg="yellow", bold=True)
                 )
 
@@ -305,13 +305,13 @@ class ReconShell(cmd2.Cmd):
                 self.do_install(dependency)
 
         if tools.get(args.tool).get("installed"):
-            return self.async_alert(style(f"[!] {args.tool} is already installed.", fg="yellow"))
+            return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
             # list of return values from commands run during each tool installation
             # used to determine whether the tool installed correctly or not
             retvals = list()
 
-            self.async_alert(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
+            self.poutput(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
 
             addl_env_vars = tools.get(args.tool).get("environ")
 
@@ -322,7 +322,7 @@ class ReconShell(cmd2.Cmd):
                 # run all commands required to install the tool
 
                 # print each command being run
-                self.async_alert(style(f"[=] {command}", fg="cyan"))
+                self.poutput(style(f"[=] {command}", fg="cyan"))
 
                 if tools.get(args.tool).get("shell"):
 
@@ -347,7 +347,7 @@ class ReconShell(cmd2.Cmd):
         if all(x == 0 for x in retvals):
             # all return values in retvals are 0, i.e. all exec'd successfully; tool has been installed
 
-            self.async_alert(style(f"[+] {args.tool} installed!", fg="bright_green"))
+            self.poutput(style(f"[+] {args.tool} installed!", fg="bright_green"))
 
             tools[args.tool]["installed"] = True
         else:
@@ -355,7 +355,7 @@ class ReconShell(cmd2.Cmd):
 
             tools[args.tool]["installed"] = False
 
-            self.async_alert(
+            self.poutput(
                 style(
                     f"[!!] one (or more) of {args.tool}'s commands failed and may have not installed properly; check output from the offending command above...",
                     fg="bright_red",
@@ -709,7 +709,10 @@ class ReconShell(cmd2.Cmd):
 
 
 def main(
-    name, old_tools_dir=Path().home() / ".recon-tools", old_tools_dict=Path().home() / ".cache" / ".tool-dict.pkl"
+    name,
+    old_tools_dir=Path().home() / ".recon-tools",
+    old_tools_dict=Path().home() / ".cache" / ".tool-dict.pkl",
+    old_searchsploit_rc=Path().home() / ".searchsploit_rc",
 ):
     """ Functionified for testability """
     if name == "__main__":
@@ -724,7 +727,12 @@ def main(
                     fg="bright_white",
                 )
             )
-            print(style(f"[*] Do you want to remove {old_tools_dir}/* and {old_tools_dict}?", fg="bright_white"))
+            print(
+                style(
+                    f"[*] Do you want to remove {old_tools_dir}/*, {old_searchsploit_rc}, and {old_tools_dict}?",
+                    fg="bright_white",
+                )
+            )
 
             answer = cmd2.Cmd().select(["Yes", "No"])
             print(style(f"[+] You chose {answer}", fg="bright_green"))
@@ -736,6 +744,10 @@ def main(
                 if old_tools_dict.exists():
                     old_tools_dict.unlink()
                     print(style(f"[+] {old_tools_dict} removed", fg="bright_green"))
+
+                if old_searchsploit_rc.exists():
+                    old_searchsploit_rc.unlink()
+                    print(style(f"[+] {old_searchsploit_rc} removed", fg="bright_green"))
 
                 print(style(f"[=] Please run the install all command to complete setup", fg="bright_blue"))
 
