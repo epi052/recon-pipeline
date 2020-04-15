@@ -6,6 +6,7 @@ import shlex
 import shutil
 import pickle
 import selectors
+import tempfile
 import threading
 import subprocess
 import webbrowser
@@ -235,6 +236,18 @@ class ReconShell(cmd2.Cmd):
         # luigi --module pipeline.recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
         command = ["luigi", "--module", scans.get(args.scantype)[0]]
 
+        tgt_file_path = None
+        if args.target:
+            tgt_file_fd, tgt_file_path = tempfile.mkstemp()  # temp file to hold target for later parsing
+
+            tgt_file_path = Path(tgt_file_path)
+            tgt_idx = args.__statement__.arg_list.index("--target")
+
+            tgt_file_path.write_text(args.target)
+
+            args.__statement__.arg_list[tgt_idx + 1] = str(tgt_file_path)
+            args.__statement__.arg_list[tgt_idx] = "--target-file"
+
         command.extend(args.__statement__.arg_list)
 
         command.extend(["--db-location", str(self.db_mgr.location)])
@@ -259,6 +272,8 @@ class ReconShell(cmd2.Cmd):
             selector.register(proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer)
 
         self.add_dynamic_parser_arguments()
+        if tgt_file_path:
+            Path(tgt_file_path).unlink()
 
     @cmd2.with_argparser(install_parser)
     def do_install(self, args):

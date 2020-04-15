@@ -28,12 +28,15 @@ status_parser.add_argument(
 # options for ReconShell's 'scan' command
 scan_parser = cmd2.Cmd2ArgumentParser()
 scan_parser.add_argument("scantype", choices_function=get_scans, help="which type of scan to run")
-scan_parser.add_argument(
+
+target_group = scan_parser.add_mutually_exclusive_group(required=True)
+target_group.add_argument(
     "--target-file",
     completer_method=cmd2.Cmd.path_complete,
-    help="file created by the user that defines the target's scope; list of ips/domains (required)",
-    required=True,
+    help="file created by the user that defines the target's scope; list of ips/domains",
 )
+target_group.add_argument("--target", help="ip or domain to target")
+
 scan_parser.add_argument(
     "--exempt-list", completer_method=cmd2.Cmd.path_complete, help="list of blacklisted ips/domains"
 )
