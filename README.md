@@ -162,6 +162,10 @@ Each of the sub-commands has a list of tab-completable options and values that c
 
 All of the subcommands offer a `--paged` option for dealing with large amounts of output. `--paged` will show you one page of output at a time (using `less` under the hood).
 
+A few examples of different view commands are shown below.
+
+[![asciicast](https://asciinema.org/a/KtiV1ihl16DLyYpapyrmjIplk.svg)](https://asciinema.org/a/KtiV1ihl16DLyYpapyrmjIplk)
+
 ## Chaining Results w/ Commands
 
 All of the results can be **piped out to other commands**. Let’s say you want to feed some results from recon-pipeline into another tool that isn’t part of the pipeline. Simply using a normal unix pipe `|` followed by the next command will get that done for you. Below is an example of piping targets into [gau](https://github.com/lc/gau)
