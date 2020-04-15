@@ -4,7 +4,7 @@ repos:
     hooks:
     - id: black
       language_version: python3.7
-      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_install']
+      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:
@@ -21,4 +21,4 @@ repos:
       entry: pytest
       language: system
       types: [python]
-      args: ['tests/test_web', 'tests/test_recon']
+      args: ['tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']

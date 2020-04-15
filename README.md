@@ -149,12 +149,24 @@ The other option is to add `--local-scheduler` to your `scan` command from withi
 
 ## Viewing Results
 
+## Found a bug?
 
+<!-- this section is a modified version of what's used by the awesome guys that wrote cmd2 -->
+
+If you think you've found a bug, please first read through the open [Issues](https://github.com/epi052/recon-pipeline/issues). If you're confident it's a new bug, go ahead and create a new GitHub issue. Be sure to include as much information as possible so we can reproduce the bug.  At a minimum, please state the following:
+
+* ``recon-pipeline`` version
+* Python version
+* OS name and version
+* How to reproduce the bug
+* Include any traceback or error message associated with the bug
 
 ## Special Thanks
 
 - [@aringo](https://github.com/aringo) for his help on the precursor to this tool
 - [@kernelsndrs](https://github.com/kernelsndrs) for identifying a few bugs after initial launch
+- [@GreaterGoodest](https://github.com/GreaterGoodest) for identifying bugs
+- The [cmd2](https://github.com/python-cmd2/cmd2) team for a lot of inspiration for project layout and documentation
 
 
 
