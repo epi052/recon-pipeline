@@ -63,8 +63,7 @@ After installing the python dependencies, the `recon-pipeline` shell provides it
 
 > Ubuntu-18.04 Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
-[![asciicast](https://asciinema.org/a/294414.svg)](https://asciinema.org/a/294414)
-
+[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
 ## Target File and Exempt List File (defining scope)
 
 The pipeline expects a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
@@ -144,11 +143,11 @@ Scan the target
 
 The same steps can be seen in realtime in the linked video below.
 
-[![asciicast](https://asciinema.org/a/293302.svg)](https://asciinema.org/a/293302)
+[![asciicast](https://asciinema.org/a/318397.svg)](https://asciinema.org/a/318397)
 
 ## Viewing Results
 
-As of version 0.9.0, scan results are stored in a database located (by default) at `~/.local/recon-pipeline/databases`.  Databases themselves are managed through the [database command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#database) while viewing their contents is done via [view command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#view-command.
+As of version 0.9.0, scan results are stored in a database located (by default) at `~/.local/recon-pipeline/databases`.  Databases themselves are managed through the [database command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#database) while viewing their contents is done via [view command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#view-command).
 
 The view command allows one to inspect different pieces of scan information via the following sub-commands
 
