@@ -60,7 +60,7 @@ class MasscanScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
 
     def output(self):
         """ Returns the target output for this task.
@@ -72,7 +72,7 @@ class MasscanScan(luigi.Task):
         """
         new_path = self.results_subfolder / "masscan.json"
 
-        return luigi.LocalTarget(new_path.resolve())
+        return luigi.LocalTarget(new_path.expanduser().resolve())
 
     def run(self):
         """ Defines the options/arguments sent to masscan after processing.
@@ -160,7 +160,7 @@ class ParseMasscanOutput(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "masscan-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
 
     def requires(self):
         """ ParseMasscanOutput depends on Masscan to run.

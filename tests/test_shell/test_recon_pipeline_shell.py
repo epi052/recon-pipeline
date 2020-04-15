@@ -131,7 +131,7 @@ class TestReconShell:
         assert testdb.exists()
         shell = recon_shell.ReconShell()
 
-        shell.select = lambda x: str(testdb.resolve())
+        shell.select = lambda x: str(testdb.expanduser().resolve())
         shell.get_databases = MagicMock(return_value=[str(testdb)])
         shell.database_attach("")
         time.sleep(1)
@@ -154,7 +154,7 @@ class TestReconShell:
     def test_database_delete_without_index(self, capsys, tmp_path):
         testdb = Path(tmp_path) / "testdb3"
         testdb.touch()
-        self.shell.select = lambda x: str(testdb.resolve())
+        self.shell.select = lambda x: str(testdb.expanduser().resolve())
         self.shell.get_databases = MagicMock(return_value=[str(testdb)])
         self.shell.database_delete("")
         try:
@@ -171,7 +171,7 @@ class TestReconShell:
         testdb = Path(defaults.get("database-dir")) / "testdb4"
         testdb.touch()
         shell = recon_shell.ReconShell()
-        shell.select = lambda x: str(testdb.resolve())
+        shell.select = lambda x: str(testdb.expanduser().resolve())
         shell.prompt = f"[db-1] {recon_shell.DEFAULT_PROMPT}> "
         shell.db_mgr = MagicMock()
         shell.db_mgr.location = "stuff"
@@ -352,6 +352,38 @@ class TestReconShell:
         assert len(sys.path) > pathlen
 
     def test_main(self):
-        with patch("cmd2.Cmd.cmdloop") as mocked_loop, patch("sys.exit"):
+        with patch("cmd2.Cmd.cmdloop") as mocked_loop, patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
+            mocked_select.return_value = "No"
             recon_shell.main(name="__main__")
             assert mocked_loop.called
+
+    @pytest.mark.parametrize("test_input", ["Yes", "No"])
+    def test_remove_old_recon_tools(self, test_input, tmp_path):
+        tooldict = tmp_path / ".tool-dict.pkl"
+        tooldir = tmp_path / ".recon-tools"
+
+        tooldict.touch()
+        assert tooldict.exists()
+
+        tooldir.mkdir()
+        assert tooldir.exists()
+
+        subfile = tooldir / "subile"
+        subfolder = tooldir / "somefolder"
+        subsubfile = subfolder / "subsubfile"
+
+        subfile.touch()
+        subfolder.mkdir()
+        subsubfile.touch()
+        assert subsubfile.exists()
+        assert subfile.exists()
+
+        with patch("cmd2.Cmd.cmdloop"), patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
+            mocked_select.return_value = test_input
+            recon_shell.main(name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict)
+
+        for file in [subsubfile, subfile, tooldir, tooldict]:
+            if test_input == "Yes":
+                assert not file.exists()
+            else:
+                assert file.exists()

@@ -48,7 +48,7 @@ class TKOSubsScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
 
     def requires(self):
@@ -170,7 +170,7 @@ class SubjackScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "subjack-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "subjack-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "subjack.txt"
 
     def requires(self):

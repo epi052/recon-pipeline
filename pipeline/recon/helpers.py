@@ -20,7 +20,7 @@ def get_scans():
     """
     scans = defaultdict(list)
 
-    file = Path(__file__).resolve()
+    file = Path(__file__).expanduser().resolve()
     web = file.parent / "web"
     recon = file.parents[1] / "recon"
 

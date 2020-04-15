@@ -3,6 +3,7 @@
 import os
 import sys
 import shlex
+import shutil
 import pickle
 import selectors
 import threading
@@ -13,7 +14,7 @@ from pathlib import Path
 DEFAULT_PROMPT = "recon-pipeline> "
 
 # fix up the PYTHONPATH so we can simply execute the shell from wherever in the filesystem
-os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).parents[1].resolve())}"
+os.environ["PYTHONPATH"] = f"{os.environ.get('PYTHONPATH')}:{str(Path(__file__).expanduser().resolve().parents[1])}"
 
 # suppress "You should consider upgrading via the 'pip install --upgrade pip' command." warning
 os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
@@ -32,7 +33,7 @@ def cluge_package_imports(name, package):
         putting into a function for testability
     """
     if name == "__main__" and package is None:
-        file = Path(__file__).resolve()
+        file = Path(__file__).expanduser().resolve()
         parent, top = file.parent, file.parents[1]
 
         sys.path.append(str(top))
@@ -414,7 +415,9 @@ class ReconShell(cmd2.Cmd):
 
         self.add_dynamic_parser_arguments()
 
-        self.poutput(style(f"[+] attached to sqlite database @ {Path(location).resolve()}", fg="bright_green"))
+        self.poutput(
+            style(f"[+] attached to sqlite database @ {Path(location).expanduser().resolve()}", fg="bright_green")
+        )
         self.prompt = f"[db-{index}] {DEFAULT_PROMPT}"
 
     def add_dynamic_parser_arguments(self):
@@ -480,7 +483,9 @@ class ReconShell(cmd2.Cmd):
             self.db_mgr.close()
             self.db_mgr = None
 
-        self.poutput(style(f"[+] deleted sqlite database @ {Path(to_delete).resolve()}", fg="bright_green"))
+        self.poutput(
+            style(f"[+] deleted sqlite database @ {Path(to_delete).expanduser().resolve()}", fg="bright_green")
+        )
 
     @cmd2.with_argparser(database_parser)
     def do_database(self, args):
@@ -703,9 +708,34 @@ class ReconShell(cmd2.Cmd):
             self.do_help("view")
 
 
-def main(name):
+def main(
+    name, old_tools_dir=Path().home() / ".recon-tools", old_tools_dict=Path().home() / ".cache" / ".tool-dict.pkl"
+):
     """ Functionified for testability """
     if name == "__main__":
+        if (Path().home() / ".recon-tools").exists():
+            # want to try and ensure a smooth transition for folks who have used the pipeline before from
+            # v0.8.4 and below to v0.9.0+
+            print(style(f"[*] Found remnants of an older version of recon-pipeline.", fg="bright_yellow"))
+            print(
+                style(
+                    f"[*] It's {style('strongly', fg='red')} advised that you allow us to remove them.",
+                    fg="bright_white",
+                )
+            )
+            print(style(f"[*] Do you want to remove {old_tools_dir}/* and {old_tools_dict}?", fg="bright_white"))
+
+            answer = cmd2.Cmd().select(["Yes", "No"])
+            print(style(f"[+] You chose {answer}", fg="bright_green"))
+
+            if answer == "Yes":
+                shutil.rmtree(old_tools_dir)
+                print(style(f"[+] {old_tools_dir} removed", fg="bright_green"))
+
+                if old_tools_dict.exists():
+                    old_tools_dict.unlink()
+                    print(style(f"[+] {old_tools_dict} removed", fg="bright_green"))
+
         rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
         sys.exit(rs.cmdloop())
 

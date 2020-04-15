@@ -46,7 +46,7 @@ class AmassScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
 
     def requires(self):
         """ AmassScan depends on TargetList to run.
@@ -71,7 +71,7 @@ class AmassScan(luigi.Task):
 
         new_path = results_subfolder / "amass.json"
 
-        return luigi.LocalTarget(new_path.resolve())
+        return luigi.LocalTarget(new_path.expanduser().resolve())
 
     def run(self):
         """ Defines the options/arguments sent to amass after processing.
@@ -130,7 +130,7 @@ class ParseAmassOutput(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-        self.results_subfolder = (Path(self.results_dir) / "amass-results").resolve()
+        self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
 
     def requires(self):
         """ ParseAmassOutput depends on AmassScan to run.

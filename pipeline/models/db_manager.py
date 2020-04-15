@@ -23,7 +23,7 @@ class DBManager:
     """ Class that encapsulates database transactions and queries """
 
     def __init__(self, db_location):
-        self.location = Path(db_location).resolve()
+        self.location = Path(db_location).expanduser().resolve()
         self.connection_string = f"sqlite:///{self.location}"
         engine = create_engine(self.connection_string)
         Base.metadata.create_all(engine)  # noqa: F405
