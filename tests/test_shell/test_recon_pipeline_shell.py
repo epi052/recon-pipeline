@@ -368,21 +368,16 @@ class TestReconShell:
         tooldir.mkdir()
         assert tooldir.exists()
 
-        subfile = tooldir / "subile"
-        subfolder = tooldir / "somefolder"
-        subsubfile = subfolder / "subsubfile"
+        subfile = tooldir / "subfile"
 
         subfile.touch()
-        subfolder.mkdir()
-        subsubfile.touch()
-        assert subsubfile.exists()
         assert subfile.exists()
 
         with patch("cmd2.Cmd.cmdloop"), patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
             mocked_select.return_value = test_input
             recon_shell.main(name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict)
 
-        for file in [subsubfile, subfile, tooldir, tooldict]:
+        for file in [subfile, tooldir, tooldict]:
             if test_input == "Yes":
                 assert not file.exists()
             else:

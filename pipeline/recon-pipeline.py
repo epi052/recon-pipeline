@@ -713,7 +713,8 @@ def main(
 ):
     """ Functionified for testability """
     if name == "__main__":
-        if (Path().home() / ".recon-tools").exists():
+
+        if old_tools_dir.exists() and old_tools_dir.is_dir():
             # want to try and ensure a smooth transition for folks who have used the pipeline before from
             # v0.8.4 and below to v0.9.0+
             print(style(f"[*] Found remnants of an older version of recon-pipeline.", fg="bright_yellow"))
@@ -735,6 +736,8 @@ def main(
                 if old_tools_dict.exists():
                     old_tools_dict.unlink()
                     print(style(f"[+] {old_tools_dict} removed", fg="bright_green"))
+
+                print(style(f"[=] Please run the install all command to complete setup", fg="bright_blue"))
 
         rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
         sys.exit(rs.cmdloop())
