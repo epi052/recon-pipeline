@@ -14,6 +14,18 @@ There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-
 
 Check out [recon-pipeline's readthedocs entry](https://recon-pipeline.readthedocs.io/) for some more in depth information than what this README provides.
 
+Table of Contents
+-----------------
+
+- [Installation](#installation)
+- [Defining Scope](#target-file-and-exempt-list-file-defining-scope)
+- [Example Scan](#example-scan)
+- [Viewing Results](#viewing-results)
+- [Chaining Results w/ Commands](#chaining-results-w-commands)
+- [Choosing a Scheduler](#choosing-a-scheduler)
+- [Found a Bug?](#found-a-bug)
+- [Special Thanks](#special-thanks)
+
 ## Installation
 
 > Automatic installation tested on kali 2019.4 and Ubuntu 18.04
@@ -52,6 +64,26 @@ After installing the python dependencies, the `recon-pipeline` shell provides it
 > Ubuntu-18.04 Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
 [![asciicast](https://asciinema.org/a/294414.svg)](https://asciinema.org/a/294414)
+
+## Target File and Exempt List File (defining scope)
+
+The pipeline expects a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
+
+```text
+tesla.com
+tesla.cn
+teslamotors.com
+...
+```
+
+Some bug bounty scopes have expressly verboten subdomains and/or top-level domains, for that there is the `--exempt-list` option.  The exempt list follows the same rules as the target file.
+
+```text
+shop.eu.teslamotors.com
+energysupport.tesla.com
+feedback.tesla.com
+...
+```
 
 ## Example Scan
 
@@ -114,27 +146,55 @@ The same steps can be seen in realtime in the linked video below.
 
 [![asciicast](https://asciinema.org/a/293302.svg)](https://asciinema.org/a/293302)
 
-### Target File and Exempt List File (defining scope)
+## Viewing Results
 
-The pipeline expects a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
+As of version 0.9.0, scan results are stored in a database located (by default) at `~/.local/recon-pipeline/databases`.  Databases themselves are managed through the [database command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#database) while viewing their contents is done via [view command](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#view-command.
+
+The view command allows one to inspect different pieces of scan information via the following sub-commands
+
+- endpoints (gobuster results)
+- nmap-scans
+- ports
+- searchsploit-results
+- targets
+- web-technologies (webanalyze results)
+
+Each of the sub-commands has a list of tab-completable options and values that can help drilling down to the data you care about.
+
+All of the subcommands offer a `--paged` option for dealing with large amounts of output. `--paged` will show you one page of output at a time (using `less` under the hood).
+
+## Chaining Results w/ Commands
+
+All of the results can be **piped out to other commands**. Let’s say you want to feed some results from recon-pipeline into another tool that isn’t part of the pipeline. Simply using a normal unix pipe `|` followed by the next command will get that done for you. Below is an example of piping targets into [gau](https://github.com/lc/gau)
 
 ```text
-tesla.com
-tesla.cn
-teslamotors.com
+[db-2] recon-pipeline> view targets --paged
+3.tesla.cn
+3.tesla.com
+api-internal.sn.tesla.services
+api-toolbox.tesla.com
+api.mp.tesla.services
+api.sn.tesla.services
+api.tesla.cn
+api.toolbox.tb.tesla.services
+...
+
+[db-2] recon-pipeline> view targets | gau
+https://3.tesla.com/pt_PT/model3/design
+https://3.tesla.com/pt_PT/model3/design?redirect=no
+https://3.tesla.com/robots.txt
+https://3.tesla.com/sites/all/themes/custom/tesla_theme/assets/img/icons/favicon-160x160.png?2
+https://3.tesla.com/sites/all/themes/custom/tesla_theme/assets/img/icons/favicon-16x16.png?2
+https://3.tesla.com/sites/all/themes/custom/tesla_theme/assets/img/icons/favicon-196x196.png?2
+https://3.tesla.com/sites/all/themes/custom/tesla_theme/assets/img/icons/favicon-32x32.png?2
+https://3.tesla.com/sites/all/themes/custom/tesla_theme/assets/img/icons/favicon-96x96.png?2
+https://3.tesla.com/sv_SE/model3/design
 ...
 ```
 
-Some bug bounty scopes have expressly verboten subdomains and/or top-level domains, for that there is the `--exempt-list` option.  The exempt list follows the same rules as the target file.
+For more examples of view, please see the [documentation](https://recon-pipeline.readthedocs.io/en/latest/overview/viewing_results.html#).
 
-```text
-shop.eu.teslamotors.com
-energysupport.tesla.com
-feedback.tesla.com
-...
-```
-
-### Using a Scheduler
+## Choosing a Scheduler
 
 The backbone of this pipeline is spotify's [luigi](https://github.com/spotify/luigi) batch process management framework.  Luigi uses the concept of a scheduler in order to manage task execution.  Two types of scheduler are available, a local scheduler and a central scheduler.  The local scheduler is useful for development and debugging while the central scheduler provides the following two benefits:
 
@@ -146,8 +206,6 @@ repo to its appropriate systemd location and start/enable the service.  The resu
 and running easily.
 
 The other option is to add `--local-scheduler` to your `scan` command from within the `recon-pipeline` shell.
-
-## Viewing Results
 
 ## Found a bug?
 
