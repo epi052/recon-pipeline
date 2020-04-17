@@ -323,6 +323,7 @@ class TestReconShell:
                 True,
             ),
             ("FullScan --target-file required ", "If anything goes wrong, rerun your command with --verbose", True),
+            ("FullScan --target required ", "If anything goes wrong, rerun your command with --verbose", True),
         ],
     )
     def test_do_scan(self, test_input, expected, db_mgr, capsys, tmp_path):

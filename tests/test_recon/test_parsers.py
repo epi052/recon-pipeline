@@ -87,9 +87,11 @@ def test_scan_parser_interface_choices(test_input):
     assert parsed.interface == test_input
 
 
-def test_scan_parser_mutual_exclusion():
+@pytest.mark.parametrize("option_one, option_two", [("--ports", "--top-ports"), ("--target-file", "--target")])
+def test_scan_parser_mutual_exclusion(option_one, option_two):
     with pytest.raises(SystemExit):
-        scan_parser.parse_args(["FullScan", "--ports", "1000", "--top-ports", "1000", "--target-file", "required"])
+        port_arg = "1111"
+        scan_parser.parse_args(["FullScan", option_one, port_arg, option_two, "target-arg"])
 
 
 @pytest.mark.parametrize(
