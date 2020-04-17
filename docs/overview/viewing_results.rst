@@ -22,6 +22,10 @@ Each of the sub-commands has a list of tab-completable options and values that c
 
 All of the subcommands offer a ``--paged`` option for dealing with large amounts of output.  ``--paged`` will show you one page of output at a time (using ``less`` under the hood).
 
+.. raw:: html
+
+    <script id="asciicast-320494" src="https://asciinema.org/a/320494.js" async></script>
+
 Chaining Results w/ Commands
 ############################
 

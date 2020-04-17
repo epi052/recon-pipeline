@@ -4,10 +4,6 @@
 ![Python application](https://img.shields.io/github/workflow/status/epi052/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
 ![code coverage](https://img.shields.io/badge/coverage-97%25-blue?style=for-the-badge)
 ![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
-![luigi](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/luigi?style=for-the-badge)
-![cmd2](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/cmd2?style=for-the-badge)
-![SQLAlchemy](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/sqlalchemy?style=for-the-badge)
-![python-libnmap](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/python-libnmap?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
 
 There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
