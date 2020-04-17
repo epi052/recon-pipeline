@@ -6,7 +6,7 @@
 ![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
 ![luigi](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/luigi?style=for-the-badge)
 ![cmd2](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/cmd2?style=for-the-badge)
-![SQLAlchemy](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/SQLAlchemy?style=for-the-badge)
+![SQLAlchemy](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/sqlalchemy?style=for-the-badge)
 ![python-libnmap](https://img.shields.io/github/pipenv/locked/dependency-version/epi052/recon-pipeline/python-libnmap?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
 
