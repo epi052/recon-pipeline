@@ -40,11 +40,7 @@ class TestDBManager:
         ipv4 = Target(ip_addresses=[IPAddress(ipv4_address="13.56.144.135")])
         ipv6 = Target(ip_addresses=[IPAddress(ipv6_address="2606:4700:10::6814:3c33")])
         self.db_mgr.get_and_filter = MagicMock(return_value=[subdomain, ipv4, ipv6])
-        expected = [
-            "13.56.144.135",
-            "2606:4700:10::6814:3c33",
-            "google.com",
-        ]
+        expected = ["13.56.144.135", "2606:4700:10::6814:3c33", "google.com"]
         actual = self.db_mgr.get_all_web_targets()
         assert set(actual) == set(expected)
 

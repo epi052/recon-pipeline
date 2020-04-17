@@ -272,8 +272,6 @@ class ReconShell(cmd2.Cmd):
             selector.register(proc.stderr, selectors.EVENT_READ, self._luigi_pretty_printer)
 
         self.add_dynamic_parser_arguments()
-        if tgt_file_path:
-            Path(tgt_file_path).unlink()
 
     @cmd2.with_argparser(install_parser)
     def do_install(self, args):
