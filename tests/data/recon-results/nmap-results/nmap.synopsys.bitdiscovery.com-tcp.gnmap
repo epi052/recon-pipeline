@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80,443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.synopsys.bitdiscovery.com-tcp synopsys.bitdiscovery.com
+Host: 52.53.89.219 ()	Status: Up
+Host: 52.53.89.219 ()	Ports: 80/open/tcp//http//nginx 1.16.1/, 443/open/tcp//ssl|http//nginx 1.16.1/
+# Nmap done at Sun Mar 29 06:19:17 2020 -- 1 IP address (1 host up) scanned in 14.43 seconds

@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:43 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:1404:23:197::3fe7-tcp 2600:1404:23:197::3fe7
+Host: 2600:1404:23:197::3fe7 ()	Status: Up
+Host: 2600:1404:23:197::3fe7 ()	Ports: 443/open/tcp//ssl|http//AkamaiGHost (Akamai's HTTP Acceleration|Mirror service)/
+# Nmap done at Mon Apr  6 09:15:56 2020 -- 1 IP address (1 host up) scanned in 13.34 seconds

@@ -17,13 +17,13 @@ Getting Started
 
     overview/index
 
-Changing the Code
-=================
+Personalization
+===============
 
 .. toctree::
     :maxdepth: 1
 
-    modifications/index
+    Creating a New Wrapper Scan <modifications/index>
 
 API Reference
 =============
@@ -31,11 +31,14 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    api/index
+    api/commands
+    api/manager
+    api/models
+    api/parsers
+    api/scanners
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

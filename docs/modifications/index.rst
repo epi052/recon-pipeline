@@ -1,7 +1,2 @@
-Making Modifications
-====================
-
-.. toctree::
-    :maxdepth: 1
-
-    new_wrapper
+.. include::
+    new_wrapper.rst

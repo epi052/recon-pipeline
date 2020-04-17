@@ -1,0 +1,6 @@
+200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Date: Mon, 06 Apr 2020 13:56:36 GMT
+Retry-Count: 0
+Content-Length: 0
+Server: Microsoft-IIS/8.5

@@ -1,0 +1,3 @@
+http://138.197.30.54/favicon.ico (Status: 200)
+http://138.197.30.54/index.html (Status: 200)
+http://138.197.30.54/soap (Status: 200)

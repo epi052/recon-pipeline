@@ -1,0 +1,15 @@
+500 Internal Server Error
+Access-Control-Allow-Headers: X-Requested-With
+Etag: W/"25-FJs8qf7Gj2hoxpvMuuUdWSjYlfg"
+Content-Type: text/html; charset=utf-8
+X-Xss-Protection: 1; mode=block
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Retry-Count: 0
+Date: Mon, 06 Apr 2020 14:58:13 GMT
+X-Frame-Options: SAMEORIGIN
+Server: nginx/1.16.1
+Content-Length: 37
+Access-Control-Allow-Origin: *
+X-Content-Type-Options: nosniff
+Referrer-Policy: origin-when-cross-origin
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com

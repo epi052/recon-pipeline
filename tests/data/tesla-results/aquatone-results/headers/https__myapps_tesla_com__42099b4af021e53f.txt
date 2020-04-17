@@ -1,0 +1,13 @@
+200 OK
+Content-Type: text/html; charset=utf-8
+Server-Timing: cdn-cache; desc=MISS edge; dur=38 origin; dur=43
+X-Akamai-Transformed: 9 21288 0 pmb=mRUM,2
+Date: Mon, 06 Apr 2020 13:56:32 GMT
+Expires: Mon, 06 Apr 2020 13:56:32 GMT
+Cache-Control: max-age=0, no-cache
+Pragma: no-cache
+Server: Microsoft-HTTPAPI/2.0
+X-Frame-Options: DENY
+Retry-Count: 0
+Content-Length: 24786
+Strict-Transport-Security: max-age=15768000

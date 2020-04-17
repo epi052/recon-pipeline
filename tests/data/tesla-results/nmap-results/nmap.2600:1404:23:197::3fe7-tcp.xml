@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:15:43 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:1404:23:197::3fe7-tcp 2600:1404:23:197::3fe7 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:1404:23:197::3fe7-tcp 2600:1404:23:197::3fe7" start="1586182543" startstr="Mon Apr  6 09:15:43 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182543" endtime="1586182556"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="2600:1404:23:197::3fe7" addrtype="ipv6"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="AkamaiGHost" extrainfo="Akamai&apos;s HTTP Acceleration/Mirror service" tunnel="ssl" method="probed" conf="10"/><script id="http-title" output="Invalid URL"><elem key="title">Invalid URL</elem>
+</script><script id="ssl-cert" output="Subject: commonName=akamai-san22.exacttarget.com/organizationName=SALESFORCE.COM, INC./stateOrProvinceName=California/countryName=US&#xa;Subject Alternative Name: DNS:akamai-san22.exacttarget.com, DNS:image.mail.thinkrealty.com, DNS:image.dialogue.digital.stockmann.com, DNS:image.emails.tesla.com, DNS:image.edistribution.pwc.com, DNS:image.news.kohlernews.com, DNS:image.rsn.nbcsports.com, DNS:image.em.nbcsports.com, DNS:image.p.gilt.com, DNS:image.p.giltcity.com, DNS:image.enews.2xu.com, DNS:image.ev.schalke04.de, DNS:image.info.mountsinai.org, DNS:image.marketing.leapfrog.com, DNS:image.e.allegisgroup.com, DNS:image.m.aerotek.com, DNS:image.e.aerotek.com, DNS:image.e.allegis-partners.com, DNS:image.e.easi.com, DNS:image.m.easi.com, DNS:image.e.mlaglobal.com, DNS:image.e.teksystems.com, DNS:image.m.teksystems.com, DNS:image.study.griffith.edu.au, DNS:image.communities.lendlease.com, DNS:image.apartments.lendlease.com, DNS:image.news.lidl.es, DNS:image.marketing.vtechkids.com, DNS:image.e.astoncarter.com, DNS:image.m.astoncarter.com, DNS:image.email.roberthalf.com, DNS:image.mail.epa.nsw.gov.au, DNS:image.emailmarketing.danfoss.com, DNS:image.emails.adecco.es, DNS:image.email.smiledirectclub.com, DNS:image.nyheter.raddabarnen.se, DNS:image.mc.shinseibank.com, DNS:image.e-news.engie-electrabel.be, DNS:image.info.devry.edu, DNS:image.news.lidlonline.es&#xa;Not valid before: 2018-12-04T00:00:00&#xa;Not valid after:  2020-06-29T12:00:00"><table key="subject">
+<elem key="organizationalUnitName">Infrastructure</elem>
+<elem key="stateOrProvinceName">California</elem>
+<elem key="commonName">akamai-san22.exacttarget.com</elem>
+<elem key="countryName">US</elem>
+<elem key="organizationName">SALESFORCE.COM, INC.</elem>
+<elem key="localityName">San Francisco</elem>
+</table>
+<table key="issuer">
+<elem key="countryName">US</elem>
+<elem key="organizationName">DigiCert Inc</elem>
+<elem key="commonName">DigiCert SHA2 Secure Server CA</elem>
+</table>
+<table key="pubkey">
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+<elem key="exponent">userdata: 0x560e2ab807b8</elem>
+<elem key="modulus">userdata: 0x560e2ab80678</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="value">keyid:0F:80:61:1C:82:31:61:D5:2F:28:E7:8D:46:38:B4:2C:E1:C6:D9:E2&#xa;</elem>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+</table>
+<table>
+<elem key="value">C6:8F:BE:76:E5:81:40:D7:90:A0:B3:66:45:B5:0B:FD:E6:8C:11:E0</elem>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+</table>
+<table>
+<elem key="value">DNS:akamai-san22.exacttarget.com, DNS:image.mail.thinkrealty.com, DNS:image.dialogue.digital.stockmann.com, DNS:image.emails.tesla.com, DNS:image.edistribution.pwc.com, DNS:image.news.kohlernews.com, DNS:image.rsn.nbcsports.com, DNS:image.em.nbcsports.com, DNS:image.p.gilt.com, DNS:image.p.giltcity.com, DNS:image.enews.2xu.com, DNS:image.ev.schalke04.de, DNS:image.info.mountsinai.org, DNS:image.marketing.leapfrog.com, DNS:image.e.allegisgroup.com, DNS:image.m.aerotek.com, DNS:image.e.aerotek.com, DNS:image.e.allegis-partners.com, DNS:image.e.easi.com, DNS:image.m.easi.com, DNS:image.e.mlaglobal.com, DNS:image.e.teksystems.com, DNS:image.m.teksystems.com, DNS:image.study.griffith.edu.au, DNS:image.communities.lendlease.com, DNS:image.apartments.lendlease.com, DNS:image.news.lidl.es, DNS:image.marketing.vtechkids.com, DNS:image.e.astoncarter.com, DNS:image.m.astoncarter.com, DNS:image.email.roberthalf.com, DNS:image.mail.epa.nsw.gov.au, DNS:image.emailmarketing.danfoss.com, DNS:image.emails.adecco.es, DNS:image.email.smiledirectclub.com, DNS:image.nyheter.raddabarnen.se, DNS:image.mc.shinseibank.com, DNS:image.e-news.engie-electrabel.be, DNS:image.info.devry.edu, DNS:image.news.lidlonline.es</elem>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+</table>
+<table>
+<elem key="value">Digital Signature, Key Encipherment</elem>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="critical">true</elem>
+</table>
+<table>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+<elem key="name">X509v3 Extended Key Usage</elem>
+</table>
+<table>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl3.digicert.com/ssca-sha2-g6.crl&#xa;&#xa;Full Name:&#xa;  URI:http://crl4.digicert.com/ssca-sha2-g6.crl&#xa;</elem>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+</table>
+<table>
+<elem key="value">Policy: 2.16.840.1.114412.1.1&#xa;  CPS: https://www.digicert.com/CPS&#xa;Policy: 2.23.140.1.2.2&#xa;</elem>
+<elem key="name">X509v3 Certificate Policies</elem>
+</table>
+<table>
+<elem key="value">OCSP - URI:http://ocsp.digicert.com&#xa;CA Issuers - URI:http://cacerts.digicert.com/DigiCertSHA2SecureServerCA.crt&#xa;</elem>
+<elem key="name">Authority Information Access</elem>
+</table>
+<table>
+<elem key="value">CA:FALSE</elem>
+<elem key="name">X509v3 Basic Constraints</elem>
+<elem key="critical">true</elem>
+</table>
+<table>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : EE:4B:BD:B7:75:CE:60:BA:E1:42:69:1F:AB:E1:9E:66:&#xa;                A3:0F:7E:5F:B0:72:D8:83:00:C4:7B:89:7A:A8:FD:CB&#xa;    Timestamp : Dec  4 12:59:17.961 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:1C:B1:56:25:98:1A:46:BC:8C:7F:ED:BE:&#xa;                CE:40:66:1D:EF:EF:B6:22:98:9F:A1:02:A5:C1:76:98:&#xa;                3C:B8:34:C6:02:20:5F:CD:32:AD:3E:FA:65:36:D9:A7:&#xa;                A9:E1:15:5B:38:9A:53:FA:2C:6D:95:FF:FD:06:C2:6D:&#xa;                2C:92:47:83:1F:98&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 87:75:BF:E7:59:7C:F8:8C:43:99:5F:BD:F3:6E:FF:56:&#xa;                8D:47:56:36:FF:4A:B5:60:C1:B4:EA:FF:5E:A0:83:0F&#xa;    Timestamp : Dec  4 12:59:18.182 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:46:02:21:00:B2:AC:CD:3F:7D:B2:44:30:69:51:47:&#xa;                01:8A:38:F5:A8:39:AE:8E:3A:F0:A9:CF:BE:28:88:EF:&#xa;                80:44:0D:50:82:02:21:00:C3:49:D8:F0:D8:43:6E:59:&#xa;                DB:FC:7B:05:A5:5D:43:7D:62:F2:D6:F1:A6:2A:3A:16:&#xa;                61:41:75:F0:84:80:DA:C8&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 6F:53:76:AC:31:F0:31:19:D8:99:00:A4:51:15:FF:77:&#xa;                15:1C:11:D9:02:C1:00:29:06:8D:B2:08:9A:37:D9:13&#xa;    Timestamp : Dec  4 12:59:18.316 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:46:02:21:00:88:B6:F1:4F:1E:BE:FC:B9:B8:0E:E9:&#xa;                5D:9C:09:CC:C6:F3:8C:D9:65:1A:73:EB:62:7A:5C:15:&#xa;                5A:EF:54:2B:7F:02:21:00:CD:60:66:17:C0:D2:97:0C:&#xa;                E7:B0:A9:DD:59:18:9D:99:C9:27:E9:CB:36:68:03:05:&#xa;                03:11:47:9F:F1:9E:00:6B</elem>
+<elem key="name">CT Precertificate SCTs</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2018-12-04T00:00:00</elem>
+<elem key="notAfter">2020-06-29T12:00:00</elem>
+</table>
+<elem key="md5">e7587e991d49c3ac535ac668c96d4742</elem>
+<elem key="sha1">9e3e0f79c67cc1fb1cfbf67380f20ddb63225991</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIK2zCCCcOgAwIBAgIQBb9HALk/2JoVbZzl9UYrLDANBgkqhkiG9w0BAQsFADBN&#xa;MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E&#xa;aWdpQ2VydCBTSEEyIFNlY3VyZSBTZXJ2ZXIgQ0EwHhcNMTgxMjA0MDAwMDAwWhcN&#xa;MjAwNjI5MTIwMDAwWjCBmTELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3Ju&#xa;aWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHTAbBgNVBAoTFFNBTEVTRk9SQ0Uu&#xa;Q09NLCBJTkMuMRcwFQYDVQQLEw5JbmZyYXN0cnVjdHVyZTElMCMGA1UEAxMcYWth&#xa;bWFpLXNhbjIyLmV4YWN0dGFyZ2V0LmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEP&#xa;ADCCAQoCggEBAMORkUuRMdaX6gvcciMmC738hC13w4vWhH7Sy2xsxFEBcQs1rWOw&#xa;a3Svv1pAFMH0x+5h1hXeNof5nSF+ISY5/8T//b7j/ZYM6r3Vxu8ZNb4dor7LxN1g&#xa;mi/cXzskzu6SyW337sUp3l4eZ8N8V5Qx0HJSve9puLzPUI8ItkVw8i0SkwQ/EMk2&#xa;BsHnxa5rreobh6VmSNr3jODyIq/Q0gwwmKe9GPUzITbKPPiF5oIHwk5UbCeSs8kT&#xa;+uYe3qq0i9CLCCVnu7fcWfSxDEqE82FaaEKllrvtYx653/rMiMR7e0sojomntkrZ&#xa;PHlVCjpQr9cfsFaiTiIcACMqS6jQZov2IMECAwEAAaOCB2gwggdkMB8GA1UdIwQY&#xa;MBaAFA+AYRyCMWHVLyjnjUY4tCzhxtniMB0GA1UdDgQWBBTGj7525YFA15Cgs2ZF&#xa;tQv95owR4DCCBCcGA1UdEQSCBB4wggQaghxha2FtYWktc2FuMjIuZXhhY3R0YXJn&#xa;ZXQuY29tghppbWFnZS5tYWlsLnRoaW5rcmVhbHR5LmNvbYIkaW1hZ2UuZGlhbG9n&#xa;dWUuZGlnaXRhbC5zdG9ja21hbm4uY29tghZpbWFnZS5lbWFpbHMudGVzbGEuY29t&#xa;ghtpbWFnZS5lZGlzdHJpYnV0aW9uLnB3Yy5jb22CGWltYWdlLm5ld3Mua29obGVy&#xa;bmV3cy5jb22CF2ltYWdlLnJzbi5uYmNzcG9ydHMuY29tghZpbWFnZS5lbS5uYmNz&#xa;cG9ydHMuY29tghBpbWFnZS5wLmdpbHQuY29tghRpbWFnZS5wLmdpbHRjaXR5LmNv&#xa;bYITaW1hZ2UuZW5ld3MuMnh1LmNvbYIVaW1hZ2UuZXYuc2NoYWxrZTA0LmRlghlp&#xa;bWFnZS5pbmZvLm1vdW50c2luYWkub3JnghxpbWFnZS5tYXJrZXRpbmcubGVhcGZy&#xa;b2cuY29tghhpbWFnZS5lLmFsbGVnaXNncm91cC5jb22CE2ltYWdlLm0uYWVyb3Rl&#xa;ay5jb22CE2ltYWdlLmUuYWVyb3Rlay5jb22CHGltYWdlLmUuYWxsZWdpcy1wYXJ0&#xa;bmVycy5jb22CEGltYWdlLmUuZWFzaS5jb22CEGltYWdlLm0uZWFzaS5jb22CFWlt&#xa;YWdlLmUubWxhZ2xvYmFsLmNvbYIWaW1hZ2UuZS50ZWtzeXN0ZW1zLmNvbYIWaW1h&#xa;Z2UubS50ZWtzeXN0ZW1zLmNvbYIbaW1hZ2Uuc3R1ZHkuZ3JpZmZpdGguZWR1LmF1&#xa;gh9pbWFnZS5jb21tdW5pdGllcy5sZW5kbGVhc2UuY29tgh5pbWFnZS5hcGFydG1l&#xa;bnRzLmxlbmRsZWFzZS5jb22CEmltYWdlLm5ld3MubGlkbC5lc4IdaW1hZ2UubWFy&#xa;a2V0aW5nLnZ0ZWNoa2lkcy5jb22CF2ltYWdlLmUuYXN0b25jYXJ0ZXIuY29tghdp&#xa;bWFnZS5tLmFzdG9uY2FydGVyLmNvbYIaaW1hZ2UuZW1haWwucm9iZXJ0aGFsZi5j&#xa;b22CGWltYWdlLm1haWwuZXBhLm5zdy5nb3YuYXWCIGltYWdlLmVtYWlsbWFya2V0&#xa;aW5nLmRhbmZvc3MuY29tghZpbWFnZS5lbWFpbHMuYWRlY2NvLmVzgh9pbWFnZS5l&#xa;bWFpbC5zbWlsZWRpcmVjdGNsdWIuY29tghxpbWFnZS5ueWhldGVyLnJhZGRhYmFy&#xa;bmVuLnNlghhpbWFnZS5tYy5zaGluc2VpYmFuay5jb22CIGltYWdlLmUtbmV3cy5l&#xa;bmdpZS1lbGVjdHJhYmVsLmJlghRpbWFnZS5pbmZvLmRldnJ5LmVkdYIYaW1hZ2Uu&#xa;bmV3cy5saWRsb25saW5lLmVzMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggr&#xa;BgEFBQcDAQYIKwYBBQUHAwIwawYDVR0fBGQwYjAvoC2gK4YpaHR0cDovL2NybDMu&#xa;ZGlnaWNlcnQuY29tL3NzY2Etc2hhMi1nNi5jcmwwL6AtoCuGKWh0dHA6Ly9jcmw0&#xa;LmRpZ2ljZXJ0LmNvbS9zc2NhLXNoYTItZzYuY3JsMEwGA1UdIARFMEMwNwYJYIZI&#xa;AYb9bAEBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9D&#xa;UFMwCAYGZ4EMAQICMHwGCCsGAQUFBwEBBHAwbjAkBggrBgEFBQcwAYYYaHR0cDov&#xa;L29jc3AuZGlnaWNlcnQuY29tMEYGCCsGAQUFBzAChjpodHRwOi8vY2FjZXJ0cy5k&#xa;aWdpY2VydC5jb20vRGlnaUNlcnRTSEEyU2VjdXJlU2VydmVyQ0EuY3J0MAwGA1Ud&#xa;EwEB/wQCMAAwggF/BgorBgEEAdZ5AgQCBIIBbwSCAWsBaQB1AO5Lvbd1zmC64UJp&#xa;H6vhnmajD35fsHLYgwDEe4l6qP3LAAABZ3lNJEkAAAQDAEYwRAIgHLFWJZgaRryM&#xa;f+2+zkBmHe/vtiKYn6ECpcF2mDy4NMYCIF/NMq0++mU22aep4RVbOJpT+ixtlf/9&#xa;BsJtLJJHgx+YAHcAh3W/51l8+IxDmV+9827/Vo1HVjb/SrVgwbTq/16ggw8AAAFn&#xa;eU0lJgAABAMASDBGAiEAsqzNP32yRDBpUUcBijj1qDmujjrwqc++KIjvgEQNUIIC&#xa;IQDDSdjw2ENuWdv8ewWlXUN9YvLW8aYqOhZhQXXwhIDayAB3AG9Tdqwx8DEZ2JkA&#xa;pFEV/3cVHBHZAsEAKQaNsgiaN9kTAAABZ3lNJawAAAQDAEgwRgIhAIi28U8evvy5&#xa;uA7pXZwJzMbzjNllGnPrYnpcFVrvVCt/AiEAzWBmF8DSlwznsKndWRidmckn6cs2&#xa;aAMFAxFHn/GeAGswDQYJKoZIhvcNAQELBQADggEBALIa1zE0OTdafHXe02UkSXR1&#xa;l9O7GC0SsXQ2QrnB/5L/7kH96vPnQqrtq9AEMCVHFhwpnDANjfaUbJ6d5KbfJLCL&#xa;+gpRkznKN49DEYdVaLFHC8DKKL+uyGqr3YuZFGcEujY6ftdvyUORNm1i7sRAwdSJ&#xa;JrH3AJF8wZDC/3wKwmgSzBnEh7TmlI+eeK/DmeZTMIVHiFAg7G8NOz3DF3PAT9VL&#xa;QPqneGU7DPvWhxsPTdaPW6wfXdALKVSvZOctky4LUoAgt1qhhmpG9zbhdZYkW0dw&#xa;t4Cm2qC7f5rUZLJAGAHPsdgUMBjFiFK+PNF6p2dddPJXNj1OcgX0OQYQGCi1Phc=&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="TLS randomness does not represent time"></script><script id="tls-alpn" output="&#xa;  http/1.1"><elem>http/1.1</elem>
+</script><script id="tls-nextprotoneg" output="&#xa;  http/1.1&#xa;  http/1.0"><elem>http/1.1</elem>
+<elem>http/1.0</elem>
+</script></port>
+</ports>
+<times srtt="13350" rttvar="13350" to="100000"/>
+</host>
+<runstats><finished time="1586182556" timestr="Mon Apr  6 09:15:56 2020" elapsed="13.34" summary="Nmap done at Mon Apr  6 09:15:56 2020; 1 IP address (1 host up) scanned in 13.34 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

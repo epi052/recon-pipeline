@@ -1,0 +1,16 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.marketing.teslamotors.com-tcp marketing.teslamotors.com
+Nmap scan report for marketing.teslamotors.com (209.167.231.15)
+Host is up (0.057s latency).
+
+PORT    STATE SERVICE  VERSION
+443/tcp open  ssl/upnp Microsoft IIS httpd
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-title: Site doesn't have a title (text/html; charset=utf-8).
+| ssl-cert: Subject: commonName=secure.eloqua.com/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US
+| Subject Alternative Name: DNS:secure.eloqua.com
+| Not valid before: 2018-09-28T00:00:00
+|_Not valid after:  2020-09-27T12:00:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:46 2020 -- 1 IP address (1 host up) scanned in 25.89 seconds

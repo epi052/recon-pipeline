@@ -1,0 +1,5 @@
+
+Host,Category,App,Version
+http://autodiscover.tesla.com,Web servers,IIS,10.0
+http://autodiscover.tesla.com,Operating systems,Windows Server,
+http://autodiscover.tesla.com,Web frameworks,Microsoft ASP.NET,

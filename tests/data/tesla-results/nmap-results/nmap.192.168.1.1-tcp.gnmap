@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:55 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80,53,22 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.192.168.1.1-tcp 192.168.1.1
+Host: 192.168.1.1 ()	Status: Up
+Host: 192.168.1.1 ()	Ports: 22/open/tcp//ssh//OpenSSH 7.9p1 Raspbian 10 (protocol 2.0)/, 53/open/tcp//domain//dnsmasq pi-hole-2.80/, 80/open/tcp//http//lighttpd 1.4.53/
+# Nmap done at Mon Apr  6 09:14:09 2020 -- 1 IP address (1 host up) scanned in 14.48 seconds

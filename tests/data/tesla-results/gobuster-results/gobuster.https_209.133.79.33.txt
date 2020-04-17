@@ -1,0 +1,7 @@
+https://209.133.79.33/Help (Status: 200)
+https://209.133.79.33/guides (Status: 301)
+https://209.133.79.33/help (Status: 200)
+https://209.133.79.33/js (Status: 301)
+https://209.133.79.33/robots.txt (Status: 200)
+https://209.133.79.33/shop (Status: 302)
+https://209.133.79.33/styles (Status: 301)

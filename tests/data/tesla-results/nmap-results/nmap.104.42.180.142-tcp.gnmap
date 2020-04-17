@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:35 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.104.42.180.142-tcp 104.42.180.142
+Host: 104.42.180.142 ()	Status: Up
+Host: 104.42.180.142 ()	Ports: 443/open/tcp//ssl|http//Microsoft IIS httpd 8.5/
+# Nmap done at Mon Apr  6 09:13:50 2020 -- 1 IP address (1 host up) scanned in 15.13 seconds

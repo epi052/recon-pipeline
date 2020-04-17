@@ -1,0 +1,6 @@
+http://wsproxy.teslamotors.com/.htaccess (Status: 403)
+http://wsproxy.teslamotors.com/.hta (Status: 403)
+http://wsproxy.teslamotors.com/.htpasswd (Status: 403)
+http://wsproxy.teslamotors.com/cgi-bin/ (Status: 403)
+http://wsproxy.teslamotors.com/index.html (Status: 200)
+http://wsproxy.teslamotors.com/manual (Status: 301)

@@ -1,3 +1,0 @@
-2020/01/30 06:52:14 Scanning with 4 workers.
-2020/01/30 06:52:14 [+] http://ibm.bitdiscovery.com (377.501412ms):
-2020/01/30 06:52:14 	- Nginx, 1.12.1 (Web Servers, Reverse Proxy)

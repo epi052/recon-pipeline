@@ -1,0 +1,5 @@
+
+Host,Category,App,Version
+http://[2603:1026:c0d:2a::8],Web servers,IIS,10.0
+http://[2603:1026:c0d:2a::8],Operating systems,Windows Server,
+http://[2603:1026:c0d:2a::8],Web frameworks,Microsoft ASP.NET,

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:15:46 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:9000:21d4:7600:c:d401:5a80:93a1-tcp 2600:9000:21d4:7600:c:d401:5a80:93a1 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:9000:21d4:7600:c:d401:5a80:93a1-tcp 2600:9000:21d4:7600:c:d401:5a80:93a1" start="1586182546" startstr="Mon Apr  6 09:15:46 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182547" endtime="1586182553"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="2600:9000:21d4:7600:c:d401:5a80:93a1" addrtype="ipv6"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" method="probed" conf="10"/><script id="http-server-header" output="CloudFront"><elem>CloudFront</elem>
+</script><script id="http-title" output="ERROR: The request could not be satisfied"><elem key="title">ERROR: The request could not be satisfied</elem>
+</script></port>
+</ports>
+<times srtt="12802" rttvar="12802" to="100000"/>
+</host>
+<runstats><finished time="1586182553" timestr="Mon Apr  6 09:15:53 2020" elapsed="6.66" summary="Nmap done at Mon Apr  6 09:15:53 2020; 1 IP address (1 host up) scanned in 6.66 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

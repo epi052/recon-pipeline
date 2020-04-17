@@ -1,0 +1,70 @@
+Domain,Cname,Provider,IsVulnerable,IsTakenOver,Response
+api-internal.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+api-internal.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+api.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+api.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+artifactory.it.tesla.services,internal-arfap-elb-us-1747224169.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+artifactory.it.tesla.services,internal-arfap-elb-us-1747224169.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+autobidder-prd.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+autobidder-prd.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+autobidder.powerhub.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+autobidder.powerhub.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+cn-north-1-api.mp.tesla.services,a6375cd35dbd811e99edc029f2240e84-1423139935.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,NoSuchBucket
+cn-north-1-api.mp.tesla.services,a6375cd35dbd811e99edc029f2240e84-1423139935.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,The specified bucket does not exist
+email.tesla.com,,,true,false,REFUSED/SERVFAIL DNS status
+fastcharge-west-prd.sc.tesla.services,fastcharge-vpn-prd-330677639.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+fastcharge-west-prd.sc.tesla.services,fastcharge-vpn-prd-330677639.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-api-eng.sn.tesla.services,a4e575773b23311e9aebe0281bc95fb7-28824213.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+gridlogic-api-eng.sn.tesla.services,a4e575773b23311e9aebe0281bc95fb7-28824213.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+gridlogic-api.sn.tesla.services,ac51a8253b79311e9a05a0a92acef1a8-698738810.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+gridlogic-api.sn.tesla.services,ac51a8253b79311e9a05a0a92acef1a8-698738810.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+gridlogic-eng.energy.tesla.com,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-eng.energy.tesla.com,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-eng.sn.tesla.services,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-eng.sn.tesla.services,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-provisioner.sn.tesla.services,internal-a4ae7de66b79211e9acfe06505df8d1b-973169254.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic-provisioner.sn.tesla.services,internal-a4ae7de66b79211e9acfe06505df8d1b-973169254.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+gridlogic.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+gridlogic.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+gridlogic.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+gridlogic.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+luna-private-eng.sn.tesla.services,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+luna-private-eng.sn.tesla.services,internal-a238a1642a96e11e9acc60a6099460fd-1920475762.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+luna-private-prd.sn.tesla.services,internal-a4ae7de66b79211e9acfe06505df8d1b-973169254.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+luna-private-prd.sn.tesla.services,internal-a4ae7de66b79211e9acfe06505df8d1b-973169254.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+luna-public-prd.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+luna-public-prd.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+media-server-me.tesla.cn,a6375cd35dbd811e99edc029f2240e84-1423139935.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,NoSuchBucket
+media-server-me.tesla.cn,a6375cd35dbd811e99edc029f2240e84-1423139935.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,The specified bucket does not exist
+mta.email.tesla.com,,,true,false,REFUSED/SERVFAIL DNS status
+mta2.email.tesla.com,,,true,false,REFUSED/SERVFAIL DNS status
+powerhub.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+powerhub.energy.tesla.com,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+powerhub.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+powerhub.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+registry-cnn1-1.core.tesla.services,internal-eng-registry-1949969968.cn-north-1.elb.amazonaws.com.cn.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+registry-cnn1-1.core.tesla.services,internal-eng-registry-1949969968.cn-north-1.elb.amazonaws.com.cn.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+shop.uk.teslamotors.com,shops.myshopify.com.,shopify,false,false,Only one step left!
+shop.uk.teslamotors.com,shops.myshopify.com.,shopify,false,false,"Sorry, this shop is currently unavailable."
+telemetry-eng.vn.tesla.services,elb-telemetry-us-east-1-eng-1556238685.us-east-1.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+telemetry-eng.vn.tesla.services,elb-telemetry-us-east-1-eng-1556238685.us-east-1.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+telemetry-na-east-eng.vn.tesla.services,elb-telemetry-us-east-1-eng-1556238685.us-east-1.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+telemetry-na-east-eng.vn.tesla.services,elb-telemetry-us-east-1-eng-1556238685.us-east-1.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+telemetry-na-east-prd.vn.tesla.services,elb-telemetry-us-east-1-prd-1851922008.us-east-1.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+telemetry-na-east-prd.vn.tesla.services,elb-telemetry-us-east-1-prd-1851922008.us-east-1.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+telemetry-prd.vn.tesla.services,elb-telemetry-us-east-1-prd-1851922008.us-east-1.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+telemetry-prd.vn.tesla.services,elb-telemetry-us-east-1-prd-1851922008.us-east-1.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+terra-private-prd.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+terra-private-prd.sn.tesla.services,internal-a9be76127b79311e9a05a0a92acef1a8-1930662575.us-west-2.elb.amazonaws.com.,amazonaws,true,false,Can't CURL it but dig shows a dead DNS record
+terra-public-eng.sn.tesla.services,a4e575773b23311e9aebe0281bc95fb7-28824213.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+terra-public-eng.sn.tesla.services,a4e575773b23311e9aebe0281bc95fb7-28824213.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+terra-public-prd.sn.tesla.services,ac51a8253b79311e9a05a0a92acef1a8-698738810.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+terra-public-prd.sn.tesla.services,ac51a8253b79311e9a05a0a92acef1a8-698738810.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+tgram.me.tesla.services,tpods-tgram-public-elb-1939338765.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+tgram.me.tesla.services,tpods-tgram-public-elb-1939338765.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+truck-app-eng.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,NoSuchBucket
+truck-app-eng.sn.tesla.services,ab664b09fb79211e9acfe06505df8d1b-725225292.us-west-2.elb.amazonaws.com.,amazonaws,false,false,The specified bucket does not exist
+wechat-stg.tesla.cn,a8d3069446dea11e99edc029f2240e84-338781303.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,NoSuchBucket
+wechat-stg.tesla.cn,a8d3069446dea11e99edc029f2240e84-338781303.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,The specified bucket does not exist
+wechat.tesla.cn,a8d3069446dea11e99edc029f2240e84-338781303.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,NoSuchBucket
+wechat.tesla.cn,a8d3069446dea11e99edc029f2240e84-338781303.cn-north-1.elb.amazonaws.com.cn.,amazonaws,false,false,The specified bucket does not exist

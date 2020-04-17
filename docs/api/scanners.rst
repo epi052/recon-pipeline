@@ -1,62 +1,74 @@
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+.. _scanners-ref-label:
+
 Scanners
 ================
 
 Amass Scanner
 #############
 
-.. autoclass:: recon.amass.AmassScan
+.. autoclass:: pipeline.recon.amass.AmassScan
+    :members:
 
 Aquatone Scanner
 ################
 
-.. autoclass:: recon.web.aquatone.AquatoneScan
-
-CORS Scanner
-############
-
-.. autoclass:: recon.web.corscanner.CORScannerScan
+.. autoclass:: pipeline.recon.web.aquatone.AquatoneScan
+    :members:
 
 Full Scanner
 ############
 
-.. autoclass:: recon.wrappers.FullScan
+.. autoclass:: pipeline.recon.wrappers.FullScan
+    :members:
 
 Gobuster Scanner
 ################
 
-.. autoclass:: recon.web.gobuster.GobusterScan
+.. autoclass:: pipeline.recon.web.gobuster.GobusterScan
+    :members:
 
 Hackthebox Scanner
 ##################
 
-.. autoclass:: recon.wrappers.HTBScan
+.. autoclass:: pipeline.recon.wrappers.HTBScan
+    :members:
 
 Masscan Scanner
 ###############
 
-.. autoclass:: recon.masscan.MasscanScan
+.. autoclass:: pipeline.recon.masscan.MasscanScan
+    :members:
 
 Searchsploit Scanner
 ####################
 
-.. autoclass:: recon.nmap.SearchsploitScan
+.. autoclass:: pipeline.recon.nmap.SearchsploitScan
+    :members:
 
 Subjack Scanner
 ###############
 
-.. autoclass:: recon.web.subdomain_takeover.SubjackScan
+.. autoclass:: pipeline.recon.web.subdomain_takeover.SubjackScan
+    :members:
 
 ThreadedNmap Scanner
 ####################
 
-.. autoclass:: recon.nmap.ThreadedNmapScan
+.. autoclass:: pipeline.recon.nmap.ThreadedNmapScan
+    :members:
 
 TKOSubs Scanner
 ###############
 
-.. autoclass:: recon.web.subdomain_takeover.TKOSubsScan
+.. autoclass:: pipeline.recon.web.subdomain_takeover.TKOSubsScan
+    :members:
 
 Webanalyze Scanner
 ##################
 
-.. autoclass:: recon.web.webanalyze.WebanalyzeScan
+.. autoclass:: pipeline.recon.web.webanalyze.WebanalyzeScan
+    :members:

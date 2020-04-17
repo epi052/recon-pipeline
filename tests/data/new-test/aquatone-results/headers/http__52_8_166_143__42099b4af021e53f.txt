@@ -1,0 +1,15 @@
+500 Internal Server Error
+Etag: W/"25-FJs8qf7Gj2hoxpvMuuUdWSjYlfg"
+Content-Length: 37
+Retry-Count: 0
+Access-Control-Allow-Headers: X-Requested-With
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+Date: Mon, 06 Apr 2020 14:58:12 GMT
+Server: nginx/1.16.1
+Access-Control-Allow-Origin: *
+X-Frame-Options: SAMEORIGIN
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Type: text/html; charset=utf-8
+Referrer-Policy: origin-when-cross-origin
+X-Xss-Protection: 1; mode=block

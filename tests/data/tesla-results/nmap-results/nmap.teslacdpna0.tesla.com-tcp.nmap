@@ -1,0 +1,18 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:27 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.teslacdpna0.tesla.com-tcp teslacdpna0.tesla.com
+Nmap scan report for teslacdpna0.tesla.com (104.42.180.142)
+Host is up (0.040s latency).
+
+PORT    STATE SERVICE  VERSION
+443/tcp open  ssl/http Microsoft IIS httpd 8.5
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: 403 - Forbidden: Access is denied.
+| ssl-cert: Subject: commonName=teslacdpna0.tesla.com
+| Subject Alternative Name: DNS:teslacdpna0.tesla.com
+| Not valid before: 2018-08-13T23:20:46
+|_Not valid after:  2020-08-12T23:20:46
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:42 2020 -- 1 IP address (1 host up) scanned in 15.05 seconds

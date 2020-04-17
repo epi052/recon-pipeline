@@ -1,0 +1,6 @@
+
+Host,Category,App,Version
+https://onboarding-pre-delivery-prod.teslamotors.com,Tag managers,Google Tag Manager,
+https://onboarding-pre-delivery-prod.teslamotors.com,CDN,Akamai,
+https://onboarding-pre-delivery-prod.teslamotors.com,CMS,NivCMS,
+https://onboarding-pre-delivery-prod.teslamotors.com,Caching,Varnish,

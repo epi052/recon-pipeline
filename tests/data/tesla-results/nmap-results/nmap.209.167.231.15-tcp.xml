@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:14:27 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.209.167.231.15-tcp 209.167.231.15 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.209.167.231.15-tcp 209.167.231.15" start="1586182467" startstr="Mon Apr  6 09:14:27 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182467" endtime="1586182493"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="209.167.231.15" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="upnp" product="Microsoft IIS httpd" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:microsoft:iis</cpe></service><script id="http-methods" output="&#xa;  Potentially risky methods: TRACE"><table key="Potentially risky methods">
+<elem>TRACE</elem>
+</table>
+</script><script id="http-title" output="Site doesn&apos;t have a title (text/html; charset=utf-8)."></script><script id="ssl-cert" output="Subject: commonName=secure.eloqua.com/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US&#xa;Subject Alternative Name: DNS:secure.eloqua.com&#xa;Not valid before: 2018-09-28T00:00:00&#xa;Not valid after:  2020-09-27T12:00:00"><table key="subject">
+<elem key="commonName">secure.eloqua.com</elem>
+<elem key="organizationName">Oracle Corporation</elem>
+<elem key="stateOrProvinceName">California</elem>
+<elem key="countryName">US</elem>
+<elem key="localityName">Redwood City</elem>
+<elem key="organizationalUnitName">Oracle ELOQUA TORONTO</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">DigiCert SHA2 Secure Server CA</elem>
+<elem key="countryName">US</elem>
+<elem key="organizationName">DigiCert Inc</elem>
+</table>
+<table key="pubkey">
+<elem key="type">rsa</elem>
+<elem key="exponent">userdata: 0x559a66393c48</elem>
+<elem key="modulus">userdata: 0x559a65794e58</elem>
+<elem key="bits">2048</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+<elem key="value">keyid:0F:80:61:1C:82:31:61:D5:2F:28:E7:8D:46:38:B4:2C:E1:C6:D9:E2&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+<elem key="value">BF:3C:2A:11:38:28:D3:17:24:30:56:A2:83:35:66:24:02:E8:C1:D4</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+<elem key="value">DNS:secure.eloqua.com</elem>
+</table>
+<table>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="value">Digital Signature, Key Encipherment</elem>
+<elem key="critical">true</elem>
+</table>
+<table>
+<elem key="name">X509v3 Extended Key Usage</elem>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+</table>
+<table>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl3.digicert.com/ssca-sha2-g6.crl&#xa;&#xa;Full Name:&#xa;  URI:http://crl4.digicert.com/ssca-sha2-g6.crl&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Certificate Policies</elem>
+<elem key="value">Policy: 2.16.840.1.114412.1.1&#xa;  CPS: https://www.digicert.com/CPS&#xa;Policy: 2.23.140.1.2.2&#xa;</elem>
+</table>
+<table>
+<elem key="name">Authority Information Access</elem>
+<elem key="value">OCSP - URI:http://ocsp.digicert.com&#xa;CA Issuers - URI:http://cacerts.digicert.com/DigiCertSHA2SecureServerCA.crt&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Basic Constraints</elem>
+<elem key="value">CA:FALSE</elem>
+</table>
+<table>
+<elem key="name">CT Precertificate SCTs</elem>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : A4:B9:09:90:B4:18:58:14:87:BB:13:A2:CC:67:70:0A:&#xa;                3C:35:98:04:F9:1B:DF:B8:E3:77:CD:0E:C8:0D:DC:10&#xa;    Timestamp : Sep 28 16:26:00.594 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:20:47:74:55:62:F9:72:B9:CD:46:5A:33:85:&#xa;                2D:97:97:1D:8A:02:56:6D:72:03:C4:76:7D:5A:AE:D8:&#xa;                79:2A:37:72:02:21:00:C4:CC:25:D3:27:BF:B4:EC:15:&#xa;                1F:01:37:29:48:B8:8E:A5:1F:34:32:15:74:33:E9:B1:&#xa;                2E:D3:D1:86:83:AA:80&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 87:75:BF:E7:59:7C:F8:8C:43:99:5F:BD:F3:6E:FF:56:&#xa;                8D:47:56:36:FF:4A:B5:60:C1:B4:EA:FF:5E:A0:83:0F&#xa;    Timestamp : Sep 28 16:26:00.805 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:44:02:20:2B:44:07:09:C2:94:0C:94:2E:07:E8:B4:&#xa;                F0:2A:FB:68:7C:0D:E2:9D:EA:81:0F:F2:FA:E8:74:35:&#xa;                8D:98:FA:25:02:20:17:35:68:DB:96:99:44:CB:81:59:&#xa;                EB:CA:3E:83:C5:E0:3F:15:0F:2D:6F:30:A2:B9:EF:67:&#xa;                F1:93:59:D3:F5:EE&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : BB:D9:DF:BC:1F:8A:71:B5:93:94:23:97:AA:92:7B:47:&#xa;                38:57:95:0A:AB:52:E8:1A:90:96:64:36:8E:1E:D1:85&#xa;    Timestamp : Sep 28 16:26:00.795 2018 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:46:02:21:00:F0:4F:7C:E1:C3:00:72:01:90:36:A8:&#xa;                61:01:97:F3:E6:2B:FD:02:82:58:FB:96:02:D8:3C:53:&#xa;                94:F8:65:B8:3A:02:21:00:E5:B0:5A:DC:FE:7D:ED:48:&#xa;                DF:23:AC:78:D6:66:1C:2D:D6:3E:06:EC:7F:21:1B:81:&#xa;                57:FC:CE:65:23:52:23:E4</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2018-09-28T00:00:00</elem>
+<elem key="notAfter">2020-09-27T12:00:00</elem>
+</table>
+<elem key="md5">7fcafa8148be5f57fcfb7930f0e2b800</elem>
+<elem key="sha1">ad7d4a47fda94ea977e3ab1f88ce53ac6f6a676e</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIGwzCCBaugAwIBAgIQDI9xLWf8S2gPTWYQHF8yvzANBgkqhkiG9w0BAQsFADBN&#xa;MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMScwJQYDVQQDEx5E&#xa;aWdpQ2VydCBTSEEyIFNlY3VyZSBTZXJ2ZXIgQ0EwHhcNMTgwOTI4MDAwMDAwWhcN&#xa;MjAwOTI3MTIwMDAwWjCBkjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3Ju&#xa;aWExFTATBgNVBAcTDFJlZHdvb2QgQ2l0eTEbMBkGA1UEChMST3JhY2xlIENvcnBv&#xa;cmF0aW9uMR4wHAYDVQQLExVPcmFjbGUgRUxPUVVBIFRPUk9OVE8xGjAYBgNVBAMT&#xa;EXNlY3VyZS5lbG9xdWEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC&#xa;AQEA80aoTicAvLfv9p5/9XtvnsXaTSXaIexfaom0Urw0Aik6AvhmKKB1Gvz/4pjU&#xa;4VRawDZGD9N3lAsgRlynhHAJOYAObWBww2QaLzofpH1QDAbjbti9NjgYPciiTgrL&#xa;HqC7p/SyWJw/sDIzardW8scIxobpu1UAiJdgZKz9AM8Z7c9BNEK5A7+WOQlr2f1V&#xa;AT/XQSmXgF9jaDCveGCpwIdqtTUXJvCy2frmSBj0Rx1FSP/NNbkbFMRH8EBViIfC&#xa;KJgW3nPu8q2d5ZC46i6V4wMfBilcvovSf+EiBCsXMVCW99UWXFXbnluEtOV15un1&#xa;a1ZDvQMdGWXgHmJX279pKiqbnQIDAQABo4IDVzCCA1MwHwYDVR0jBBgwFoAUD4Bh&#xa;HIIxYdUvKOeNRji0LOHG2eIwHQYDVR0OBBYEFL88KhE4KNMXJDBWooM1ZiQC6MHU&#xa;MBwGA1UdEQQVMBOCEXNlY3VyZS5lbG9xdWEuY29tMA4GA1UdDwEB/wQEAwIFoDAd&#xa;BgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwawYDVR0fBGQwYjAvoC2gK4Yp&#xa;aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL3NzY2Etc2hhMi1nNi5jcmwwL6AtoCuG&#xa;KWh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9zc2NhLXNoYTItZzYuY3JsMEwGA1Ud&#xa;IARFMEMwNwYJYIZIAYb9bAEBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LmRp&#xa;Z2ljZXJ0LmNvbS9DUFMwCAYGZ4EMAQICMHwGCCsGAQUFBwEBBHAwbjAkBggrBgEF&#xa;BQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEYGCCsGAQUFBzAChjpodHRw&#xa;Oi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRTSEEyU2VjdXJlU2VydmVy&#xa;Q0EuY3J0MAkGA1UdEwQCMAAwggF+BgorBgEEAdZ5AgQCBIIBbgSCAWoBaAB2AKS5&#xa;CZC0GFgUh7sTosxncAo8NZgE+RvfuON3zQ7IDdwQAAABZiEAUBIAAAQDAEcwRQIg&#xa;R3RVYvlyuc1GWjOFLZeXHYoCVm1yA8R2fVqu2HkqN3ICIQDEzCXTJ7+07BUfATcp&#xa;SLiOpR80MhV0M+mxLtPRhoOqgAB1AId1v+dZfPiMQ5lfvfNu/1aNR1Y2/0q1YMG0&#xa;6v9eoIMPAAABZiEAUOUAAAQDAEYwRAIgK0QHCcKUDJQuB+i08Cr7aHwN4p3qgQ/y&#xa;+uh0NY2Y+iUCIBc1aNuWmUTLgVnryj6DxeA/FQ8tbzCiue9n8ZNZ0/XuAHcAu9nf&#xa;vB+KcbWTlCOXqpJ7RzhXlQqrUugakJZkNo4e0YUAAAFmIQBQ2wAABAMASDBGAiEA&#xa;8E984cMAcgGQNqhhAZfz5iv9AoJY+5YC2DxTlPhluDoCIQDlsFrc/n3tSN8jrHjW&#xa;Zhwt1j4G7H8hG4FX/M5lI1Ij5DANBgkqhkiG9w0BAQsFAAOCAQEArV6PqXtK7K0+&#xa;jStr5dtKcQxCM+DKgaOeciHiUHKH7Kz+lbqHwB9H/O/yPZZkDQMhAhkcLRJwdyMt&#xa;hxCgQot4pxtOBpcS4DtdW+cSC2j+SO9ZdDbinRSBvCG4u/bIt55xW69IIbDDlOOp&#xa;Q/0b3vP/PF0W0NRLUN66Tl4i4soaJgMf6fJPvVDOg0vHwBOlb7BGPAvbOFgBV0a6&#xa;8t7Je+ccmxfjKDHgbJC8aGiaATjjxH+P1fGu70lUTOpGsTdAQW9IrWYes29lgxL3&#xa;+hHCqL9vgGq9HykZwao2smzvHHgApfiBnuKoK3awaYt5fqK0jy56rHi/CjBWG+Ql&#xa;ISvJFPB1Yg==&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script></port>
+</ports>
+<times srtt="46921" rttvar="46921" to="234605"/>
+</host>
+<runstats><finished time="1586182493" timestr="Mon Apr  6 09:14:53 2020" elapsed="25.83" summary="Nmap done at Mon Apr  6 09:14:53 2020; 1 IP address (1 host up) scanned in 25.83 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

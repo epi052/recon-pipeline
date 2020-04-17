@@ -1,0 +1,17 @@
+200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Accept-Ranges: bytes
+Store_ip: 104.191.11.232
+Date: Mon, 06 Apr 2020 11:21:50 GMT
+Content-Language: zh_CN
+Etag: W/"1586161921-1"
+X-Content-Type-Options: nosniff
+Retry-Count: 0
+Vary: Accept-Encoding
+X-Varnish-Server: varnish11a.pvg01.teslamotors.com
+X-Cache: HIT
+X-Server: web12a.pvg01.teslamotors.com
+Edge-Control: cache-maxage=2h, downstream-ttl=5m
+Last-Modified: Mon, 06 Apr 2020 08:32:01 GMT
+X-Cache-Hits: 17

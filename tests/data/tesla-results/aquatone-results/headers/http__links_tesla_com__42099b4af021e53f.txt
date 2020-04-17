@@ -1,0 +1,16 @@
+400 Bad Request
+Content-Security-Policy:
+Date: Mon, 06 Apr 2020 13:54:44 GMT
+Strict-Transport-Security: max-age=15768000 ; includeSubDomains
+Retry-Count: 0
+Server: openresty/1.15.8.2
+X-Frame-Options: sameorigin
+Set-Cookie: XSRF-TOKEN=64ef30e6bf7743edd8a154f4a559f97bfca84739-1586181284266-10d61669c670ca49ab5e79f3; SameSite=Lax; Path=/
+X-Content-Type-Options: nosniff
+Request-Time: 0
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+X-Xss-Protection: 1; mode=block
+Content-Type: text/html; charset=utf-8
+Server-Timing: edge; dur=8 origin; dur=157 cdn-cache; desc=MISS
+X-Permitted-Cross-Domain-Policies: master-only
+Vary: Accept-Encoding

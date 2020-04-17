@@ -1,0 +1,5 @@
+
+Host,Category,App,Version
+http://vitals.dev.teslamotors.com,JavaScript libraries,jQuery,
+http://vitals.dev.teslamotors.com,Web servers,lighttpd,1.4.53
+http://vitals.dev.teslamotors.com,CMS,NivCMS,

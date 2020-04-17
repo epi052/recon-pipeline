@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.image.emails.tesla.com-tcp image.emails.tesla.com
+Host: 184.51.219.74 ()	Status: Up
+Host: 184.51.219.74 ()	Ports: 443/open/tcp//ssl|http//AkamaiGHost (Akamai's HTTP Acceleration|Mirror service)/
+# Nmap done at Mon Apr  6 09:13:33 2020 -- 1 IP address (1 host up) scanned in 13.39 seconds

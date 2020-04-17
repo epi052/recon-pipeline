@@ -1,0 +1,20 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:43 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2600:1404:23:197::3fe7-tcp 2600:1404:23:197::3fe7
+Nmap scan report for 2600:1404:23:197::3fe7
+Host is up (0.013s latency).
+
+PORT    STATE SERVICE  VERSION
+443/tcp open  ssl/http AkamaiGHost (Akamai's HTTP Acceleration/Mirror service)
+|_http-title: Invalid URL
+| ssl-cert: Subject: commonName=akamai-san22.exacttarget.com/organizationName=SALESFORCE.COM, INC./stateOrProvinceName=California/countryName=US
+| Subject Alternative Name: DNS:akamai-san22.exacttarget.com, DNS:image.mail.thinkrealty.com, DNS:image.dialogue.digital.stockmann.com, DNS:image.emails.tesla.com, DNS:image.edistribution.pwc.com, DNS:image.news.kohlernews.com, DNS:image.rsn.nbcsports.com, DNS:image.em.nbcsports.com, DNS:image.p.gilt.com, DNS:image.p.giltcity.com, DNS:image.enews.2xu.com, DNS:image.ev.schalke04.de, DNS:image.info.mountsinai.org, DNS:image.marketing.leapfrog.com, DNS:image.e.allegisgroup.com, DNS:image.m.aerotek.com, DNS:image.e.aerotek.com, DNS:image.e.allegis-partners.com, DNS:image.e.easi.com, DNS:image.m.easi.com, DNS:image.e.mlaglobal.com, DNS:image.e.teksystems.com, DNS:image.m.teksystems.com, DNS:image.study.griffith.edu.au, DNS:image.communities.lendlease.com, DNS:image.apartments.lendlease.com, DNS:image.news.lidl.es, DNS:image.marketing.vtechkids.com, DNS:image.e.astoncarter.com, DNS:image.m.astoncarter.com, DNS:image.email.roberthalf.com, DNS:image.mail.epa.nsw.gov.au, DNS:image.emailmarketing.danfoss.com, DNS:image.emails.adecco.es, DNS:image.email.smiledirectclub.com, DNS:image.nyheter.raddabarnen.se, DNS:image.mc.shinseibank.com, DNS:image.e-news.engie-electrabel.be, DNS:image.info.devry.edu, DNS:image.news.lidlonline.es
+| Not valid before: 2018-12-04T00:00:00
+|_Not valid after:  2020-06-29T12:00:00
+|_ssl-date: TLS randomness does not represent time
+| tls-alpn:
+|_  http/1.1
+| tls-nextprotoneg:
+|   http/1.1
+|_  http/1.0
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:15:56 2020 -- 1 IP address (1 host up) scanned in 13.34 seconds

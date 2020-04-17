@@ -1,0 +1,12 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.apmv3.go.tesla.services-tcp apmv3.go.tesla.services
+Nmap scan report for apmv3.go.tesla.services (13.225.41.51)
+Host is up (0.020s latency).
+Other addresses for apmv3.go.tesla.services (not scanned): 2600:9000:21d4:1200:c:d401:5a80:93a1 2600:9000:21d4:fe00:c:d401:5a80:93a1 2600:9000:21d4:4200:c:d401:5a80:93a1 2600:9000:21d4:e600:c:d401:5a80:93a1 2600:9000:21d4:6800:c:d401:5a80:93a1 2600:9000:21d4:b800:c:d401:5a80:93a1 2600:9000:21d4:3000:c:d401:5a80:93a1 2600:9000:21d4:7800:c:d401:5a80:93a1 13.225.41.63 13.225.41.102 13.225.41.44
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Amazon CloudFront httpd
+|_http-server-header: CloudFront
+|_http-title: ERROR: The request could not be satisfied
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:13:27 2020 -- 1 IP address (1 host up) scanned in 6.86 seconds

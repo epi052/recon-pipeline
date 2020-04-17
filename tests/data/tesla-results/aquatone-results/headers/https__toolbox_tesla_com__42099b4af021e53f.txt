@@ -1,0 +1,14 @@
+200 OK
+Last-Modified: Thu, 11 Jul 2019 21:02:31 GMT
+Date: Mon, 06 Apr 2020 13:54:26 GMT
+X-Cache: Hit from cloudfront
+Via: 1.1 f1c5a27e35ac834b32534347282b3496.cloudfront.net (CloudFront)
+X-Amz-Cf-Pop: DFW55-C1
+X-Amz-Cf-Id: vy9lDawmRL5tB4AKDcLn6PLZEe7O1pNnPnf0mX-VB7IdcR6MA6SBrQ==
+Age: 35
+Content-Length: 1270
+Accept-Ranges: bytes
+Server: AmazonS3
+Etag: "3fa8339f111e3bb3a384559f08f92f85"
+Retry-Count: 0
+Content-Type: text/html

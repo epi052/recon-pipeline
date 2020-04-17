@@ -1,0 +1,15 @@
+401 Unauthorized
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Retry-Count: 0
+Etag: W/"18-XPDV80vbMk4yY1/PADG4jYM4rSI"
+Date: Mon, 06 Apr 2020 13:56:20 GMT
+X-Dns-Prefetch-Control: off
+Content-Length: 24
+X-Xss-Protection: 1; mode=block
+Access-Control-Allow-Methods: GET,PUT,POST,OPTIONS,PATCH
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization , Accept-Language, Content-Language
+Content-Type: application/json; charset=utf-8
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Download-Options: noopen

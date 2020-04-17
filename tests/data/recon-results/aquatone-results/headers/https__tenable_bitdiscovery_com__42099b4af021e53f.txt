@@ -1,17 +1,17 @@
 200 OK
-Content-Length: 2436
-X-Xss-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Referrer-Policy: origin-when-cross-origin
+Content-Length: 2522
+Date: Sun, 29 Mar 2020 11:17:39 GMT
+Content-Type: text/html; charset=utf-8
 Strict-Transport-Security: max-age=31536000; includeSubDomains
-Set-Cookie: connect.sid=s%3Azmu-FFUEwqffzuS6sU6VSSGhCGwUOrTj.EPhq0v8prw2jwq%2BF34Q02dYqtKETQ6LgbuBV8Ofp2Zc; Path=/; HttpOnly
+Set-Cookie: connect.sid=s%3AJ2FjK__-YMkTuoKyacnZto36HgFr_btV.9RL3tMhiBAmZTVqHQHz5ofmuPPlpWvIxAcBEvUPbfk4; Path=/; HttpOnly
+Retry-Count: 0
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
 Access-Control-Allow-Origin: https://bitdiscovery.com
 Access-Control-Allow-Headers: X-Requested-With
-Content-Type: text/html; charset=utf-8
-Server: nginx/1.12.1
-Date: Thu, 30 Jan 2020 12:52:52 GMT
-Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+X-Xss-Protection: 1; mode=block
 X-Frame-Options: SAMEORIGIN
-Etag: W/"984-uCOzKHNJY6hX57hkNMYtX3asDvw"
-Retry-Count: 0
+Etag: W/"9da-5FdG0lf6RGvy6uowdHSxTvyZhTs"
+Server: nginx/1.16.1
 Vary: Accept-Encoding
+X-Content-Type-Options: nosniff
+Referrer-Policy: origin-when-cross-origin

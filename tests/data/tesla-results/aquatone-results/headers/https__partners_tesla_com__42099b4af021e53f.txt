@@ -1,0 +1,16 @@
+200 OK
+Server: nginx
+X-Download-Options: noopen
+X-Xss-Protection: 1; mode=block
+Set-Cookie: tesla-auth.sid=s%3A1R-ci8gQ3V5xsvZ_Uq6rftgBNAQbIU0H.f4z%2Fa5AWl4Q9DU5VWoQbTCSzmGHaXsFbzGEreUGUbZI; Path=/; Expires=Thu, 09 Apr 2020 13:56:19 GMT; HttpOnly; Secure TS6e0b27e6027=08ce580718ab200051f4dd641062f532fedff442f2badb410e6211a892051f42c1066f2510f8204d084aa2ce04113000f4e0cbc1d2198c8c1b4b582c4fd4609844f5e0ca3af861d537ff7a8a9de48acec63f04c1070329846f8fb5175e0282ff;Path=/
+Etag: W/"114f-g2KpaZr38g6wufhZImyhFJ+XmAI"
+X-Response-Time: 16.420ms
+Vary: Accept-Encoding
+Retry-Count: 0
+Date: Mon, 06 Apr 2020 13:56:19 GMT
+Content-Type: text/html; charset=utf-8
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Dns-Prefetch-Control: off
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Content-Security-Policy: connect-src 'self'; default-src 'none'; font-src 'self' data: fonts.gstatic.com; frame-src 'self' www.google.com www.recaptcha.net www.tesla.com www.tesla.com; img-src 'self' data:; script-src www.recaptcha.net 'self' 'nonce-96ae58aa80d770f6657d'; style-src 'unsafe-inline' 'self'

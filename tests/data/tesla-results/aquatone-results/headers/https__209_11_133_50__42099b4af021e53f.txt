@@ -1,0 +1,14 @@
+200
+X-Content-Type-Options: nosniff
+Content-Type: text/html;charset=UTF-8
+X-Confluence-Request-Time: 1586181366057
+X-Frame-Options: SAMEORIGIN
+X-Accel-Buffering: no
+X-Xss-Protection: 1; mode=block
+Content-Security-Policy: frame-ancestors 'self'
+X-Asen: SEN-3212508
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Vary: User-Agent
+Date: Mon, 06 Apr 2020 13:56:05 GMT
+Retry-Count: 0
+Cache-Control: no-cache, must-revalidate

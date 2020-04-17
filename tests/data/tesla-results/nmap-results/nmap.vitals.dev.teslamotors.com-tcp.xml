@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:13:33 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80,53,22 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.vitals.dev.teslamotors.com-tcp vitals.dev.teslamotors.com -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 80,53,22 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.vitals.dev.teslamotors.com-tcp vitals.dev.teslamotors.com" start="1586182413" startstr="Mon Apr  6 09:13:33 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="3" services="22,53,80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182413" endtime="1586182428"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="192.168.1.1" addrtype="ipv4"/>
+<hostnames>
+<hostname name="vitals.dev.teslamotors.com" type="user"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="7.9p1 Raspbian 10" extrainfo="protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:7.9p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssh-hostkey" output="&#xa;  2048 5f:96:a7:11:58:7d:83:3f:31:2a:3e:2a:c2:fe:49:3b (RSA)&#xa;  256 2f:76:6b:fc:d1:9c:12:57:bc:f3:4c:1a:c2:4f:da:ad (ECDSA)&#xa;  256 ba:c4:07:49:7d:8a:eb:72:4e:df:78:ad:8f:d5:89:1a (ED25519)"><table>
+<elem key="bits">2048</elem>
+<elem key="type">ssh-rsa</elem>
+<elem key="key">AAAAB3NzaC1yc2EAAAADAQABAAABAQDMs4FTyLZtKUiKiyFjILl0Kdih9kuiwl5mwzVJG2crS2jEROQNq/u0/phn76r02poBM/VGVUKrZ4MKB3X+MhR5D700hJ3+DcHVpscU5QiAYOUufShVUsUYErrexun1eT/6mHz2D8YfP8bvO8fPSxF9tqPqmYpdRu9NGJDHSeDSxn+8mPJKDnnO5ibIiC2p71t192TK6JY9iJ5BhETAhXscmDVr7feCEDEzoxjindsyYYtdqPN6CfwdlCr/g1XkGxzfiaKCzXjtSwqbhcSyD78MP5c78ZNqgaznXz179FDnThPXm5Lu9utJdbzRq+cAwAW1pk9BcbpjFiC9babljO0z</elem>
+<elem key="fingerprint">5f96a711587d833f312a3e2ac2fe493b</elem>
+</table>
+<table>
+<elem key="bits">256</elem>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKBq22p5fF8eergTOq/QNkGuvvezPu1JxOujLQg9RmF4s4SMVIj9Nv8rCdsDaPEVoiNA+BdgkgXzy8TpICVPvLY=</elem>
+<elem key="fingerprint">2f766bfcd19c1257bcf34c1ac24fdaad</elem>
+</table>
+<table>
+<elem key="bits">256</elem>
+<elem key="type">ssh-ed25519</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIEBmfq1LSy9kJt3VPmcu/zztKlUMx5Rygi+q7gNLZsA4</elem>
+<elem key="fingerprint">bac407497d8aeb724edf78ad8fd5891a</elem>
+</table>
+</script></port>
+<port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="domain" product="dnsmasq" version="pi-hole-2.80" method="probed" conf="10"><cpe>cpe:/a:thekelleys:dnsmasq:pi-hole-2.80</cpe></service><script id="dns-nsid" output="&#xa;  NSID: res111.mia.rrdns.pch.net (7265733131312e6d69612e7272646e732e7063682e6e6574)&#xa;  id.server: res111.mia.rrdns.pch.net&#xa;  bind.version: dnsmasq-pi-hole-2.80"><table key="NSID">
+<elem key="raw">res111.mia.rrdns.pch.net</elem>
+<elem key="hex">7265733131312e6d69612e7272646e732e7063682e6e6574</elem>
+</table>
+<elem key="id.server">res111.mia.rrdns.pch.net</elem>
+<elem key="bind.version">dnsmasq-pi-hole-2.80</elem>
+</script></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="lighttpd" version="1.4.53" method="probed" conf="10"><cpe>cpe:/a:lighttpd:lighttpd:1.4.53</cpe></service><script id="http-server-header" output="lighttpd/1.4.53"><elem>lighttpd/1.4.53</elem>
+</script><script id="http-title" output="Site doesn&apos;t have a title (text/html; charset=UTF-8)."></script><script id="http-trane-info" output="Problem with XML parsing of /evox/about"/></port>
+</ports>
+<times srtt="534" rttvar="2821" to="100000"/>
+</host>
+<runstats><finished time="1586182428" timestr="Mon Apr  6 09:13:48 2020" elapsed="15.05" summary="Nmap done at Mon Apr  6 09:13:48 2020; 1 IP address (1 host up) scanned in 15.05 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

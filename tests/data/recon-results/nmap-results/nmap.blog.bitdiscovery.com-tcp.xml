@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.blog.bitdiscovery.com-tcp blog.bitdiscovery.com -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.blog.bitdiscovery.com-tcp blog.bitdiscovery.com" start="1585480742" startstr="Sun Mar 29 06:19:02 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="2" services="80,443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1585480742" endtime="1585480756"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="13.226.182.120" addrtype="ipv4"/>
+<hostnames>
+<hostname name="blog.bitdiscovery.com" type="user"/>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" method="probed" conf="10"/><script id="http-server-header" output="CloudFront"><elem>CloudFront</elem>
+</script><script id="http-title" output="Did not follow redirect to https://blog.bitdiscovery.com/"><elem key="redirect_url">https://blog.bitdiscovery.com/</elem>
+</script></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" tunnel="ssl" method="probed" conf="10"/><script id="http-robots.txt" output="1 disallowed entry &#xa;/"/><script id="http-server-header" output="&#xa;  AmazonS3&#xa;  CloudFront"><elem>AmazonS3</elem>
+<elem>CloudFront</elem>
+</script><script id="http-title" output="Bit Discovery Blog -"><elem key="title">Bit Discovery Blog -</elem>
+</script><script id="ssl-cert" output="Subject: commonName=blog.bitdiscovery.com&#xa;Subject Alternative Name: DNS:blog.bitdiscovery.com&#xa;Not valid before: 2020-03-01T00:00:00&#xa;Not valid after:  2021-04-01T12:00:00"><table key="subject">
+<elem key="commonName">blog.bitdiscovery.com</elem>
+</table>
+<table key="issuer">
+<elem key="organizationalUnitName">Server CA 1B</elem>
+<elem key="commonName">Amazon</elem>
+<elem key="countryName">US</elem>
+<elem key="organizationName">Amazon</elem>
+</table>
+<table key="pubkey">
+<elem key="modulus">userdata: 0x55954dcc9ec8</elem>
+<elem key="exponent">userdata: 0x55954cde99d8</elem>
+<elem key="bits">2048</elem>
+<elem key="type">rsa</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="value">keyid:59:A4:66:06:52:A0:7B:95:92:3C:A3:94:07:27:96:74:5B:F9:3D:D0&#xa;</elem>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+</table>
+<table>
+<elem key="value">28:64:17:18:3D:87:C5:4F:68:08:61:BB:13:A8:85:E4:AF:3B:68:95</elem>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+</table>
+<table>
+<elem key="value">DNS:blog.bitdiscovery.com</elem>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">Digital Signature, Key Encipherment</elem>
+<elem key="name">X509v3 Key Usage</elem>
+</table>
+<table>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+<elem key="name">X509v3 Extended Key Usage</elem>
+</table>
+<table>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl.sca1b.amazontrust.com/sca1b.crl&#xa;</elem>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+</table>
+<table>
+<elem key="value">Policy: 2.16.840.1.114412.1.2&#xa;Policy: 2.23.140.1.2.1&#xa;</elem>
+<elem key="name">X509v3 Certificate Policies</elem>
+</table>
+<table>
+<elem key="value">OCSP - URI:http://ocsp.sca1b.amazontrust.com&#xa;CA Issuers - URI:http://crt.sca1b.amazontrust.com/sca1b.crt&#xa;</elem>
+<elem key="name">Authority Information Access</elem>
+</table>
+<table>
+<elem key="critical">true</elem>
+<elem key="value">CA:FALSE</elem>
+<elem key="name">X509v3 Basic Constraints</elem>
+</table>
+<table>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : EE:4B:BD:B7:75:CE:60:BA:E1:42:69:1F:AB:E1:9E:66:&#xa;                A3:0F:7E:5F:B0:72:D8:83:00:C4:7B:89:7A:A8:FD:CB&#xa;    Timestamp : Mar  1 00:29:27.303 2020 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:46:02:21:00:F4:2D:F9:01:23:2E:64:BA:AF:23:38:&#xa;                C9:79:B2:52:F3:DC:2C:4B:F2:E3:F5:71:C4:F2:0D:C9:&#xa;                D2:97:57:3F:1B:02:21:00:8D:BA:FE:FA:CE:ED:66:BA:&#xa;                22:B0:93:B0:0A:2D:64:12:52:67:81:59:91:4C:84:7B:&#xa;                28:D3:38:6C:2D:FE:74:6B&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 87:75:BF:E7:59:7C:F8:8C:43:99:5F:BD:F3:6E:FF:56:&#xa;                8D:47:56:36:FF:4A:B5:60:C1:B4:EA:FF:5E:A0:83:0F&#xa;    Timestamp : Mar  1 00:29:27.324 2020 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:21:00:E4:95:38:F2:17:A1:02:CF:C0:89:C2:&#xa;                69:7E:03:06:20:68:9F:F3:14:8F:BC:09:1B:08:01:42:&#xa;                CA:D2:FD:A5:19:02:20:73:04:4F:D9:8D:59:1D:63:21:&#xa;                80:59:DF:1B:7B:6E:47:CB:23:3C:25:89:E8:0A:7B:B4:&#xa;                1C:70:57:4F:09:2A:E1</elem>
+<elem key="name">CT Precertificate SCTs</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notAfter">2021-04-01T12:00:00</elem>
+<elem key="notBefore">2020-03-01T00:00:00</elem>
+</table>
+<elem key="md5">328596d54ac572be7e7b1156a1ef1e34</elem>
+<elem key="sha1">f125a294fd41834dc15a6f97aabc8e82637c5838</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIFdDCCBFygAwIBAgIQBnTibbZR4GOMTL0MvMgbHzANBgkqhkiG9w0BAQsFADBG&#xa;MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRUwEwYDVQQLEwxTZXJ2ZXIg&#xa;Q0EgMUIxDzANBgNVBAMTBkFtYXpvbjAeFw0yMDAzMDEwMDAwMDBaFw0yMTA0MDEx&#xa;MjAwMDBaMCAxHjAcBgNVBAMTFWJsb2cuYml0ZGlzY292ZXJ5LmNvbTCCASIwDQYJ&#xa;KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKlvL9L7yASm3c9K+phjkhy31jPj+34G&#xa;L7v4yDCor1zaWnytDEOBiVdwQCC2s5jPuv2BGEZGbk6ILMGRBUC8S+jJPVFeVUrl&#xa;iVKZblKw3jb31ORtGMkT3DO3ampyvJc4jO9tA1ltGHN16M02NgMojbg4sjZhRhs4&#xa;eO0wDx3a8qDa8AGh0NEpHw6OFBDqD1OzTu2Hm/xIcE6zY7HTvzA41l/zC9g2/kYT&#xa;hfga16iF4F7bOIdvgT9+JMk2lGsjVsSVFXxTIogEJ004sP1G0DCRrBqDCO+a/aWa&#xa;0/9TMKQH+XPcQ45jCTaHLPUHC7vJ92dt0589fbjek7XNQoqSbs/lumsCAwEAAaOC&#xa;AoIwggJ+MB8GA1UdIwQYMBaAFFmkZgZSoHuVkjyjlAcnlnRb+T3QMB0GA1UdDgQW&#xa;BBQoZBcYPYfFT2gIYbsTqIXkrztolTAgBgNVHREEGTAXghVibG9nLmJpdGRpc2Nv&#xa;dmVyeS5jb20wDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggr&#xa;BgEFBQcDAjA7BgNVHR8ENDAyMDCgLqAshipodHRwOi8vY3JsLnNjYTFiLmFtYXpv&#xa;bnRydXN0LmNvbS9zY2ExYi5jcmwwIAYDVR0gBBkwFzALBglghkgBhv1sAQIwCAYG&#xa;Z4EMAQIBMHUGCCsGAQUFBwEBBGkwZzAtBggrBgEFBQcwAYYhaHR0cDovL29jc3Au&#xa;c2NhMWIuYW1hem9udHJ1c3QuY29tMDYGCCsGAQUFBzAChipodHRwOi8vY3J0LnNj&#xa;YTFiLmFtYXpvbnRydXN0LmNvbS9zY2ExYi5jcnQwDAYDVR0TAQH/BAIwADCCAQUG&#xa;CisGAQQB1nkCBAIEgfYEgfMA8QB3AO5Lvbd1zmC64UJpH6vhnmajD35fsHLYgwDE&#xa;e4l6qP3LAAABcJN/b4cAAAQDAEgwRgIhAPQt+QEjLmS6ryM4yXmyUvPcLEvy4/Vx&#xa;xPINydKXVz8bAiEAjbr++s7tZroisJOwCi1kElJngVmRTIR7KNM4bC3+dGsAdgCH&#xa;db/nWXz4jEOZX73zbv9WjUdWNv9KtWDBtOr/XqCDDwAAAXCTf2+cAAAEAwBHMEUC&#xa;IQDklTjyF6ECz8CJwml+AwYgaJ/zFI+8CRsIAULK0v2lGQIgcwRP2Y1ZHWMhgFnf&#xa;G3tuR8sjPCWJ6Ap7tBxwV08JKuEwDQYJKoZIhvcNAQELBQADggEBAGHV7XaT51JX&#xa;6Xk2HogrT6CqeDH8GSkxbjc6oo8MGpaXmZsiMV+xZa6eKpEuNQ594GbCDkxshq7p&#xa;NiTXivvg2wH3o7suDKtIdV+xIExYuw/7TTKC4loNFWbwHCBkP1MDz6a399Pwc0yL&#xa;O5bZNPGHQW+Jf4Wob9dstnVyy+jlqnaUt3wtwnIQ552vDfaHJ4dSrl/oYKsSg4B3&#xa;oTaWBlUVtOsio5WGEczu/epeo+Z/+eLnzimgps5O+aFLvftXop0e66HpzYsbTv+t&#xa;sLO7NgLt3b5ME/bTfFFEDA9f6Q+V6O5NMiwzWVojoI11ZTuhCXb2tCtOahwn9kIj&#xa;Y269UHwM8+g=&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script></port>
+</ports>
+<times srtt="12408" rttvar="9311" to="100000"/>
+</host>
+<runstats><finished time="1585480756" timestr="Sun Mar 29 06:19:16 2020" elapsed="13.88" summary="Nmap done at Sun Mar 29 06:19:16 2020; 1 IP address (1 host up) scanned in 13.88 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

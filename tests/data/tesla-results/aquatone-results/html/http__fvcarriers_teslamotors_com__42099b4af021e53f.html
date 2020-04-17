@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tesla SSO - Sign In</title>
+
+  <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="icon" type="image/png" href="/images/icons/favicon-196x196.png" sizes="196x196?2" />
+  <link rel="icon" type="image/png" href="/images/icons/favicon-160x160.png" sizes="160x160?2" />
+  <link rel="icon" type="image/png" href="/images/icons/favicon-96x96.png" sizes="96x96?2" />
+  <link rel="icon" type="image/png" href="/images/icons/favicon-16x16.png" sizes="16x16?2" />
+  <link rel="icon" type="image/png" href="/images/icons/favicon-32x32.png" sizes="32x32?2" />
+
+  <link rel="stylesheet" href="/styles/bulma.min.css" />
+  <link rel="stylesheet" href="/styles/tds-faux.css" />
+
+  <script nonce="2287e930ad6f8751468c">
+    //  Prevent browsers from caching DOMContentLoaded event
+    //  Fix issue where back button disables submit button
+    window.onunload = function(){};
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var form = document.getElementById("form");
+      var cancel = form.querySelector("#form-submit-cancel");
+
+      if (cancel) {
+        cancel.addEventListener("click", function(event) {
+          form.querySelector("#form-input-cancel").value = "1";
+          form.submit();
+        });
+      }
+
+      var submit = form.querySelector("#form-submit-continue");
+      submit.addEventListener("click", function(event) {
+        event.target.disabled = true;
+        form.submit();
+      });
+
+      form.querySelector("#form-input-identity").focus();
+    });
+  </script>
+
+</head>
+<body class="body hero is-fullheight background-semi-interior">
+
+
+  <div class="hero-body py-1">
+
+    <div class="container">
+      <div class="columns is-vcentered is-centered is-tablet">
+
+
+        <div class="column is-7 wrapper">
+          <h1 class="text-center mt-0 h1">Sign In</h1>
+          <div class="logo logo-sm mx-auto mt-3"></div>
+          <div class="mt-3">
+            <form method="post" id="form">
+            <input type="hidden" name="_csrf" value="syqH5cD7-f-QgFxXmloMX3NXSvOYdZuNPU98" />
+            <input type="hidden" name="_phase" value="identity" />
+            <input type="hidden" name="transaction_id" value="wsfed" />
+            <input type="hidden" name="cancel" value="" id="form-input-cancel" />
+
+
+
+
+            <div>
+              <label class="tds-label">Email or Username</label>
+              <input id="form-input-identity" type="text" name="identity" class="tds-text-input" placeholder="Email or Username" value="" />
+            </div>
+            <div class="mt-5 hidden">
+              <label class="tds-label">Email or Username</label>
+              <input id="form-input-identity" type="text" name="identity2" class="tds-text-input is-invalid" placeholder="Email or Username" value="" />
+              <div class="invalid-feedback mt-1">
+                Invalid username<br />
+                Must contain at least 1 number and special character
+              </div>
+            </div>
+
+
+            <div class="columns mt-3 mb-1">
+
+              <div class="column text-center">
+                <button id="form-submit-continue" class="tds-btn">Next</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <!--
+    <div class="columns is-vcentered is-centered columnmt-0 is-mobile is-multiline is-gapless2">
+      <div class="column" style="background: #f00; ">
+
+          <div class="columns is-vcentered is-centered is-fullheight mt-0 is-multiline">
+            <div class="column is-6" style="background: #f00; ">
+              <p class="bd-notification is-primary">First column</p>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+    -->
+
+
+  </div>
+  <div class="hero-foot text-center">
+    <!--<div>[language]</div>-->
+  </div>
+
+  <!--
+  <div>i18n</div>
+  -->
+
+
+
+
+
+  <!-- @todo role-induced cache keywords - http://bitly.com/2WXBRNp -->
+</body>
+</html>
+

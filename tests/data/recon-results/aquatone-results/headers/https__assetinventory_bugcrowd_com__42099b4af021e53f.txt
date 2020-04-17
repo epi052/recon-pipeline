@@ -1,19 +1,19 @@
 200 OK
-Expect-Ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-Server: cloudflare
-Date: Thu, 30 Jan 2020 12:52:51 GMT
-Access-Control-Allow-Origin: https://bitdiscovery.com
-Access-Control-Allow-Headers: X-Requested-With
-X-Xss-Protection: 1; mode=block
-Vary: Accept-Encoding
+Cf-Cache-Status: DYNAMIC
+Cf-Ray: 57b92f81b812ecd3-DFW
 X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Etag: W/"9e1-aLna+VdyZ93w66rce6JPLNqCE4Q"
+Set-Cookie: __cfduid=d9a9446aaec22e49fb94df310e1a44fd71585480658; expires=Tue, 28-Apr-20 11:17:38 GMT; path=/; domain=.bugcrowd.com; HttpOnly; SameSite=Lax connect.sid=s%3AX8eIdTtQ4hlUNNY9IpzJCNIvE2ZtCyTW.GUg08f82d4J9nAbbQzGnJedHrfrJy8l2Xz8mUaNGjJQ; Path=/; HttpOnly
 Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
-Etag: W/"98b-DxNKqNImao/Lh9fDc6XPux2goAI"
-Cf-Ray: 55d395ddaf7e9b8b-DFW
-Retry-Count: 0
-Set-Cookie: __cfduid=df21a9360f8b61f385a0e701fb497db861580388771; expires=Sat, 29-Feb-20 12:52:51 GMT; path=/; domain=.bugcrowd.com; HttpOnly; SameSite=Lax connect.sid=s%3AzOtKS_kdCJgTVEb2BylRcAIZzjPKsdP9.RCbh8I9%2BV8YZwln7sAZSIn%2B95uywEkczhtgMFgwEvDM; Path=/; HttpOnly
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 Referrer-Policy: origin-when-cross-origin
 X-Frame-Options: SAMEORIGIN
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Expect-Ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+Server: cloudflare
+Retry-Count: 0
+Access-Control-Allow-Origin: https://bitdiscovery.com
+Access-Control-Allow-Headers: X-Requested-With
+Vary: Accept-Encoding
+Date: Sun, 29 Mar 2020 11:17:38 GMT
 Content-Type: text/html; charset=utf-8
-Cf-Cache-Status: DYNAMIC

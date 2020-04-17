@@ -1,0 +1,14 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:53 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.2603:1026:206:8::8-tcp 2603:1026:206:8::8
+Nmap scan report for 2603:1026:206:8::8
+Host is up (0.12s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Microsoft IIS httpd 10.0
+| http-server-header:
+|   Microsoft-HTTPAPI/2.0
+|_  Microsoft-IIS/10.0
+|_http-title: Bad Request
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:16:02 2020 -- 1 IP address (1 host up) scanned in 9.65 seconds

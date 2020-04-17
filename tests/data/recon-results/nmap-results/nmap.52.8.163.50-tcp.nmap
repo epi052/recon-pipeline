@@ -1,0 +1,19 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:17 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.52.8.163.50-tcp 52.8.163.50
+Nmap scan report for 52.8.163.50
+Host is up (0.073s latency).
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Did not follow redirect to https://52.8.163.50/
+443/tcp open  ssl/http nginx 1.16.1
+|_http-server-header: nginx/1.16.1
+|_http-title: Site doesn't have a title (text/html; charset=utf-8).
+| ssl-cert: Subject: commonName=bitdiscovery.com
+| Subject Alternative Name: DNS:bitdiscovery.com, DNS:*.bitdiscovery.com
+| Not valid before: 2019-07-20T00:00:00
+|_Not valid after:  2020-08-20T12:00:00
+|_ssl-date: TLS randomness does not represent time
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Mar 29 06:19:31 2020 -- 1 IP address (1 host up) scanned in 14.51 seconds

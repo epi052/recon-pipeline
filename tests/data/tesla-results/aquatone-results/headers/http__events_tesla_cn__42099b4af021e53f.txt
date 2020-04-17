@@ -1,0 +1,13 @@
+200 OK
+Set-Cookie: PHPSESSID=r5k16o95qchbv3gn9og0gfadc0; path=/
+Strict-Transport-Security: max-age=15768000
+Content-Type: text/html;charset=UTF-8
+Vary: Accept-Encoding
+Expires: Mon, 06 Apr 2020 13:54:48 GMT
+Retry-Count: 0
+X-Akamai-Transformed: 9 39102 0 pmb=mRUM,3
+Server-Timing: cdn-cache; desc=MISS edge; dur=1195 origin; dur=1316
+Server: nginx
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Mon, 06 Apr 2020 13:54:48 GMT

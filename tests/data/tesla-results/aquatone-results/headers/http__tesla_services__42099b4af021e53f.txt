@@ -1,0 +1,15 @@
+200 OK
+X-Xss-Protection: 1; mode=block
+Pragma: no-cache
+Server: Apache/2.4.6 ()
+Content-Type: text/html; charset=UTF-8
+X-Content-Type-Options: nosniff
+Etag: "64c-581533dedf785"
+Accept-Ranges: bytes
+Cteonnt-Length: 1612
+X-Frame-Options: SAMEORIGIN
+Last-Modified: Thu, 07 Feb 2019 19:56:44 GMT
+Content-Security-Policy: script-src 'self'
+Cache-Control: no-cache
+Retry-Count: 0
+Date: Mon, 06 Apr 2020 13:54:18 GMT

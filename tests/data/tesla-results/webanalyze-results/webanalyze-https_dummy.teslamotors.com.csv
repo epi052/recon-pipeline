@@ -1,0 +1,11 @@
+
+Host,Category,App,Version
+https://dummy.teslamotors.com,CMS,NivCMS,
+https://dummy.teslamotors.com,"Web servers,Reverse proxies",Nginx,1.14.1
+https://dummy.teslamotors.com,JavaScript libraries,Underscore.js,
+https://dummy.teslamotors.com,JavaScript frameworks,React,
+https://dummy.teslamotors.com,Web frameworks,CodeIgniter,
+https://dummy.teslamotors.com,Programming languages,PHP,
+https://dummy.teslamotors.com,JavaScript libraries,jQuery,
+https://dummy.teslamotors.com,JavaScript libraries,jQuery UI,
+https://dummy.teslamotors.com,JavaScript libraries,jQuery,

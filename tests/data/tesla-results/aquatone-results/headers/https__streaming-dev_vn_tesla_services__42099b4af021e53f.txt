@@ -1,0 +1,11 @@
+404 Not Found
+Server: nginx
+Content-Type: text/plain; charset=utf-8
+Cache-Control: no-store, private, s-max-age=0
+Content-Security-Policy: default-src 'none'
+X-Frame-Options: SAMEORIGIN
+Date: Mon, 06 Apr 2020 13:55:22 GMT
+Content-Length: 19
+Retry-Count: 0
+X-Content-Type-Options: nosniff nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains

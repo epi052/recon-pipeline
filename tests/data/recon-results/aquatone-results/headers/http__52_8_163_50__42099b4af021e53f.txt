@@ -1,0 +1,15 @@
+500 Internal Server Error
+Retry-Count: 0
+Server: nginx/1.16.1
+Content-Length: 37
+Access-Control-Allow-Origin: *
+Referrer-Policy: origin-when-cross-origin
+X-Xss-Protection: 1; mode=block
+Etag: W/"25-FJs8qf7Gj2hoxpvMuuUdWSjYlfg"
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Date: Sun, 29 Mar 2020 11:17:38 GMT
+Content-Type: text/html; charset=utf-8
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: client-api.arkoselabs.com
+Access-Control-Allow-Headers: X-Requested-With
+X-Frame-Options: SAMEORIGIN

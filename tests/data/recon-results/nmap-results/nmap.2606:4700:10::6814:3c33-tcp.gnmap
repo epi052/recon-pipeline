@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:23 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 8443,8080,443,80 -6 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.2606:4700:10::6814:3c33-tcp 2606:4700:10::6814:3c33
+Host: 2606:4700:10::6814:3c33 ()	Status: Up
+Host: 2606:4700:10::6814:3c33 ()	Ports: 80/open/tcp//http//cloudflare/, 443/open/tcp//ssl|https//cloudflare/, 8080/open/tcp//http-proxy//cloudflare/, 8443/open/tcp//ssl|https-alt//cloudflare/
+# Nmap done at Sun Mar 29 06:19:44 2020 -- 1 IP address (1 host up) scanned in 20.89 seconds

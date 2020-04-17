@@ -1,0 +1,13 @@
+200 OK
+Accept-Ranges: bytes
+Server: AmazonS3
+Via: 1.1 0b5289ed31b336bd635023da029aaff0.cloudfront.net (CloudFront)
+X-Amz-Cf-Pop: DFW55-C1
+X-Amz-Cf-Id: JZgXKnXw3HFsAEA8W70HqiXI0r9nM1yN0v6Ej2rr1-9Lo5BrdS_X8g==
+Last-Modified: Thu, 11 Jul 2019 21:02:31 GMT
+Content-Length: 1270
+Retry-Count: 0
+Date: Mon, 06 Apr 2020 12:28:26 GMT
+Etag: "3fa8339f111e3bb3a384559f08f92f85"
+X-Cache: RefreshHit from cloudfront
+Content-Type: text/html

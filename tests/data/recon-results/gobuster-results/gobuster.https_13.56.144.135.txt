@@ -1,0 +1,7 @@
+https://13.56.144.135/css (Status: 301)
+https://13.56.144.135/dist (Status: 301)
+https://13.56.144.135/fonts (Status: 301)
+https://13.56.144.135/homepage (Status: 301)
+https://13.56.144.135/images (Status: 301)
+https://13.56.144.135/js (Status: 301)
+https://13.56.144.135/robots.txt (Status: 200)

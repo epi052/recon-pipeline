@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:13:20 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.service.tesla.cn-tcp service.tesla.cn
+Host: 209.11.133.37 ()	Status: Up
+Host: 209.11.133.37 ()	Ports: 80/open/tcp//http//BigIP/
+# Nmap done at Mon Apr  6 09:15:47 2020 -- 1 IP address (1 host up) scanned in 147.58 seconds

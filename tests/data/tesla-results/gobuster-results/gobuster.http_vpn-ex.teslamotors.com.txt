@@ -1,0 +1,5 @@
+http://vpn-ex.teslamotors.com/ADMIN (Status: 301)
+http://vpn-ex.teslamotors.com/Admin (Status: 301)
+http://vpn-ex.teslamotors.com/admin (Status: 301)
+http://vpn-ex.teslamotors.com/robots.txt (Status: 200)
+http://vpn-ex.teslamotors.com/sso (Status: 301)

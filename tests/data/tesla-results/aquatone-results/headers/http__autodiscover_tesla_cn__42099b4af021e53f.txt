@@ -1,0 +1,15 @@
+200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Ms-Ests-Server: 2.1.10321.10 - SAN ProdSlices
+Set-Cookie: fpc=AqCcFjaUerlMv0u1gMNfbuA; expires=Wed, 06-May-2020 13:54:56 GMT; path=/; secure; HttpOnly x-ms-gateway-slice=prod; path=/; secure; HttpOnly stsservicecookie=ests; path=/; secure; HttpOnly
+Retry-Count: 0
+Pragma: no-cache
+Expires: -1
+P3p: CP="DSP CUR OTPi IND OTRi ONL FIN"
+Content-Type: text/html; charset=utf-8
+Vary: Accept-Encoding
+X-Ms-Request-Id: 48ff5565-d40b-4d41-a647-2d9409e34c00
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Date: Mon, 06 Apr 2020 13:54:55 GMT
+Cache-Control: no-cache, no-store

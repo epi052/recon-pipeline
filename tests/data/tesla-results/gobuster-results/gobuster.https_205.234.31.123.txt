@@ -1,0 +1,5 @@
+https://205.234.31.123/404 (Status: 200)
+https://205.234.31.123/500 (Status: 200)
+https://205.234.31.123/favicon.ico (Status: 200)
+https://205.234.31.123/robots.txt (Status: 200)
+https://205.234.31.123/status (Status: 200)

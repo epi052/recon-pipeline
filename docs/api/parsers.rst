@@ -1,17 +1,26 @@
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+.. _parsers-ref-label:
+
 Parsers
 =======
 
 Amass Parser
 ############
 
-.. autoclass:: recon.amass.ParseAmassOutput
+.. autoclass:: pipeline.recon.amass.ParseAmassOutput
+    :members:
 
 Web Targets Parser
 ##################
 
-.. autoclass:: recon.web.targets.GatherWebTargets
+.. autoclass:: pipeline.recon.web.targets.GatherWebTargets
+    :members:
 
 Masscan Parser
 ##############
 
-.. autoclass:: recon.masscan.ParseMasscanOutput
+.. autoclass:: pipeline.recon.masscan.ParseMasscanOutput
+    :members:

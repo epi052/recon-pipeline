@@ -1,0 +1,15 @@
+200
+X-Frame-Options: SAMEORIGIN
+X-Asessionid: ddz5sh
+X-Content-Type-Options: nosniff
+Date: Mon, 06 Apr 2020 13:55:56 GMT
+X-Arequestid: @V052YOx415x187746x0
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Vary: accept-encoding
+Content-Type: text/html;charset=UTF-8
+Set-Cookie: BITBUCKETSESSIONID=6290A880AFD756D91C3BD56F958E7751; Path=/; Secure; HttpOnly
+Cache-Control: no-cache no-store
+Pragma: no-cache
+X-Xss-Protection: 1; mode=block
+Content-Language: en-US
+Retry-Count: 0

@@ -51,7 +51,7 @@ def run_cmd(app, cmd):
 
 
 def setup_install_test(tool=None):
-    tools = Path.home() / ".cache" / ".tool-dict.pkl"
+    tools = Path.home() / ".local" / "recon-pipeline" / "tools" / ".tool-dict.pkl"
 
     try:
         tools.unlink()

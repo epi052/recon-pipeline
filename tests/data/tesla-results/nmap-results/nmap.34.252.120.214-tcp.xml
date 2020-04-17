@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr  6 09:15:08 2020 as: nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.34.252.120.214-tcp 34.252.120.214 -->
+<nmaprun scanner="nmap" args="nmap -&#45;open -sT -n -sC -T 4 -sV -Pn -p 443 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.34.252.120.214-tcp 34.252.120.214" start="1586182508" startstr="Mon Apr  6 09:15:08 2020" version="7.80" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1586182508" endtime="1586182527"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="34.252.120.214" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.16.0" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.16.0</cpe></service><script id="http-server-header" output="nginx/1.16.0"><elem>nginx/1.16.0</elem>
+</script><script id="http-title" output="403 Forbidden"><elem key="title">403 Forbidden</elem>
+</script><script id="ssl-cert" output="Subject: commonName=tel.vn.teslamotors.com/organizationName=Tesla, Inc./stateOrProvinceName=California/countryName=US&#xa;Subject Alternative Name: DNS:tel.vn.teslamotors.com, DNS:telemetry-eng.vn.tesla.services, DNS:telemetry-prd.vn.tesla.services&#xa;Not valid before: 2019-09-10T00:00:00&#xa;Not valid after:  2021-12-13T00:00:00"><table key="subject">
+<elem key="localityName">Palo Alto</elem>
+<elem key="organizationName">Tesla, Inc.</elem>
+<elem key="stateOrProvinceName">California</elem>
+<elem key="countryName">US</elem>
+<elem key="commonName">tel.vn.teslamotors.com</elem>
+</table>
+<table key="issuer">
+<elem key="countryName">US</elem>
+<elem key="organizationalUnitName">www.digicert.com</elem>
+<elem key="commonName">DigiCert SHA2 High Assurance Server CA</elem>
+<elem key="organizationName">DigiCert Inc</elem>
+</table>
+<table key="pubkey">
+<elem key="exponent">userdata: 0x5566d192c1a8</elem>
+<elem key="bits">2048</elem>
+<elem key="modulus">userdata: 0x5566d1565ad8</elem>
+<elem key="type">rsa</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">X509v3 Authority Key Identifier</elem>
+<elem key="value">keyid:51:68:FF:90:AF:02:07:75:3C:CC:D9:65:64:62:A2:12:B8:59:72:3B&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Key Identifier</elem>
+<elem key="value">3C:93:A4:60:95:F1:47:8C:6B:0F:80:AF:CB:4B:8E:32:BD:64:F0:19</elem>
+</table>
+<table>
+<elem key="name">X509v3 Subject Alternative Name</elem>
+<elem key="value">DNS:tel.vn.teslamotors.com, DNS:telemetry-eng.vn.tesla.services, DNS:telemetry-prd.vn.tesla.services</elem>
+</table>
+<table>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="value">Digital Signature, Key Encipherment</elem>
+<elem key="critical">true</elem>
+</table>
+<table>
+<elem key="name">X509v3 Extended Key Usage</elem>
+<elem key="value">TLS Web Server Authentication, TLS Web Client Authentication</elem>
+</table>
+<table>
+<elem key="name">X509v3 CRL Distribution Points</elem>
+<elem key="value">&#xa;Full Name:&#xa;  URI:http://crl3.digicert.com/sha2-ha-server-g6.crl&#xa;&#xa;Full Name:&#xa;  URI:http://crl4.digicert.com/sha2-ha-server-g6.crl&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Certificate Policies</elem>
+<elem key="value">Policy: 2.16.840.1.114412.1.1&#xa;  CPS: https://www.digicert.com/CPS&#xa;Policy: 2.23.140.1.2.2&#xa;</elem>
+</table>
+<table>
+<elem key="name">Authority Information Access</elem>
+<elem key="value">OCSP - URI:http://ocsp.digicert.com&#xa;CA Issuers - URI:http://cacerts.digicert.com/DigiCertSHA2HighAssuranceServerCA.crt&#xa;</elem>
+</table>
+<table>
+<elem key="name">X509v3 Basic Constraints</elem>
+<elem key="value">CA:FALSE</elem>
+<elem key="critical">true</elem>
+</table>
+<table>
+<elem key="name">CT Precertificate SCTs</elem>
+<elem key="value">Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : A4:B9:09:90:B4:18:58:14:87:BB:13:A2:CC:67:70:0A:&#xa;                3C:35:98:04:F9:1B:DF:B8:E3:77:CD:0E:C8:0D:DC:10&#xa;    Timestamp : Sep 10 23:43:11.701 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:20:2F:80:6C:76:13:AE:B4:D1:D6:37:51:BF:&#xa;                03:C0:7B:BA:60:71:73:13:9F:32:A6:D3:2D:16:FD:55:&#xa;                23:F8:91:98:02:21:00:D6:76:5F:6E:46:D4:EB:F9:9B:&#xa;                51:74:D5:4B:FC:90:99:5D:AB:7F:F2:EF:DE:72:C9:C3:&#xa;                7E:12:21:76:2C:09:34&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 87:75:BF:E7:59:7C:F8:8C:43:99:5F:BD:F3:6E:FF:56:&#xa;                8D:47:56:36:FF:4A:B5:60:C1:B4:EA:FF:5E:A0:83:0F&#xa;    Timestamp : Sep 10 23:43:11.780 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:21:00:FB:0A:21:27:4C:F4:9F:66:48:08:D2:&#xa;                6B:5A:03:3F:14:BB:DD:3B:96:97:91:67:27:15:3D:D9:&#xa;                1F:93:EF:32:3F:02:20:6A:01:F6:82:CD:E0:84:FB:A3:&#xa;                9E:47:A3:A1:D1:94:96:9B:53:E6:7A:58:DB:B8:F4:09:&#xa;                4A:A1:DA:28:08:0C:E8&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 44:94:65:2E:B0:EE:CE:AF:C4:40:07:D8:A8:FE:28:C0:&#xa;                DA:E6:82:BE:D8:CB:31:B5:3F:D3:33:96:B5:B6:81:A8&#xa;    Timestamp : Sep 10 23:43:11.518 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:21:00:F3:79:1D:61:52:66:7D:6D:7E:15:65:&#xa;                0A:7D:A3:99:FD:F0:6A:96:01:B9:2B:D5:16:EC:DD:10:&#xa;                0B:59:F6:6A:DB:02:20:50:FA:0D:55:92:80:51:40:F1:&#xa;                59:87:13:E6:15:5D:CF:47:04:9C:2E:49:B5:32:68:C6:&#xa;                0C:C7:8B:3D:3C:90:E4&#xa;Signed Certificate Timestamp:&#xa;    Version   : v1 (0x0)&#xa;    Log ID    : 56:14:06:9A:2F:D7:C2:EC:D3:F5:E1:BD:44:B2:3E:C7:&#xa;                46:76:B9:BC:99:11:5C:C0:EF:94:98:55:D6:89:D0:DD&#xa;    Timestamp : Sep 10 23:43:11.878 2019 GMT&#xa;    Extensions: none&#xa;    Signature : ecdsa-with-SHA256&#xa;                30:45:02:20:76:CC:12:00:D3:E5:39:0C:FE:19:1C:80:&#xa;                DC:CF:81:E8:2A:F3:E5:D6:92:2C:D5:15:AA:8D:A0:A5:&#xa;                BD:A2:B2:18:02:21:00:98:A5:11:D8:7C:9E:D1:5A:DB:&#xa;                33:92:55:4D:1B:87:A8:1A:2A:7A:12:6F:C8:06:09:41:&#xa;                9F:28:10:11:12:97:80</elem>
+</table>
+</table>
+<elem key="sig_algo">sha256WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notAfter">2021-12-13T00:00:00</elem>
+<elem key="notBefore">2019-09-10T00:00:00</elem>
+</table>
+<elem key="md5">12d3dca2560acbd8042220ccfac74d34</elem>
+<elem key="sha1">f8c4deeccd86b7a5d3cdc3d5657d03e1792e2f10</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIHlDCCBnygAwIBAgIQDqxC80vIGE/PO+pEgUWHCTANBgkqhkiG9w0BAQsFADBw&#xa;MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3&#xa;d3cuZGlnaWNlcnQuY29tMS8wLQYDVQQDEyZEaWdpQ2VydCBTSEEyIEhpZ2ggQXNz&#xa;dXJhbmNlIFNlcnZlciBDQTAeFw0xOTA5MTAwMDAwMDBaFw0yMTEyMTMwMDAwMDBa&#xa;MG0xCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRIwEAYDVQQHEwlQ&#xa;YWxvIEFsdG8xFDASBgNVBAoTC1Rlc2xhLCBJbmMuMR8wHQYDVQQDExZ0ZWwudm4u&#xa;dGVzbGFtb3RvcnMuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA&#xa;qCXZIdUnpC0Blde5ugj5RzUE6R0LUGS15NsugrQRqpzQlReHqfKJbj641EVYs3UN&#xa;2E4NpIIm92F9KGsbbxVKy10bL8z3P/FEfWamDej+uth9fZl1AOVYuRYfpji0LJO3&#xa;PQEzMnbKdOlphODUChYAcSQAjYtXo3bhdnrACCP78l+3EDvm5+yib664Cbrfu6FX&#xa;I10QuDD8xA/9RPvsXMavC+qkbZTI1sviip/bhMC5n683y7V8a0toh70p4qfG3h+z&#xa;lmrO1MWy9EcvqI8Y0lTAXrhZYQLZHoLRHUZ2K8sv4o8pZ1x6L3dmEH09QjG5VC3H&#xa;dlqcxwooojskjgyITUgAEQIDAQABo4IEKzCCBCcwHwYDVR0jBBgwFoAUUWj/kK8C&#xa;B3U8zNllZGKiErhZcjswHQYDVR0OBBYEFDyTpGCV8UeMaw+Ar8tLjjK9ZPAZMGMG&#xa;A1UdEQRcMFqCFnRlbC52bi50ZXNsYW1vdG9ycy5jb22CH3RlbGVtZXRyeS1lbmcu&#xa;dm4udGVzbGEuc2VydmljZXOCH3RlbGVtZXRyeS1wcmQudm4udGVzbGEuc2Vydmlj&#xa;ZXMwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcD&#xa;AjB1BgNVHR8EbjBsMDSgMqAwhi5odHRwOi8vY3JsMy5kaWdpY2VydC5jb20vc2hh&#xa;Mi1oYS1zZXJ2ZXItZzYuY3JsMDSgMqAwhi5odHRwOi8vY3JsNC5kaWdpY2VydC5j&#xa;b20vc2hhMi1oYS1zZXJ2ZXItZzYuY3JsMEwGA1UdIARFMEMwNwYJYIZIAYb9bAEB&#xa;MCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwCAYG&#xa;Z4EMAQICMIGDBggrBgEFBQcBAQR3MHUwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3Nw&#xa;LmRpZ2ljZXJ0LmNvbTBNBggrBgEFBQcwAoZBaHR0cDovL2NhY2VydHMuZGlnaWNl&#xa;cnQuY29tL0RpZ2lDZXJ0U0hBMkhpZ2hBc3N1cmFuY2VTZXJ2ZXJDQS5jcnQwDAYD&#xa;VR0TAQH/BAIwADCCAfYGCisGAQQB1nkCBAIEggHmBIIB4gHgAHYApLkJkLQYWBSH&#xa;uxOizGdwCjw1mAT5G9+443fNDsgN3BAAAAFtHY9FVQAABAMARzBFAiAvgGx2E660&#xa;0dY3Ub8DwHu6YHFzE58yptMtFv1VI/iRmAIhANZ2X25G1Ov5m1F01Uv8kJldq3/y&#xa;795yycN+EiF2LAk0AHYAh3W/51l8+IxDmV+9827/Vo1HVjb/SrVgwbTq/16ggw8A&#xa;AAFtHY9FpAAABAMARzBFAiEA+wohJ0z0n2ZICNJrWgM/FLvdO5aXkWcnFT3ZH5Pv&#xa;Mj8CIGoB9oLN4IT7o55Ho6HRlJabU+Z6WNu49AlKodooCAzoAHYARJRlLrDuzq/E&#xa;QAfYqP4owNrmgr7YyzG1P9MzlrW2gagAAAFtHY9EngAABAMARzBFAiEA83kdYVJm&#xa;fW1+FWUKfaOZ/fBqlgG5K9UW7N0QC1n2atsCIFD6DVWSgFFA8VmHE+YVXc9HBJwu&#xa;SbUyaMYMx4s9PJDkAHYAVhQGmi/XwuzT9eG9RLI+x0Z2ubyZEVzA75SYVdaJ0N0A&#xa;AAFtHY9GBgAABAMARzBFAiB2zBIA0+U5DP4ZHIDcz4HoKvPl1pIs1RWqjaClvaKy&#xa;GAIhAJilEdh8ntFa2zOSVU0bh6gaKnoSb8gGCUGfKBAREpeAMA0GCSqGSIb3DQEB&#xa;CwUAA4IBAQBna1J1MW8GqknEhPR0r+P+2tgX3murlpKR99fxsBaw11VhQg0nd1jZ&#xa;wWvcAVUvmYnBl5kLBJ4j9xcd/Wrc3yLL9Jo1lKdTUuad4Wa1JUygKJNJ1AqnYWsd&#xa;wucDU22XOknKZiLERoXyDdMdP4mMgeUZTUTgEuYT9L4MuWefVQJM2qPJpRqfR9dW&#xa;6os9gjgkEgOI3FtaVqd+iyI13KedgvVX1liAivmNjHolAmn3lKu+Hdjnkzirjj4+&#xa;l/UzMuYQjYaTOOnz2ollZHSFjG/eiYOJO6mB0Oj2i9oSoz7mL9j6yl/6LiZpr8yq&#xa;ueOcfEzbXA3yqvZh2Jkcu7de8mma5OH4&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="TLS randomness does not represent time"></script><script id="tls-alpn" output="&#xa;  http/1.1"><elem>http/1.1</elem>
+</script><script id="tls-nextprotoneg" output="&#xa;  http/1.1"><elem>http/1.1</elem>
+</script></port>
+</ports>
+<times srtt="137832" rttvar="137832" to="689160"/>
+</host>
+<runstats><finished time="1586182527" timestr="Mon Apr  6 09:15:27 2020" elapsed="19.62" summary="Nmap done at Mon Apr  6 09:15:27 2020; 1 IP address (1 host up) scanned in 19.62 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

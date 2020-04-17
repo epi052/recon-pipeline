@@ -1,0 +1,96 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:34 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.52.24.47.156-tcp 52.24.47.156
+Nmap scan report for 52.24.47.156
+Host is up (0.062s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http
+| fingerprint-strings:
+|   FourOhFourRequest:
+|     HTTP/1.1 200 OK
+|     Date: Mon, 06 Apr 2020 14:15:41 GMT
+|     Content-Type: text/plain; charset=utf-8
+|     Content-Length: 152
+|     Connection: close
+|     "ok": true,
+|     "ver": "date: 2017-05-09_05:31:19PM | hash: 9c3479d1ead3699feffc1654a5396548dca948be | ver: 0.001.000124",
+|     "w": "tpods_tgram_001"
+|   GetRequest, HTTPOptions:
+|     HTTP/1.1 200 OK
+|     Date: Mon, 06 Apr 2020 14:15:40 GMT
+|     Content-Type: text/plain; charset=utf-8
+|     Content-Length: 152
+|     Connection: close
+|     "ok": true,
+|     "ver": "date: 2017-05-09_05:31:19PM | hash: 9c3479d1ead3699feffc1654a5396548dca948be | ver: 0.001.000124",
+|     "w": "tpods_tgram_001"
+|   RPCCheck:
+|     HTTP/1.1 400 Bad Request
+|     Server: awselb/2.0
+|     Date: Mon, 06 Apr 2020 14:15:46 GMT
+|     Content-Type: text/html
+|     Content-Length: 138
+|     Connection: close
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body bgcolor="white">
+|     <center><h1>400 Bad Request</h1></center>
+|     </body>
+|     </html>
+|   RTSPRequest:
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body bgcolor="white">
+|     <center><h1>400 Bad Request</h1></center>
+|     </body>
+|     </html>
+|   X11Probe:
+|     HTTP/1.1 400 Bad Request
+|     Server: awselb/2.0
+|     Date: Mon, 06 Apr 2020 14:15:41 GMT
+|     Content-Type: text/html
+|     Content-Length: 138
+|     Connection: close
+|     <html>
+|     <head><title>400 Bad Request</title></head>
+|     <body bgcolor="white">
+|     <center><h1>400 Bad Request</h1></center>
+|     </body>
+|_    </html>
+|_http-title: Site doesn't have a title (text/plain; charset=utf-8).
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port80-TCP:V=7.80%I=7%D=4/6%Time=5E8B398C%P=x86_64-pc-linux-gnu%r(GetRe
+SF:quest,121,"HTTP/1\.1\x20200\x20OK\r\nDate:\x20Mon,\x2006\x20Apr\x202020
+SF:\x2014:15:40\x20GMT\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\
+SF:nContent-Length:\x20152\r\nConnection:\x20close\r\n\r\n{\n\x20\x20\"ok\
+SF:":\x20true,\n\x20\x20\"ver\":\x20\"date:\x202017-05-09_05:31:19PM\x20\|
+SF:\x20hash:\x209c3479d1ead3699feffc1654a5396548dca948be\x20\|\x20ver:\x20
+SF:0\.001\.000124\",\n\x20\x20\"w\":\x20\"tpods_tgram_001\"\n\x20}")%r(HTT
+SF:POptions,121,"HTTP/1\.1\x20200\x20OK\r\nDate:\x20Mon,\x2006\x20Apr\x202
+SF:020\x2014:15:40\x20GMT\r\nContent-Type:\x20text/plain;\x20charset=utf-8
+SF:\r\nContent-Length:\x20152\r\nConnection:\x20close\r\n\r\n{\n\x20\x20\"
+SF:ok\":\x20true,\n\x20\x20\"ver\":\x20\"date:\x202017-05-09_05:31:19PM\x2
+SF:0\|\x20hash:\x209c3479d1ead3699feffc1654a5396548dca948be\x20\|\x20ver:\
+SF:x200\.001\.000124\",\n\x20\x20\"w\":\x20\"tpods_tgram_001\"\n\x20}")%r(
+SF:RTSPRequest,8A,"<html>\r\n<head><title>400\x20Bad\x20Request</title></h
+SF:ead>\r\n<body\x20bgcolor=\"white\">\r\n<center><h1>400\x20Bad\x20Reques
+SF:t</h1></center>\r\n</body>\r\n</html>\r\n")%r(X11Probe,120,"HTTP/1\.1\x
+SF:20400\x20Bad\x20Request\r\nServer:\x20awselb/2\.0\r\nDate:\x20Mon,\x200
+SF:6\x20Apr\x202020\x2014:15:41\x20GMT\r\nContent-Type:\x20text/html\r\nCo
+SF:ntent-Length:\x20138\r\nConnection:\x20close\r\n\r\n<html>\r\n<head><ti
+SF:tle>400\x20Bad\x20Request</title></head>\r\n<body\x20bgcolor=\"white\">
+SF:\r\n<center><h1>400\x20Bad\x20Request</h1></center>\r\n</body>\r\n</htm
+SF:l>\r\n")%r(FourOhFourRequest,121,"HTTP/1\.1\x20200\x20OK\r\nDate:\x20Mo
+SF:n,\x2006\x20Apr\x202020\x2014:15:41\x20GMT\r\nContent-Type:\x20text/pla
+SF:in;\x20charset=utf-8\r\nContent-Length:\x20152\r\nConnection:\x20close\
+SF:r\n\r\n{\n\x20\x20\"ok\":\x20true,\n\x20\x20\"ver\":\x20\"date:\x202017
+SF:-05-09_05:31:19PM\x20\|\x20hash:\x209c3479d1ead3699feffc1654a5396548dca
+SF:948be\x20\|\x20ver:\x200\.001\.000124\",\n\x20\x20\"w\":\x20\"tpods_tgr
+SF:am_001\"\n\x20}")%r(RPCCheck,120,"HTTP/1\.1\x20400\x20Bad\x20Request\r\
+SF:nServer:\x20awselb/2\.0\r\nDate:\x20Mon,\x2006\x20Apr\x202020\x2014:15:
+SF:46\x20GMT\r\nContent-Type:\x20text/html\r\nContent-Length:\x20138\r\nCo
+SF:nnection:\x20close\r\n\r\n<html>\r\n<head><title>400\x20Bad\x20Request<
+SF:/title></head>\r\n<body\x20bgcolor=\"white\">\r\n<center><h1>400\x20Bad
+SF:\x20Request</h1></center>\r\n</body>\r\n</html>\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr  6 09:15:51 2020 -- 1 IP address (1 host up) scanned in 17.17 seconds

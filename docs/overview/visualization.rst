@@ -7,7 +7,7 @@ Setup
 #####
 
 To use the web console, you'll need to :ref:`install the luigid service<install-ref-label>`.  Assuming you've already
-installed ``pipenv`` and created a virtual environment with ``cmd2``, you can simple run the ``install luigi-service``
+installed ``pipenv`` and created a virtual environment, you can simply run the ``install luigi-service``
 from within the pipeline.
 
 Dashboard

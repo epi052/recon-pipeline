@@ -1,0 +1,15 @@
+200 OK
+Date: Mon, 06 Apr 2020 13:54:31 GMT
+X-Content-Type-Options: nosniff nosniff
+X-Powered-By: PHP/5.3.3
+Content-Type: text/html; charset=utf-8
+Retry-Count: 0
+Expires: Sun, 19 Nov 1978 05:00:00 GMT
+Set-Cookie: locale=zh_CN; expires=Mon, 20-Apr-2020 13:54:31 GMT; path=/ locale=zh_CN; expires=Mon, 20-Apr-2020 13:54:31 GMT; path=/
+Content-Language: zh_CN
+Vary: Accept-Encoding
+Server: Apache/2.2.15 (CentOS)
+X-Frame-Options: SAMEORIGIN SAMEORIGIN
+X-Server: sjc04p1smlap02
+Cache-Control: no-cache, must-revalidate
+X-Generator: Drupal 7 (http://drupal.org)

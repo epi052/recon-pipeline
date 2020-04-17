@@ -1,0 +1,11 @@
+200 OK
+Date: Mon, 06 Apr 2020 13:54:54 GMT
+Etag: "5b675ff6b80376940cec0182f9952e4a:1552520432"
+Content-Type: text/html
+Cache-Control: max-age=60
+Expires: Mon, 06 Apr 2020 13:55:54 GMT
+Retry-Count: 0
+Server: Apache
+Last-Modified: Wed, 13 Mar 2019 23:40:32 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding

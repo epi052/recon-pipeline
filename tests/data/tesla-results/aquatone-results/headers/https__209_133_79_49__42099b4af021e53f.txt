@@ -1,0 +1,7 @@
+403
+Set-Cookie: JSESSIONID=F37FEF9FE293396D0E0291EE4616DEEF; Path=/; HttpOnly
+Content-Length: 290
+Date: Mon, 06 Apr 2020 13:55:27 GMT
+Retry-Count: 0
+X-Frame-Options: SAMEORIGIN
+Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0

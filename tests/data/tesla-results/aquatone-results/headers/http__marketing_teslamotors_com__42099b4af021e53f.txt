@@ -1,0 +1,10 @@
+200 OK
+Content-Type: text/html; charset=utf-8
+P3p: CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",
+X-Content-Type-Options: nosniff
+Date: Mon, 06 Apr 2020 13:54:40 GMT
+Cache-Control: private,no-cache, no-store
+Pragma: no-cache
+Expires: -1
+Content-Length: 591
+Retry-Count: 0

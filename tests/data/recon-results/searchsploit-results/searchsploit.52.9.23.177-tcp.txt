@@ -1,4 +1,0 @@
-[i] SearchSploit's XML mode (without verbose enabled).   To enable: searchsploit -v --xml...
-[i] Reading: '/root/PycharmProjects/recon-pipeline/tests/data2/recon-results/nmap-results/nmap.52.9.23.177-tcp.xml'
-
-[i] /usr/bin/searchsploit -t nginx 1 16 1

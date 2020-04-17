@@ -1,0 +1,5 @@
+http://[2603:1027:0:48::d]/.well-known/apple-app-site-association (Status: 200)
+http://[2603:1027:0:48::d]/apple-app-site-association (Status: 200)
+http://[2603:1027:0:48::d]/autodiscover (Status: 403)
+http://[2603:1027:0:48::d]/favicon.ico (Status: 200)
+http://[2603:1027:0:48::d]/storage (Status: 403)

@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr  6 09:15:23 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/tesla-results/nmap-results/nmap.40.97.120.56-tcp 40.97.120.56
+Host: 40.97.120.56 ()	Status: Up
+Host: 40.97.120.56 ()	Ports: 80/open/tcp//http//Microsoft IIS httpd 10.0/
+# Nmap done at Mon Apr  6 09:15:29 2020 -- 1 IP address (1 host up) scanned in 6.57 seconds

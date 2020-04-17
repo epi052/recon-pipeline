@@ -1,65 +1,31 @@
+import shutil
+import tempfile
 from pathlib import Path
 
-from recon.targets import TargetList
+from pipeline.recon import TargetList
+
+tfp = Path(__file__).parent.parent / "data" / "bitdiscovery"
 
 
-def test_creates_ips(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetfile.write_text("127.0.0.1")
+class TestReconTargets:
+    def setup_method(self):
+        self.tmp_path = Path(tempfile.mkdtemp())
 
-    tl = TargetList(target_file=str(targetfile), results_dir=str(tmp_path / "recon-results"))
+        shutil.copy(tfp, self.tmp_path)
+        Path(self.tmp_path / "bitdiscovery").open(mode="a").writelines(["127.0.0.1"])
 
-    out = tl.output()
+        self.scan = TargetList(
+            target_file=str(self.tmp_path / "bitdiscovery"),
+            results_dir=str(self.tmp_path),
+            db_location=str(self.tmp_path / "testing.sqlite"),
+        )
 
-    assert out.path == str((tmp_path / "recon-results" / "target-results" / "ip_addresses").resolve())
+    def teardown_method(self):
+        shutil.rmtree(self.tmp_path)
 
+    def test_scan_creates_database(self):
+        assert self.scan.db_mgr.location.exists()
+        assert self.tmp_path / "testing.sqlite" == self.scan.db_mgr.location
 
-def test_creates_domains(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetfile.write_text("stuff.com")
-
-    tl = TargetList(target_file=str(targetfile), results_dir=str(tmp_path / "recon-results"))
-    out = tl.output()
-
-    assert out.path == str((tmp_path / "recon-results" / "target-results" / "domains").resolve())
-
-
-def test_filenotfound(tmp_path):
-
-    tl = TargetList(target_file="doesnt_exist", results_dir="")
-    out = tl.output()
-
-    assert out is None
-
-
-def test_results_dir_relative(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetfile.write_text("stuff.com")
-
-    tl = TargetList(target_file=str(targetfile), results_dir=str((tmp_path / ".." / tmp_path / "recon-results")))
-    out = tl.output()
-
-    assert out.path == str((tmp_path / "recon-results" / "target-results" / "domains").resolve())
-
-
-def test_results_dir_absolute(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetfile.write_text("stuff.com")
-
-    tl = TargetList(target_file=str(targetfile), results_dir=str((tmp_path / "recon-results").resolve()))
-    out = tl.output()
-
-    assert out.path == str((tmp_path / "recon-results" / "target-results" / "domains").resolve())
-
-
-def test_results_dir_empty(tmp_path):
-    targetfile = tmp_path / "test_targetlist"
-    targetfile.write_text("stuff.com")
-
-    tl = TargetList(target_file=str(targetfile), results_dir="")
-    out = tl.output()
-
-    # different asserts used here because an empty string to results_dir causes Path() to use "." i.e. cwd
-    # when running tests, this conflicts with tmp_path, but is only a problem during testing
-    assert str(Path(out.path).parent.stem) == "target-results"
-    assert Path(out.path).stem == "domains"
+    def test_scan_creates_results(self):
+        assert self.scan.output().exists()

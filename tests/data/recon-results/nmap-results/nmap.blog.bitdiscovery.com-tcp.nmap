@@ -1,0 +1,23 @@
+# Nmap 7.80 scan initiated Sun Mar 29 06:19:02 2020 as: nmap --open -sT -n -sC -T 4 -sV -Pn -p 443,80 -oA /home/epi/PycharmProjects/recon-pipeline/tests/data/updated-tests/nmap-results/nmap.blog.bitdiscovery.com-tcp blog.bitdiscovery.com
+Nmap scan report for blog.bitdiscovery.com (13.226.182.120)
+Host is up (0.012s latency).
+Other addresses for blog.bitdiscovery.com (not scanned): 13.226.182.92 13.226.182.108 13.226.182.41
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     Amazon CloudFront httpd
+|_http-server-header: CloudFront
+|_http-title: Did not follow redirect to https://blog.bitdiscovery.com/
+443/tcp open  ssl/http Amazon CloudFront httpd
+| http-robots.txt: 1 disallowed entry
+|_/
+| http-server-header:
+|   AmazonS3
+|_  CloudFront
+|_http-title: Bit Discovery Blog -
+| ssl-cert: Subject: commonName=blog.bitdiscovery.com
+| Subject Alternative Name: DNS:blog.bitdiscovery.com
+| Not valid before: 2020-03-01T00:00:00
+|_Not valid after:  2021-04-01T12:00:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Mar 29 06:19:16 2020 -- 1 IP address (1 host up) scanned in 13.88 seconds

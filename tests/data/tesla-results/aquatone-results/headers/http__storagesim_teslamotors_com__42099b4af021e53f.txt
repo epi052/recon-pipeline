@@ -1,0 +1,15 @@
+200 OK
+X-Request-Id: a8a29601-33d2-4319-aa50-39c1823d76f1
+Date: Mon, 06 Apr 2020 13:54:46 GMT
+Status: 200 OK
+Etag: W/"a1b52e11330c272b9f2cb392cdb1c2ba"
+X-Content-Type-Options: nosniff
+X-Runtime: 0.014957
+Server: nginx/1.8.1 + Phusion Passenger 5.0.27
+Content-Type: text/html; charset=utf-8
+Cache-Control: max-age=0, private, must-revalidate
+X-Powered-By: Phusion Passenger 5.0.27
+Retry-Count: 0
+Set-Cookie: _session_id=fca18b9d511a0bc8b8b2a20c6c0d8dc9; path=/; HttpOnly
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 1; mode=block
