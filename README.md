@@ -18,7 +18,7 @@ Table of Contents
 -----------------
 
 - [Installation](#installation)
-- [Defining Scope](#target-file-and-exempt-list-file-defining-scope)
+- [Defining Scope](#defining-a-scans-scope)
 - [Example Scan](#example-scan)
 - [Viewing Results](#viewing-results)
 - [Chaining Results w/ Commands](#chaining-results-w-commands)
@@ -63,10 +63,22 @@ After installing the python dependencies, the `recon-pipeline` shell provides it
 
 > Ubuntu-18.04 Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
-[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
-## Target File and Exempt List File (defining scope)
+Individual tools may be installed by running `install TOOLNAME` where `TOOLNAME` is one of the known tools that make
+up the pipeline.
 
-The pipeline expects a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
+The installer maintains a (naive) list of installed tools at `~/.local/recon-pipeline/tools/.tool-dict.pkl`.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's like Jon Snow, **it knows nothing**.
+
+[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
+
+## Defining a Scan's Scope
+
+**New in v0.9.0**: In the event you're scanning a single ip address or host, simply use `--target`.  It accepts a single target and works in conjunction with `--exempt-list` if specified.
+
+```text
+scan HTBScan --target 10.10.10.183 --top-ports 1000
+```
+
+In order to scan more than one host at a time, the pipeline needs a file that describes the target's scope to be provided as an argument to the `--target-file` option.  The target file can consist of domains, ip addresses, and ip ranges, one per line.
 
 ```text
 tesla.com
@@ -111,7 +123,6 @@ recon-pipeline>
 
 Create a new database to store scan results
 ```bash
-recon-pipeline> database attach
 recon-pipeline> database attach
    1. create new database
 Your choice? 1
@@ -226,7 +237,7 @@ If you think you've found a bug, please first read through the open [Issues](htt
 
 - [@aringo](https://github.com/aringo) for his help on the precursor to this tool
 - [@kernelsndrs](https://github.com/kernelsndrs) for identifying a few bugs after initial launch
-- [@GreaterGoodest](https://github.com/GreaterGoodest) for identifying bugs
+- [@GreaterGoodest](https://github.com/GreaterGoodest) for identifying bugs and the project's first PR!
 - The [cmd2](https://github.com/python-cmd2/cmd2) team for a lot of inspiration for project layout and documentation
 
 

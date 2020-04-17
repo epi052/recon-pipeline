@@ -282,11 +282,7 @@ class ReconShell(cmd2.Cmd):
         # imported tools variable is in global scope, and we reassign over it later
         global tools
 
-        # create .cache dir in the home directory, on the off chance it doesn't exist
-        cachedir = Path.home() / ".cache"
-        cachedir.mkdir(parents=True, exist_ok=True)
-
-        persistent_tool_dict = cachedir / ".tool-dict.pkl"
+        persistent_tool_dict = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
 
         if args.tool == "all":
             # show all tools have been queued for installation

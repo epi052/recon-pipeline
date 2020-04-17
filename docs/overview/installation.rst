@@ -57,8 +57,7 @@ A simple ``install all`` will handle all installation steps.  Installation has *
 Individual tools may be installed by running ``install TOOLNAME`` where ``TOOLNAME`` is one of the known tools that make
 up the pipeline.
 
-The installer maintains a (naive) list of installed tools at ``~/.cache/.tool-dict.pkl``.  The installer in no way
-attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's
+The installer maintains a (naive) list of installed tools at ``~/.local/recon-pipeline/tools/.tool-dict.pkl``.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's
 like Jon Snow, **it knows nothing**.
 
 .. raw:: html
