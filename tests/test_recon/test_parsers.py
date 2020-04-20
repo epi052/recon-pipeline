@@ -2,7 +2,7 @@
 import pytest
 
 from pipeline.recon.parsers import *  # noqa: F403
-from pipeline.recon.tool_definitions import tools
+from pipeline.tools import tools
 
 
 @pytest.mark.parametrize("test_input", list(tools.keys()) + ["all"])

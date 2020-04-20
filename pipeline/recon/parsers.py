@@ -4,7 +4,7 @@ import cmd2
 
 from .config import defaults
 from .helpers import get_scans
-from .tool_definitions import tools
+from ..tools import tools
 
 # options for ReconShell's 'install' command
 install_parser = cmd2.Cmd2ArgumentParser()

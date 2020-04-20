@@ -1,0 +1,9 @@
+installed: false
+dependencies: ["go"]
+go: &gotool !get_tool_path "{go}"
+
+commands:
+- !join [*gotool, get, github.com/rverton/webanalyze/...]
+- !join ["(cd ~/go/src/github.com/rverton/webanalyze &&", *gotool, "build &&", *gotool, "install)"]
+
+shell: true
