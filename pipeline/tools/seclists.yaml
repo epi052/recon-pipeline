@@ -1,0 +1,10 @@
+installed: false
+depencencies:
+seclists-file: &secfile !get_tool_path "{seclists}"
+
+commands:
+  - !join [bash, -c, "'if [[ -d /usr/share/seclists ]];", "then ln -s /usr/share/seclists",
+          *secfile, "; elif [[ -d", *secfile, "]] ; then cd", *secfile, "&& git fetch --all && git pull;",
+          "else git clone https://github.com/danielmiessler/SecLists.git", *secfile, "; fi'"]
+
+shell: true

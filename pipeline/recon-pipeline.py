@@ -59,7 +59,6 @@ from .models.searchsploit_model import SearchsploitResult  # noqa: F401,E402
 
 from .recon import (  # noqa: F401,E402
     get_scans,
-    tools,
     scan_parser,
     install_parser,
     status_parser,
@@ -76,6 +75,8 @@ from .recon import (  # noqa: F401,E402
     searchsploit_results_parser,
     port_results_parser,
 )
+
+from .tools import tools  # noqa: F401,E402
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()

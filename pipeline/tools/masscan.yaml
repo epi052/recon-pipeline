@@ -1,0 +1,12 @@
+installed: false
+dependencies:
+masscan: &masscan !get_tool_path "{masscan}"
+
+commands:
+- git clone https://github.com/robertdavidgraham/masscan /tmp/masscan
+- make -s -j -C /tmp/masscan
+- !join [mv, /tmp/masscan/bin/masscan, *masscan]
+- rm -rf /tmp/masscan
+- !join [sudo, setcap, CAP_NET_RAW+ep, *masscan]
+
+shell: true

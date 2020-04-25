@@ -1,0 +1,10 @@
+installed: false
+dependencies:
+go: &gotool !get_tool_path "{go}"
+
+commands:
+- wget -q https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz
+- sudo tar -C /usr/local -xvf /tmp/go.tar.gz
+- !join [bash, -c, "'if [ ! $(echo ${PATH} | grep $(dirname", *gotool, ")) ]; then echo PATH=${PATH}:/usr/local/go/bin >> ~/.bashrc; fi'"]
+
+shell: true

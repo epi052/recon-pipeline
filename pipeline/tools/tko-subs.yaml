@@ -1,0 +1,9 @@
+installed: false
+dependencies: ["go"]
+go: &gotool !get_tool_path "{go}"
+
+commands:
+- !join [*gotool, get, github.com/haccer/subjack]
+- !join ["(cd ~/go/src/github.com/haccer/subjack &&", *gotool, "install)"]
+
+shell: true

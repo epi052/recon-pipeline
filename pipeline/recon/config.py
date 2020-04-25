@@ -12,6 +12,7 @@ defaults = {
     "aquatone-scan-timeout": "900",
     "tools-dir": f"{Path.home()}/.local/recon-pipeline/tools",
     "database-dir": f"{Path.home()}/.local/recon-pipeline/databases",
+    "home": Path.home().expanduser().resolve(),
 }
 
 defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
@@ -30,6 +31,9 @@ tool_paths = {
     "amass": f"{defaults.get('tools-dir')}/amass",
     "go": "/usr/local/go/bin/go",
     "searchsploit": f"{defaults.get('tools-dir')}/exploitdb/searchsploit",
+    "luigid": str(Path(__file__).parents[2] / "luigid.service"),
+    "seclists": f"{defaults.get('tools-dir')}/seclists",
+    "exploitdb": f"{defaults.get('tools-dir')}/exploitdb",
 }
 
 web_ports = {

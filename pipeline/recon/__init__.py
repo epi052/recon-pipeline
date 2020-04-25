@@ -1,6 +1,5 @@
 from .helpers import get_scans
 from .targets import TargetList
-from .tool_definitions import tools
 from .wrappers import FullScan, HTBScan
 from .amass import AmassScan, ParseAmassOutput
 from .masscan import MasscanScan, ParseMasscanOutput
