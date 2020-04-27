@@ -1,1 +1,1 @@
-docs/* linguist-documentation
+*.html linguist-language=Python
