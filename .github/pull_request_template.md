@@ -1,12 +1,3 @@
----
-name: Pull request
-about: Checklist for submitting a PR
-title: "[PR]"
-labels: ''
-assignees: ''
-
----
-
 # Landing a Pull Request (PR)
 
 Long form explanations of most of the items below can be found in the [CONTRIBUTING](https://github.com/epi052/recon-pipeline/blob/master/CONTRIBUTING.md) guide.
