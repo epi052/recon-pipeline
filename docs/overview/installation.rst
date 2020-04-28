@@ -18,6 +18,7 @@ Kali
 
 .. code-block:: console
 
+    sudo apt update
     sudo apt install pipenv
 
 
@@ -26,6 +27,7 @@ Ubuntu 18.04/20.04
 
 .. code-block:: console
 
+    sudo apt update
     sudo apt install python3-pip
     pip install --user pipenv
     echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
