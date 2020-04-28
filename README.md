@@ -35,11 +35,13 @@ First, the manual steps to get dependencies installed in a virtual environment a
 
 ### Kali
 ```bash
-apt install pipenv
+sudo apt update
+sudo apt install pipenv
 ```
 
 ### Ubuntu 18.04/20.04
 ```bash
+sudo apt update
 sudo apt install python3-pip
 pip install --user pipenv
 echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
