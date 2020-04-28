@@ -21,7 +21,7 @@ Long form explanations of most of the items below can be found in the [CONTRIBUT
 
 ## Static analysis checks
 - [ ] All python files are formatted using black
-- [ ] All flake8 checks pass 
+- [ ] All flake8 checks pass
 - [ ] All existing tests pass
 
 ## Documentation
