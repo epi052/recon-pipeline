@@ -24,7 +24,7 @@ Table of Contents
 
 ## Installation
 
-> Automatic installation tested on kali 2019.4 and Ubuntu 18.04
+> Automatic installation tested on kali 2019.4 and Ubuntu 18.04/20.04
 
 There are two primary phases for installation:
 
@@ -38,7 +38,7 @@ First, the manual steps to get dependencies installed in a virtual environment a
 apt install pipenv
 ```
 
-### Ubuntu 18.04
+### Ubuntu 18.04/20.04
 ```bash
 sudo apt install python3-pip
 pip install --user pipenv
@@ -57,7 +57,7 @@ pipenv shell
 
 After installing the python dependencies, the `recon-pipeline` shell provides its own [install](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#install) command (seen below).  A simple `install all` will handle all additional installation steps.
 
-> Ubuntu-18.04 Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
+> Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
 Individual tools may be installed by running `install TOOLNAME` where `TOOLNAME` is one of the known tools that make
 up the pipeline.
