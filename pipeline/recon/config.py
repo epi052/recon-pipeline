@@ -33,6 +33,7 @@ tool_paths = {
     "luigid": str(Path(__file__).parents[2] / "luigid.service"),
     "seclists": f"{defaults.get('tools-dir')}/seclists",
     "exploitdb": f"{defaults.get('tools-dir')}/exploitdb",
+    "waybackurls": f"{Path.home()}/go/bin/waybackurls",
 }
 
 web_ports = {
