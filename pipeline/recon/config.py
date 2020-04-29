@@ -10,13 +10,12 @@ defaults = {
     "gobuster-extensions": "",
     "results-dir": "recon-results",
     "aquatone-scan-timeout": "900",
-    "tools-dir": f"{Path.home()}/.local/recon-pipeline/tools",
-    "database-dir": f"{Path.home()}/.local/recon-pipeline/databases",
-    "home": Path.home().expanduser().resolve(),
+    "home": Path.home(),
 }
 
+defaults["tools-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/tools"
+defaults["database-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/databases"
 defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
-
 
 tool_paths = {
     "aquatone": f"{defaults.get('tools-dir')}/aquatone",
