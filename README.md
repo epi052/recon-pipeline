@@ -16,6 +16,7 @@ Table of Contents
 - [Installation](#installation)
 - [Defining Scope](#defining-a-scans-scope)
 - [Example Scan](#example-scan)
+    - [Existing Results Directories](#existing-results-directories)
 - [Viewing Results](#viewing-results)
 - [Chaining Results w/ Commands](#chaining-results-w-commands)
 - [Choosing a Scheduler](#choosing-a-scheduler)
@@ -153,6 +154,30 @@ Scan the target
 The same steps can be seen in realtime in the linked video below.
 
 [![asciicast](https://asciinema.org/a/318397.svg)](https://asciinema.org/a/318397)
+
+### Existing Results Directories
+
+When running additional scans against the same target, you have a few options.  You can either
+
+- use a new directory
+- reuse the same directory
+
+If you use a new directory, the scan will start from the beginning.
+
+If you choose to reuse the same directory, `recon-pipeline` will resume the scan from its last successful point.  For instance, say your last scan failed while running nmap.  This means that the pipeline executed all upstream tasks (amass and masscan) successfully.  When you use the same results directory for another scan, the amass and masscan scans will be skipped, because they've already run successfully.
+
+**Note**: There is a gotcha that can occur when you scan a target but get no results.  For some scans, the pipeline may still mark the Task as complete (masscan does this).  In masscan's case, it's because it outputs a file to `results-dir/masscan-results/` whether it gets results or not.  Luigi interprets the file's presence to mean the scan is complete.
+
+In order to reduce confusion, as of version 0.9.3, the pipeline will prompt you when reusing results directory.
+
+```
+[db-2] recon-pipeline> scan FullScan --results-dir testing-results --top-ports 1000 --rate 500 --target tesla.com
+[*] Your results-dir (testing-results) already exists. Subfolders/files may tell the pipeline that the associated Task is complete. This means that your scan may start from a point you don't expect. Your options are as follows:
+   1. Resume existing scan (use any existing scan data & only attempt to scan what isn't already done)
+   2. Remove existing directory (scan starts from the beginning & all existing results are removed)
+   3. Save existing directory (your existing folder is renamed and your scan proceeds)
+Your choice?
+```
 
 ## Viewing Results
 
