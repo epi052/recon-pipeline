@@ -2,11 +2,13 @@
 # stdlib imports
 import os
 import sys
+import time
 import shlex
 import shutil
 import pickle
-import selectors
 import tempfile
+import textwrap
+import selectors
 import threading
 import subprocess
 import webbrowser
@@ -116,10 +118,11 @@ class ReconShell(cmd2.Cmd):
         self.selectorloop = None
         self.continue_install = True
         self.prompt = DEFAULT_PROMPT
+        self.tools_dir = Path(defaults.get("tools-dir"))
 
         self._initialize_parsers()
 
-        Path(defaults.get("tools-dir")).mkdir(parents=True, exist_ok=True)
+        self.tools_dir.mkdir(parents=True, exist_ok=True)
         Path(defaults.get("database-dir")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
@@ -207,6 +210,48 @@ class ReconShell(cmd2.Cmd):
 
             self.async_alert(style(f"[+] {words[5].split('_')[0]} complete!", fg="bright_green"))
 
+    def check_scan_directory(self, directory):
+        """ Determine whether or not the results-dir about to be used already exists and prompt the user accordingly.
+
+        Args:
+            directory: the directory passed to ``scan ... --results-dir``
+        """
+        directory = Path(directory)
+
+        if directory.exists():
+            term_width = shutil.get_terminal_size((80, 20)).columns
+
+            warning_msg = (
+                f"[*] Your results-dir ({str(directory)}) already exists. Subfolders/files may tell "
+                f"the pipeline that the associated Task is complete. This means that your scan may start "
+                f"from a point you don't expect. Your options are as follows:"
+            )
+
+            for line in textwrap.wrap(warning_msg, width=term_width, subsequent_indent="    "):
+                self.poutput(style(line, fg="bright_yellow"))
+
+            option_one = (
+                "Resume existing scan (use any existing scan data & only attempt to scan what isn't already done)"
+            )
+            option_two = "Remove existing directory (scan starts from the beginning & all existing results are removed)"
+            option_three = "Save existing directory (your existing folder is renamed and your scan proceeds)"
+
+            answer = self.select([("Resume", option_one), ("Remove", option_two), ("Save", option_three)])
+
+            if answer == "Resume":
+                self.poutput(style(f"[+] Resuming scan from last known good state.", fg="bright_green"))
+            elif answer == "Remove":
+                shutil.rmtree(Path(directory))
+                self.poutput(style(f"[+] Old directory removed, starting fresh scan.", fg="bright_green"))
+            elif answer == "Save":
+                current = time.strftime("%Y%m%d-%H%M%S")
+                directory.rename(f"{directory}-{current}")
+
+                self.poutput(
+                    style(f"[+] Starting fresh scan.  Old data saved as {directory}-{current}", fg="bright_green")
+                )
+            return answer  # testability
+
     @cmd2.with_argparser(scan_parser)
     def do_scan(self, args):
         """ Scan something.
@@ -221,6 +266,8 @@ class ReconShell(cmd2.Cmd):
                 style(f"[!] You are not connected to a database; run database attach before scanning", fg="bright_red")
             )
 
+        self.check_scan_directory(args.results_dir)
+
         self.poutput(
             style(
                 "If anything goes wrong, rerun your command with --verbose to enable debug statements.",
@@ -234,7 +281,7 @@ class ReconShell(cmd2.Cmd):
         scans = get_scans()
 
         # command is a list that will end up looking something like what's below
-        # luigi --module pipeline.recon.web.webanalyze WebanalyzeScan --target-file tesla --top-ports 1000 --interface eth0
+        # luigi --module pipeline.recon.web.webanalyze WebanalyzeScan --target abc.com --top-ports 100 --interface eth0
         command = ["luigi", "--module", scans.get(args.scantype)[0]]
 
         tgt_file_path = None
@@ -281,7 +328,7 @@ class ReconShell(cmd2.Cmd):
         # imported tools variable is in global scope, and we reassign over it later
         global tools
 
-        persistent_tool_dict = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
+        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
 
         if args.tool == "all":
             # show all tools have been queued for installation
@@ -299,6 +346,7 @@ class ReconShell(cmd2.Cmd):
         if persistent_tool_dict.exists():
             tools = pickle.loads(persistent_tool_dict.read_bytes())
 
+        print(args.tool)
         if tools.get(args.tool).get("dependencies"):
             # get all of the requested tools dependencies
 

@@ -1,5 +1,7 @@
+import re
 import sys
 import time
+import pickle
 import shutil
 import importlib
 from pathlib import Path
@@ -293,21 +295,163 @@ class TestReconShell:
     # ("all", "commands failed and may have not installed properly", 1)
     # after tools moved to DB, update this test
     @pytest.mark.parametrize("test_input, expected, return_code", [("all", "is already installed", 0)])
-    def test_do_install(self, test_input, expected, return_code, capsys, tmp_path, monkeypatch):
+    def test_do_install(self, test_input, expected, return_code, capsys, tmp_path):
         process_mock = MagicMock()
         attrs = {"communicate.return_value": (b"output", b"error"), "returncode": return_code}
         process_mock.configure_mock(**attrs)
 
-        def mockreturn():
-            return tmp_path
+        tool_dict = {
+            "tko-subs": {
+                "installed": False,
+                "dependencies": ["go"],
+                "go": "/usr/local/go/bin/go",
+                "commands": [
+                    "/usr/local/go/bin/go get github.com/anshumanbh/tko-subs",
+                    "(cd ~/go/src/github.com/anshumanbh/tko-subs &&  /usr/local/go/bin/go build &&  /usr/local/go/bin/go install)",
+                ],
+                "shell": True,
+            },
+            "recursive-gobuster": {
+                "installed": False,
+                "dependencies": ["go"],
+                "recursive-parent": "/home/epi/.local/recon-pipeline/tools/recursive-gobuster",
+                "commands": [
+                    "bash -c 'if [ -d /home/epi/.local/recon-pipeline/tools/recursive-gobuster ]; then cd /home/epi/.local/recon-pipeline/tools/recursive-gobuster && git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /home/epi/.local/recon-pipeline/tools/recursive-gobuster ; fi'"
+                ],
+                "shell": False,
+            },
+            "subjack": {
+                "installed": False,
+                "dependencies": ["go"],
+                "go": "/usr/local/go/bin/go",
+                "commands": [
+                    "/usr/local/go/bin/go get github.com/haccer/subjack",
+                    "(cd ~/go/src/github.com/haccer/subjack && /usr/local/go/bin/go install)",
+                ],
+                "shell": True,
+            },
+            "searchsploit": {
+                "installed": False,
+                "dependencies": None,
+                "home": "/home/epi",
+                "tools-dir": "/home/epi/.local/recon-pipeline/tools",
+                "exploitdb-file": "/home/epi/.local/recon-pipeline/tools/exploitdb",
+                "searchsploit-file": "/home/epi/.local/recon-pipeline/tools/exploitdb/searchsploit",
+                "searchsploit-rc": "/home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc",
+                "homesploit": "/home/epi/.searchsploit_rc",
+                "sed-command": "'s#/opt#/home/epi/.local/recon-pipeline/tools#g'",
+                "commands": [
+                    "bash -c 'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb /home/epi/.local/recon-pipeline/tools/exploitdb && sudo ln -fs $(which searchsploit) /home/epi/.local/recon-pipeline/tools/exploitdb/searchsploit ; elif [ -d /home/epi/.local/recon-pipeline/tools/exploitdb ]; then cd /home/epi/.local/recon-pipeline/tools/exploitdb && git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git /home/epi/.local/recon-pipeline/tools/exploitdb ; fi'",
+                    "bash -c 'if [ -f /home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc ]; then cp -n /home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc /home/epi ; fi'",
+                    "bash -c 'if [ -f /home/epi/.searchsploit_rc ]; then sed -i 's#/opt#/home/epi/.local/recon-pipeline/tools#g' /home/epi/.searchsploit_rc ; fi'",
+                ],
+                "shell": False,
+            },
+            "luigi-service": {
+                "installed": False,
+                "dependencies": None,
+                "service-file": "/home/epi/PycharmProjects/recon-pipeline/luigid.service",
+                "commands": [
+                    "sudo cp /home/epi/PycharmProjects/recon-pipeline/luigid.service /lib/systemd/system/luigid.service",
+                    "sudo cp /home/epi/PycharmProjects/recon-pipeline/luigid.service $(which luigid) /usr/local/bin",
+                    "sudo systemctl daemon-reload",
+                    "sudo systemctl start luigid.service",
+                    "sudo systemctl enable luigid.service",
+                ],
+                "shell": True,
+            },
+            "aquatone": {
+                "installed": False,
+                "dependencies": None,
+                "aquatone": "/home/epi/.local/recon-pipeline/tools/aquatone",
+                "commands": [
+                    "mkdir /tmp/aquatone",
+                    "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
+                    "bash -c 'if [[ ! $(which unzip) ]]; then sudo apt install -y zip; fi'",
+                    "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
+                    "mv /tmp/aquatone/aquatone /home/epi/.local/recon-pipeline/tools/aquatone",
+                    "rm -rf /tmp/aquatone",
+                    "bash -c 'found=false; for loc in {/usr/bin/google-chrome,/usr/bin/google-chrome-beta,/usr/bin/google-chrome-unstable,/usr/bin/chromium-browser,/usr/bin/chromium}; do if [[ $(which $loc) ]]; then found=true; break; fi ; done; if [[ $found = false ]]; then sudo apt install -y chromium-browser ; fi'",
+                ],
+                "shell": False,
+            },
+            "gobuster": {
+                "installed": False,
+                "dependencies": ["go", "seclists"],
+                "go": "/usr/local/go/bin/go",
+                "commands": [
+                    "/usr/local/go/bin/go get github.com/OJ/gobuster",
+                    "(cd ~/go/src/github.com/OJ/gobuster && /usr/local/go/bin/go build && /usr/local/go/bin/go install)",
+                ],
+                "shell": True,
+            },
+            "amass": {
+                "installed": False,
+                "dependencies": ["go"],
+                "go": "/usr/local/go/bin/go",
+                "amass": "/home/epi/.local/recon-pipeline/tools/amass",
+                "commands": [
+                    "/usr/local/go/bin/go get -u github.com/OWASP/Amass/v3/...",
+                    "cp ~/go/bin/amass /home/epi/.local/recon-pipeline/tools/amass",
+                ],
+                "shell": True,
+                "environ": {"GO111MODULE": "on"},
+            },
+            "masscan": {
+                "installed": True,
+                "dependencies": None,
+                "masscan": "/home/epi/.local/recon-pipeline/tools/masscan",
+                "commands": [
+                    "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
+                    "make -s -j -C /tmp/masscan",
+                    "mv /tmp/masscan/bin/masscan /home/epi/.local/recon-pipeline/tools/masscan",
+                    "rm -rf /tmp/masscan",
+                    "sudo setcap CAP_NET_RAW+ep /home/epi/.local/recon-pipeline/tools/masscan",
+                ],
+                "shell": True,
+            },
+            "go": {
+                "installed": False,
+                "dependencies": None,
+                "go": "/usr/local/go/bin/go",
+                "commands": [
+                    "wget -q https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
+                    "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
+                    "bash -c 'if [ ! $(echo ${PATH} | grep $(dirname /usr/local/go/bin/go )) ]; then echo PATH=${PATH}:/usr/local/go/bin >> ~/.bashrc; fi'",
+                ],
+                "shell": True,
+            },
+            "webanalyze": {
+                "installed": False,
+                "dependencies": ["go"],
+                "go": "/usr/local/go/bin/go",
+                "commands": [
+                    "/usr/local/go/bin/go get github.com/rverton/webanalyze/...",
+                    "(cd ~/go/src/github.com/rverton/webanalyze && /usr/local/go/bin/go build && /usr/local/go/bin/go install)",
+                ],
+                "shell": True,
+            },
+            "seclists": {
+                "installed": True,
+                "depencencies": None,
+                "seclists-file": "/home/epi/.local/recon-pipeline/tools/seclists",
+                "commands": [
+                    "bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists /home/epi/.local/recon-pipeline/tools/seclists ; elif [[ -d /home/epi/.local/recon-pipeline/tools/seclists ]] ; then cd /home/epi/.local/recon-pipeline/tools/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git /home/epi/.local/recon-pipeline/tools/seclists ; fi'"
+                ],
+                "shell": True,
+            },
+        }
 
-        monkeypatch.setattr(Path, "home", mockreturn)
+        tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
+        tooldir.mkdir(parents=True, exist_ok=True)
+
+        pickle.dump(tool_dict, (tooldir / ".tool-dict.pkl").open("wb"))
 
         with patch("subprocess.Popen", autospec=True) as mocked_popen:
             mocked_popen.return_value = process_mock
+            self.shell.tools_dir = tooldir
             self.shell.do_install(test_input)
-            out = capsys.readouterr().out
-            assert mocked_popen.called or expected in out
+            assert mocked_popen.called
 
     @pytest.mark.parametrize(
         "test_input, expected, db_mgr",
@@ -322,8 +466,8 @@ class TestReconShell:
                 "If anything goes wrong, rerun your command with --verbose",
                 True,
             ),
-            ("FullScan --target-file required ", "If anything goes wrong, rerun your command with --verbose", True),
-            ("FullScan --target required ", "If anything goes wrong, rerun your command with --verbose", True),
+            ("FullScan --target-file required", "If anything goes wrong, rerun your command with --verbose", True),
+            ("FullScan --target required", "If anything goes wrong, rerun your command with --verbose", True),
         ],
     )
     def test_do_scan(self, test_input, expected, db_mgr, capsys, tmp_path):
@@ -333,8 +477,14 @@ class TestReconShell:
 
         with patch("subprocess.run", autospec=True) as mocked_popen, patch(
             "webbrowser.open", autospec=True
-        ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector:
+        ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector, patch(
+            "cmd2.Cmd.select"
+        ) as mocked_select:
+            mocked_select.return_value = "Resume"
             mocked_popen.return_value = process_mock
+
+            test_input += f" --results-dir {tmp_path / 'mostuff'}"
+
             if db_mgr is None:
                 self.shell.do_scan(test_input)
                 assert expected in capsys.readouterr().out
@@ -389,3 +539,27 @@ class TestReconShell:
                 assert not file.exists()
             else:
                 assert file.exists()
+
+    @pytest.mark.parametrize(
+        "test_input", [("1", "Resume", True, 1), ("2", "Remove", False, 0), ("3", "Save", False, 1)]
+    )
+    def test_check_scan_directory(self, test_input, tmp_path):
+        user_input, answer, exists, numdirs = test_input
+
+        new_tmp = tmp_path / f"check_scan_directory_test-{user_input}-{answer}"
+        new_tmp.mkdir()
+
+        with patch("cmd2.Cmd.select") as mocked_select:
+            mocked_select.return_value = answer
+
+            result = self.shell.check_scan_directory(str(new_tmp))
+
+            assert answer == result
+            assert new_tmp.exists() == exists
+            assert len(list(tmp_path.iterdir())) == numdirs
+
+            if answer == "Save":
+                assert (
+                    re.search(r"check_scan_directory_test-3-Save-[0-9]{6,8}-[0-9]+", str(list(tmp_path.iterdir())[0]))
+                    is not None
+                )
