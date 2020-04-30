@@ -250,7 +250,6 @@ class ReconShell(cmd2.Cmd):
                 self.poutput(
                     style(f"[+] Starting fresh scan.  Old data saved as {directory}-{current}", fg="bright_green")
                 )
-            return answer  # testability
 
     @cmd2.with_argparser(scan_parser)
     def do_scan(self, args):

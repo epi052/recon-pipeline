@@ -552,9 +552,8 @@ class TestReconShell:
         with patch("cmd2.Cmd.select") as mocked_select:
             mocked_select.return_value = answer
 
-            result = self.shell.check_scan_directory(str(new_tmp))
+            self.shell.check_scan_directory(str(new_tmp))
 
-            assert answer == result
             assert new_tmp.exists() == exists
             assert len(list(tmp_path.iterdir())) == numdirs
 
