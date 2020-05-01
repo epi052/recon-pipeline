@@ -1,5 +1,6 @@
 import subprocess
 from pathlib import Path
+from urllib.parse import urlparse
 
 import luigi
 from luigi.util import inherits
@@ -7,6 +8,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ...tools import tools
+from ...models.endpoint_model import Endpoint
 
 import pipeline.models.db_manager
 
@@ -89,7 +91,28 @@ class WaybackurlsScan(luigi.Task):
             for target in self.db_mgr.get_all_hostnames():
                 f.write(f"{target}\n")
 
-        with open(waybackurls_input_file) as target_list, open(self.results_subfolder / "fetched-urls", "w") as urls:
-            subprocess.run(command, stdin=target_list, stdout=urls)
+        with open(waybackurls_input_file) as target_list:
+            # , open(self.results_subfolder / "fetched-urls", "w") as urls:
+            proc = subprocess.run(command, stdin=target_list, stdout=subprocess.PIPE)
+
+        for url in proc.stdout.decode().splitlines():
+            if not url:
+                continue
+
+            parsed_url = urlparse(url)
+
+            # get Target, may exist already or not
+            ip_or_hostname = parsed_url.hostname
+            tgt = self.db_mgr.get_or_create_target_by_ip_or_hostname(ip_or_hostname)
+
+            endpoint = self.db_mgr.get_or_create(Endpoint, url=url, target=tgt)
+
+            if endpoint not in tgt.endpoints:
+                tgt.endpoints.append(endpoint)
+
+            self.db_mgr.add(tgt)
+            self.db_mgr.add(endpoint)
+
+            self.output().touch()
 
         waybackurls_input_file.unlink()

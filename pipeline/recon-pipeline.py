@@ -345,7 +345,6 @@ class ReconShell(cmd2.Cmd):
         if persistent_tool_dict.exists():
             tools = pickle.loads(persistent_tool_dict.read_bytes())
 
-        print(args.tool)
         if tools.get(args.tool).get("dependencies"):
             # get all of the requested tools dependencies
 
@@ -605,7 +604,7 @@ class ReconShell(cmd2.Cmd):
 
         for endpoint in endpoints:
             color = color_map.get(str(endpoint.status_code)[0])
-            if args.plain:
+            if args.plain or endpoint.status_code is None:
                 results.append(endpoint.url)
             else:
                 results.append(f"[{style(endpoint.status_code, fg=color)}] {endpoint.url}")

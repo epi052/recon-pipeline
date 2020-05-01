@@ -440,6 +440,12 @@ class TestReconShell:
                 ],
                 "shell": True,
             },
+            "waybackurls": {
+                "installed": True,
+                "depencencies": ["go"],
+                "commands": ["/usr/local/go/bin/go get github.com/tomnomnom/waybackurls"],
+                "shell": True,
+            },
         }
 
         tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
