@@ -3,7 +3,7 @@ dependencies: ["go"]
 go: &gotool !get_tool_path "{go}"
 
 commands:
-- !join [*gotool, get, github.com/haccer/subjack]
-- !join ["(cd ~/go/src/github.com/haccer/subjack &&", *gotool, "install)"]
+- !join [*gotool, get, github.com/anshumanbh/tko-subs]
+- !join ["(cd ~/go/src/github.com/anshumanbh/tko-subs && ", *gotool, "build && ", *gotool, "install)"]
 
 shell: true
