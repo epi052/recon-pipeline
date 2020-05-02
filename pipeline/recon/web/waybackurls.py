@@ -92,7 +92,6 @@ class WaybackurlsScan(luigi.Task):
                 f.write(f"{target}\n")
 
         with open(waybackurls_input_file) as target_list:
-            # , open(self.results_subfolder / "fetched-urls", "w") as urls:
             proc = subprocess.run(command, stdin=target_list, stdout=subprocess.PIPE)
 
         for url in proc.stdout.decode().splitlines():
