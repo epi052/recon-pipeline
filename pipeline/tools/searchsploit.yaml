@@ -9,11 +9,11 @@ homesploit: &homesploit !join_path [*home, ".searchsploit_rc"]
 sed-command: &sedcom !join_empty ["'s#/opt#", *tools, "#g'"]
 
 commands:
-- !join [bash, -c, "'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb",
+- !join ["bash -c 'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb",
         *exploitdb, "&& sudo ln -fs $(which searchsploit)", *searchsploit,
         "; elif [ -d", *exploitdb, "]; then cd", *exploitdb,
-        "&& git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git", *exploitdb, "; fi'"]
-- !join [bash, -c, "'if [ -f", *ss_rc, "]; then cp -n", *ss_rc, *home, "; fi'"]
-- !join [bash, -c, "'if [ -f", *homesploit, "]; then sed -i", *sedcom, *homesploit, "; fi'"]
+        "&& git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git", *exploitdb, ; fi']
+- !join ["bash -c 'if [ -f", *ss_rc, "]; then cp -n", *ss_rc, *home, ; fi']
+- !join ["bash -c 'if [ -f", *homesploit, "]; then sed -i", *sedcom, *homesploit, ; fi']
 
 shell: true

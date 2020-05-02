@@ -1,10 +1,10 @@
 installed: false
-dependencies: ["go"]
+dependencies: [go]
 recursive-parent: &recpar !get_parent "{recursive-gobuster}"
 
 commands:
-- !join [bash, -c, "'if [ -d", *recpar, "]; then cd", *recpar,
+- !join ["bash -c 'if [ -d", *recpar, "]; then cd", *recpar,
         "&& git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git",
-        *recpar, "; fi'"]
+        *recpar, ; fi']
 
 shell: true
