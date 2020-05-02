@@ -2,10 +2,7 @@ import luigi
 from luigi.util import inherits
 
 from .nmap import SearchsploitScan
-from .web import AquatoneScan
-from .web import GobusterScan
-from .web import WebanalyzeScan
-from .web import TKOSubsScan, SubjackScan
+from .web import AquatoneScan, GobusterScan, SubjackScan, TKOSubsScan, WaybackurlsScan, WebanalyzeScan
 
 
 @inherits(SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, GobusterScan, WebanalyzeScan)
@@ -68,6 +65,7 @@ class FullScan(luigi.WrapperTask):
         del args["threads"]
 
         yield TKOSubsScan(**args)
+        yield WaybackurlsScan(**args)
 
 
 @inherits(SearchsploitScan, AquatoneScan, GobusterScan, WebanalyzeScan)

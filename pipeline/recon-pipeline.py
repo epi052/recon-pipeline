@@ -256,7 +256,7 @@ class ReconShell(cmd2.Cmd):
         """ Scan something.
 
         Possible scans include
-            AmassScan           GobusterScan        SearchsploitScan
+            AmassScan           GobusterScan        SearchsploitScan    WaybackurlsScan
             ThreadedNmapScan    WebanalyzeScan      AquatoneScan        FullScan
             MasscanScan         SubjackScan         TKOSubsScan         HTBScan
         """
