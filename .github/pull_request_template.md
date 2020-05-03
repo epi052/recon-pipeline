@@ -8,7 +8,6 @@ Long form explanations of most of the items below can be found in the [CONTRIBUT
 - [ ] Code is in its own branch
 - [ ] Branch name is related to the PR contents
 - [ ] PR targets master
-- [ ] Option to squash commits is checked
 
 ## Static analysis checks
 - [ ] All python files are formatted using black
