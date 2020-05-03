@@ -141,7 +141,7 @@ class DBManager:
 
     def get_status_codes(self):
         """ Simple helper that returns all status codes found during scanning """
-        return set(str(x[0]) for x in self.session.query(Endpoint.status_code).all())
+        return set(str(x[0]) for x in self.session.query(Endpoint.status_code).all() if x[0] is not None)
 
     def get_and_filter(self, model, defaults=None, **kwargs):
         """ Simple helper to either get an existing record if it exists otherwise create and return a new instance """

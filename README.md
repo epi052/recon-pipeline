@@ -71,7 +71,7 @@ The installer maintains a (naive) list of installed tools at `~/.local/recon-pip
 
 ## Defining a Scan's Scope
 
-**New in v0.9.0**: In the event you're scanning a single ip address or host, simply use `--target`.  It accepts a single target and works in conjunction with `--exempt-list` if specified.
+**New as of v0.9.0**: In the event you're scanning a single ip address or host, simply use `--target`.  It accepts a single target and works in conjunction with `--exempt-list` if specified.
 
 ```text
 scan HTBScan --target 10.10.10.183 --top-ports 1000
@@ -146,6 +146,7 @@ Scan the target
 [-] SearchsploitScan queued
 [-] ThreadedNmapScan queued
 [-] SubjackScan queued
+[-] WaybackurlsScan queued
 [-] AquatoneScan queued
 [-] GobusterScan queued
 [db-1] recon-pipeline>

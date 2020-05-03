@@ -18,6 +18,7 @@ def test_get_scans():
         "SearchsploitScan",
         "ThreadedNmapScan",
         "WebanalyzeScan",
+        "WaybackurlsScan",
     ]
 
     assert len(scan_names) == len(scans.keys())
