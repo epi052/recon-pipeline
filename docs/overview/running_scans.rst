@@ -15,6 +15,7 @@ following individual scans are available
 - :class:`pipeline.recon.web.subdomain_takeover.SubjackScan`
 - :class:`pipeline.recon.nmap.ThreadedNmapScan`
 - :class:`pipeline.recon.web.subdomain_takeover.TKOSubsScan`
+- :class:`pipeline.recon.web.waybackurls.WaybackurlsScan`
 - :class:`pipeline.recon.web.webanalyze.WebanalyzeScan`
 
 Additionally, two wrapper scans are made available.  These execute multiple scans in a pipeline.
@@ -49,6 +50,7 @@ Create a targetfile
     /root/PycharmProjects/recon-pipeline/pipeline/recon-pipeline.py
     recon-pipeline>
 
+**New as of v0.9.0**: In the event you're scanning a single ip address or host, simply use ``--target``.  It accepts a single target and works in conjunction with ``--exempt-list`` if specified.
 
 Create a new database to store scan results
 
@@ -79,6 +81,7 @@ Scan the target
     [-] WebanalyzeScan queued
     [-] SearchsploitScan queued
     [-] ThreadedNmapScan queued
+    [-] WaybackurlsScan queued
     [-] SubjackScan queued
     [-] AquatoneScan queued
     [-] GobusterScan queued

@@ -67,6 +67,13 @@ TKOSubs Scanner
 .. autoclass:: pipeline.recon.web.subdomain_takeover.TKOSubsScan
     :members:
 
+WaybackurlsScan Scanner
+#######################
+
+.. autoclass:: pipeline.recon.web.waybackurls.WaybackurlsScan
+    :members:
+
+
 Webanalyze Scanner
 ##################
 
