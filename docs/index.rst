@@ -23,7 +23,7 @@ Personalization
 .. toctree::
     :maxdepth: 1
 
-    Creating a New Wrapper Scan <modifications/index>
+    How to personalize the pipeline <modifications/index>
 
 API Reference
 =============
