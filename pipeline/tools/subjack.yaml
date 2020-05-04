@@ -1,8 +1,10 @@
 installed: false
 dependencies: [go]
-go: &gotool !get_tool_path "{go}"
+go: &gotool !get_tool_path "{go[path]}"
 home: &home !get_default "{home}"
+path: !join_path [*home, go/bin/subjack]
 subjack_home: &subjhome !join_path [*home, "/go/src/github.com/haccer/subjack &&"]
+fingerprints: !join_path [*home, go/src/github.com/haccer/subjack/fingerprints.json]
 
 commands:
 - !join [*gotool, get github.com/haccer/subjack]

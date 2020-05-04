@@ -11,7 +11,8 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from .targets import GatherWebTargets
-from ..config import tool_paths, defaults
+from ..config import defaults
+from ...tools import tools
 from ...models.endpoint_model import Endpoint
 from ..helpers import get_ip_address_version, is_ip_address
 
@@ -139,10 +140,16 @@ class GobusterScan(luigi.Task):
 
             for url_scheme in ("https://", "http://"):
                 if self.recursive:
-                    command = [tool_paths.get("recursive-gobuster"), "-s", "-w", self.wordlist, f"{url_scheme}{target}"]
+                    command = [
+                        tools.get("recursive-gobuster").get("path"),
+                        "-s",
+                        "-w",
+                        self.wordlist,
+                        f"{url_scheme}{target}",
+                    ]
                 else:
                     command = [
-                        tool_paths.get("gobuster"),
+                        tools.get("gobuster").get("path"),
                         "dir",
                         "-q",
                         "-e",

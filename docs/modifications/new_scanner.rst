@@ -53,19 +53,18 @@ Dynamically creating strings and filesystem paths are handled by the following t
 
 In order to get values out of ``pipeline.recon.config.py``, you'll need to use one of the yaml helpers listed below.
 
-- ``!get_parent`` - (niche) get parent directory of a given tool that is defined in the ``pipeline.recon.config.tool_paths`` dictionary
 - ``!get_default`` - get a value from the ``pipeline.recon.config.defaults`` dictionary
-- ``!get_tool_path`` - get a value from the ``pipeline.recon.config.tool_paths`` dictionary
+- ``!get_tool_path`` - get a path value from the ``pipeline.tools.tools`` dictionary
 
 Simple Example Tool Definition
 ******************************
 
-The example below needs go to be installed prior to being installed itself.  It then grabs the path to the ``go`` binary from ``pipeline.recon.config.tool_paths`` by using ``!get_tool_path``.  After that, it creates a command using ``!join`` that will look like ``/usr/local/go/bin/go get github.com/tomnomnom/waybackurls``.  This command will be run by the ``install waybackurls`` command (or ``install all``).
+The example below needs go to be installed prior to being installed itself.  It then grabs the path to the ``go`` binary from ``pipeline.tools.tools`` by using ``!get_tool_path``.  After that, it creates a command using ``!join`` that will look like ``/usr/local/go/bin/go get github.com/tomnomnom/waybackurls``.  This command will be run by the ``install waybackurls`` command (or ``install all``).
 
 .. code-block:: yaml
 
     dependencies: [go]
-    go: &gobin !get_tool_path "{go}"
+    go: &gobin !get_tool_path "{go[path]}"
 
     commands:
     - !join [*gobin, get github.com/tomnomnom/waybackurls]

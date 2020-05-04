@@ -7,8 +7,8 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
-from .config import tool_paths
 from .targets import TargetList
+from ..tools import tools
 from ..models.target_model import Target
 
 
@@ -94,7 +94,7 @@ class AmassScan(luigi.Task):
             return subprocess.run(f"touch {self.output().path}".split())
 
         command = [
-            f"{tool_paths.get('amass')}",
+            tools.get("amass").get("path"),
             "enum",
             "-active",
             "-ip",

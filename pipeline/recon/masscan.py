@@ -9,11 +9,12 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from .targets import TargetList
+from ..tools import tools
 from .amass import ParseAmassOutput
 from ..models.port_model import Port
 from ..models.ip_address_model import IPAddress
 
-from .config import top_tcp_ports, top_udp_ports, defaults, tool_paths, web_ports
+from .config import top_tcp_ports, top_udp_ports, defaults, web_ports
 
 
 @inherits(TargetList, ParseAmassOutput)
@@ -108,7 +109,7 @@ class MasscanScan(luigi.Task):
             )
 
         command = [
-            tool_paths.get("masscan"),
+            tools.get("masscan").get("path"),
             "-v",
             "--open",
             "--banners",

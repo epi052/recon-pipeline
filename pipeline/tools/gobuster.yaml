@@ -1,7 +1,8 @@
 installed: false
 dependencies: [go, seclists]
 home: &home !get_default "{home}"
-go: &gotool !get_tool_path "{go}"
+path: !join_path [*home, go/bin/gobuster]
+go: &gotool !get_tool_path "{go[path]}"
 go_home: &gohome !join_path [*home, "/go/src/github.com/OJ/gobuster &&"]
 
 commands:

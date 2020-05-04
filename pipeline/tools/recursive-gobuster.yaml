@@ -1,10 +1,10 @@
 installed: false
 dependencies: [go]
-recursive-parent: &recpar !get_parent "{recursive-gobuster}"
+tools: &tools !get_default "{tools-dir}"
+path: !join_path [*tools, recursive-gobuster/recursive-gobuster.pyz]
+recursive-parent: &recpar !join_path [*tools, recursive-gobuster]
 
 commands:
 - !join ["bash -c 'if [ -d", *recpar, "]; then cd", *recpar,
         "&& git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git",
         *recpar, ; fi']
-
-shell: true

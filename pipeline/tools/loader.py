@@ -1,9 +1,10 @@
 import yaml
 from pathlib import Path
 
-from ..recon.config import tool_paths, defaults
+from ..recon.config import defaults
 
 definitions = Path(__file__).parent
+tools = {}
 
 
 def join(loader, node):
@@ -30,16 +31,10 @@ def get_default(loader, node):
     return py_str.format(**defaults)
 
 
-def get_parent(loader, node):
-    """ yaml tag handler to access tool parents """
-    py_str = loader.construct_python_str(node)
-    return Path(py_str.format(**tool_paths)).parent
-
-
 def get_tool_path(loader, node):
-    """ yaml tag handler to access tool_paths dict at load time """
+    """ yaml tag handler to access tools dict at load time """
     py_str = loader.construct_python_str(node)
-    return py_str.format(**tool_paths)
+    return py_str.format(**tools)
 
 
 yaml.add_constructor("!join", join)
@@ -47,12 +42,20 @@ yaml.add_constructor("!join_empty", join_empty)
 yaml.add_constructor("!join_path", join_path)
 yaml.add_constructor("!get_default", get_default)
 yaml.add_constructor("!get_tool_path", get_tool_path)
-yaml.add_constructor("!get_parent", get_parent)
 
 
-tools = {}
-for file in definitions.iterdir():
-    if file.name.endswith(".yaml"):
+def load_yaml(file):
+    try:
         config = yaml.full_load(file.read_text())
         tool_name = str(file.name.replace(".yaml", ""))
         tools[tool_name] = config
+    except KeyError as error:  # load dependencies first
+        dependency = error.args[0]
+        dependency_file = definitions / (dependency + ".yaml")
+        load_yaml(dependency_file)
+        load_yaml(file)
+
+
+for file in definitions.iterdir():
+    if file.name.endswith(".yaml") and file.name.replace(".yaml", "") not in tools:
+        load_yaml(file)
