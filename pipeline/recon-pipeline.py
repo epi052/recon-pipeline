@@ -62,14 +62,17 @@ from .models.searchsploit_model import SearchsploitResult  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     scan_parser,
-    install_parser,
+    view_parser,
+    tools_parser,
     status_parser,
     database_parser,
-    db_detach_parser,
-    db_list_parser,
     db_attach_parser,
     db_delete_parser,
-    view_parser,
+    db_detach_parser,
+    db_list_parser,
+    tools_install_parser,
+    tools_uninstall_parser,
+    tools_reinstall_parser,
     target_results_parser,
     endpoint_results_parser,
     nmap_results_parser,
@@ -141,6 +144,9 @@ class ReconShell(cmd2.Cmd):
         technology_results_parser.set_defaults(func=self.print_webanalyze_results)
         searchsploit_results_parser.set_defaults(func=self.print_searchsploit_results)
         port_results_parser.set_defaults(func=self.print_port_results)
+        tools_install_parser.set_defaults(func=self.tools_install)
+        tools_reinstall_parser.set_defaults(func=self.tools_reinstall)
+        tools_uninstall_parser.set_defaults(func=self.tools_uninstall)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -320,8 +326,7 @@ class ReconShell(cmd2.Cmd):
 
         self.add_dynamic_parser_arguments()
 
-    @cmd2.with_argparser(install_parser)
-    def do_install(self, args):
+    def tools_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
 
         # imported tools variable is in global scope, and we reassign over it later
@@ -338,7 +343,7 @@ class ReconShell(cmd2.Cmd):
             ]
 
             for tool in tools.keys():
-                self.do_install(tool)
+                self.do_tools(f"install {tool}")
 
             return
 
@@ -358,7 +363,7 @@ class ReconShell(cmd2.Cmd):
                 )
 
                 # install the dependency before continuing with installation
-                self.do_install(dependency)
+                self.do_tools(f"install {dependency}")
 
         if tools.get(args.tool).get("installed"):
             return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
@@ -421,6 +426,23 @@ class ReconShell(cmd2.Cmd):
 
         # store any tool installs/failures (back) to disk
         pickle.dump(tools, persistent_tool_dict.open("wb"))
+
+    def tools_uninstall(self, args):
+        """ Uninstall a given tool """
+        self.poutput(f"uninstalling {args.tool}")
+
+    def tools_reinstall(self, args):
+        """ Reinstall a given tool """
+        self.poutput(f"reinstalling {args.tool}")
+
+    @cmd2.with_argparser(tools_parser)
+    def do_tools(self, args):
+        """ Manage tool actions (install/uninstall/reinstall) """
+        func = getattr(args, "func", None)
+        if func is not None:
+            func(args)
+        else:
+            self.do_help("tools")
 
     @cmd2.with_argparser(status_parser)
     def do_status(self, args):

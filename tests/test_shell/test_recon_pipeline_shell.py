@@ -292,10 +292,15 @@ class TestReconShell:
         self.shell.do_status("--host 127.0.0.1 --port 1111")
         assert mock_browser.called
 
-    # ("all", "commands failed and may have not installed properly", 1)
+    @pytest.mark.parametrize("test_input, expected", [(None, "Manage tool actions (install/uninstall/reinstall)")])
+    def test_do_tools(self, test_input, expected, capsys):
+        if test_input is None:
+            self.shell.do_tools("")
+            assert expected in capsys.readouterr().out
+
     # after tools moved to DB, update this test
     @pytest.mark.parametrize("test_input, expected, return_code", [("all", "is already installed", 0)])
-    def test_do_install(self, test_input, expected, return_code, capsys, tmp_path):
+    def test_tools_install(self, test_input, expected, return_code, capsys, tmp_path):
         process_mock = MagicMock()
         attrs = {"communicate.return_value": (b"output", b"error"), "returncode": return_code}
         process_mock.configure_mock(**attrs)
@@ -456,8 +461,54 @@ class TestReconShell:
         with patch("subprocess.Popen", autospec=True) as mocked_popen:
             mocked_popen.return_value = process_mock
             self.shell.tools_dir = tooldir
-            self.shell.do_install(test_input)
+            self.shell.do_tools(f"install {test_input}")
             assert mocked_popen.called
+
+    # after tools moved to DB, update this test
+    @pytest.mark.parametrize(
+        "test_input",
+        [
+            "tko-subs",
+            "recursive-gobuster",
+            "subjack",
+            "waybackurls",
+            "searchsploit",
+            "luigi-service",
+            "aquatone",
+            "gobuster",
+            "amass",
+            "masscan",
+            "go",
+            "webanalyze",
+            "seclists",
+        ],
+    )
+    def test_tools_uninstall(self, test_input, capsys, tmp_path):
+        self.shell.do_tools(f"uninstall {test_input}")
+        assert f"uninstalling {test_input}" in capsys.readouterr().out
+
+    # after tools moved to DB, update this test
+    @pytest.mark.parametrize(
+        "test_input",
+        [
+            "tko-subs",
+            "recursive-gobuster",
+            "subjack",
+            "waybackurls",
+            "searchsploit",
+            "luigi-service",
+            "aquatone",
+            "gobuster",
+            "amass",
+            "masscan",
+            "go",
+            "webanalyze",
+            "seclists",
+        ],
+    )
+    def test_tools_reinstall(self, test_input, capsys, tmp_path):
+        self.shell.do_tools(f"reinstall {test_input}")
+        assert f"reinstalling {test_input}" in capsys.readouterr().out
 
     @pytest.mark.parametrize(
         "test_input, expected, db_mgr",

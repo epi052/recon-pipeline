@@ -6,11 +6,6 @@ from .config import defaults
 from .helpers import get_scans
 from ..tools import tools
 
-# options for ReconShell's 'install' command
-install_parser = cmd2.Cmd2ArgumentParser()
-install_parser.add_argument("tool", help="which tool to install", choices=list(tools.keys()) + ["all"])
-
-
 # options for ReconShell's 'status' command
 status_parser = cmd2.Cmd2ArgumentParser()
 status_parser.add_argument(
@@ -106,6 +101,22 @@ db_delete_parser = database_subparsers.add_parser("delete", help="Delete the sel
 db_attach_parser = database_subparsers.add_parser("attach", help="Attach to the selected database")
 db_detach_parser = database_subparsers.add_parser("detach", help="Detach from the currently attached database")
 
+# top level and subparsers for ReconShell's tools command
+tools_parser = cmd2.Cmd2ArgumentParser()
+tools_subparsers = tools_parser.add_subparsers(
+    title="subcommands", help="Manage tool actions (install/uninstall/reinstall)"
+)
+
+tools_install_parser = tools_subparsers.add_parser(
+    "install", help="Install any/all of the libraries/tools necessary to make the recon-pipeline function"
+)
+tools_install_parser.add_argument("tool", help="which tool to install", choices=list(tools.keys()) + ["all"])
+
+tools_uninstall_parser = tools_subparsers.add_parser("uninstall", help="Remove the already installed tool")
+tools_uninstall_parser.add_argument("tool", help="which tool to uninstall", choices=list(tools.keys()) + ["all"])
+
+tools_reinstall_parser = tools_subparsers.add_parser("reinstall", help="Uninstall and then Install a given tool")
+tools_reinstall_parser.add_argument("tool", help="which tool to reinstall", choices=list(tools.keys()) + ["all"])
 
 # ReconShell's view command
 view_parser = cmd2.Cmd2ArgumentParser()
