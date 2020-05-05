@@ -37,6 +37,7 @@ scan_parser.add_argument(
 )
 scan_parser.add_argument(
     "--results-dir",
+    default=defaults.get("results-dir"),
     completer_method=cmd2.Cmd.path_complete,
     help=f"directory in which to save scan results (default: {defaults.get('results-dir')})",
 )

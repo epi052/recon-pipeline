@@ -9,10 +9,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from pipeline.recon.config import defaults
 from pipeline.models.port_model import Port
 from pipeline.models.target_model import Target
 from pipeline.models.db_manager import DBManager
+from pipeline.recon.config import defaults, tool_paths
 from pipeline.models.ip_address_model import IPAddress
 
 recon_shell = importlib.import_module("pipeline.recon-pipeline")
@@ -306,144 +306,123 @@ class TestReconShell:
         process_mock.configure_mock(**attrs)
 
         tool_dict = {
-            "tko-subs": {
-                "installed": False,
-                "dependencies": ["go"],
-                "go": "/usr/local/go/bin/go",
-                "commands": [
-                    "/usr/local/go/bin/go get github.com/anshumanbh/tko-subs",
-                    "(cd ~/go/src/github.com/anshumanbh/tko-subs &&  /usr/local/go/bin/go build &&  /usr/local/go/bin/go install)",
-                ],
-                "shell": True,
-            },
-            "recursive-gobuster": {
-                "installed": False,
-                "dependencies": ["go"],
-                "recursive-parent": "/home/epi/.local/recon-pipeline/tools/recursive-gobuster",
-                "commands": [
-                    "bash -c 'if [ -d /home/epi/.local/recon-pipeline/tools/recursive-gobuster ]; then cd /home/epi/.local/recon-pipeline/tools/recursive-gobuster && git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git /home/epi/.local/recon-pipeline/tools/recursive-gobuster ; fi'"
-                ],
-                "shell": False,
-            },
-            "subjack": {
-                "installed": False,
-                "dependencies": ["go"],
-                "go": "/usr/local/go/bin/go",
-                "commands": [
-                    "/usr/local/go/bin/go get github.com/haccer/subjack",
-                    "(cd ~/go/src/github.com/haccer/subjack && /usr/local/go/bin/go install)",
-                ],
-                "shell": True,
-            },
-            "searchsploit": {
-                "installed": False,
-                "dependencies": None,
-                "home": "/home/epi",
-                "tools-dir": "/home/epi/.local/recon-pipeline/tools",
-                "exploitdb-file": "/home/epi/.local/recon-pipeline/tools/exploitdb",
-                "searchsploit-file": "/home/epi/.local/recon-pipeline/tools/exploitdb/searchsploit",
-                "searchsploit-rc": "/home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc",
-                "homesploit": "/home/epi/.searchsploit_rc",
-                "sed-command": "'s#/opt#/home/epi/.local/recon-pipeline/tools#g'",
-                "commands": [
-                    "bash -c 'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb /home/epi/.local/recon-pipeline/tools/exploitdb && sudo ln -fs $(which searchsploit) /home/epi/.local/recon-pipeline/tools/exploitdb/searchsploit ; elif [ -d /home/epi/.local/recon-pipeline/tools/exploitdb ]; then cd /home/epi/.local/recon-pipeline/tools/exploitdb && git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git /home/epi/.local/recon-pipeline/tools/exploitdb ; fi'",
-                    "bash -c 'if [ -f /home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc ]; then cp -n /home/epi/.local/recon-pipeline/tools/exploitdb/.searchsploit_rc /home/epi ; fi'",
-                    "bash -c 'if [ -f /home/epi/.searchsploit_rc ]; then sed -i 's#/opt#/home/epi/.local/recon-pipeline/tools#g' /home/epi/.searchsploit_rc ; fi'",
-                ],
-                "shell": False,
-            },
             "luigi-service": {
                 "installed": False,
                 "dependencies": None,
-                "service-file": "/home/epi/PycharmProjects/recon-pipeline/luigid.service",
                 "commands": [
-                    "sudo cp /home/epi/PycharmProjects/recon-pipeline/luigid.service /lib/systemd/system/luigid.service",
-                    "sudo cp /home/epi/PycharmProjects/recon-pipeline/luigid.service $(which luigid) /usr/local/bin",
+                    f"sudo cp {str(Path(__file__).parents[2] / 'luigid.service')} /lib/systemd/system/luigid.service",
+                    f"sudo cp $(which luigid) /usr/local/bin",
                     "sudo systemctl daemon-reload",
                     "sudo systemctl start luigid.service",
                     "sudo systemctl enable luigid.service",
                 ],
                 "shell": True,
             },
+            "seclists": {
+                "installed": False,
+                "dependencies": None,
+                "shell": True,
+                "commands": [
+                    f"bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists {defaults.get('tools-dir')}/seclists; elif [[ -d {defaults.get('tools-dir')}/seclists ]] ; then cd {defaults.get('tools-dir')}/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git {defaults.get('tools-dir')}/seclists; fi'"
+                ],
+            },
+            "searchsploit": {
+                "installed": False,
+                "dependencies": None,
+                "shell": True,
+                "commands": [
+                    f"bash -c 'if [[ -d /usr/share/exploitdb ]]; then ln -s /usr/share/exploitdb {defaults.get('tools-dir')}/exploitdb && sudo ln -s $(which searchsploit) {defaults.get('tools-dir')}/exploitdb/searchsploit; elif [[ -d {Path(tool_paths.get('searchsploit')).parent} ]]; then cd {Path(tool_paths.get('searchsploit')).parent} && git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git {defaults.get('tools-dir')}/exploitdb; fi'",
+                    f"bash -c 'if [[ -f {Path(tool_paths.get('searchsploit')).parent}/.searchsploit_rc ]]; then cp -n {Path(tool_paths.get('searchsploit')).parent}/.searchsploit_rc {Path.home().expanduser().resolve()}; fi'",
+                    f"bash -c 'if [[ -f {Path.home().resolve()}/.searchsploit_rc ]]; then sed -i 's#/opt#{defaults.get('tools-dir')}#g' {Path.home().resolve()}/.searchsploit_rc; fi'",
+                ],
+            },
+            "masscan": {
+                "installed": False,
+                "dependencies": None,
+                "commands": [
+                    "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
+                    "make -s -j -C /tmp/masscan",
+                    f"mv /tmp/masscan/bin/masscan {tool_paths.get('masscan')}",
+                    "rm -rf /tmp/masscan",
+                    f"sudo setcap CAP_NET_RAW+ep {tool_paths.get('masscan')}",
+                ],
+            },
+            "amass": {
+                "installed": False,
+                "dependencies": ["go"],
+                "commands": [
+                    f"{tool_paths.get('go')} get -u github.com/OWASP/Amass/v3/...",
+                    f"cp ~/go/bin/amass {tool_paths.get('amass')}",
+                ],
+                "shell": True,
+                "environ": {"GO111MODULE": "on"},
+            },
             "aquatone": {
                 "installed": False,
                 "dependencies": None,
-                "aquatone": "/home/epi/.local/recon-pipeline/tools/aquatone",
+                "shell": True,
                 "commands": [
                     "mkdir /tmp/aquatone",
                     "wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /tmp/aquatone/aquatone.zip",
                     "bash -c 'if [[ ! $(which unzip) ]]; then sudo apt install -y zip; fi'",
                     "unzip /tmp/aquatone/aquatone.zip -d /tmp/aquatone",
-                    "mv /tmp/aquatone/aquatone /home/epi/.local/recon-pipeline/tools/aquatone",
+                    f"mv /tmp/aquatone/aquatone {tool_paths.get('aquatone')}",
                     "rm -rf /tmp/aquatone",
                     "bash -c 'found=false; for loc in {/usr/bin/google-chrome,/usr/bin/google-chrome-beta,/usr/bin/google-chrome-unstable,/usr/bin/chromium-browser,/usr/bin/chromium}; do if [[ $(which $loc) ]]; then found=true; break; fi ; done; if [[ $found = false ]]; then sudo apt install -y chromium-browser ; fi'",
                 ],
-                "shell": False,
             },
             "gobuster": {
                 "installed": False,
                 "dependencies": ["go", "seclists"],
-                "go": "/usr/local/go/bin/go",
                 "commands": [
-                    "/usr/local/go/bin/go get github.com/OJ/gobuster",
-                    "(cd ~/go/src/github.com/OJ/gobuster && /usr/local/go/bin/go build && /usr/local/go/bin/go install)",
+                    f"{tool_paths.get('go')} get github.com/OJ/gobuster",
+                    f"(cd ~/go/src/github.com/OJ/gobuster && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
                 ],
                 "shell": True,
             },
-            "amass": {
+            "tko-subs": {
                 "installed": False,
                 "dependencies": ["go"],
-                "go": "/usr/local/go/bin/go",
-                "amass": "/home/epi/.local/recon-pipeline/tools/amass",
                 "commands": [
-                    "/usr/local/go/bin/go get -u github.com/OWASP/Amass/v3/...",
-                    "cp ~/go/bin/amass /home/epi/.local/recon-pipeline/tools/amass",
-                ],
-                "shell": True,
-                "environ": {"GO111MODULE": "on"},
-            },
-            "masscan": {
-                "installed": True,
-                "dependencies": None,
-                "masscan": "/home/epi/.local/recon-pipeline/tools/masscan",
-                "commands": [
-                    "git clone https://github.com/robertdavidgraham/masscan /tmp/masscan",
-                    "make -s -j -C /tmp/masscan",
-                    "mv /tmp/masscan/bin/masscan /home/epi/.local/recon-pipeline/tools/masscan",
-                    "rm -rf /tmp/masscan",
-                    "sudo setcap CAP_NET_RAW+ep /home/epi/.local/recon-pipeline/tools/masscan",
+                    f"{tool_paths.get('go')} get github.com/anshumanbh/tko-subs",
+                    f"(cd ~/go/src/github.com/anshumanbh/tko-subs && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
                 ],
                 "shell": True,
             },
-            "go": {
+            "subjack": {
                 "installed": False,
-                "dependencies": None,
-                "go": "/usr/local/go/bin/go",
+                "dependencies": ["go"],
                 "commands": [
-                    "wget -q https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
-                    "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
-                    "bash -c 'if [ ! $(echo ${PATH} | grep $(dirname /usr/local/go/bin/go )) ]; then echo PATH=${PATH}:/usr/local/go/bin >> ~/.bashrc; fi'",
+                    f"{tool_paths.get('go')} get github.com/haccer/subjack",
+                    f"(cd ~/go/src/github.com/haccer/subjack && {tool_paths.get('go')} install)",
                 ],
                 "shell": True,
             },
             "webanalyze": {
                 "installed": False,
                 "dependencies": ["go"],
-                "go": "/usr/local/go/bin/go",
                 "commands": [
-                    "/usr/local/go/bin/go get github.com/rverton/webanalyze/...",
-                    "(cd ~/go/src/github.com/rverton/webanalyze && /usr/local/go/bin/go build && /usr/local/go/bin/go install)",
+                    f"{tool_paths.get('go')} get github.com/rverton/webanalyze/...",
+                    f"(cd ~/go/src/github.com/rverton/webanalyze && {tool_paths.get('go')} build && {tool_paths.get('go')} install)",
                 ],
                 "shell": True,
             },
-            "seclists": {
-                "installed": True,
-                "depencencies": None,
-                "seclists-file": "/home/epi/.local/recon-pipeline/tools/seclists",
-                "commands": [
-                    "bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists /home/epi/.local/recon-pipeline/tools/seclists ; elif [[ -d /home/epi/.local/recon-pipeline/tools/seclists ]] ; then cd /home/epi/.local/recon-pipeline/tools/seclists && git fetch --all && git pull; else git clone https://github.com/danielmiessler/SecLists.git /home/epi/.local/recon-pipeline/tools/seclists ; fi'"
-                ],
+            "recursive-gobuster": {
+                "installed": False,
+                "dependencies": ["gobuster", "seclists"],
                 "shell": True,
+                "commands": [
+                    f"bash -c 'if [[ -d {Path(tool_paths.get('recursive-gobuster')).parent} ]] ; then cd {Path(tool_paths.get('recursive-gobuster')).parent} && git fetch --all && git pull; else git clone https://github.com/epi052/recursive-gobuster.git {Path(tool_paths.get('recursive-gobuster')).parent}; fi'"
+                ],
+            },
+            "go": {
+                "installed": False,
+                "dependencies": None,
+                "commands": [
+                    "wget -q https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz -O /tmp/go.tar.gz",
+                    "sudo tar -C /usr/local -xvf /tmp/go.tar.gz",
+                    f'bash -c \'if [[ ! $(echo "${{PATH}}" | grep $(dirname {tool_paths.get("go")})) ]]; then echo "PATH=${{PATH}}:/usr/local/go/bin" >> ~/.bashrc; fi\'',
+                ],
             },
             "waybackurls": {
                 "installed": True,
