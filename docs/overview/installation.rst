@@ -51,15 +51,15 @@ Both OSs After ``pipenv`` Install
 Everything Else
 ###############
 
-After installing the python dependencies, the recon-pipeline shell provides its own :ref:`install_command` command (seen below).
-A simple ``install all`` will handle all installation steps.  Installation has **only** been tested on **Kali 2019.4 and Ubuntu 18.04/20.04**.
+After installing the python dependencies, the recon-pipeline shell provides its own :ref:`tools_command` command (seen below).
+A simple ``tools install all`` will handle all installation steps.  Installation has **only** been tested on **Kali 2019.4 and Ubuntu 18.04/20.04**.
 
     **Ubuntu Note (and newer kali versions)**: You may consider running ``sudo -v`` prior to running ``./recon-pipeline.py``. ``sudo -v`` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password. It'll work either way though.
 
-Individual tools may be installed by running ``install TOOLNAME`` where ``TOOLNAME`` is one of the known tools that make
+Individual tools may be installed by running ``tools install TOOLNAME`` where ``TOOLNAME`` is one of the known tools that make
 up the pipeline.
 
-The installer maintains a (naive) list of installed tools at ``~/.local/recon-pipeline/tools/.tool-dict.pkl``.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's
+The installer maintains a (naive) list of installed tools at ``~/.local/recon-pipeline/tools/.tool-dict.pkl``.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
 like Jon Snow, **it knows nothing**.
 
 .. raw:: html

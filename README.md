@@ -58,14 +58,14 @@ pipenv install
 pipenv shell
 ```
 
-After installing the python dependencies, the `recon-pipeline` shell provides its own [install](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#install) command (seen below).  A simple `install all` will handle all additional installation steps.
+After installing the python dependencies, the `recon-pipeline` shell provides its own [tools](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#tools) command (seen below).  A simple `tools install all` will handle all additional installation steps.
 
 > Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
-Individual tools may be installed by running `install TOOLNAME` where `TOOLNAME` is one of the known tools that make
+Individual tools may be installed by running `tools install TOOLNAME` where `TOOLNAME` is one of the known tools that make
 up the pipeline.
 
-The installer maintains a (naive) list of installed tools at `~/.local/recon-pipeline/tools/.tool-dict.pkl`.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install its tools.  Beyond that, it's like Jon Snow, **it knows nothing**.
+The installer maintains a (naive) list of installed tools at `~/.local/recon-pipeline/tools/.tool-dict.pkl`.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's like Jon Snow, **it knows nothing**.
 
 [![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
 
@@ -239,7 +239,7 @@ The backbone of this pipeline is spotify's [luigi](https://github.com/spotify/lu
 - Make sure two instances of the same task are not running simultaneously
 - Provide visualization of everything that’s going on
 
-While in the `recon-pipeline` shell, running `install luigi-service` will copy the `luigid.service` file provided in the
+While in the `recon-pipeline` shell, running `tools install luigi-service` will copy the `luigid.service` file provided in the
 repo to its appropriate systemd location and start/enable the service.  The result is that the central scheduler is up
 and running easily.
 
