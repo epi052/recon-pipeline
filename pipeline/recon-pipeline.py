@@ -124,6 +124,8 @@ class ReconShell(cmd2.Cmd):
 
         self.tools_dir.mkdir(parents=True, exist_ok=True)
         Path(defaults.get("database-dir")).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("gopath")).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("goroot")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)

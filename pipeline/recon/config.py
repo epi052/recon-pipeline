@@ -13,10 +13,13 @@ defaults = {
     "home": Path.home(),
 }
 
+defaults["project-dir"] = str(Path(__file__).parents[2])
 defaults["tools-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/tools"
 defaults["database-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/databases"
+
+defaults["goroot"] = f"{defaults.get('tools-dir')}/pipeline-go"
+defaults["gopath"] = f"{defaults.get('tools-dir')}/pipeline-go-workspace"
 defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
-defaults["project-dir"] = str(Path(__file__).parents[2])
 
 web_ports = {
     "80",
