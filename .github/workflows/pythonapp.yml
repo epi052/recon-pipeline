@@ -107,3 +107,23 @@ jobs:
         run: |
           pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
           pipenv run python -m pytest tests/test_models
+
+  test-unmocked-tool-installs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Set up pipenv
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install -d
+    - name: Test with pytest
+      run: |
+        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
+        pipenv run python -m pytest tests/test_tools_install

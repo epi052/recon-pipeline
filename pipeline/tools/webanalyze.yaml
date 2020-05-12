@@ -1,12 +1,8 @@
 installed: false
 dependencies: [go]
-home: &home !get_default "{home}"
 go: &gotool !get_tool_path "{go[path]}"
-path: !join_path [*home, go/bin/webanalyze]
-webanalyze_home: &webhome !join_path [*home, "/go/src/github.com/rverton/webanalyze &&"]
+path: !join_path [!get_default "{gopath}", bin/webanalyze]
+environ: {"GOPATH": !get_default "{gopath}"}
 
 commands:
 - !join [*gotool, get github.com/rverton/webanalyze/...]
-- !join [(cd, *webhome, *gotool, "build &&", *gotool, install)]
-
-shell: true

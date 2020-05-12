@@ -1,7 +1,8 @@
 installed: false
 dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
-path: !join_path [!get_default "{home}", go, bin, waybackurls]
+path: !join_path [!get_default "{gopath}", bin/waybackurls]
+environ: {"GOPATH": !get_default "{gopath}"}
 
 commands:
 - !join [*gotool, get, github.com/tomnomnom/waybackurls]
