@@ -1,6 +1,6 @@
 installed: false
-dependencies:
-service-file: &svcfile !get_tool_path "{luigid}"
+project-dir: &proj !get_default "{project-dir}"
+service-file: &svcfile !join_path [*proj, luigid.service]
 
 commands:
 - !join [sudo cp, *svcfile, /lib/systemd/system/luigid.service]

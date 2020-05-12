@@ -11,8 +11,9 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
+from ...tools import tools
 from .targets import GatherWebTargets
-from ..config import tool_paths, defaults
+from ..config import defaults
 from ...models.technology_model import Technology
 from ..helpers import get_ip_address_version, is_ip_address
 
@@ -153,7 +154,7 @@ class WebanalyzeScan(luigi.Task):
                 target = f"[{target}]"
 
             for url_scheme in ("https://", "http://"):
-                command = [tool_paths.get("webanalyze"), "-host", f"{url_scheme}{target}", "-output", "csv"]
+                command = [tools.get("webanalyze").get("path"), "-host", f"{url_scheme}{target}", "-output", "csv"]
                 commands.append(command)
 
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
@@ -162,7 +163,7 @@ class WebanalyzeScan(luigi.Task):
         os.chdir(self.results_subfolder)
 
         if not Path("apps.json").exists():
-            subprocess.run(f"{tool_paths.get('webanalyze')} -update".split())
+            subprocess.run(f"{tools.get('webanalyze').get('path')} -update".split())
 
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             executor.map(self._wrapped_subprocess, commands)

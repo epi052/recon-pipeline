@@ -341,13 +341,11 @@ class ReconShell(cmd2.Cmd):
                 self.do_install(tool)
 
             return
-
         if persistent_tool_dict.exists():
             tools = pickle.loads(persistent_tool_dict.read_bytes())
 
         if tools.get(args.tool).get("dependencies"):
             # get all of the requested tools dependencies
-
             for dependency in tools.get(args.tool).get("dependencies"):
                 if tools.get(dependency).get("installed"):
                     # already installed, skip it

@@ -1,10 +1,11 @@
 installed: false
 dependencies: [go]
-go: &gotool !get_tool_path "{go}"
-amass: &amass !get_tool_path "{amass}"
+tools: &tools !get_default "{tools-dir}"
+go: &gotool !get_tool_path "{go[path]}"
+path: &amass !join_path [*tools, "amass"]
 
 commands:
-- !join [*gotool, get -u github.com/OWASP/Amass/v3/...]
+- !join [*gotool, get github.com/OWASP/Amass/v3/...]
 - !join [cp ~/go/bin/amass, *amass]
 
 shell: true
