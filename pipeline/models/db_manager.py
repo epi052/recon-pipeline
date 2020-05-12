@@ -46,7 +46,7 @@ class DBManager:
             self.session.add(item)
             self.session.commit()
         except (sqlite3.IntegrityError, exc.IntegrityError):
-            print(ansi.style(f"[-] unique key constraint handled, moving on...", fg="bright_white"))
+            print(ansi.style("[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
 
     def get_or_create_target_by_ip_or_hostname(self, ip_or_host):
@@ -86,15 +86,13 @@ class DBManager:
 
     def get_all_ipv4_addresses(self) -> list:
         """ Simple helper to return all ipv4 addresses from Target records """
-        return [
-            x[0] for x in self.session.query(IPAddress.ipv4_address).filter(IPAddress.ipv4_address != None)
-        ]  # noqa: E711
+        query = self.session.query(IPAddress.ipv4_address).filter(IPAddress.ipv4_address != None)  # noqa: E711
+        return [x[0] for x in query]
 
     def get_all_ipv6_addresses(self) -> list:
         """ Simple helper to return all ipv6 addresses from Target records """
-        return [
-            x[0] for x in self.session.query(IPAddress.ipv6_address).filter(IPAddress.ipv6_address != None)
-        ]  # noqa: E711
+        query = self.session.query(IPAddress.ipv6_address).filter(IPAddress.ipv6_address != None)  # noqa: E711
+        return [x[0] for x in query]
 
     def close(self):
         """ Simple helper to close the database session """

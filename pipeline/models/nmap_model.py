@@ -36,7 +36,7 @@ class NmapResult(Base):
         msg += f"{'=' * (len(ip_address) + len(self.service) + 3)}\n\n"
         msg += f"{self.port.protocol} port: {self.port.port_number} - {'open' if self.open else 'closed'} - {self.reason}\n"
         msg += f"product: {self.product} :: {self.product_version}\n"
-        msg += f"nse script(s) output:\n"
+        msg += "nse script(s) output:\n"
 
         if nse_results is None:
             # add all nse scripts
@@ -53,7 +53,7 @@ class NmapResult(Base):
                     msg += "\n"
 
         if commandline:
-            msg += f"command used:\n"
+            msg += "command used:\n"
             msg += f"{pad}{self.commandline}\n"
 
         return msg
