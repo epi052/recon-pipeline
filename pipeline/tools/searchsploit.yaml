@@ -8,7 +8,7 @@ searchsploit-rc: &ss_rc !join_path [*exploitdb, ".searchsploit_rc"]
 homesploit: &homesploit !join_path [*home, ".searchsploit_rc"]
 sed-command: &sedcom !join_empty ["'s#/opt#", *tools, "#g'"]
 
-commands:
+install_commands:
 - !join ["bash -c 'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb",
         *exploitdb, "&& ln -fs $(which searchsploit)", *searchsploit,
         "; elif [ -d", *exploitdb, "]; then cd", *exploitdb,

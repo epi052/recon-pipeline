@@ -4,5 +4,5 @@ go: &gotool !get_tool_path "{go[path]}"
 path: !join_path [!get_default "{gopath}", bin/webanalyze]
 environ: {"GOPATH": !get_default "{gopath}"}
 
-commands:
+install_commands:
 - !join [*gotool, get github.com/rverton/webanalyze/...]

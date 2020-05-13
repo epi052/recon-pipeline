@@ -10,6 +10,9 @@ from ..tools import tools
 install_parser = cmd2.Cmd2ArgumentParser()
 install_parser.add_argument("tool", help="which tool to install", choices=list(tools.keys()) + ["all"])
 
+# options for ReconShell's 'uninstall' command
+uninstall_parser = cmd2.Cmd2ArgumentParser()
+uninstall_parser.add_argument("tool", help="which tool to uninstall", choices=list(tools.keys()) + ["all"])
 
 # options for ReconShell's 'status' command
 status_parser = cmd2.Cmd2ArgumentParser()

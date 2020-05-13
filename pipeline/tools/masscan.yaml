@@ -2,7 +2,7 @@ installed: false
 tools: &tools !get_default "{tools-dir}"
 path: &masscan !join_path [*tools, masscan]
 
-commands:
+install_commands:
 - git clone https://github.com/robertdavidgraham/masscan /tmp/masscan
 - make -s -j -C /tmp/masscan
 - !join [mv /tmp/masscan/bin/masscan, *masscan]

@@ -2,7 +2,7 @@ installed: false
 bashrc: &bashrc !join_path [!get_default "{home}", .bashrc]
 path: &gotool !join_path [!get_default "{goroot}", go/bin/go]
 
-commands:
-- wget -q https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz -O /tmp/go.tar.gz
+install_commands:
+- wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O /tmp/go.tar.gz
 - !join [tar -C, !get_default "{goroot}", -xvf /tmp/go.tar.gz]
 - !join ["bash -c 'if [ ! $(grep $(dirname", *gotool, ")", *bashrc, ") ]; then echo PATH=${PATH}:$(dirname", *gotool, ") >>", *bashrc, "; fi'"]

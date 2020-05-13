@@ -2,7 +2,7 @@ installed: false
 project-dir: &proj !get_default "{project-dir}"
 service-file: &svcfile !join_path [*proj, luigid.service]
 
-commands:
+install_commands:
 - !join [sudo cp, *svcfile, /lib/systemd/system/luigid.service]
 - !join [sudo cp, *svcfile, $(which luigid), /usr/local/bin]
 - sudo systemctl daemon-reload
