@@ -10,3 +10,6 @@ install_commands:
 - !join [mv /tmp/aquatone/aquatone, *aqua]
 - rm -rf /tmp/aquatone
 - bash -c 'found=false; for loc in {/usr/bin/google-chrome,/usr/bin/google-chrome-beta,/usr/bin/google-chrome-unstable,/usr/bin/chromium-browser,/usr/bin/chromium}; do if [[ $(which $loc) ]]; then found=true; break; fi ; done; if [[ $found = false ]]; then sudo apt install -y chromium-browser ; fi'
+
+uninstall_commands:
+- !join [rm, *aqua]

@@ -6,3 +6,6 @@ install_commands:
 - wget -q https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O /tmp/go.tar.gz
 - !join [tar -C, !get_default "{goroot}", -xvf /tmp/go.tar.gz]
 - !join ["bash -c 'if [ ! $(grep $(dirname", *gotool, ")", *bashrc, ") ]; then echo PATH=${PATH}:$(dirname", *gotool, ") >>", *bashrc, "; fi'"]
+
+uninstall_commands:
+- !join [sudo, rm, -r, !get_default "{goroot}"]
