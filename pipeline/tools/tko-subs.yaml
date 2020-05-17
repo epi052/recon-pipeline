@@ -3,7 +3,6 @@ dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
 path: &path !join_path [!get_default "{gopath}", bin/tko-subs]
 home: &home !get_default "{home}"
-src: &src !join_path [*home, go, src, github.com, anshumanbh, tko-subs]
 environ: {"GOPATH": !get_default "{gopath}"}
 providers: !join_path [!get_default "{gopath}", src/github.com/anshumanbh/tko-subs/providers-data.csv]
 
@@ -12,4 +11,3 @@ install_commands:
 
 uninstall_commands:
 - !join [rm, *path]
-- !join [sudo, rm, -r, *src]

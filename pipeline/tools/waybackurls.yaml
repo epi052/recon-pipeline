@@ -11,4 +11,3 @@ install_commands:
 
 uninstall_commands:
 - !join [rm, *path]
-- !join [sudo, rm, -r, *src]

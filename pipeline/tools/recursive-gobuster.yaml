@@ -10,4 +10,4 @@ install_commands:
         *parent, "; fi'"]
 
 uninstall_commands:
-- !join [sudo, rm, -r, *parent] 
+- !join [sudo, rm, -r, *parent]

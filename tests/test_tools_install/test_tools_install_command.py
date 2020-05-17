@@ -44,7 +44,7 @@ class TestUnmockedToolsInstall:
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
 
         tool_dict.get(dependency)["path"] = dependency_path
-        tool_dict.get(dependency).get("commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
 
         # handle env for local go install
         tmp_go_path = f"{self.shell.tools_dir}/mygo"
@@ -63,8 +63,8 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
-        tools_copy.get(tool).get("commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
+        tools_copy.get(tool).get("install_commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
+        tools_copy.get(tool).get("install_commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
 
         self.perform_install(tools_copy, tool)
 
@@ -75,7 +75,7 @@ class TestUnmockedToolsInstall:
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
 
@@ -86,7 +86,7 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
 
         self.perform_install(tools_copy, tool)
 
@@ -97,7 +97,7 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/go/bin/go"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tools_copy.get(tool).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
 
         self.perform_install(tools_copy, tool)
 
@@ -109,7 +109,9 @@ class TestUnmockedToolsInstall:
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
         tools_copy.get(tool)["dependencies"] = [dependency]
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get(dependency).get('path')} get github.com/OJ/gobuster"
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] = f"{tools_copy.get(dependency).get('path')} get github.com/OJ/gobuster"
 
         self.perform_install(tools_copy, tool)
 
@@ -175,10 +177,12 @@ class TestUnmockedToolsInstall:
         tools_copy.get(tool)["path"] = tool_path
         tools_copy.get(tool)["dependencies"] = None
 
-        tools_copy.get(tool).get("commands")[0] = f"bash -c 'if [ -d {parent} ]; "
-        tools_copy.get(tool).get("commands")[0] += f"then cd {parent} && git fetch --all && git pull; "
-        tools_copy.get(tool).get("commands")[0] += "else git clone https://github.com/epi052/recursive-gobuster.git "
-        tools_copy.get(tool).get("commands")[0] += f"{parent} ; fi'"
+        tools_copy.get(tool).get("install_commands")[0] = f"bash -c 'if [ -d {parent} ]; "
+        tools_copy.get(tool).get("install_commands")[0] += f"then cd {parent} && git fetch --all && git pull; "
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] += "else git clone https://github.com/epi052/recursive-gobuster.git "
+        tools_copy.get(tool).get("install_commands")[0] += f"{parent} ; fi'"
 
         if test_input == "update":
             self.perform_install(tools_copy, tool, exists=True)
@@ -211,13 +215,13 @@ class TestUnmockedToolsInstall:
         first_cmd += f"; elif [ -d {dependency_path} ]; then cd {dependency_path} && git fetch --all && git pull; else "
         first_cmd += f"git clone https://github.com/offensive-security/exploitdb.git {dependency_path}; fi'"
 
-        tools_copy.get(tool).get("commands")[0] = first_cmd
+        tools_copy.get(tool).get("install_commands")[0] = first_cmd
 
-        tools_copy.get(tool).get("commands")[1] = f"bash -c 'if [ -f {searchsploit_rc_path} ]; "
-        tools_copy.get(tool).get("commands")[1] += f"then cp -n {searchsploit_rc_path} {home_path} ; fi'"
+        tools_copy.get(tool).get("install_commands")[1] = f"bash -c 'if [ -f {searchsploit_rc_path} ]; "
+        tools_copy.get(tool).get("install_commands")[1] += f"then cp -n {searchsploit_rc_path} {home_path} ; fi'"
 
-        tools_copy.get(tool).get("commands")[2] = f"bash -c 'if [ -f {copied_searchsploit_rc} ]; "
-        tools_copy.get(tool).get("commands")[2] += f"then sed -i {sed_cmd} {copied_searchsploit_rc}; fi'"
+        tools_copy.get(tool).get("install_commands")[2] = f"bash -c 'if [ -f {copied_searchsploit_rc} ]; "
+        tools_copy.get(tool).get("install_commands")[2] += f"then sed -i {sed_cmd} {copied_searchsploit_rc}; fi'"
 
         pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
@@ -227,7 +231,6 @@ class TestUnmockedToolsInstall:
             assert not Path(dependency_path).exists()
 
         utils.run_cmd(self.shell, f"install {tool}")
-
         assert subprocess.run(f"grep {self.shell.tools_dir} {copied_searchsploit_rc}".split()).returncode == 0
         assert Path(copied_searchsploit_rc).exists()
         assert Path(dependency_path).exists()
@@ -248,7 +251,7 @@ class TestUnmockedToolsInstall:
         first_cmd += f"[[ -d {tool_path} ]] ; then cd {tool_path} && git fetch --all && git pull; "
         first_cmd += f"else git clone https://github.com/danielmiessler/SecLists.git {tool_path}; fi'"
 
-        tools_copy.get(tool).get("commands")[0] = first_cmd
+        tools_copy.get(tool).get("install_commands")[0] = first_cmd
 
         if test_input == "update":
             self.perform_install(tools_copy, tool, exists=True)
@@ -262,7 +265,7 @@ class TestUnmockedToolsInstall:
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
 
@@ -273,7 +276,7 @@ class TestUnmockedToolsInstall:
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
 
@@ -284,7 +287,7 @@ class TestUnmockedToolsInstall:
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
 
@@ -295,6 +298,6 @@ class TestUnmockedToolsInstall:
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
