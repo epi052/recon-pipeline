@@ -2,7 +2,12 @@ installed: false
 dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
 path: !join_path [!get_default "{gopath}", bin/webanalyze]
+src: &src !join_path [*home, go, src, github.com, rverton, webanalyze]
 environ: {"GOPATH": !get_default "{gopath}"}
 
 install_commands:
 - !join [*gotool, get github.com/rverton/webanalyze/...]
+
+uninstall_commands:
+- !join [rm, *path] 
+- !join [sudo, rm, -r, *src]

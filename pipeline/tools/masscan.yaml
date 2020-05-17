@@ -1,10 +1,13 @@
 installed: false
 tools: &tools !get_default "{tools-dir}"
-path: &masscan !join_path [*tools, masscan]
+path: &path !join_path [*tools, masscan]
 
 install_commands:
 - git clone https://github.com/robertdavidgraham/masscan /tmp/masscan
 - make -s -j -C /tmp/masscan
-- !join [mv /tmp/masscan/bin/masscan, *masscan]
+- !join [mv /tmp/masscan/bin/masscan, *path]
 - rm -rf /tmp/masscan
-- !join [sudo setcap CAP_NET_RAW+ep, *masscan]
+- !join [sudo setcap CAP_NET_RAW+ep, *path]
+
+uninstall_commands:
+- !join [rm, *path]

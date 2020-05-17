@@ -9,4 +9,8 @@ install_commands:
 - sudo systemctl start luigid.service
 - sudo systemctl enable luigid.service
 
+uninstall_commands:
+- sudo rm /lib/systemd/system/luigid.service
+- sudo rm /usr/local/bin/luigid /usr/local/bin/luigid.service
+
 shell: true

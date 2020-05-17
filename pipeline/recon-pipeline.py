@@ -454,6 +454,9 @@ class ReconShell(cmd2.Cmd):
             retvals = list()
 
             self.poutput(style(f"[*] Removing {args.tool}...", fg="bright_yellow"))
+            if not tools.get(args.tool).get("uninstall_commands"):
+                self.poutput(style(f"[*] {args.tool} removal not needed", fg="bright_yellow"))
+                return
 
             for command in tools.get(args.tool).get("uninstall_commands"):
                 self.poutput(style(f"[=] {command}", fg="cyan"))
