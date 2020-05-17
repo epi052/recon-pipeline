@@ -3,6 +3,7 @@ dependencies: [go, seclists]
 go: &gotool !get_tool_path "{go[path]}"
 path: &path !join_path [!get_default "{gopath}", bin/gobuster]
 environ: {"GOPATH": !get_default "{gopath}"}
+home: &home !get_default "{home}"
 src: &src !join_path [*home, go, src, github.com, OJ, gobuster]
 
 install_commands:
