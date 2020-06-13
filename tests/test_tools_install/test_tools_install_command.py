@@ -42,7 +42,6 @@ class TestUnmockedToolsInstall:
         # install go in tmp location
         dependency = "go"
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
-        print(f"dependency path: {dependency_path}")
 
         tool_dict.get(dependency)["path"] = dependency_path
         tool_dict.get(dependency).get("commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
@@ -69,24 +68,16 @@ class TestUnmockedToolsInstall:
 
         self.perform_install(tools_copy, tool)
 
-    def test_install_amass(self, capsys):
+    def test_install_amass(self):
         tool = "amass"
         url = "github.com/OWASP/Amass/v3/..."
         tools_copy = tools.copy()
 
-        stuff = self.setup_go_test(tool, tools_copy)
-
-        tools_copy.update(stuff)
+        tools_copy.update(self.setup_go_test(tool, tools_copy))
 
         tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
 
         self.perform_install(tools_copy, tool)
-
-        output = capsys.readouterr()
-        print(output.out)
-        print(output.err)
-
-        assert False
 
     def test_install_aquatone(self):
         tool = "aquatone"
