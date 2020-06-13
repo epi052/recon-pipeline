@@ -36,4 +36,5 @@ def run_cmd(app, cmd):
 
     out = copy_cmd_stdout.getvalue()
     err = copy_stderr.getvalue()
+
     return normalize(out), normalize(err)
