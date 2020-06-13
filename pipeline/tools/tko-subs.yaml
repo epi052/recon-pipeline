@@ -3,6 +3,7 @@ dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
 path: !join_path [!get_default "{gopath}", bin/tko-subs]
 environ: {"GOPATH": !get_default "{gopath}"}
+providers: !join_path [!get_default "{gopath}", src/github.com/anshumanbh/tko-subs/providers-data.csv]
 
 commands:
 - !join [*gotool, get, github.com/anshumanbh/tko-subs]

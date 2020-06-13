@@ -123,7 +123,7 @@ class TKOSubsScan(luigi.Task):
         command = [
             tools.get("tko-subs").get("path"),
             f"-domain={','.join(domains)}",
-            f"-data={tools.get('tko-subs').get('git_dir')}/providers-data.csv",
+            f"-data={tools.get('tko-subs').get('providers')}",
             f"-output={self.output_file}",
         ]
 
