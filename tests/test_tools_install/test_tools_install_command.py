@@ -54,6 +54,8 @@ class TestUnmockedToolsInstall:
         tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
         tool_dict.get(tool_name)["path"] = tool_path
 
+        tool_dict.get(tool_name)["installed"] = False
+
         return tool_dict
 
     def test_install_masscan(self):
