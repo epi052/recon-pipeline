@@ -27,21 +27,21 @@ class TestUnmockedToolsInstall:
         shutil.rmtree(self.tmp_path, onerror=onerror)
 
     def perform_add_remove(self, tools_dict, tool_name, install, exists):
-        if install == True:
+        if install:
             pickle.dump(tools_dict, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         tool = Path(tools_dict.get(tool_name).get("path"))
-        if install == True and exists is False:
+        if install and exists is False:
             assert tool.exists() is False
-        elif install == False and exists is True:
+        elif not install and exists is True:
             assert tool.exists() is True
 
-        if install == True:
+        if install:
             utils.run_cmd(self.shell, f"install {tool_name}")
             assert tool.exists() is True
         else:
             utils.run_cmd(self.shell, f"uninstall {tool_name}")
-            assert tool.exists() is False 
+            assert tool.exists() is False
 
     def setup_go_test(self, tool_name, tool_dict):
         # install go in tmp location
@@ -81,7 +81,7 @@ class TestUnmockedToolsInstall:
         tool = "amass"
         url = "github.com/OWASP/Amass/v3/..."
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/amass"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/amass"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
@@ -121,7 +121,7 @@ class TestUnmockedToolsInstall:
         tool = "gobuster"
         dependency = "go"
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/gobuster"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/gobuster"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
@@ -275,7 +275,6 @@ class TestUnmockedToolsInstall:
         tools_copy.get(tool).get("install_commands")[0] = first_cmd
         tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {tool_path}"
 
-
         if test_input == "update":
             self.perform_add_remove(tools_copy, tool, True, True)
         else:
@@ -286,7 +285,7 @@ class TestUnmockedToolsInstall:
         tool = "subjack"
         url = "github.com/haccer/subjack"
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/subjack"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/subjack"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
@@ -300,7 +299,7 @@ class TestUnmockedToolsInstall:
         tool = "tko-subs"
         url = "github.com/anshumanbh/tko-subs"
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/tko-subs"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/tko-subs"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
@@ -314,7 +313,7 @@ class TestUnmockedToolsInstall:
         tool = "waybackurls"
         url = "github.com/tomnomnom/waybackurls"
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/waybackurls"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/waybackurls"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
@@ -328,7 +327,7 @@ class TestUnmockedToolsInstall:
         tool = "webanalyze"
         url = "github.com/rverton/webanalyze/..."
         tools_copy = tools.copy()
-        tool_path = f"{self.shell.tools_dir}/pipeline-go-workspace/bin/webanalyze"
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/webanalyze"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
