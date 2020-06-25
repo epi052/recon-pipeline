@@ -134,15 +134,7 @@ class TestUnmockedToolsInstall:
         self.perform_add_remove(tools_copy, tool, True, False)
         self.perform_add_remove(tools_copy, tool, False, True)
 
-    def test_install_luigi_service(self):
-        luigi_service = Path("/lib/systemd/system/luigid.service")
-
-        if luigi_service.exists():
-            subprocess.run(f"sudo rm {luigi_service}".split())
-
-        tools_copy = tools.copy()
-        pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
-
+    def pause_luigi(self):
         proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
 
         if proc.stdout.decode().strip() == "enabled":
@@ -152,6 +144,17 @@ class TestUnmockedToolsInstall:
 
         if proc.stdout.decode().strip() == "active":
             subprocess.run("sudo systemctl stop luigid.service".split())
+
+    def test_install_luigi_service(self):
+        luigi_service = Path("/lib/systemd/system/luigid.service")
+
+        self.pause_luigi()
+
+        if luigi_service.exists():
+            subprocess.run(f"sudo rm {luigi_service}".split())
+
+        tools_copy = tools.copy()
+        pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         if Path("/usr/local/bin/luigid").exists():
             subprocess.run("sudo rm /usr/local/bin/luigid".split())
@@ -181,6 +184,16 @@ class TestUnmockedToolsInstall:
         assert proc.stdout.decode().strip() == "active"
 
         assert Path("/usr/local/bin/luigid").exists()
+
+        utils.run_cmd(self.shell, "uninstall luigi-service")
+
+        proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+        assert proc.stdout.decode().strip() != "enabled"
+
+        proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+        assert proc.stdout.decode().strip() != "active"
+
+        assert luigi_service.exists() is False
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
     def test_install_recursive_gobuster(self, test_input):
