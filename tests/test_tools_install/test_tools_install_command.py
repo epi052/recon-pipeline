@@ -257,6 +257,8 @@ class TestUnmockedToolsInstall:
         tools_copy.get(tool).get("install_commands")[2] = f"bash -c 'if [ -f {copied_searchsploit_rc} ]; "
         tools_copy.get(tool).get("install_commands")[2] += f"then sed -i {sed_cmd} {copied_searchsploit_rc}; fi'"
 
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {dependency_path}"
+
         pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         if test_input == "install":
@@ -268,6 +270,9 @@ class TestUnmockedToolsInstall:
         assert subprocess.run(f"grep {self.shell.tools_dir} {copied_searchsploit_rc}".split()).returncode == 0
         assert Path(copied_searchsploit_rc).exists()
         assert Path(dependency_path).exists()
+
+        utils.run_cmd(self.shell, f"uninstall {tool}")
+        assert Path(dependency_path).exists() is False
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
     def test_install_seclists(self, test_input):
