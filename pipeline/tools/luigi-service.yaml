@@ -4,7 +4,7 @@ service-file: &svcfile !join_path [*proj, luigid.service]
 
 install_commands:
 - !join [sudo cp, *svcfile, /lib/systemd/system/luigid.service]
-- !join [sudo cp, *svcfile, $(which luigid), /usr/local/bin]
+- !join [sudo cp, $(which luigid), /usr/local/bin]
 - sudo systemctl daemon-reload
 - sudo systemctl start luigid.service
 - sudo systemctl enable luigid.service

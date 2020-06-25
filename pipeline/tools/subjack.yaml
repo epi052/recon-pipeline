@@ -3,7 +3,6 @@ dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
 path: &path !join_path [!get_default "{gopath}", bin/subjack]
 environ: {"GOPATH": !get_default "{gopath}"}
-home: &home !get_default "{home}"
 
 fingerprints: !join_path [!get_default "{gopath}", src/github.com/haccer/subjack/fingerprints.json]
 
