@@ -72,6 +72,7 @@ from .recon import (  # noqa: F401,E402
     db_delete_parser,
     db_detach_parser,
     db_list_parser,
+    tools_list_parser,
     tools_install_parser,
     tools_uninstall_parser,
     tools_reinstall_parser,
@@ -159,6 +160,7 @@ class ReconShell(cmd2.Cmd):
         tools_install_parser.set_defaults(func=self.tools_install)
         tools_reinstall_parser.set_defaults(func=self.tools_reinstall)
         tools_uninstall_parser.set_defaults(func=self.tools_uninstall)
+        tools_list_parser.set_defaults(func=self.tools_list)
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
@@ -505,6 +507,13 @@ class ReconShell(cmd2.Cmd):
         """ Reinstall a given tool """
         self.poutput(f"reinstalling {args.tool}")
 
+    def tools_list(self, args):
+        """ List status of pipeline tools """
+        for key, value in self._get_dict().items():
+            # installed = value.get('installed')
+            status = [style("Installed", fg="bright_green"), style(":Missing:", fg="bright_magenta")]
+            self.poutput(style(f"[{status[value.get('installed')]}] - {value.get('path') or key}"))
+
     @cmd2.with_argparser(tools_parser)
     def do_tools(self, args):
         """ Manage tool actions (install/uninstall/reinstall) """
@@ -847,7 +856,7 @@ class ReconShell(cmd2.Cmd):
     def do_view(self, args):
         """ View results of completed scans """
         if self.db_mgr is None:
-            return self.poutput(style("[!] you are not connected to a database", fg="magenta"))
+            return self.poutput(style("[!] you are not connected to a database", fg="bright_magenta"))
 
         func = getattr(args, "func", None)
 

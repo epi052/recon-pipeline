@@ -119,6 +119,8 @@ tools_uninstall_parser.add_argument("tool", help="which tool to uninstall", choi
 tools_reinstall_parser = tools_subparsers.add_parser("reinstall", help="Uninstall and then Install a given tool")
 tools_reinstall_parser.add_argument("tool", help="which tool to reinstall", choices=list(tools.keys()) + ["all"])
 
+tools_list_parser = tools_subparsers.add_parser("list", help="Show status of pipeline tools")
+
 # ReconShell's view command
 view_parser = cmd2.Cmd2ArgumentParser()
 view_subparsers = view_parser.add_subparsers(title="result types")

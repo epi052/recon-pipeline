@@ -15,6 +15,7 @@ from .parsers import (
     db_delete_parser,
     db_detach_parser,
     db_list_parser,
+    tools_list_parser,
     tools_install_parser,
     tools_uninstall_parser,
     tools_reinstall_parser,
