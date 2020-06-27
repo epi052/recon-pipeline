@@ -379,7 +379,7 @@ class TestReconShell:
         self.shell.do_tools("reinstall amass")
         output = capsys.readouterr().out
         assert "[*] Removing amass..." in output or "[!] amass is not installed." in output
-        assert "[*] Installing amass..." in output
+        assert "[*] Installing amass..." in output or "[!] amass is already installed." in output
 
     def test_tools_list(self, capsys, tmp_path):
         tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
