@@ -472,7 +472,7 @@ class ReconShell(cmd2.Cmd):
             ]
 
             for tool in tools.keys():
-                self.do_uninstall(tool)
+                self.do_tools(f"uninstall {tool}")
 
             return
 

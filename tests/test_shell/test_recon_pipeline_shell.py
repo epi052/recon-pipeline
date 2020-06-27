@@ -301,7 +301,15 @@ class TestReconShell:
 
     # after tools moved to DB, update this test
     @pytest.mark.parametrize(
-        "test_input, expected, return_code", [("all", "is already installed", 0), ("amass", "dependency", 1)]
+        "test_input, expected, return_code",
+        [
+            ("all", "[-] go queued", 0),
+            ("amass", "check output from the offending command above", 1),
+            ("amass", "has an unmet dependency", 0),
+            ("waybackurls", "[!] waybackurls has an unmet dependency", 0),
+            ("go", "[+] go installed!", 0),
+            ("masscan", "[!] masscan is already installed.", 0),
+        ],
     )
     def test_tools_install(self, test_input, expected, return_code, capsys, tmp_path):
         process_mock = MagicMock()
@@ -311,8 +319,11 @@ class TestReconShell:
         tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
         tooldir.mkdir(parents=True, exist_ok=True)
 
+        tools["go"]["installed"] = False
         tools["waybackurls"]["installed"] = True
+        tools["masscan"]["installed"] = True
         tools["amass"]["shell"] = False
+        tools["amass"]["installed"] = False
 
         pickle.dump(tools, (tooldir / ".tool-dict.pkl").open("wb"))
 
@@ -320,30 +331,49 @@ class TestReconShell:
             mocked_popen.return_value = process_mock
             self.shell.tools_dir = tooldir
             self.shell.do_tools(f"install {test_input}")
-            assert mocked_popen.called
+            if test_input != "masscan":
+                assert mocked_popen.called
+
+        assert expected in capsys.readouterr().out
+
+        if test_input != "all" and return_code == 0:
+            assert self.shell._get_dict().get(test_input).get("installed") is True
 
     # after tools moved to DB, update this test
     @pytest.mark.parametrize(
-        "test_input",
+        "test_input, expected, return_code",
         [
-            "tko-subs",
-            "recursive-gobuster",
-            "subjack",
-            "waybackurls",
-            "searchsploit",
-            "luigi-service",
-            "aquatone",
-            "gobuster",
-            "amass",
-            "masscan",
-            "go",
-            "webanalyze",
-            "seclists",
+            ("all", "waybackurls queued", 0),
+            ("amass", "check output from the offending command above", 1),
+            ("waybackurls", "[+] waybackurls uninstalled!", 0),
+            ("go", "[!] go is not installed", 0),
         ],
     )
-    def test_tools_uninstall(self, test_input, capsys, tmp_path):
-        self.shell.do_tools(f"uninstall {test_input}")
-        assert f"uninstalling {test_input}" in capsys.readouterr().out
+    def test_tools_uninstall(self, test_input, expected, return_code, capsys, tmp_path):
+        process_mock = MagicMock()
+        attrs = {"communicate.return_value": (b"output", b"error"), "returncode": return_code}
+        process_mock.configure_mock(**attrs)
+
+        tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
+        tooldir.mkdir(parents=True, exist_ok=True)
+
+        tools["go"]["installed"] = False
+        tools["waybackurls"]["installed"] = True
+        tools["amass"]["shell"] = False
+        tools["amass"]["installed"] = True
+
+        pickle.dump(tools, (tooldir / ".tool-dict.pkl").open("wb"))
+
+        with patch("subprocess.Popen", autospec=True) as mocked_popen:
+            mocked_popen.return_value = process_mock
+            self.shell.tools_dir = tooldir
+            self.shell.do_tools(f"uninstall {test_input}")
+            if test_input != "go":
+                assert mocked_popen.called
+
+        assert expected in capsys.readouterr().out
+        if test_input != "all" and return_code == 0:
+            assert self.shell._get_dict().get(test_input).get("installed") is False
 
     # after tools moved to DB, update this test
     @pytest.mark.parametrize(
