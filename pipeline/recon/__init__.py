@@ -6,9 +6,8 @@ from .masscan import MasscanScan, ParseMasscanOutput
 from .nmap import ThreadedNmapScan, SearchsploitScan
 from .config import top_udp_ports, top_tcp_ports, defaults, web_ports
 from .parsers import (
-    install_parser,
-    uninstall_parser,
     scan_parser,
+    view_parser,
     tools_parser,
     status_parser,
     database_parser,

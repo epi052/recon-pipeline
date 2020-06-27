@@ -12,7 +12,9 @@ import selectors
 import threading
 import subprocess
 import webbrowser
+from enum import IntEnum
 from pathlib import Path
+from typing import List, NewType
 
 DEFAULT_PROMPT = "recon-pipeline> "
 
@@ -62,8 +64,6 @@ from .models.searchsploit_model import SearchsploitResult  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     scan_parser,
-    install_parser,
-    uninstall_parser,
     view_parser,
     tools_parser,
     status_parser,
@@ -84,6 +84,14 @@ from .recon import (  # noqa: F401,E402
 )
 
 from .tools import tools  # noqa: F401,E402
+
+
+class ToolAction(IntEnum):
+    INSTALL = 0
+    UNINSTALL = 1
+
+
+ToolActions = NewType("ToolActions", ToolAction)
 
 # select loop, handles async stdout/stderr processing of subprocesses
 selector = selectors.DefaultSelector()
@@ -343,11 +351,45 @@ class ReconShell(cmd2.Cmd):
 
         return tools
 
-    @cmd2.with_argparser(install_parser)
+    def _finalize_tool_action(self, tool: str, tool_dict: dict, return_values: List[int], action: ToolActions):
+        """ Internal helper to keep DRY
+
+        Args:
+            tool: tool on which the action has been performed
+            tool_dict: tools dictionary to save
+            return_values: accumulated return values of subprocess calls
+            action: ToolAction.INSTALL or ToolAction.UNINSTALL
+        """
+        verb = ["install", "uninstall"][action.value]
+
+        if all(x == 0 for x in return_values):
+            # all return values in retvals are 0, i.e. all exec'd successfully; tool action has succeeded
+
+            self.poutput(style(f"[+] {tool} {verb}ed!", fg="bright_green"))
+
+            tool_dict[tool]["installed"] = True if action == ToolAction.INSTALL else False
+        else:
+            # unsuccessful tool action
+
+            tool_dict[tool]["installed"] = False if action == ToolAction.INSTALL else True
+
+            self.poutput(
+                style(
+                    f"[!!] one (or more) of {tool}'s commands failed and may have not {verb}ed properly; check output from the offending command above...",
+                    fg="bright_red",
+                    bold=True,
+                )
+            )
+
+        # store any tool installs/failures (back) to disk
+        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
+        pickle.dump(tool_dict, persistent_tool_dict.open("wb"))
+
     def tools_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
 
         tools = self._get_dict()
+
         if args.tool == "all":
             # show all tools have been queued for installation
             [
@@ -415,33 +457,12 @@ class ReconShell(cmd2.Cmd):
 
                 retvals.append(proc.returncode)
 
-        if all(x == 0 for x in retvals):
-            # all return values in retvals are 0, i.e. all exec'd successfully; tool has been installed
+        self._finalize_tool_action(args.tool, tools, retvals, ToolAction.INSTALL)
 
-            self.poutput(style(f"[+] {args.tool} installed!", fg="bright_green"))
-
-            tools[args.tool]["installed"] = True
-        else:
-            # unsuccessful tool install
-
-            tools[args.tool]["installed"] = False
-
-            self.poutput(
-                style(
-                    f"[!!] one (or more) of {args.tool}'s commands failed and may have not installed properly; check output from the offending command above...",
-                    fg="bright_red",
-                    bold=True,
-                )
-            )
-
-        # store any tool installs/failures (back) to disk
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-        pickle.dump(tools, persistent_tool_dict.open("wb"))
-
-    @cmd2.with_argparser(uninstall_parser)
-    def do_uninstall(self, args):
+    def tools_uninstall(self, args):
         """ Uninstall any/all of the libraries/tools used by recon-pipeline"""
         tools = self._get_dict()
+
         if args.tool == "all":
             # show all tools have been queued for installation
             [
@@ -461,6 +482,7 @@ class ReconShell(cmd2.Cmd):
             retvals = list()
 
             self.poutput(style(f"[*] Removing {args.tool}...", fg="bright_yellow"))
+
             if not tools.get(args.tool).get("uninstall_commands"):
                 self.poutput(style(f"[*] {args.tool} removal not needed", fg="bright_yellow"))
                 return
@@ -477,33 +499,7 @@ class ReconShell(cmd2.Cmd):
 
                 retvals.append(proc.returncode)
 
-        if all(x == 0 for x in retvals):
-            # all return values in retvals are 0, i.e. all exec'd successfully; tool has been uninstalled
-
-            self.poutput(style(f"[+] {args.tool} removed!", fg="bright_green"))
-
-            tools[args.tool]["installed"] = False
-        else:
-            # unsuccessful tool removal
-
-            tools[args.tool]["installed"] = True
-
-            self.poutput(
-                style(
-                    f"[!!] one (or more) of {args.tool}'s commands failed and may have not been removed properly; check output from the offending command above...",
-                    fg="bright_red",
-                    bold=True,
-                )
-            )
-
-        # store any tool installs/failures (back) to disk
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-        pickle.dump(tools, persistent_tool_dict.open("wb"))
-
-    # TODO: integrate the function above iwth what's below
-    def tools_uninstall(self, args):
-        """ Uninstall a given tool """
-        self.poutput(f"uninstalling {args.tool}")
+        self._finalize_tool_action(args.tool, tools, retvals, ToolAction.UNINSTALL)
 
     def tools_reinstall(self, args):
         """ Reinstall a given tool """
@@ -513,6 +509,7 @@ class ReconShell(cmd2.Cmd):
     def do_tools(self, args):
         """ Manage tool actions (install/uninstall/reinstall) """
         func = getattr(args, "func", None)
+
         if func is not None:
             func(args)
         else:
