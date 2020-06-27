@@ -1,3 +1,4 @@
+import os
 import pickle
 import shutil
 import tempfile
@@ -19,6 +20,7 @@ class TestUnmockedToolsInstall:
         self.tmp_path = Path(tempfile.mkdtemp())
         self.shell.tools_dir = self.tmp_path / ".local" / "recon-pipeline" / "tools"
         self.shell.tools_dir.mkdir(parents=True, exist_ok=True)
+        os.chdir(self.shell.tools_dir)
 
     def teardown_method(self):
         def onerror(func, path, exc_info):
@@ -31,16 +33,17 @@ class TestUnmockedToolsInstall:
             pickle.dump(tools_dict, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         tool = Path(tools_dict.get(tool_name).get("path"))
+
         if install and exists is False:
             assert tool.exists() is False
         elif not install and exists is True:
             assert tool.exists() is True
 
         if install:
-            utils.run_cmd(self.shell, f"install {tool_name}")
+            utils.run_cmd(self.shell, f"tools install {tool_name}")
             assert tool.exists() is True
         else:
-            utils.run_cmd(self.shell, f"uninstall {tool_name}")
+            utils.run_cmd(self.shell, f"tools uninstall {tool_name}")
             assert tool.exists() is False
 
     def setup_go_test(self, tool_name, tool_dict):
@@ -70,6 +73,7 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
+        tools_copy.get(tool)["installed"] = False
         tools_copy.get(tool).get("install_commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
         tools_copy.get(tool).get("install_commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
@@ -173,7 +177,7 @@ class TestUnmockedToolsInstall:
 
         assert not Path("/usr/local/bin/luigid").exists()
 
-        utils.run_cmd(self.shell, "install luigi-service")
+        utils.run_cmd(self.shell, "tools install luigi-service")
 
         assert Path("/lib/systemd/system/luigid.service").exists()
 
@@ -185,7 +189,7 @@ class TestUnmockedToolsInstall:
 
         assert Path("/usr/local/bin/luigid").exists()
 
-        utils.run_cmd(self.shell, "uninstall luigi-service")
+        utils.run_cmd(self.shell, "tools uninstall luigi-service")
 
         proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
         assert proc.stdout.decode().strip() != "enabled"
@@ -266,12 +270,12 @@ class TestUnmockedToolsInstall:
             assert not Path(copied_searchsploit_rc).exists()
             assert not Path(dependency_path).exists()
 
-        utils.run_cmd(self.shell, f"install {tool}")
+        utils.run_cmd(self.shell, f"tools install {tool}")
         assert subprocess.run(f"grep {self.shell.tools_dir} {copied_searchsploit_rc}".split()).returncode == 0
         assert Path(copied_searchsploit_rc).exists()
         assert Path(dependency_path).exists()
 
-        utils.run_cmd(self.shell, f"uninstall {tool}")
+        utils.run_cmd(self.shell, f"tools uninstall {tool}")
         assert Path(dependency_path).exists() is False
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
