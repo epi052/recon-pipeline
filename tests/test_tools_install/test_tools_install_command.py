@@ -63,12 +63,14 @@ class TestUnmockedToolsInstall:
         tool_dict[dependency]["uninstall_commands"].append(f"rm -rvf {tmp_path}")
 
         # handle env for local go install
-        tmp_go_path = f"{self.shell.tools_dir}/mygo"
-        Path(tmp_go_path).mkdir(parents=True, exist_ok=True)
-        tool_dict.get(tool_name)["environ"]["GOPATH"] = tmp_go_path
+        if tool_name != "go":
 
-        tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
-        tool_dict.get(tool_name)["path"] = tool_path
+            tmp_go_path = f"{self.shell.tools_dir}/mygo"
+            Path(tmp_go_path).mkdir(parents=True, exist_ok=True)
+            tool_dict.get(tool_name)["environ"]["GOPATH"] = tmp_go_path
+
+            tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
+            tool_dict.get(tool_name)["path"] = tool_path
 
         tool_dict.get(tool_name)["installed"] = False
         tool_dict.get(dependency)["installed"] = False
@@ -138,6 +140,8 @@ class TestUnmockedToolsInstall:
         tools_copy = tools.copy()
 
         tool_path = f"{self.shell.tools_dir}/go/bin/go"
+
+        tools_copy.update(self.setup_go_test(tool, tools_copy))
 
         tools_copy.get(tool)["path"] = tool_path
         tools_copy.get(tool).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
