@@ -2,12 +2,14 @@ from pathlib import Path
 
 import pytest
 
-from pipeline.recon import tool_paths, defaults, web_ports, top_tcp_ports, top_udp_ports
+from pipeline.recon import defaults, web_ports, top_tcp_ports, top_udp_ports
+from pipeline.tools import tools
 
 
 def test_tool_paths_absolute():
-    for path in tool_paths.values():
-        assert Path(path).is_absolute()
+    for tool in tools.values():
+        if tool.get("path"):
+            assert Path(tool["path"]).is_absolute()
 
 
 @pytest.mark.parametrize("test_input", ["database-dir", "tools-dir", "gobuster-wordlist"])

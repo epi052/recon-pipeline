@@ -1,11 +1,13 @@
 installed: false
 dependencies: [go]
-go: &gotool !get_tool_path "{go}"
-amass: &amass !get_tool_path "{amass}"
+go: &gotool !get_tool_path "{go[path]}"
+path: &path !join_path [!get_default "{gopath}", "bin/amass"]
+environ: {"GO111MODULE": "on", "GOPATH": !get_default "{gopath}"}
 
-commands:
-- !join [*gotool, get -u github.com/OWASP/Amass/v3/...]
-- !join [cp ~/go/bin/amass, *amass]
+install_commands:
+- !join [*gotool, get github.com/OWASP/Amass/v3/...]
 
-shell: true
-environ: {"GO111MODULE": "on"}
+uninstall_commands:
+- !join [rm, *path]
+
+

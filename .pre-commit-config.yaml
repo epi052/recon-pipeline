@@ -3,8 +3,7 @@ repos:
     rev: stable
     hooks:
     - id: black
-      language_version: python3.7
-      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']
+      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models', 'tests/test_tools_install']
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:

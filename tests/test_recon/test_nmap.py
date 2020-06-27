@@ -7,7 +7,8 @@ import luigi
 import pytest
 from luigi.contrib.sqla import SQLAlchemyTarget
 
-from pipeline.recon import ThreadedNmapScan, SearchsploitScan, ParseMasscanOutput, config
+from pipeline.recon import ThreadedNmapScan, SearchsploitScan, ParseMasscanOutput
+from pipeline.tools import tools
 
 nmap_results = Path(__file__).parent.parent / "data" / "recon-results" / "nmap-results"
 
@@ -101,7 +102,7 @@ class TestSearchsploitScan:
 
         assert len(self.scan.db_mgr.get_all_searchsploit_results()) == 0
 
-        if not Path(config.tool_paths.get("searchsploit")).exists():
+        if not Path(tools.get("searchsploit").get("path")).exists():
             pytest.skip("exploit-db's searchsploit tool not installed")
 
         self.scan.run()

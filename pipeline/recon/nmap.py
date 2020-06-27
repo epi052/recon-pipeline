@@ -12,9 +12,10 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from .masscan import ParseMasscanOutput
-from .config import defaults, tool_paths
+from .config import defaults
 from .helpers import get_ip_address_version, is_ip_address
 
+from ..tools import tools
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
@@ -281,7 +282,7 @@ class SearchsploitScan(luigi.Task):
         """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
         for entry in Path(self.input().get("localtarget").path).glob("nmap*.xml"):
             proc = subprocess.run(
-                [tool_paths.get("searchsploit"), "-j", "-v", "--nmap", str(entry)], stdout=subprocess.PIPE
+                [tools.get("searchsploit").get("path"), "-j", "-v", "--nmap", str(entry)], stdout=subprocess.PIPE
             )
             if proc.stdout:
                 # change  wall-searchsploit-results/nmap.10.10.10.157-tcp to 10.10.10.157

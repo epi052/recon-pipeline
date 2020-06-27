@@ -62,6 +62,8 @@ up the pipeline.
 The installer maintains a (naive) list of installed tools at ``~/.local/recon-pipeline/tools/.tool-dict.pkl``.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
 like Jon Snow, **it knows nothing**.
 
+Tools can also be uninstalled using the ``uninstall all`` command. It is also possible to individually uninstall them in the same manner as shown above.
+
 .. raw:: html
 
     <script id="asciicast-294414" src="https://asciinema.org/a/294414.js" async></script>

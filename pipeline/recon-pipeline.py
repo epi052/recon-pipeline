@@ -62,6 +62,8 @@ from .models.searchsploit_model import SearchsploitResult  # noqa: F401,E402
 from .recon import (  # noqa: F401,E402
     get_scans,
     scan_parser,
+    install_parser,
+    uninstall_parser,
     view_parser,
     tools_parser,
     status_parser,
@@ -127,6 +129,8 @@ class ReconShell(cmd2.Cmd):
 
         self.tools_dir.mkdir(parents=True, exist_ok=True)
         Path(defaults.get("database-dir")).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("gopath")).mkdir(parents=True, exist_ok=True)
+        Path(defaults.get("goroot")).mkdir(parents=True, exist_ok=True)
 
         # register hooks to handle selector loop start and cleanup
         self.register_preloop_hook(self._preloop_hook)
@@ -245,10 +249,10 @@ class ReconShell(cmd2.Cmd):
             answer = self.select([("Resume", option_one), ("Remove", option_two), ("Save", option_three)])
 
             if answer == "Resume":
-                self.poutput(style(f"[+] Resuming scan from last known good state.", fg="bright_green"))
+                self.poutput(style("[+] Resuming scan from last known good state.", fg="bright_green"))
             elif answer == "Remove":
                 shutil.rmtree(Path(directory))
-                self.poutput(style(f"[+] Old directory removed, starting fresh scan.", fg="bright_green"))
+                self.poutput(style("[+] Old directory removed, starting fresh scan.", fg="bright_green"))
             elif answer == "Save":
                 current = time.strftime("%Y%m%d-%H%M%S")
                 directory.rename(f"{directory}-{current}")
@@ -268,7 +272,7 @@ class ReconShell(cmd2.Cmd):
         """
         if self.db_mgr is None:
             return self.poutput(
-                style(f"[!] You are not connected to a database; run database attach before scanning", fg="bright_red")
+                style("[!] You are not connected to a database; run database attach before scanning", fg="bright_red")
             )
 
         self.check_scan_directory(args.results_dir)
@@ -326,14 +330,24 @@ class ReconShell(cmd2.Cmd):
 
         self.add_dynamic_parser_arguments()
 
-    def tools_install(self, args):
-        """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
+    def _get_dict(self):
+        """Retrieves tool dict if available"""
 
         # imported tools variable is in global scope, and we reassign over it later
         global tools
 
         persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
 
+        if persistent_tool_dict.exists():
+            tools = pickle.loads(persistent_tool_dict.read_bytes())
+
+        return tools
+
+    @cmd2.with_argparser(install_parser)
+    def tools_install(self, args):
+        """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
+
+        tools = self._get_dict()
         if args.tool == "all":
             # show all tools have been queued for installation
             [
@@ -347,12 +361,8 @@ class ReconShell(cmd2.Cmd):
 
             return
 
-        if persistent_tool_dict.exists():
-            tools = pickle.loads(persistent_tool_dict.read_bytes())
-
         if tools.get(args.tool).get("dependencies"):
             # get all of the requested tools dependencies
-
             for dependency in tools.get(args.tool).get("dependencies"):
                 if tools.get(dependency).get("installed"):
                     # already installed, skip it
@@ -379,7 +389,7 @@ class ReconShell(cmd2.Cmd):
             if addl_env_vars is not None:
                 addl_env_vars.update(dict(os.environ))
 
-            for command in tools.get(args.tool).get("commands"):
+            for command in tools.get(args.tool).get("install_commands"):
                 # run all commands required to install the tool
 
                 # print each command being run
@@ -425,8 +435,72 @@ class ReconShell(cmd2.Cmd):
             )
 
         # store any tool installs/failures (back) to disk
+        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
         pickle.dump(tools, persistent_tool_dict.open("wb"))
 
+    @cmd2.with_argparser(uninstall_parser)
+    def do_uninstall(self, args):
+        """ Uninstall any/all of the libraries/tools used by recon-pipeline"""
+        tools = self._get_dict()
+        if args.tool == "all":
+            # show all tools have been queued for installation
+            [
+                self.poutput(style(f"[-] {x} queued", fg="bright_white"))
+                for x in tools.keys()
+                if tools.get(x).get("installed")
+            ]
+
+            for tool in tools.keys():
+                self.do_uninstall(tool)
+
+            return
+
+        if not tools.get(args.tool).get("installed"):
+            return self.poutput(style(f"[!] {args.tool} is not installed.", fg="yellow"))
+        else:
+            retvals = list()
+
+            self.poutput(style(f"[*] Removing {args.tool}...", fg="bright_yellow"))
+            if not tools.get(args.tool).get("uninstall_commands"):
+                self.poutput(style(f"[*] {args.tool} removal not needed", fg="bright_yellow"))
+                return
+
+            for command in tools.get(args.tool).get("uninstall_commands"):
+                self.poutput(style(f"[=] {command}", fg="cyan"))
+
+                proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+                out, err = proc.communicate()
+
+                if err:
+                    self.poutput(style(f"[!] {err.decode().strip()}", fg="bright_red"))
+
+                retvals.append(proc.returncode)
+
+        if all(x == 0 for x in retvals):
+            # all return values in retvals are 0, i.e. all exec'd successfully; tool has been uninstalled
+
+            self.poutput(style(f"[+] {args.tool} removed!", fg="bright_green"))
+
+            tools[args.tool]["installed"] = False
+        else:
+            # unsuccessful tool removal
+
+            tools[args.tool]["installed"] = True
+
+            self.poutput(
+                style(
+                    f"[!!] one (or more) of {args.tool}'s commands failed and may have not been removed properly; check output from the offending command above...",
+                    fg="bright_red",
+                    bold=True,
+                )
+            )
+
+        # store any tool installs/failures (back) to disk
+        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
+        pickle.dump(tools, persistent_tool_dict.open("wb"))
+
+    # TODO: integrate the function above iwth what's below
     def tools_uninstall(self, args):
         """ Uninstall a given tool """
         self.poutput(f"uninstalling {args.tool}")
@@ -462,7 +536,7 @@ class ReconShell(cmd2.Cmd):
         try:
             next(self.get_databases())
         except StopIteration:
-            return self.poutput(style(f"[-] There are no databases.", fg="bright_white"))
+            return self.poutput(style("[-] There are no databases.", fg="bright_white"))
 
         for i, location in enumerate(self.get_databases(), start=1):
             self.poutput(style(f"   {i}. {location}"))
@@ -539,7 +613,7 @@ class ReconShell(cmd2.Cmd):
     def database_detach(self, args):
         """ Detach from the currently attached database """
         if self.db_mgr is None:
-            return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
+            return self.poutput(style("[!] you are not connected to a database", fg="magenta"))
 
         self.db_mgr.close()
         self.poutput(style(f"[*] detached from sqlite database @ {self.db_mgr.location}", fg="bright_yellow"))
@@ -776,7 +850,7 @@ class ReconShell(cmd2.Cmd):
     def do_view(self, args):
         """ View results of completed scans """
         if self.db_mgr is None:
-            return self.poutput(style(f"[!] you are not connected to a database", fg="magenta"))
+            return self.poutput(style("[!] you are not connected to a database", fg="magenta"))
 
         func = getattr(args, "func", None)
 
@@ -798,7 +872,7 @@ def main(
         if old_tools_dir.exists() and old_tools_dir.is_dir():
             # want to try and ensure a smooth transition for folks who have used the pipeline before from
             # v0.8.4 and below to v0.9.0+
-            print(style(f"[*] Found remnants of an older version of recon-pipeline.", fg="bright_yellow"))
+            print(style("[*] Found remnants of an older version of recon-pipeline.", fg="bright_yellow"))
             print(
                 style(
                     f"[*] It's {style('strongly', fg='red')} advised that you allow us to remove them.",
@@ -827,7 +901,7 @@ def main(
                     old_searchsploit_rc.unlink()
                     print(style(f"[+] {old_searchsploit_rc} removed", fg="bright_green"))
 
-                print(style(f"[=] Please run the install all command to complete setup", fg="bright_blue"))
+                print(style("[=] Please run the install all command to complete setup", fg="bright_blue"))
 
         rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
         sys.exit(rs.cmdloop())

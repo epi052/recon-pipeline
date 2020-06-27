@@ -1,11 +1,12 @@
 installed: false
 dependencies: [go, seclists]
+go: &gotool !get_tool_path "{go[path]}"
+path: &path !join_path [!get_default "{gopath}", bin/gobuster]
+environ: {"GOPATH": !get_default "{gopath}"}
 home: &home !get_default "{home}"
-go: &gotool !get_tool_path "{go}"
-go_home: &gohome !join_path [*home, "/go/src/github.com/OJ/gobuster &&"]
 
-commands:
+install_commands:
 - !join [*gotool, get github.com/OJ/gobuster]
-- !join [(cd, *gohome, *gotool, build &&, *gotool, install)]
 
-shell: true
+uninstall_commands:
+- !join [rm, *path]

@@ -8,8 +8,9 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
+from ...tools import tools
 from .targets import GatherWebTargets
-from ..config import tool_paths, defaults
+from ..config import defaults
 
 
 @inherits(GatherWebTargets)
@@ -120,9 +121,9 @@ class TKOSubsScan(luigi.Task):
             return
 
         command = [
-            tool_paths.get("tko-subs"),
+            tools.get("tko-subs").get("path"),
             f"-domain={','.join(domains)}",
-            f"-data={tool_paths.get('tko-subs-dir')}/providers-data.csv",
+            f"-data={tools.get('tko-subs').get('providers')}",
             f"-output={self.output_file}",
         ]
 
@@ -261,7 +262,7 @@ class SubjackScan(luigi.Task):
                 f.write(f"{hostname}\n")
 
         command = [
-            tool_paths.get("subjack"),
+            tools.get("subjack").get("path"),
             "-w",
             str(subjack_input_file),
             "-t",
@@ -274,7 +275,7 @@ class SubjackScan(luigi.Task):
             "-v",
             "-ssl",
             "-c",
-            tool_paths.get("subjack-fingerprints"),
+            tools.get("subjack").get("fingerprints"),
         ]
 
         subprocess.run(command)

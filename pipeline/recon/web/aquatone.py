@@ -9,7 +9,8 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
-from ..config import tool_paths, defaults
+from ..config import defaults
+from ...tools import tools
 
 import pipeline.models.db_manager
 from ...models.port_model import Port
@@ -250,7 +251,7 @@ class AquatoneScan(luigi.Task):
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         command = [
-            tool_paths.get("aquatone"),
+            tools.get("aquatone").get("path"),
             "-scan-timeout",
             self.scan_timeout,
             "-threads",

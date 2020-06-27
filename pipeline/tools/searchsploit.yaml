@@ -1,19 +1,20 @@
 installed: false
-dependencies:
+dependencies: [exploitdb]
 home: &home !get_default "{home}"
-tools-dir: &tools !get_default "{tools-dir}"
-exploitdb-file: &exploitdb !get_tool_path "{exploitdb}"
-searchsploit-file: &searchsploit !get_tool_path "{searchsploit}"
+tools: &tools !get_default "{tools-dir}"
+exploitdb-file: &exploitdb !get_tool_path "{exploitdb[path]}"
+path: &path !join_path [*tools, exploitdb/searchsploit]
 searchsploit-rc: &ss_rc !join_path [*exploitdb, ".searchsploit_rc"]
 homesploit: &homesploit !join_path [*home, ".searchsploit_rc"]
 sed-command: &sedcom !join_empty ["'s#/opt#", *tools, "#g'"]
 
-commands:
-- !join ["bash -c 'if [ -d /usr/share/exploitdb ]; then ln -fs /usr/share/exploitdb",
-        *exploitdb, "&& sudo ln -fs $(which searchsploit)", *searchsploit,
+install_commands:
+- !join ["bash -c 'if [ -d /usr/share/exploitdb ]; then sudo ln -fs /usr/share/exploitdb",
+        *exploitdb, "&& sudo ln -fs $(which searchsploit)", *path,
         "; elif [ -d", *exploitdb, "]; then cd", *exploitdb,
         "&& git fetch --all && git pull; else git clone https://github.com/offensive-security/exploitdb.git", *exploitdb, ; fi']
-- !join ["bash -c 'if [ -f", *ss_rc, "]; then cp -n", *ss_rc, *home, ; fi']
-- !join ["bash -c 'if [ -f", *homesploit, "]; then sed -i", *sedcom, *homesploit, ; fi']
+- !join ["bash -c 'if [ -f", *ss_rc, "]; then cp -n", *ss_rc, *home, "; fi'"]
+- !join ["bash -c 'if [ -f", *homesploit, "]; then sed -i", *sedcom, *homesploit, "; fi'"]
 
-shell: true
+uninstall_commands:
+- !join [sudo, rm, -r, *exploitdb]

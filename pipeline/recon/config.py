@@ -13,28 +13,13 @@ defaults = {
     "home": Path.home(),
 }
 
+defaults["project-dir"] = str(Path(__file__).parents[2])
 defaults["tools-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/tools"
 defaults["database-dir"] = f"{defaults.get('home')}/.local/recon-pipeline/databases"
-defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
 
-tool_paths = {
-    "aquatone": f"{defaults.get('tools-dir')}/aquatone",
-    "tko-subs": f"{Path.home()}/go/bin/tko-subs",
-    "tko-subs-dir": f"{Path.home()}/go/src/github.com/anshumanbh/tko-subs",
-    "subjack": f"{Path.home()}/go/bin/subjack",
-    "subjack-fingerprints": f"{Path.home()}/go/src/github.com/haccer/subjack/fingerprints.json",
-    "gobuster": f"{Path.home()}/go/bin/gobuster",
-    "recursive-gobuster": f"{defaults.get('tools-dir')}/recursive-gobuster/recursive-gobuster.pyz",
-    "webanalyze": f"{Path.home()}/go/bin/webanalyze",
-    "masscan": f"{defaults.get('tools-dir')}/masscan",
-    "amass": f"{defaults.get('tools-dir')}/amass",
-    "go": "/usr/local/go/bin/go",
-    "searchsploit": f"{defaults.get('tools-dir')}/exploitdb/searchsploit",
-    "luigid": str(Path(__file__).parents[2] / "luigid.service"),
-    "seclists": f"{defaults.get('tools-dir')}/seclists",
-    "exploitdb": f"{defaults.get('tools-dir')}/exploitdb",
-    "waybackurls": f"{Path.home()}/go/bin/waybackurls",
-}
+defaults["goroot"] = f"{defaults.get('tools-dir')}/pipeline-go"
+defaults["gopath"] = f"{defaults.get('tools-dir')}/pipeline-go-workspace"
+defaults["gobuster-wordlist"] = f"{defaults.get('tools-dir')}/seclists/Discovery/Web-Content/common.txt"
 
 web_ports = {
     "80",

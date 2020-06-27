@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from pipeline.recon.config import tool_paths
+from pipeline.tools import tools
 from pipeline.recon.web import WebanalyzeScan, GatherWebTargets
 
 webanalyze_results = Path(__file__).parent.parent / "data" / "recon-results" / "webanalyze-results"
@@ -65,7 +65,7 @@ class TestWebanalyzeScan:
             self.scan.results_subfolder.mkdir()
             os.chdir(self.scan.results_subfolder)
             assert len([x for x in self.scan.results_subfolder.iterdir()]) == 0
-            cmd = [tool_paths.get("webanalyze"), "-host", "https://google.com", "-output", "csv"]
+            cmd = [tools.get("webanalyze").get("path"), "-host", "https://google.com", "-output", "csv"]
             self.scan._wrapped_subprocess(cmd)
             assert len([x for x in self.scan.results_subfolder.iterdir()]) == 1
             assert next(self.scan.results_subfolder.iterdir()).name == "webanalyze-https_google.com.csv"

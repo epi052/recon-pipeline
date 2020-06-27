@@ -1,11 +1,12 @@
 installed: false
 dependencies: [go]
-go: &gotool !get_tool_path "{go}"
-home: &home !get_default "{home}"
-tko_home: &tkohome !join_path [*home, "go/src/github.com/anshumanbh/tko-subs &&"]
+go: &gotool !get_tool_path "{go[path]}"
+path: &path !join_path [!get_default "{gopath}", bin/tko-subs]
+environ: {"GOPATH": !get_default "{gopath}"}
+providers: !join_path [!get_default "{gopath}", src/github.com/anshumanbh/tko-subs/providers-data.csv]
 
-commands:
+install_commands:
 - !join [*gotool, get, github.com/anshumanbh/tko-subs]
-- !join [(cd, *tkohome, *gotool, "build &&", *gotool, "install)"]
 
-shell: true
+uninstall_commands:
+- !join [rm, *path]
