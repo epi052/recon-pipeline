@@ -8,4 +8,4 @@ install_commands:
 - !join ["bash -c 'if [ ! $(grep $(dirname", *gotool, ")", *bashrc, ") ]; then echo PATH=${PATH}:$(dirname", *gotool, ") >>", *bashrc, "; fi'"]
 
 uninstall_commands:
-- !join [sudo, rm, -r, !get_default "{goroot}"]
+- !join [sudo, rm, -r, !join_path [!get_default "{goroot}", go]]

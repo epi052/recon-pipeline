@@ -375,28 +375,11 @@ class TestReconShell:
         if test_input != "all" and return_code == 0:
             assert self.shell._get_dict().get(test_input).get("installed") is False
 
-    # after tools moved to DB, update this test
-    @pytest.mark.parametrize(
-        "test_input",
-        [
-            "tko-subs",
-            "recursive-gobuster",
-            "subjack",
-            "waybackurls",
-            "searchsploit",
-            "luigi-service",
-            "aquatone",
-            "gobuster",
-            "amass",
-            "masscan",
-            "go",
-            "webanalyze",
-            "seclists",
-        ],
-    )
-    def test_tools_reinstall(self, test_input, capsys, tmp_path):
-        self.shell.do_tools(f"reinstall {test_input}")
-        assert f"reinstalling {test_input}" in capsys.readouterr().out
+    def test_tools_reinstall(self, capsys):
+        self.shell.do_tools(f"reinstall amass")
+        output = capsys.readouterr().out
+        assert "[*] Removing amass..." in output or "[!] amass is not installed." in output
+        assert "[*] Installing amass..." in output
 
     def test_tools_list(self, capsys, tmp_path):
         tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"

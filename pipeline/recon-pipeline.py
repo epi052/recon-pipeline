@@ -385,6 +385,7 @@ class ReconShell(cmd2.Cmd):
 
         # store any tool installs/failures (back) to disk
         persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
+
         pickle.dump(tool_dict, persistent_tool_dict.open("wb"))
 
     def tools_install(self, args):
@@ -418,6 +419,16 @@ class ReconShell(cmd2.Cmd):
 
                 # install the dependency before continuing with installation
                 self.do_tools(f"install {dependency}")
+
+        # this prevents a stale copy of tools when dependency installs alter the state
+        # ex.
+        #   amass (which depends on go) grabs copy of tools (go installed false)
+        #   amass calls install with go as the arg
+        #   go grabs a copy of tools
+        #   go is installed and state is saved (go installed true)
+        #   recursion goes back to amass call (go installed false due to stale tools data)
+        #   amass installs and re-saves go's state as installed=false
+        tools = self._get_dict()
 
         if tools.get(args.tool).get("installed"):
             return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
@@ -505,7 +516,8 @@ class ReconShell(cmd2.Cmd):
 
     def tools_reinstall(self, args):
         """ Reinstall a given tool """
-        self.poutput(f"reinstalling {args.tool}")
+        self.do_tools(f"uninstall {args.tool}")
+        self.do_tools(f"install {args.tool}")
 
     def tools_list(self, args):
         """ List status of pipeline tools """
