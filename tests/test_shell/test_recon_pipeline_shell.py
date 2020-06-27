@@ -376,7 +376,7 @@ class TestReconShell:
             assert self.shell._get_dict().get(test_input).get("installed") is False
 
     def test_tools_reinstall(self, capsys):
-        self.shell.do_tools(f"reinstall amass")
+        self.shell.do_tools("reinstall amass")
         output = capsys.readouterr().out
         assert "[*] Removing amass..." in output or "[!] amass is not installed." in output
         assert "[*] Installing amass..." in output
