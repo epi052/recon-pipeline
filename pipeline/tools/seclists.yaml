@@ -1,8 +1,11 @@
 installed: false
 tools: &tools !get_default "{tools-dir}"
-path: &secfile !join_path [*tools, seclists]
+path: &path !join_path [*tools, seclists]
 
-commands:
-- !join ["bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists",
-        *secfile, "; elif [[ -d", *secfile, "]] ; then cd", *secfile, "&& git fetch --all && git pull;",
-        "else git clone https://github.com/danielmiessler/SecLists.git", *secfile, "; fi'"]
+install_commands:
+  - !join ["bash -c 'if [[ -d /usr/share/seclists ]]; then ln -s /usr/share/seclists",
+          *path, "; elif [[ -d", *path, "]] ; then cd", *path, "&& git fetch --all && git pull;",
+          "else git clone https://github.com/danielmiessler/SecLists.git", *path, "; fi'"]
+
+uninstall_commands:
+  - !join [sudo, rm, -r, *path]

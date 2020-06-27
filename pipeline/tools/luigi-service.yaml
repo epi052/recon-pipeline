@@ -2,11 +2,17 @@ installed: false
 project-dir: &proj !get_default "{project-dir}"
 service-file: &svcfile !join_path [*proj, luigid.service]
 
-commands:
+install_commands:
 - !join [sudo cp, *svcfile, /lib/systemd/system/luigid.service]
-- !join [sudo cp, *svcfile, $(which luigid), /usr/local/bin]
+- !join [sudo cp, $(which luigid), /usr/local/bin]
 - sudo systemctl daemon-reload
 - sudo systemctl start luigid.service
 - sudo systemctl enable luigid.service
+
+uninstall_commands:
+- sudo systemctl disable luigid.service
+- sudo systemctl stop luigid.service
+- sudo rm /lib/systemd/system/luigid.service
+- sudo rm /usr/local/bin/luigid /usr/local/bin/luigid.service
 
 shell: true

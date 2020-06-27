@@ -26,17 +26,22 @@ class TestUnmockedToolsInstall:
 
         shutil.rmtree(self.tmp_path, onerror=onerror)
 
-    def perform_install(self, tools_dict, tool_name, exists=False):
-        pickle.dump(tools_dict, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
+    def perform_add_remove(self, tools_dict, tool_name, install, exists):
+        if install:
+            pickle.dump(tools_dict, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         tool = Path(tools_dict.get(tool_name).get("path"))
-
-        if exists is False:
+        if install and exists is False:
             assert tool.exists() is False
+        elif not install and exists is True:
+            assert tool.exists() is True
 
-        utils.run_cmd(self.shell, f"install {tool_name}")
-
-        assert tool.exists() is True
+        if install:
+            utils.run_cmd(self.shell, f"install {tool_name}")
+            assert tool.exists() is True
+        else:
+            utils.run_cmd(self.shell, f"uninstall {tool_name}")
+            assert tool.exists() is False
 
     def setup_go_test(self, tool_name, tool_dict):
         # install go in tmp location
@@ -44,7 +49,7 @@ class TestUnmockedToolsInstall:
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
 
         tool_dict.get(dependency)["path"] = dependency_path
-        tool_dict.get(dependency).get("commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
 
         # handle env for local go install
         tmp_go_path = f"{self.shell.tools_dir}/mygo"
@@ -53,6 +58,8 @@ class TestUnmockedToolsInstall:
 
         tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
         tool_dict.get(tool_name)["path"] = tool_path
+
+        tool_dict.get(tool_name)["installed"] = False
 
         return tool_dict
 
@@ -63,21 +70,26 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
-        tools_copy.get(tool).get("commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
+        tools_copy.get(tool).get("install_commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
+        tools_copy.get(tool).get("install_commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_amass(self):
         tool = "amass"
         url = "github.com/OWASP/Amass/v3/..."
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/amass"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_aquatone(self):
         tool = "aquatone"
@@ -86,9 +98,11 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_go(self):
         tool = "go"
@@ -97,31 +111,30 @@ class TestUnmockedToolsInstall:
         tool_path = f"{self.shell.tools_dir}/go/bin/go"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tools_copy.get(tool).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {self.shell.tools_dir}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_gobuster(self):
         tool = "gobuster"
         dependency = "go"
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/gobuster"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
         tools_copy.get(tool)["dependencies"] = [dependency]
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get(dependency).get('path')} get github.com/OJ/gobuster"
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] = f"{tools_copy.get(dependency).get('path')} get github.com/OJ/gobuster"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
-    def test_install_luigi_service(self):
-        luigi_service = Path("/lib/systemd/system/luigid.service")
-
-        if luigi_service.exists():
-            subprocess.run(f"sudo rm {luigi_service}".split())
-
-        tools_copy = tools.copy()
-        pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
-
+    def pause_luigi(self):
         proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
 
         if proc.stdout.decode().strip() == "enabled":
@@ -131,6 +144,17 @@ class TestUnmockedToolsInstall:
 
         if proc.stdout.decode().strip() == "active":
             subprocess.run("sudo systemctl stop luigid.service".split())
+
+    def test_install_luigi_service(self):
+        luigi_service = Path("/lib/systemd/system/luigid.service")
+
+        self.pause_luigi()
+
+        if luigi_service.exists():
+            subprocess.run(f"sudo rm {luigi_service}".split())
+
+        tools_copy = tools.copy()
+        pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         if Path("/usr/local/bin/luigid").exists():
             subprocess.run("sudo rm /usr/local/bin/luigid".split())
@@ -161,6 +185,16 @@ class TestUnmockedToolsInstall:
 
         assert Path("/usr/local/bin/luigid").exists()
 
+        utils.run_cmd(self.shell, "uninstall luigi-service")
+
+        proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
+        assert proc.stdout.decode().strip() != "enabled"
+
+        proc = subprocess.run("systemctl is-active luigid.service".split(), stdout=subprocess.PIPE)
+        assert proc.stdout.decode().strip() != "active"
+
+        assert luigi_service.exists() is False
+
     @pytest.mark.parametrize("test_input", ["install", "update"])
     def test_install_recursive_gobuster(self, test_input):
         tool = "recursive-gobuster"
@@ -175,15 +209,19 @@ class TestUnmockedToolsInstall:
         tools_copy.get(tool)["path"] = tool_path
         tools_copy.get(tool)["dependencies"] = None
 
-        tools_copy.get(tool).get("commands")[0] = f"bash -c 'if [ -d {parent} ]; "
-        tools_copy.get(tool).get("commands")[0] += f"then cd {parent} && git fetch --all && git pull; "
-        tools_copy.get(tool).get("commands")[0] += "else git clone https://github.com/epi052/recursive-gobuster.git "
-        tools_copy.get(tool).get("commands")[0] += f"{parent} ; fi'"
+        tools_copy.get(tool).get("install_commands")[0] = f"bash -c 'if [ -d {parent} ]; "
+        tools_copy.get(tool).get("install_commands")[0] += f"then cd {parent} && git fetch --all && git pull; "
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] += "else git clone https://github.com/epi052/recursive-gobuster.git "
+        tools_copy.get(tool).get("install_commands")[0] += f"{parent} ; fi'"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {parent}"
 
         if test_input == "update":
-            self.perform_install(tools_copy, tool, exists=True)
+            self.perform_add_remove(tools_copy, tool, True, True)
         else:
-            self.perform_install(tools_copy, tool)
+            self.perform_add_remove(tools_copy, tool, True, False)
+            self.perform_add_remove(tools_copy, tool, False, True)
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
     def test_install_searchsploit(self, test_input):
@@ -211,13 +249,15 @@ class TestUnmockedToolsInstall:
         first_cmd += f"; elif [ -d {dependency_path} ]; then cd {dependency_path} && git fetch --all && git pull; else "
         first_cmd += f"git clone https://github.com/offensive-security/exploitdb.git {dependency_path}; fi'"
 
-        tools_copy.get(tool).get("commands")[0] = first_cmd
+        tools_copy.get(tool).get("install_commands")[0] = first_cmd
 
-        tools_copy.get(tool).get("commands")[1] = f"bash -c 'if [ -f {searchsploit_rc_path} ]; "
-        tools_copy.get(tool).get("commands")[1] += f"then cp -n {searchsploit_rc_path} {home_path} ; fi'"
+        tools_copy.get(tool).get("install_commands")[1] = f"bash -c 'if [ -f {searchsploit_rc_path} ]; "
+        tools_copy.get(tool).get("install_commands")[1] += f"then cp -n {searchsploit_rc_path} {home_path} ; fi'"
 
-        tools_copy.get(tool).get("commands")[2] = f"bash -c 'if [ -f {copied_searchsploit_rc} ]; "
-        tools_copy.get(tool).get("commands")[2] += f"then sed -i {sed_cmd} {copied_searchsploit_rc}; fi'"
+        tools_copy.get(tool).get("install_commands")[2] = f"bash -c 'if [ -f {copied_searchsploit_rc} ]; "
+        tools_copy.get(tool).get("install_commands")[2] += f"then sed -i {sed_cmd} {copied_searchsploit_rc}; fi'"
+
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {dependency_path}"
 
         pickle.dump(tools_copy, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
@@ -227,10 +267,12 @@ class TestUnmockedToolsInstall:
             assert not Path(dependency_path).exists()
 
         utils.run_cmd(self.shell, f"install {tool}")
-
         assert subprocess.run(f"grep {self.shell.tools_dir} {copied_searchsploit_rc}".split()).returncode == 0
         assert Path(copied_searchsploit_rc).exists()
         assert Path(dependency_path).exists()
+
+        utils.run_cmd(self.shell, f"uninstall {tool}")
+        assert Path(dependency_path).exists() is False
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
     def test_install_seclists(self, test_input):
@@ -248,53 +290,67 @@ class TestUnmockedToolsInstall:
         first_cmd += f"[[ -d {tool_path} ]] ; then cd {tool_path} && git fetch --all && git pull; "
         first_cmd += f"else git clone https://github.com/danielmiessler/SecLists.git {tool_path}; fi'"
 
-        tools_copy.get(tool).get("commands")[0] = first_cmd
+        tools_copy.get(tool).get("install_commands")[0] = first_cmd
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {tool_path}"
 
         if test_input == "update":
-            self.perform_install(tools_copy, tool, exists=True)
+            self.perform_add_remove(tools_copy, tool, True, True)
         else:
-            self.perform_install(tools_copy, tool)
+            self.perform_add_remove(tools_copy, tool, True, False)
+            self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_subjack(self):
         tool = "subjack"
         url = "github.com/haccer/subjack"
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/subjack"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_tkosubs(self):
         tool = "tko-subs"
         url = "github.com/anshumanbh/tko-subs"
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/tko-subs"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_waybackurls(self):
         tool = "waybackurls"
         url = "github.com/tomnomnom/waybackurls"
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/waybackurls"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
 
     def test_install_webanalyze(self):
         tool = "webanalyze"
         url = "github.com/rverton/webanalyze/..."
         tools_copy = tools.copy()
+        tool_path = f"{self.shell.tools_dir}/mygo/bin/webanalyze"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
-        self.perform_install(tools_copy, tool)
+        self.perform_add_remove(tools_copy, tool, True, False)
+        self.perform_add_remove(tools_copy, tool, False, True)
