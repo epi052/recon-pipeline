@@ -50,9 +50,17 @@ class TestUnmockedToolsInstall:
         # install go in tmp location
         dependency = "go"
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
+        tmp_path = tempfile.mkdtemp()
 
         tool_dict.get(dependency)["path"] = dependency_path
-        tool_dict.get(dependency).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[
+            0
+        ] = f"wget -q https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz -O {tmp_path}/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[
+            1
+        ] = f"tar -C {self.shell.tools_dir} -xvf {tmp_path}/go.tar.gz"
+        tool_dict.get(dependency).get("uninstall_commands")[0] = f"rm -rvf {self.shell.tools_dir}/go"
+        tool_dict[dependency]["uninstall_commands"].append(f"rm -rvf {tmp_path}")
 
         # handle env for local go install
         tmp_go_path = f"{self.shell.tools_dir}/mygo"
@@ -63,6 +71,7 @@ class TestUnmockedToolsInstall:
         tool_dict.get(tool_name)["path"] = tool_path
 
         tool_dict.get(tool_name)["installed"] = False
+        tool_dict.get(dependency)["installed"] = False
 
         return tool_dict
 
@@ -70,11 +79,18 @@ class TestUnmockedToolsInstall:
         tool = "masscan"
         tools_copy = tools.copy()
 
+        tmp_path = tempfile.mkdtemp()
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
         tools_copy.get(tool)["installed"] = False
-        tools_copy.get(tool).get("install_commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
+
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] = f"git clone https://github.com/robertdavidgraham/masscan {tmp_path}/masscan"
+        tools_copy.get(tool).get("install_commands")[1] = f"make -s -j -C {tmp_path}/masscan"
+        tools_copy.get(tool).get("install_commands")[2] = f"mv {tmp_path}/masscan/bin/masscan {tool_path}"
+        tools_copy.get(tool).get("install_commands")[3] = f"rm -rf {tmp_path}/masscan"
         tools_copy.get(tool).get("install_commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
@@ -100,9 +116,18 @@ class TestUnmockedToolsInstall:
         tools_copy = tools.copy()
 
         tool_path = f"{self.shell.tools_dir}/{tool}"
+        tmp_path = tempfile.mkdtemp()
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("install_commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[0] = f"mkdir /{tmp_path}/aquatone"
+        tools_copy.get(tool).get("install_commands")[
+            1
+        ] = f"wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /{tmp_path}/aquatone/aquatone.zip"
+        tools_copy.get(tool).get("install_commands")[
+            3
+        ] = f"unzip /{tmp_path}/aquatone/aquatone.zip -d /{tmp_path}/aquatone"
+        tools_copy.get(tool).get("install_commands")[4] = f"mv /{tmp_path}/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[5] = f"rm -rf /{tmp_path}/aquatone"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)

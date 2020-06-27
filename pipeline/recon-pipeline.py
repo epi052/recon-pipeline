@@ -510,8 +510,7 @@ class ReconShell(cmd2.Cmd):
     def tools_list(self, args):
         """ List status of pipeline tools """
         for key, value in self._get_dict().items():
-            # installed = value.get('installed')
-            status = [style("Installed", fg="bright_green"), style(":Missing:", fg="bright_magenta")]
+            status = [style(":Missing:", fg="bright_magenta"), style("Installed", fg="bright_green")]
             self.poutput(style(f"[{status[value.get('installed')]}] - {value.get('path') or key}"))
 
     @cmd2.with_argparser(tools_parser)

@@ -398,6 +398,27 @@ class TestReconShell:
         self.shell.do_tools(f"reinstall {test_input}")
         assert f"reinstalling {test_input}" in capsys.readouterr().out
 
+    def test_tools_list(self, capsys, tmp_path):
+        tooldir = tmp_path / ".local" / "recon-pipeline" / "tools"
+        tooldir.mkdir(parents=True, exist_ok=True)
+
+        tools["go"]["installed"] = True
+        tools["waybackurls"]["installed"] = True
+        tools["masscan"]["installed"] = False
+
+        regexes = [r"Installed.*go/bin/go", r"Installed.*bin/waybackurls", r":Missing:.*tools/masscan"]
+
+        pickle.dump(tools, (tooldir / ".tool-dict.pkl").open("wb"))
+
+        self.shell.tools_dir = tooldir
+
+        self.shell.do_tools("list")
+
+        output = capsys.readouterr().out
+
+        for regex in regexes:
+            assert re.search(regex, output)
+
     @pytest.mark.parametrize(
         "test_input, expected, db_mgr",
         [
