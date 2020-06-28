@@ -4,8 +4,8 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from pipeline.tools import tools
 from pipeline.recon.web import WebanalyzeScan, GatherWebTargets
+from pipeline.tools import tools
 
 webanalyze_results = Path(__file__).parent.parent / "data" / "recon-results" / "webanalyze-results"
 

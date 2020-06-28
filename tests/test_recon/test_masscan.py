@@ -40,6 +40,9 @@ class TestParseMasscanOutput:
         )
         self.scan.input = lambda: luigi.LocalTarget(masscan_results)
 
+    def teardown_method(self):
+        shutil.rmtree(self.tmp_path)
+
     def test_scan_creates_results_dir(self):
         assert self.scan.results_subfolder == self.tmp_path / "masscan-results"
 
