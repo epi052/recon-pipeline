@@ -2,6 +2,7 @@ import luigi
 from luigi.util import inherits
 
 from .nmap import SearchsploitScan
+from .helpers import get_tool_state
 from .web import AquatoneScan, GobusterScan, SubjackScan, TKOSubsScan, WaybackurlsScan, WebanalyzeScan
 
 
@@ -26,6 +27,26 @@ class FullScan(luigi.WrapperTask):
         target_file: specifies the file on disk containing a list of ips or domains
         results_dir: specifes the directory on disk to which all Task results are written
     """
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        needs = [
+            "amass",
+            "aquatone",
+            "masscan",
+            "tko-subs",
+            "recursive-gobuster",
+            "searchsploit",
+            "subjack",
+            "gobuster",
+            "webanalyze",
+            "waybackurls",
+        ]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
@@ -89,6 +110,15 @@ class HTBScan(luigi.WrapperTask):
         target_file: specifies the file on disk containing a list of ips or domains
         results_dir: specifes the directory on disk to which all Task results are written
     """
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        needs = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """

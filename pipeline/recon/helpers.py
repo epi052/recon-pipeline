@@ -1,10 +1,22 @@
 import sys
+import pickle
+import typing
 import inspect
 import pkgutil
 import importlib
 import ipaddress
 from pathlib import Path
 from collections import defaultdict
+
+from ..recon.config import defaults
+
+
+def get_tool_state() -> typing.Union[dict, None]:
+    """ Load current tool state from disk. """
+    tools = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
+
+    if tools.exists():
+        return pickle.loads(tools.read_bytes())
 
 
 def get_scans():
@@ -42,10 +54,19 @@ def get_scans():
         if inspect.ismodule(obj) and not name.startswith("_"):
             # we're only interested in modules that don't begin with _ i.e. magic methods __len__ etc...
 
-            for subname, subobj in inspect.getmembers(obj):
-                if inspect.isclass(subobj) and subname.lower().endswith("scan"):
-                    # now we only care about classes that end in [Ss]can
-                    scans[subname].append(f"{__package__}.{name}")
+            for sub_name, sub_obj in inspect.getmembers(obj):
+                # now we only care about classes that end in [Ss]can
+                if inspect.isclass(sub_obj) and sub_name.lower().endswith("scan"):
+                    # final check, this ensures that the tools necessary to AT LEAST run this scan are present
+                    # does not consider upstream dependencies
+                    try:
+                        if not sub_obj.meets_requirements():
+                            continue
+                    except AttributeError:
+                        # some scan's haven't implemented meets_requirements yet, silently allow them through
+                        pass
+
+                    scans[sub_name].append(f"{__package__}.{name}")
 
     return scans
 

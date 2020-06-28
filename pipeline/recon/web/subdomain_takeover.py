@@ -9,8 +9,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from ...tools import tools
-from .targets import GatherWebTargets
 from ..config import defaults
+from ..helpers import get_tool_state
+from .targets import GatherWebTargets
 
 
 @inherits(GatherWebTargets)
@@ -51,6 +52,15 @@ class TKOSubsScan(luigi.Task):
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        needs = ["tko-subs"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ TKOSubsScan depends on GatherWebTargets to run.
@@ -173,6 +183,15 @@ class SubjackScan(luigi.Task):
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "subjack-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "subjack.txt"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        needs = ["subjack"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ SubjackScan depends on GatherWebTargets to run.

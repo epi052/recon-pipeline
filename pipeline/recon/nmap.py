@@ -16,6 +16,7 @@ from .config import defaults
 from .helpers import get_ip_address_version, is_ip_address
 
 from ..tools import tools
+from .helpers import get_tool_state
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
@@ -240,6 +241,15 @@ class SearchsploitScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        needs = ["searchsploit"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ Searchsploit depends on ThreadedNmap to run.

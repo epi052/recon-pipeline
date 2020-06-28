@@ -1,48 +1,34 @@
 import pytest
 
 from pipeline.recon.helpers import get_ip_address_version, get_scans, is_ip_address
+from pipeline.recon import AmassScan, MasscanScan, FullScan, HTBScan, SearchsploitScan, ThreadedNmapScan
+from pipeline.recon.web import GobusterScan, SubjackScan, TKOSubsScan, AquatoneScan, WaybackurlsScan, WebanalyzeScan
 
 
 def test_get_scans():
-    scans = get_scans()
 
     scan_names = [
-        "AmassScan",
-        "GobusterScan",
-        "MasscanScan",
-        "SubjackScan",
-        "TKOSubsScan",
-        "AquatoneScan",
-        "FullScan",
-        "HTBScan",
-        "SearchsploitScan",
-        "ThreadedNmapScan",
-        "WebanalyzeScan",
-        "WaybackurlsScan",
+        AmassScan,
+        GobusterScan,
+        MasscanScan,
+        SubjackScan,
+        TKOSubsScan,
+        AquatoneScan,
+        FullScan,
+        HTBScan,
+        SearchsploitScan,
+        ThreadedNmapScan,
+        WebanalyzeScan,
+        WaybackurlsScan,
     ]
 
-    assert len(scan_names) == len(scans.keys())
+    scans = get_scans()
 
-    for name in scan_names:
-        assert name in scans.keys()
-
-    modules = [
-        "pipeline.recon.amass",
-        "pipeline.recon.masscan",
-        "pipeline.recon.nmap",
-        "pipeline.recon.nmap",
-        "pipeline.recon.web",
-        "pipeline.recon.web",
-        "pipeline.recon.web",
-        "pipeline.recon.web",
-        "pipeline.recon.web",
-        "pipeline.recon.web",
-        "pipeline.recon.wrappers",
-        "pipeline.recon.wrappers",
-    ]
-
-    for module in scans.values():
-        assert module[0] in modules
+    for scan in scan_names:
+        if hasattr(scan, "meets_requirements") and scan.meets_requirements():
+            assert scan.__name__ in scans.keys()
+        else:
+            assert scan not in scans.keys()
 
 
 @pytest.mark.parametrize(
