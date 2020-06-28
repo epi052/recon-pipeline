@@ -58,6 +58,8 @@ pipenv install
 pipenv shell
 ```
 
+[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
+
 After installing the python dependencies, the `recon-pipeline` shell provides its own [tools](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#tools) command (seen below).  A simple `tools install all` will handle all additional installation steps.
 
 > Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
@@ -67,7 +69,7 @@ up the pipeline.
 
 The installer maintains a (naive) list of installed tools at `~/.local/recon-pipeline/tools/.tool-dict.pkl`.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's like Jon Snow, **it knows nothing**.
 
-[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
+[![asciicast](https://asciinema.org/a/343745.svg)](https://asciinema.org/a/343745)
 
 ## Defining a Scan's Scope
 
