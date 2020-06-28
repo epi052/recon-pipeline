@@ -12,7 +12,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from ...tools import tools
 from ..config import defaults
-from ..helpers import get_tool_state
+from ..helpers import meets_requirements
 from .targets import GatherWebTargets
 from ...models.endpoint_model import Endpoint
 from ..helpers import get_ip_address_version, is_ip_address
@@ -62,17 +62,10 @@ class GobusterScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        needs = ["recursive-gobuster", "gobuster"]
+        meets_requirements(needs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "gobuster-results"
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["recursive-gobuster", "gobuster"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ GobusterScan depends on GatherWebTargets to run.

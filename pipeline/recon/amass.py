@@ -9,7 +9,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from ..tools import tools
 from .targets import TargetList
-from .helpers import get_tool_state
+from .helpers import meets_requirements
 from ..models.target_model import Target
 
 
@@ -46,17 +46,10 @@ class AmassScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        needs = ["amass"]
+        meets_requirements(needs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["amass"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ AmassScan depends on TargetList to run.

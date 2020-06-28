@@ -298,10 +298,12 @@ class ReconShell(cmd2.Cmd):
         # get_scans() returns mapping of {classname: [modulename, ...]} in the recon module
         # each classname corresponds to a potential recon-pipeline command, i.e. AmassScan, GobusterScan ...
         scans = get_scans()
-
         # command is a list that will end up looking something like what's below
         # luigi --module pipeline.recon.web.webanalyze WebanalyzeScan --target abc.com --top-ports 100 --interface eth0
-        command = ["luigi", "--module", scans.get(args.scantype)[0]]
+        try:
+            command = ["luigi", "--module", scans.get(args.scantype)[0]]
+        except TypeError:
+            raise TypeError(style(f"[!] {args.scantype} not installed", fg="bright_red"))
 
         tgt_file_path = None
         if args.target:

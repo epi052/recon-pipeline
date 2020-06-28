@@ -6,6 +6,8 @@ import pkgutil
 import importlib
 import ipaddress
 from pathlib import Path
+from cmd2.ansi import style
+
 from collections import defaultdict
 
 from ..recon.config import defaults
@@ -17,6 +19,15 @@ def get_tool_state() -> typing.Union[dict, None]:
 
     if tools.exists():
         return pickle.loads(tools.read_bytes())
+
+
+def meets_requirements(requirements):
+    """ Determine if tools required to perform task are installed. """
+    tools = get_tool_state()
+
+    for tool in requirements:
+        if not tools.get(tool).get("installed"):
+            raise (Exception(style(f"[!] {tool} is not installed", fg="bright_red")))
 
 
 def get_scans():

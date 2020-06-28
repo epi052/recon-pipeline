@@ -8,7 +8,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ...tools import tools
-from ..helpers import get_tool_state
+from ..helpers import meets_requirements
 from ...models.endpoint_model import Endpoint
 
 import pipeline.models.db_manager
@@ -46,17 +46,10 @@ class WaybackurlsScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        needs = ["waybackurls"]
+        meets_requirements(needs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "waybackurls-results"
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["waybackurls"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ WaybackurlsScan depends on GatherWebTargets to run.

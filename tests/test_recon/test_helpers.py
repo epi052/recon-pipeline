@@ -1,6 +1,6 @@
 import pytest
 
-from pipeline.recon.helpers import get_ip_address_version, get_scans, is_ip_address
+from pipeline.recon.helpers import get_ip_address_version, get_scans, is_ip_address, meets_requirements
 from pipeline.recon import AmassScan, MasscanScan, FullScan, HTBScan, SearchsploitScan, ThreadedNmapScan
 from pipeline.recon.web import GobusterScan, SubjackScan, TKOSubsScan, AquatoneScan, WaybackurlsScan, WebanalyzeScan
 
@@ -29,6 +29,29 @@ def test_get_scans():
             assert scan.__name__ in scans.keys()
         else:
             assert scan not in scans.keys()
+
+
+@pytest.mark.parametrize(
+    "requirements",
+    [
+        ["AmassScan"],
+        ["MassScan"],
+        [
+            "amass",
+            "aquatone",
+            "masscan",
+            "tko-subs",
+            "recursive-gobuster",
+            "searchsploit",
+            "subjack",
+            "gobuster",
+            "webanalyze",
+            "waybackurls",
+        ],
+    ],
+)
+def test_meets_requirements(requirements):
+    pass
 
 
 @pytest.mark.parametrize(
