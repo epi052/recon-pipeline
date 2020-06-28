@@ -44,7 +44,9 @@ class FullScan(luigi.WrapperTask):
             "waybackurls",
         ]
         tools = get_tool_state()
-        return all([tools.get(x).get("installed") is True for x in needs])
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
@@ -114,7 +116,9 @@ class HTBScan(luigi.WrapperTask):
         """ Reports whether or not this scan's needed tool(s) are installed or not """
         needs = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
         tools = get_tool_state()
-        return all([tools.get(x).get("installed") is True for x in needs])
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """

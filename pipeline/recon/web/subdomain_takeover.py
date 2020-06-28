@@ -56,7 +56,11 @@ class TKOSubsScan(luigi.Task):
     @staticmethod
     def meets_requirements():
         """ Reports whether or not this scan's needed tool(s) are installed or not """
-        return get_tool_state().get("tko-subs").get("installed") is True
+        needs = ["tko-subs"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ TKOSubsScan depends on GatherWebTargets to run.
@@ -183,7 +187,11 @@ class SubjackScan(luigi.Task):
     @staticmethod
     def meets_requirements():
         """ Reports whether or not this scan's needed tool(s) are installed or not """
-        return get_tool_state().get("subjack").get("installed") is True
+        needs = ["subjack"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ SubjackScan depends on GatherWebTargets to run.

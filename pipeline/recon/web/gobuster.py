@@ -70,7 +70,9 @@ class GobusterScan(luigi.Task):
         """ Reports whether or not this scan's needed tool(s) are installed or not """
         needs = ["recursive-gobuster", "gobuster"]
         tools = get_tool_state()
-        return all([tools.get(x).get("installed") is True for x in needs])
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ GobusterScan depends on GatherWebTargets to run.

@@ -52,7 +52,11 @@ class AmassScan(luigi.Task):
     @staticmethod
     def meets_requirements():
         """ Reports whether or not this scan's needed tool(s) are installed or not """
-        return get_tool_state().get("amass").get("installed") is True
+        needs = ["amass"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ AmassScan depends on TargetList to run.

@@ -52,7 +52,11 @@ class WaybackurlsScan(luigi.Task):
     @staticmethod
     def meets_requirements():
         """ Reports whether or not this scan's needed tool(s) are installed or not """
-        return get_tool_state().get("waybackurls").get("installed") is True
+        needs = ["waybackurls"]
+        tools = get_tool_state()
+
+        if tools:
+            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ WaybackurlsScan depends on GatherWebTargets to run.
