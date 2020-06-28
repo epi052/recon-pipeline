@@ -11,10 +11,8 @@ provides the following two benefits:
 - Make sure two instances of the same task are not running simultaneously
 - Provide :ref:`visualization <visualization-ref-label>` of everything that’s going on
 
-While in the ``recon-pipeline`` shell, running ``install luigi-service`` will copy the ``luigid.service``
+While in the ``recon-pipeline`` shell, running ``tools install luigi-service`` will copy the ``luigid.service``
 file provided in the repo to its appropriate systemd location and start/enable the service. The result is that the
 central scheduler is up and running easily.
 
 The other option is to add ``--local-scheduler`` to your :ref:`scan_command` command from within the ``recon-pipeline`` shell.
-
-

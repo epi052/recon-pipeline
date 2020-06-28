@@ -6,9 +6,10 @@ from pipeline.tools import tools
 
 
 @pytest.mark.parametrize("test_input", list(tools.keys()) + ["all"])
-def test_install_parser_good(test_input):
-    parsed = install_parser.parse_args([test_input])
-    assert parsed.tool == test_input
+def test_tools_parsers_good(test_input):
+    for parser in [tools_install_parser, tools_uninstall_parser, tools_reinstall_parser]:
+        parsed = parser.parse_args([test_input])
+        assert parsed.tool == test_input
 
 
 @pytest.mark.parametrize(
@@ -21,9 +22,10 @@ def test_install_parser_good(test_input):
         (["all", "--invalid"], SystemExit),
     ],
 )
-def test_install_parser_raises(test_input, expected):
-    with pytest.raises(expected):
-        install_parser.parse_args([test_input])
+def test_tools_parsers_raises(test_input, expected):
+    for parser in [tools_install_parser, tools_uninstall_parser, tools_reinstall_parser]:
+        with pytest.raises(expected):
+            parser.parse_args([test_input])
 
 
 @pytest.mark.parametrize(

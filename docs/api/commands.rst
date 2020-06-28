@@ -9,23 +9,23 @@ Commands
 
 ``recon-pipeline`` provides a handful of commands:
 
-- ``install``
-- ``scan``
-- ``status``
-- ``database``
-- ``view``
+- :ref:`tools_command`
+- :ref:`scan_command`
+- :ref:`status_command`
+- :ref:`database_command`
+- :ref:`view_command`
 
 All other available commands are inherited from `cmd2 <https://github.com/python-cmd2/cmd2>`_.
 
-.. _install_command:
+.. _tools_command:
 
-install
-#######
+tools
+#####
 
 .. argparse::
     :module: pipeline.recon
-    :func: install_parser
-    :prog: install
+    :func: tools_parser
+    :prog: tools
 
 
 .. _database_command:

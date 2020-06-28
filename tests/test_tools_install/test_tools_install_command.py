@@ -1,3 +1,4 @@
+import os
 import pickle
 import shutil
 import tempfile
@@ -19,6 +20,7 @@ class TestUnmockedToolsInstall:
         self.tmp_path = Path(tempfile.mkdtemp())
         self.shell.tools_dir = self.tmp_path / ".local" / "recon-pipeline" / "tools"
         self.shell.tools_dir.mkdir(parents=True, exist_ok=True)
+        os.chdir(self.shell.tools_dir)
 
     def teardown_method(self):
         def onerror(func, path, exc_info):
@@ -31,35 +33,50 @@ class TestUnmockedToolsInstall:
             pickle.dump(tools_dict, Path(self.shell.tools_dir / ".tool-dict.pkl").open("wb"))
 
         tool = Path(tools_dict.get(tool_name).get("path"))
+
         if install and exists is False:
             assert tool.exists() is False
         elif not install and exists is True:
             assert tool.exists() is True
 
         if install:
-            utils.run_cmd(self.shell, f"install {tool_name}")
+            utils.run_cmd(self.shell, f"tools install {tool_name}")
             assert tool.exists() is True
         else:
-            utils.run_cmd(self.shell, f"uninstall {tool_name}")
+            utils.run_cmd(self.shell, f"tools uninstall {tool_name}")
             assert tool.exists() is False
 
     def setup_go_test(self, tool_name, tool_dict):
         # install go in tmp location
         dependency = "go"
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
+        tmp_path = tempfile.mkdtemp()
 
         tool_dict.get(dependency)["path"] = dependency_path
-        tool_dict.get(dependency).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[
+            0
+        ] = f"wget -q https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz -O {tmp_path}/go.tar.gz"
+        tool_dict.get(dependency).get("install_commands")[
+            1
+        ] = f"tar -C {self.shell.tools_dir} -xvf {tmp_path}/go.tar.gz"
+        tool_dict.get(dependency).get("uninstall_commands")[0] = f"rm -rvf {self.shell.tools_dir}/go"
+        tool_dict[dependency]["uninstall_commands"].append(f"rm -rvf {tmp_path}")
 
         # handle env for local go install
-        tmp_go_path = f"{self.shell.tools_dir}/mygo"
-        Path(tmp_go_path).mkdir(parents=True, exist_ok=True)
-        tool_dict.get(tool_name)["environ"]["GOPATH"] = tmp_go_path
+        if tool_name != "go":
 
-        tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
-        tool_dict.get(tool_name)["path"] = tool_path
+            tmp_go_path = f"{self.shell.tools_dir}/mygo"
+            Path(tmp_go_path).mkdir(parents=True, exist_ok=True)
+            tool_dict.get(tool_name)["environ"]["GOPATH"] = tmp_go_path
+
+            tool_path = f"{tool_dict.get(tool_name).get('environ').get('GOPATH')}/bin/{tool_name}"
+            tool_dict.get(tool_name)["path"] = tool_path
 
         tool_dict.get(tool_name)["installed"] = False
+        tool_dict.get(dependency)["installed"] = False
+
+        print(tool_dict.get(tool_name))
+        print(tool_dict.get(dependency))
 
         return tool_dict
 
@@ -67,10 +84,18 @@ class TestUnmockedToolsInstall:
         tool = "masscan"
         tools_copy = tools.copy()
 
+        tmp_path = tempfile.mkdtemp()
         tool_path = f"{self.shell.tools_dir}/{tool}"
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("install_commands")[2] = f"mv /tmp/masscan/bin/masscan {tool_path}"
+        tools_copy.get(tool)["installed"] = False
+
+        tools_copy.get(tool).get("install_commands")[
+            0
+        ] = f"git clone https://github.com/robertdavidgraham/masscan {tmp_path}/masscan"
+        tools_copy.get(tool).get("install_commands")[1] = f"make -s -j -C {tmp_path}/masscan"
+        tools_copy.get(tool).get("install_commands")[2] = f"mv {tmp_path}/masscan/bin/masscan {tool_path}"
+        tools_copy.get(tool).get("install_commands")[3] = f"rm -rf {tmp_path}/masscan"
         tools_copy.get(tool).get("install_commands")[4] = f"sudo setcap CAP_NET_RAW+ep {tool_path}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
@@ -96,9 +121,18 @@ class TestUnmockedToolsInstall:
         tools_copy = tools.copy()
 
         tool_path = f"{self.shell.tools_dir}/{tool}"
+        tmp_path = tempfile.mkdtemp()
 
         tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("install_commands")[4] = f"mv /tmp/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[0] = f"mkdir /{tmp_path}/aquatone"
+        tools_copy.get(tool).get("install_commands")[
+            1
+        ] = f"wget -q https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip -O /{tmp_path}/aquatone/aquatone.zip"
+        tools_copy.get(tool).get("install_commands")[
+            3
+        ] = f"unzip /{tmp_path}/aquatone/aquatone.zip -d /{tmp_path}/aquatone"
+        tools_copy.get(tool).get("install_commands")[4] = f"mv /{tmp_path}/aquatone/aquatone {tool_path}"
+        tools_copy.get(tool).get("install_commands")[5] = f"rm -rf /{tmp_path}/aquatone"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
@@ -108,11 +142,7 @@ class TestUnmockedToolsInstall:
         tool = "go"
         tools_copy = tools.copy()
 
-        tool_path = f"{self.shell.tools_dir}/go/bin/go"
-
-        tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
-        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {self.shell.tools_dir}"
+        tools_copy.update(self.setup_go_test(tool, tools_copy))
 
         self.perform_add_remove(tools_copy, tool, True, False)
         self.perform_add_remove(tools_copy, tool, False, True)
@@ -173,7 +203,7 @@ class TestUnmockedToolsInstall:
 
         assert not Path("/usr/local/bin/luigid").exists()
 
-        utils.run_cmd(self.shell, "install luigi-service")
+        utils.run_cmd(self.shell, "tools install luigi-service")
 
         assert Path("/lib/systemd/system/luigid.service").exists()
 
@@ -185,7 +215,7 @@ class TestUnmockedToolsInstall:
 
         assert Path("/usr/local/bin/luigid").exists()
 
-        utils.run_cmd(self.shell, "uninstall luigi-service")
+        utils.run_cmd(self.shell, "tools uninstall luigi-service")
 
         proc = subprocess.run("systemctl is-enabled luigid.service".split(), stdout=subprocess.PIPE)
         assert proc.stdout.decode().strip() != "enabled"
@@ -266,12 +296,12 @@ class TestUnmockedToolsInstall:
             assert not Path(copied_searchsploit_rc).exists()
             assert not Path(dependency_path).exists()
 
-        utils.run_cmd(self.shell, f"install {tool}")
+        utils.run_cmd(self.shell, f"tools install {tool}")
         assert subprocess.run(f"grep {self.shell.tools_dir} {copied_searchsploit_rc}".split()).returncode == 0
         assert Path(copied_searchsploit_rc).exists()
         assert Path(dependency_path).exists()
 
-        utils.run_cmd(self.shell, f"uninstall {tool}")
+        utils.run_cmd(self.shell, f"tools uninstall {tool}")
         assert Path(dependency_path).exists() is False
 
     @pytest.mark.parametrize("test_input", ["install", "update"])
