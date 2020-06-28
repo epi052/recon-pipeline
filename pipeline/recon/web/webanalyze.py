@@ -12,8 +12,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from ...tools import tools
-from .targets import GatherWebTargets
 from ..config import defaults
+from ..helpers import get_tool_state
+from .targets import GatherWebTargets
 from ...models.technology_model import Technology
 from ..helpers import get_ip_address_version, is_ip_address
 
@@ -54,13 +55,15 @@ class WebanalyzeScan(luigi.Task):
 
     threads = luigi.Parameter(default=defaults.get("threads"))
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["webanalyze"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("webanalyze").get("installed") is True
 
     def requires(self):
         """ WebanalyzeScan depends on GatherWebTargets to run.

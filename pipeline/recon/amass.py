@@ -7,8 +7,9 @@ from luigi.util import inherits
 from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
-from .targets import TargetList
 from ..tools import tools
+from .targets import TargetList
+from .helpers import get_tool_state
 from ..models.target_model import Target
 
 
@@ -43,13 +44,15 @@ class AmassScan(luigi.Task):
 
     exempt_list = luigi.Parameter(default="")
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["amass"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("amass").get("installed") is True
 
     def requires(self):
         """ AmassScan depends on TargetList to run.

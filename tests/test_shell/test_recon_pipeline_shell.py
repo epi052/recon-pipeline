@@ -428,11 +428,16 @@ class TestReconShell:
             "webbrowser.open", autospec=True
         ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector, patch(
             "cmd2.Cmd.select"
-        ) as mocked_select:
+        ) as mocked_select, patch(
+            "pipeline.recon-pipeline.get_scans"
+        ) as mocked_scans:
+
             mocked_select.return_value = "Resume"
             mocked_popen.return_value = process_mock
 
             test_input += f" --results-dir {tmp_path / 'mostuff'}"
+
+            mocked_scans.return_value = {"FullScan": ["pipeline.recon.wrappers"]}
 
             if db_mgr is None:
                 self.shell.do_scan(test_input)

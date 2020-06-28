@@ -13,6 +13,7 @@ from ..config import defaults
 from ...tools import tools
 
 import pipeline.models.db_manager
+from ..helpers import get_tool_state
 from ...models.port_model import Port
 from ...models.header_model import Header
 from ...models.endpoint_model import Endpoint
@@ -58,13 +59,15 @@ class AquatoneScan(luigi.Task):
     threads = luigi.Parameter(default=defaults.get("threads", ""))
     scan_timeout = luigi.Parameter(default=defaults.get("aquatone-scan-timeout", ""))
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["aquatone"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "aquatone-results"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("aquatone").get("installed") is True
 
     def requires(self):
         """ AquatoneScan depends on GatherWebTargets to run.

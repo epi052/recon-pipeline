@@ -14,6 +14,7 @@ from .amass import ParseAmassOutput
 from ..models.port_model import Port
 from ..models.ip_address_model import IPAddress
 
+from .helpers import get_tool_state
 from .config import top_tcp_ports, top_udp_ports, defaults, web_ports
 
 
@@ -58,13 +59,15 @@ class MasscanScan(luigi.Task):
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["masscan"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("masscan").get("installed") is True
 
     def output(self):
         """ Returns the target output for this task.

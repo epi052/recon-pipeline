@@ -8,6 +8,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 from .targets import GatherWebTargets
 from ...tools import tools
+from ..helpers import get_tool_state
 from ...models.endpoint_model import Endpoint
 
 import pipeline.models.db_manager
@@ -43,13 +44,15 @@ class WaybackurlsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["waybackurls"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "waybackurls-results"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("waybackurls").get("installed") is True
 
     def requires(self):
         """ WaybackurlsScan depends on GatherWebTargets to run.

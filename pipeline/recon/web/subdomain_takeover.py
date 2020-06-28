@@ -9,8 +9,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 
 import pipeline.models.db_manager
 from ...tools import tools
-from .targets import GatherWebTargets
 from ..config import defaults
+from ..helpers import get_tool_state
+from .targets import GatherWebTargets
 
 
 @inherits(GatherWebTargets)
@@ -46,14 +47,16 @@ class TKOSubsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["tko-subs"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("tko-subs").get("installed") is True
 
     def requires(self):
         """ TKOSubsScan depends on GatherWebTargets to run.
@@ -171,14 +174,16 @@ class SubjackScan(luigi.Task):
 
     threads = luigi.Parameter(default=defaults.get("threads"))
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["subjack"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "subjack-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "subjack.txt"
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("subjack").get("installed") is True
 
     def requires(self):
         """ SubjackScan depends on GatherWebTargets to run.

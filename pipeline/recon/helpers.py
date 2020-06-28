@@ -31,7 +31,6 @@ def get_scans():
         dict containing mapping of ``classname -> [modulename, ...]`` for all potential recon-pipeline commands
     """
     scans = defaultdict(list)
-    tools = get_tool_state()
 
     file = Path(__file__).expanduser().resolve()
     web = file.parent / "web"
@@ -56,23 +55,18 @@ def get_scans():
             # we're only interested in modules that don't begin with _ i.e. magic methods __len__ etc...
 
             for sub_name, sub_obj in inspect.getmembers(obj):
+                # now we only care about classes that end in [Ss]can
                 if inspect.isclass(sub_obj) and sub_name.lower().endswith("scan"):
-                    # now we only care about classes that end in [Ss]can
-                    requirements = list()
-
-                    try:
-                        requirements = getattr(sub_obj, "REQUIRED_TOOLS")
-                    except AttributeError:
-                        pass
-
                     # final check, this ensures that the tools necessary to AT LEAST run this scan are present
                     # does not consider upstream dependencies
-                    for requirement in requirements:
-                        if tools and not tools.get(requirement).get("installed"):
-                            # requirement not met for this scan, don't include it
-                            break
-                    else:
-                        scans[sub_name].append(f"{__package__}.{name}")
+                    try:
+                        if not sub_obj.meets_requirements():
+                            continue
+                    except AttributeError:
+                        # some scan's haven't implemented meets_requirements yet, silently allow them through
+                        pass
+
+                    scans[sub_name].append(f"{__package__}.{name}")
 
     return scans
 

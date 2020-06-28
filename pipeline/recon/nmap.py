@@ -16,6 +16,7 @@ from .config import defaults
 from .helpers import get_ip_address_version, is_ip_address
 
 from ..tools import tools
+from .helpers import get_tool_state
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
@@ -237,12 +238,14 @@ class SearchsploitScan(luigi.Task):
         results_dir: specifies the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
-    REQUIRED_TOOLS = ["searchsploit"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
+
+    @staticmethod
+    def meets_requirements():
+        """ Reports whether or not this scan's needed tool(s) are installed or not """
+        return get_tool_state().get("searchsploit").get("installed") is True
 
     def requires(self):
         """ Searchsploit depends on ThreadedNmap to run.
