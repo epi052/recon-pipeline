@@ -75,6 +75,9 @@ class TestUnmockedToolsInstall:
         tool_dict.get(tool_name)["installed"] = False
         tool_dict.get(dependency)["installed"] = False
 
+        print(tool_dict.get(tool_name))
+        print(tool_dict.get(dependency))
+
         return tool_dict
 
     def test_install_masscan(self):
@@ -139,13 +142,7 @@ class TestUnmockedToolsInstall:
         tool = "go"
         tools_copy = tools.copy()
 
-        tool_path = f"{self.shell.tools_dir}/go/bin/go"
-
         tools_copy.update(self.setup_go_test(tool, tools_copy))
-
-        tools_copy.get(tool)["path"] = tool_path
-        tools_copy.get(tool).get("install_commands")[1] = f"tar -C {self.shell.tools_dir} -xvf /tmp/go.tar.gz"
-        tools_copy.get(tool).get("uninstall_commands")[0] = f"sudo rm -r {self.shell.tools_dir}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
         self.perform_add_remove(tools_copy, tool, False, True)
