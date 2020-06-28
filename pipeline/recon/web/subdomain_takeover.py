@@ -46,6 +46,9 @@ class TKOSubsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = ["tko-subs"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
@@ -167,6 +170,9 @@ class SubjackScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
+
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = ["subjack"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

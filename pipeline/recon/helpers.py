@@ -1,10 +1,22 @@
 import sys
+import pickle
+import typing
 import inspect
 import pkgutil
 import importlib
 import ipaddress
 from pathlib import Path
 from collections import defaultdict
+
+from ..recon.config import defaults
+
+
+def get_tool_state() -> typing.Union[dict, None]:
+    """ Load current tool state from disk. """
+    tools = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
+
+    if tools.exists():
+        return pickle.loads(tools.read_bytes())
 
 
 def get_scans():
@@ -19,6 +31,7 @@ def get_scans():
         dict containing mapping of ``classname -> [modulename, ...]`` for all potential recon-pipeline commands
     """
     scans = defaultdict(list)
+    tools = get_tool_state()
 
     file = Path(__file__).expanduser().resolve()
     web = file.parent / "web"
@@ -42,10 +55,24 @@ def get_scans():
         if inspect.ismodule(obj) and not name.startswith("_"):
             # we're only interested in modules that don't begin with _ i.e. magic methods __len__ etc...
 
-            for subname, subobj in inspect.getmembers(obj):
-                if inspect.isclass(subobj) and subname.lower().endswith("scan"):
+            for sub_name, sub_obj in inspect.getmembers(obj):
+                if inspect.isclass(sub_obj) and sub_name.lower().endswith("scan"):
                     # now we only care about classes that end in [Ss]can
-                    scans[subname].append(f"{__package__}.{name}")
+                    requirements = list()
+
+                    try:
+                        requirements = getattr(sub_obj, "REQUIRED_TOOLS")
+                    except AttributeError:
+                        pass
+
+                    # final check, this ensures that the tools necessary to AT LEAST run this scan are present
+                    # does not consider upstream dependencies
+                    for requirement in requirements:
+                        if tools and not tools.get(requirement).get("installed"):
+                            # requirement not met for this scan, don't include it
+                            break
+                    else:
+                        scans[sub_name].append(f"{__package__}.{name}")
 
     return scans
 

@@ -58,6 +58,9 @@ class MasscanScan(luigi.Task):
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
 
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = ["masscan"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)

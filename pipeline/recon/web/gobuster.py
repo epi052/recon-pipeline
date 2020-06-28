@@ -59,6 +59,9 @@ class GobusterScan(luigi.Task):
     wordlist = luigi.Parameter(default=defaults.get("gobuster-wordlist"))
     extensions = luigi.Parameter(default=defaults.get("gobuster-extensions"))
 
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = ["recursive-gobuster", "gobuster"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)

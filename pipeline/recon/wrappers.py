@@ -27,6 +27,20 @@ class FullScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = [
+        "amass",
+        "aquatone",
+        "masscan",
+        "tko-subs",
+        "recursive-gobuster",
+        "searchsploit",
+        "subjack",
+        "gobuster",
+        "webanalyze",
+        "waybackurls",
+    ]
+
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
         args = {
@@ -89,6 +103,9 @@ class HTBScan(luigi.WrapperTask):
         target_file: specifies the file on disk containing a list of ips or domains
         results_dir: specifes the directory on disk to which all Task results are written
     """
+
+    # tools required to be installed in order for the scan to work on its own, does not consider upstream dependencies
+    REQUIRED_TOOLS = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
