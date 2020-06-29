@@ -58,11 +58,11 @@ class MasscanScan(luigi.Task):
     interface = luigi.Parameter(default=defaults.get("masscan-iface"))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
+    requirements = ["masscan"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["masscan"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
 

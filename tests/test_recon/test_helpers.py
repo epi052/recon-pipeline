@@ -25,7 +25,7 @@ def test_get_scans():
     scans = get_scans()
 
     for scan in scan_names:
-        if hasattr(scan, "meets_requirements") and scan.meets_requirements():
+        if hasattr(scan, "requirements") and meets_requirements(scan.requirements, True):
             assert scan.__name__ in scans.keys()
         else:
             assert scan not in scans.keys()
@@ -34,8 +34,8 @@ def test_get_scans():
 @pytest.mark.parametrize(
     "requirements",
     [
-        ["AmassScan"],
-        ["MassScan"],
+        ["amass"],
+        ["masscan"],
         [
             "amass",
             "aquatone",

@@ -28,20 +28,21 @@ class FullScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
+    requirements = [
+        "amass",
+        "aquatone",
+        "masscan",
+        "tko-subs",
+        "recursive-gobuster",
+        "searchsploit",
+        "subjack",
+        "gobuster",
+        "webanalyze",
+        "waybackurls",
+    ]
+
     def __init__(self):
-        needs = [
-            "amass",
-            "aquatone",
-            "masscan",
-            "tko-subs",
-            "recursive-gobuster",
-            "searchsploit",
-            "subjack",
-            "gobuster",
-            "webanalyze",
-            "waybackurls",
-        ]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
@@ -106,9 +107,10 @@ class HTBScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
+    requirements = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
+
     def __init__(self):
-        needs = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """

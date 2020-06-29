@@ -54,11 +54,11 @@ class WebanalyzeScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
+    requirements = ["webanalyze"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["webanalyze"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
 

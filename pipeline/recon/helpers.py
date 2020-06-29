@@ -13,21 +13,28 @@ from collections import defaultdict
 from ..recon.config import defaults
 
 
+def meets_requirements(requirements, scan_check):
+    """ Determine if tools required to perform task are installed. """
+    tools = get_tool_state()
+
+    for tool in requirements:
+        if not tools.get(tool).get("installed"):
+            if not scan_check:
+                raise RuntimeError(
+                    style(f"[!!] {tool} is not installed, and is required to run this scan", fg="bright_red")
+                )
+            else:
+                return False
+
+    return True
+
+
 def get_tool_state() -> typing.Union[dict, None]:
     """ Load current tool state from disk. """
     tools = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
 
     if tools.exists():
         return pickle.loads(tools.read_bytes())
-
-
-def meets_requirements(requirements):
-    """ Determine if tools required to perform task are installed. """
-    tools = get_tool_state()
-
-    for tool in requirements:
-        if not tools.get(tool).get("installed"):
-            raise RuntimeError(style(f"[!] {tool} is not installed", fg="bright_red"))
 
 
 def get_scans():
@@ -71,7 +78,9 @@ def get_scans():
                     # final check, this ensures that the tools necessary to AT LEAST run this scan are present
                     # does not consider upstream dependencies
                     try:
-                        if not sub_obj.meets_requirements():
+                        requirements = sub_obj.requirements
+                        scan_check = True  # let function know we're checking if scan is valid
+                        if not meets_requirements(requirements, scan_check):
                             continue
                     except AttributeError:
                         # some scan's haven't implemented meets_requirements yet, silently allow them through

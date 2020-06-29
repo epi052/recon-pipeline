@@ -47,10 +47,11 @@ class TKOSubsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    requirements = ["tko-subs"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["tko-subs"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
@@ -170,11 +171,11 @@ class SubjackScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
+    requirements = ["subjack"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["subjack"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "subjack-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "subjack.txt"

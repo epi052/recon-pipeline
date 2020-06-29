@@ -15,10 +15,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from .masscan import ParseMasscanOutput
 from .config import defaults
-from .helpers import get_ip_address_version, is_ip_address
+from .helpers import get_ip_address_version, is_ip_address, meets_requirements
 
 from ..tools import tools
-from .helpers import meets_requirements
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
@@ -61,7 +60,7 @@ class ThreadedNmapScan(luigi.Task):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not which("nmap"):
-            raise Exception(style(f"[!] nmap is not installed", fg="bright_red"))
+            raise RuntimeError(style("[!] nmap is not installed", fg="bright_red"))
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "nmap-results").expanduser().resolve()
 
@@ -242,10 +241,11 @@ class SearchsploitScan(luigi.Task):
         results_dir: specifies the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    requirements = ["searchsploit"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["searchsploit"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):

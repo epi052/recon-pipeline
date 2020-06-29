@@ -44,10 +44,11 @@ class WaybackurlsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    requirements = ["waybackurls"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        needs = ["waybackurls"]
-        meets_requirements(needs)
+        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "waybackurls-results"
 
