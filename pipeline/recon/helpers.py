@@ -27,7 +27,7 @@ def meets_requirements(requirements):
 
     for tool in requirements:
         if not tools.get(tool).get("installed"):
-            raise (Exception(style(f"[!] {tool} is not installed", fg="bright_red")))
+            raise RuntimeError(style(f"[!] {tool} is not installed", fg="bright_red"))
 
 
 def get_scans():
