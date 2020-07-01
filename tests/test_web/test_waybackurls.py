@@ -19,8 +19,9 @@ class TestGatherWebTargets:
 
     def test_scan_requires(self):
         with patch("pipeline.recon.web.GatherWebTargets"):
-            retval = self.scan.requires()
-            assert isinstance(retval, GatherWebTargets)
+            with patch("pipeline.recon.web.waybackurls.meets_requirements"):
+                retval = self.scan.requires()
+                assert isinstance(retval, GatherWebTargets)
 
     def test_scan_creates_database(self):
         assert self.scan.db_mgr.location.exists()

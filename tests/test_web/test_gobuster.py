@@ -21,8 +21,9 @@ class TestGobusterScan:
 
     def test_scan_requires(self):
         with patch("pipeline.recon.web.GatherWebTargets"):
-            retval = self.scan.requires()
-            assert isinstance(retval, GatherWebTargets)
+            with patch("pipeline.recon.web.gobuster.meets_requirements"):
+                retval = self.scan.requires()
+                assert isinstance(retval, GatherWebTargets)
 
     def test_scan_run(self):
         with patch("concurrent.futures.ThreadPoolExecutor.map") as mocked_run:

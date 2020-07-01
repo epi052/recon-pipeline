@@ -79,7 +79,7 @@ def get_scans():
                     # does not consider upstream dependencies
                     try:
                         requirements = sub_obj.requirements
-                        exception = False # let meets_req know we want boolean result
+                        exception = False  # let meets_req know we want boolean result
                         if not meets_requirements(requirements, exception):
                             continue
                     except AttributeError:

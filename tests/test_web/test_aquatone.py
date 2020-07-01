@@ -22,8 +22,9 @@ class TestAquatoneScan:
 
     def test_scan_requires(self):
         with patch("pipeline.recon.web.GatherWebTargets"):
-            retval = self.scan.requires()
-            assert isinstance(retval, GatherWebTargets)
+            with patch("pipeline.recon.web.aquatone.meets_requirements"):
+                retval = self.scan.requires()
+                assert isinstance(retval, GatherWebTargets)
 
     def test_scan_creates_results_dir(self):
         assert self.scan.results_subfolder == self.tmp_path / "aquatone-results"

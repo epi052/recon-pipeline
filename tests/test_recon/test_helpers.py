@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 
 from pipeline.recon.helpers import get_ip_address_version, get_scans, is_ip_address, meets_requirements
 from pipeline.recon import AmassScan, MasscanScan, FullScan, HTBScan, SearchsploitScan, ThreadedNmapScan
@@ -6,53 +7,55 @@ from pipeline.recon.web import GobusterScan, SubjackScan, TKOSubsScan, AquatoneS
 
 
 def test_get_scans():
+    with patch("pipeline.recon.helpers.meets_requirements"):
+        scan_names = [
+            AmassScan,
+            GobusterScan,
+            MasscanScan,
+            SubjackScan,
+            TKOSubsScan,
+            AquatoneScan,
+            FullScan,
+            HTBScan,
+            SearchsploitScan,
+            ThreadedNmapScan,
+            WebanalyzeScan,
+            WaybackurlsScan,
+        ]
 
-    scan_names = [
-        AmassScan,
-        GobusterScan,
-        MasscanScan,
-        SubjackScan,
-        TKOSubsScan,
-        AquatoneScan,
-        FullScan,
-        HTBScan,
-        SearchsploitScan,
-        ThreadedNmapScan,
-        WebanalyzeScan,
-        WaybackurlsScan,
-    ]
-    exception = False
-
-    scans = get_scans()
-
-    for scan in scan_names:
-        if hasattr(scan, "requirements") and meets_requirements(scan.requirements, False):
-            assert scan.__name__ in scans.keys()
-        else:
-            assert scan not in scans.keys()
+        scans = get_scans()
+        for scan in scan_names:
+            if hasattr(scan, "requirements"):
+                assert scan.__name__ in scans.keys()
+            else:
+                assert scan not in scans.keys()
 
 
 @pytest.mark.parametrize(
-    "requirements",
+    "requirements, exception",
     [
-        ["amass"],
-        ["masscan"],
-        [
-            "amass",
-            "aquatone",
-            "masscan",
-            "tko-subs",
-            "recursive-gobuster",
-            "searchsploit",
-            "subjack",
-            "gobuster",
-            "webanalyze",
-            "waybackurls",
-        ],
+        (["amass"], True),
+        (["masscan"], True),
+        (
+            [
+                "amass",
+                "aquatone",
+                "masscan",
+                "tko-subs",
+                "recursive-gobuster",
+                "searchsploit",
+                "subjack",
+                "gobuster",
+                "webanalyze",
+                "waybackurls",
+            ],
+            False,
+        ),
     ],
 )
-def test_meets_requirements(requirements):
-    pass
+def test_meets_requirements(requirements, exception):
+    with patch("pipeline.recon.helpers.get_tool_state"):
+        assert meets_requirements(requirements, exception)
 
 
 @pytest.mark.parametrize(
