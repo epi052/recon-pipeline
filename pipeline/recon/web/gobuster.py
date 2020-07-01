@@ -60,10 +60,10 @@ class GobusterScan(luigi.Task):
     wordlist = luigi.Parameter(default=defaults.get("gobuster-wordlist"))
     extensions = luigi.Parameter(default=defaults.get("gobuster-extensions"))
     requirements = ["recursive-gobuster", "gobuster"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "gobuster-results"
 
@@ -76,6 +76,7 @@ class GobusterScan(luigi.Task):
         Returns:
             luigi.Task - GatherWebTargets
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

@@ -15,6 +15,7 @@ class TestAquatoneScan:
         self.scan = AquatoneScan(
             target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
+        self.scan.exception = False
 
     def teardown_method(self):
         shutil.rmtree(self.tmp_path)

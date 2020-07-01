@@ -242,10 +242,10 @@ class SearchsploitScan(luigi.Task):
     """
 
     requirements = ["searchsploit"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):
@@ -258,6 +258,7 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.Task - ThreadedNmap
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "rate": self.rate,
             "ports": self.ports,

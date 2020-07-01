@@ -48,10 +48,10 @@ class TKOSubsScan(luigi.Task):
     """
 
     requirements = ["tko-subs"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "tkosubs-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "tkosubs.csv"
@@ -65,6 +65,7 @@ class TKOSubsScan(luigi.Task):
         Returns:
             luigi.Task - GatherWebTargets
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,
@@ -172,10 +173,10 @@ class SubjackScan(luigi.Task):
 
     threads = luigi.Parameter(default=defaults.get("threads"))
     requirements = ["subjack"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "subjack-results").expanduser().resolve()
         self.output_file = self.results_subfolder / "subjack.txt"
@@ -189,6 +190,7 @@ class SubjackScan(luigi.Task):
         Returns:
             luigi.Task - GatherWebTargets
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

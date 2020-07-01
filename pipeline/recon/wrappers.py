@@ -40,12 +40,11 @@ class FullScan(luigi.WrapperTask):
         "webanalyze",
         "waybackurls",
     ]
-
-    def __init__(self):
-        meets_requirements(self.requirements, False)
+    exception = True
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,
@@ -108,12 +107,11 @@ class HTBScan(luigi.WrapperTask):
     """
 
     requirements = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
-
-    def __init__(self):
-        meets_requirements(self.requirements, False)
+    exception = True
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

@@ -59,10 +59,10 @@ class AquatoneScan(luigi.Task):
     threads = luigi.Parameter(default=defaults.get("threads", ""))
     scan_timeout = luigi.Parameter(default=defaults.get("aquatone-scan-timeout", ""))
     requirements = ["aquatone"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "aquatone-results"
 
@@ -75,6 +75,7 @@ class AquatoneScan(luigi.Task):
         Returns:
             luigi.Task - GatherWebTargets
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

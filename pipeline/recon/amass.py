@@ -44,10 +44,10 @@ class AmassScan(luigi.Task):
 
     exempt_list = luigi.Parameter(default="")
     requirements = ["amass"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        meets_requirements(self.requirements, False)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
 
@@ -59,6 +59,7 @@ class AmassScan(luigi.Task):
         Returns:
             luigi.ExternalTask - TargetList
         """
+        meets_requirements(self.requirements, self.exception)
         args = {"target_file": self.target_file, "results_dir": self.results_dir, "db_location": self.db_location}
         return TargetList(**args)
 
@@ -82,7 +83,6 @@ class AmassScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         hostnames = self.db_mgr.get_all_hostnames()

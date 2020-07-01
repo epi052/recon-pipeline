@@ -21,11 +21,12 @@ def test_get_scans():
         WebanalyzeScan,
         WaybackurlsScan,
     ]
+    exception = False
 
     scans = get_scans()
 
     for scan in scan_names:
-        if hasattr(scan, "requirements") and meets_requirements(scan.requirements, True):
+        if hasattr(scan, "requirements") and meets_requirements(scan.requirements, False):
             assert scan.__name__ in scans.keys()
         else:
             assert scan not in scans.keys()

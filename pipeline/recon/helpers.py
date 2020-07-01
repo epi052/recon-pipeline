@@ -13,13 +13,13 @@ from collections import defaultdict
 from ..recon.config import defaults
 
 
-def meets_requirements(requirements, scan_check):
+def meets_requirements(requirements, exception):
     """ Determine if tools required to perform task are installed. """
     tools = get_tool_state()
 
     for tool in requirements:
         if not tools.get(tool).get("installed"):
-            if not scan_check:
+            if exception:
                 raise RuntimeError(
                     style(f"[!!] {tool} is not installed, and is required to run this scan", fg="bright_red")
                 )
@@ -79,8 +79,8 @@ def get_scans():
                     # does not consider upstream dependencies
                     try:
                         requirements = sub_obj.requirements
-                        scan_check = True  # let function know we're checking if scan is valid
-                        if not meets_requirements(requirements, scan_check):
+                        exception = False # let meets_req know we want boolean result
+                        if not meets_requirements(requirements, exception):
                             continue
                     except AttributeError:
                         # some scan's haven't implemented meets_requirements yet, silently allow them through
