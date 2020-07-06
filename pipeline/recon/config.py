@@ -1,4 +1,5 @@
 # flake8: noqa E231
+import platform
 from pathlib import Path
 
 
@@ -11,6 +12,7 @@ defaults = {
     "results-dir": "recon-results",
     "aquatone-scan-timeout": "900",
     "home": Path.home(),
+    "arch": ["386", "amd64"][platform.architecture()[0].startswith("64")],
 }
 
 defaults["project-dir"] = str(Path(__file__).parents[2])
