@@ -822,8 +822,8 @@ class ReconShell(cmd2.Cmd):
             for ipaddr in ss_scan.target.ip_addresses:
                 address = ipaddr.ipv4_address or ipaddr.ipv6_address
                 if address is not None and address in targets:
-                    tmp_targets.add(ipaddr.ipv4_address)
-                    targets.remove(ipaddr.ipv4_address)
+                    tmp_targets.add(address)
+                    targets.remove(address)
 
             if tmp_targets:
                 header = ", ".join(tmp_targets)
