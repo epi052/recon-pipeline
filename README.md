@@ -58,6 +58,25 @@ pipenv install
 pipenv shell
 ```
 
+### Docker
+
+If you have Docker installed, you can run the recon-pipeline in a container with the following commands:
+
+```bash
+git clone https://github.com/epi052/recon-pipeline.git
+cd recon-pipeline
+docker build -t recon-pipeline .
+docker run -d \
+    -v ~/docker/recon-pipeline:/root/.local/recon-pipeline \
+    -p 8082:8082 \
+    --name recon-pipeline \
+    recon-pipeline
+docker start recon-pipeline
+docker exec -it recon-pipeline pipeline
+```
+
+The `recon-pipeline` should start in the background automatically after the `docker run` command, however, you will have to start it after a reboot. For more information, please see the [Docker](https://recon-pipeline.readthedocs.io/en/latest/overview/installation.html#docker) docs.
+
 [![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
 
 After installing the python dependencies, the `recon-pipeline` shell provides its own [tools](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#tools) command (seen below).  A simple `tools install all` will handle all additional installation steps.
