@@ -47,7 +47,7 @@ class TKOSubsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    requirements = ["tko-subs"]
+    requirements = ["go", "tko-subs"]
     exception = True
 
     def __init__(self, *args, **kwargs):
@@ -172,7 +172,7 @@ class SubjackScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
-    requirements = ["subjack"]
+    requirements = ["go", "subjack"]
     exception = True
 
     def __init__(self, *args, **kwargs):

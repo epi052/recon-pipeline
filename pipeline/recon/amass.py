@@ -43,7 +43,7 @@ class AmassScan(luigi.Task):
     """
 
     exempt_list = luigi.Parameter(default="")
-    requirements = ["amass"]
+    requirements = ["go", "amass"]
     exception = True
 
     def __init__(self, *args, **kwargs):
