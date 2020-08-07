@@ -54,7 +54,7 @@ class WebanalyzeScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
-    requirements = ["go", "webanalyze"]
+    requirements = ["go", "webanalyze", "masscan"]
     exception = True
 
     def __init__(self, *args, **kwargs):

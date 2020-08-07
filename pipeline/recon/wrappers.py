@@ -39,6 +39,7 @@ class FullScan(luigi.WrapperTask):
         "gobuster",
         "webanalyze",
         "waybackurls",
+        "go",
     ]
     exception = True
 
@@ -106,7 +107,7 @@ class HTBScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
-    requirements = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
+    requirements = ["aquatone", "go", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
     exception = True
 
     def requires(self):

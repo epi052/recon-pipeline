@@ -59,7 +59,7 @@ class GobusterScan(luigi.Task):
     threads = luigi.Parameter(default=defaults.get("threads"))
     wordlist = luigi.Parameter(default=defaults.get("gobuster-wordlist"))
     extensions = luigi.Parameter(default=defaults.get("gobuster-extensions"))
-    requirements = ["recursive-gobuster", "go", "gobuster"]
+    requirements = ["recursive-gobuster", "go", "gobuster", "masscan"]
     exception = True
 
     def __init__(self, *args, **kwargs):

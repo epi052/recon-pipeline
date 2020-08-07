@@ -58,7 +58,7 @@ class AquatoneScan(luigi.Task):
 
     threads = luigi.Parameter(default=defaults.get("threads", ""))
     scan_timeout = luigi.Parameter(default=defaults.get("aquatone-scan-timeout", ""))
-    requirements = ["aquatone"]
+    requirements = ["aquatone", "masscan"]
     exception = True
 
     def __init__(self, *args, **kwargs):

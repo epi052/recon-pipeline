@@ -44,7 +44,7 @@ class WaybackurlsScan(luigi.Task):
         results_dir: specifes the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
-    requirements = ["go", "waybackurls"]
+    requirements = ["go", "waybackurls", "masscan"]
     exception = True
 
     def __init__(self, *args, **kwargs):
