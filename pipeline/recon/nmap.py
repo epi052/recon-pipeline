@@ -3,6 +3,8 @@ import logging
 import subprocess
 import concurrent.futures
 from pathlib import Path
+from shutil import which
+from cmd2.ansi import style
 
 import luigi
 import sqlalchemy
@@ -13,10 +15,9 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from .masscan import ParseMasscanOutput
 from .config import defaults
-from .helpers import get_ip_address_version, is_ip_address
+from .helpers import get_ip_address_version, is_ip_address, meets_requirements
 
 from ..tools import tools
-from .helpers import get_tool_state
 from ..models.port_model import Port
 from ..models.nse_model import NSEResult
 from ..models.target_model import Target
@@ -58,6 +59,8 @@ class ThreadedNmapScan(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if not which("nmap"):
+            raise RuntimeError(style("[!] nmap is not installed", fg="bright_red"))
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "nmap-results").expanduser().resolve()
 
@@ -238,18 +241,12 @@ class SearchsploitScan(luigi.Task):
         results_dir: specifies the directory on disk to which all Task results are written *Required by upstream Task*
     """
 
+    requirements = ["searchsploit"]
+    exception = True
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["searchsploit"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ Searchsploit depends on ThreadedNmap to run.
@@ -261,6 +258,7 @@ class SearchsploitScan(luigi.Task):
         Returns:
             luigi.Task - ThreadedNmap
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "rate": self.rate,
             "ports": self.ports,

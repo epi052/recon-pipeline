@@ -15,18 +15,23 @@ nmap_results = Path(__file__).parent.parent / "data" / "recon-results" / "nmap-r
 
 class TestThreadedNmapScan:
     def setup_method(self):
-        self.tmp_path = Path(tempfile.mkdtemp())
-        self.scan = ThreadedNmapScan(
-            target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
-        )
+        with patch("pipeline.recon.nmap.which"):
+            self.tmp_path = Path(tempfile.mkdtemp())
+            shutil.which = MagicMock()
+            shutil.which.return_value = True
+            self.scan = ThreadedNmapScan(
+                target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
+            )
+            self.scan.exception = False
 
     def teardown_method(self):
         shutil.rmtree(self.tmp_path)
 
     def test_scan_requires(self):
         with patch("pipeline.recon.ParseMasscanOutput"):
-            retval = self.scan.requires()
-            assert isinstance(retval, ParseMasscanOutput)
+            with patch("pipeline.recon.nmap.which"):
+                retval = self.scan.requires()
+                assert isinstance(retval, ParseMasscanOutput)
 
     def test_scan_run(self):
         with patch("concurrent.futures.ThreadPoolExecutor.map") as mocked_run:
@@ -75,14 +80,17 @@ class TestSearchsploitScan:
         self.scan = SearchsploitScan(
             target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
+        self.scan.exception = False
 
     def teardown_method(self):
         shutil.rmtree(self.tmp_path)
 
     def test_scan_requires(self):
         with patch("pipeline.recon.ThreadedNmapScan"):
-            retval = self.scan.requires()
-            assert isinstance(retval, ThreadedNmapScan)
+            with patch("pipeline.recon.nmap.meets_requirements"):
+                with patch("pipeline.recon.nmap.which"):
+                    retval = self.scan.requires()
+                    assert isinstance(retval, ThreadedNmapScan)
 
     def test_scan_output(self):
         retval = self.scan.output()

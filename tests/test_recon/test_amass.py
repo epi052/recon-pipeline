@@ -23,8 +23,9 @@ class TestAmassScan:
 
     def test_scan_requires(self):
         with patch("pipeline.recon.TargetList"):
-            retval = self.scan.requires()
-            assert isinstance(retval, TargetList)
+            with patch("pipeline.recon.amass.meets_requirements"):
+                retval = self.scan.requires()
+                assert isinstance(retval, TargetList)
 
     def test_scan_run(self):
         with patch("subprocess.run") as mocked_run:

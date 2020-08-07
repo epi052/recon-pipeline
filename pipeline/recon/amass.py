@@ -9,7 +9,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from ..tools import tools
 from .targets import TargetList
-from .helpers import get_tool_state
+from .helpers import meets_requirements
 from ..models.target_model import Target
 
 
@@ -43,20 +43,13 @@ class AmassScan(luigi.Task):
     """
 
     exempt_list = luigi.Parameter(default="")
+    requirements = ["go", "amass"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["amass"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ AmassScan depends on TargetList to run.
@@ -66,6 +59,7 @@ class AmassScan(luigi.Task):
         Returns:
             luigi.ExternalTask - TargetList
         """
+        meets_requirements(self.requirements, self.exception)
         args = {"target_file": self.target_file, "results_dir": self.results_dir, "db_location": self.db_location}
         return TargetList(**args)
 
@@ -89,7 +83,6 @@ class AmassScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
-
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         hostnames = self.db_mgr.get_all_hostnames()

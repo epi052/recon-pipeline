@@ -6,9 +6,27 @@ import pkgutil
 import importlib
 import ipaddress
 from pathlib import Path
+from cmd2.ansi import style
+
 from collections import defaultdict
 
 from ..recon.config import defaults
+
+
+def meets_requirements(requirements, exception):
+    """ Determine if tools required to perform task are installed. """
+    tools = get_tool_state()
+
+    for tool in requirements:
+        if not tools.get(tool).get("installed"):
+            if exception:
+                raise RuntimeError(
+                    style(f"[!!] {tool} is not installed, and is required to run this scan", fg="bright_red")
+                )
+            else:
+                return False
+
+    return True
 
 
 def get_tool_state() -> typing.Union[dict, None]:
@@ -60,7 +78,9 @@ def get_scans():
                     # final check, this ensures that the tools necessary to AT LEAST run this scan are present
                     # does not consider upstream dependencies
                     try:
-                        if not sub_obj.meets_requirements():
+                        requirements = sub_obj.requirements
+                        exception = False  # let meets_req know we want boolean result
+                        if not meets_requirements(requirements, exception):
                             continue
                     except AttributeError:
                         # some scan's haven't implemented meets_requirements yet, silently allow them through

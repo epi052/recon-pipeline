@@ -13,7 +13,7 @@ from luigi.contrib.sqla import SQLAlchemyTarget
 import pipeline.models.db_manager
 from ...tools import tools
 from ..config import defaults
-from ..helpers import get_tool_state
+from ..helpers import meets_requirements
 from .targets import GatherWebTargets
 from ...models.technology_model import Technology
 from ..helpers import get_ip_address_version, is_ip_address
@@ -54,20 +54,13 @@ class WebanalyzeScan(luigi.Task):
     """
 
     threads = luigi.Parameter(default=defaults.get("threads"))
+    requirements = ["go", "webanalyze", "masscan"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["webanalyze"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def requires(self):
         """ WebanalyzeScan depends on GatherWebTargets to run.
@@ -78,6 +71,7 @@ class WebanalyzeScan(luigi.Task):
         Returns:
             luigi.Task - GatherWebTargets
         """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

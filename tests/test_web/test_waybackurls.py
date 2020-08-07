@@ -12,14 +12,16 @@ class TestGatherWebTargets:
         self.scan = WaybackurlsScan(
             target_file=__file__, results_dir=str(self.tmp_path), db_location=str(self.tmp_path / "testing.sqlite")
         )
+        self.scan.exception = False
 
     def teardown_method(self):
         shutil.rmtree(self.tmp_path)
 
     def test_scan_requires(self):
         with patch("pipeline.recon.web.GatherWebTargets"):
-            retval = self.scan.requires()
-            assert isinstance(retval, GatherWebTargets)
+            with patch("pipeline.recon.web.waybackurls.meets_requirements"):
+                retval = self.scan.requires()
+                assert isinstance(retval, GatherWebTargets)
 
     def test_scan_creates_database(self):
         assert self.scan.db_mgr.location.exists()

@@ -2,7 +2,7 @@ import luigi
 from luigi.util import inherits
 
 from .nmap import SearchsploitScan
-from .helpers import get_tool_state
+from .helpers import meets_requirements
 from .web import AquatoneScan, GobusterScan, SubjackScan, TKOSubsScan, WaybackurlsScan, WebanalyzeScan
 
 
@@ -28,28 +28,24 @@ class FullScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = [
-            "amass",
-            "aquatone",
-            "masscan",
-            "tko-subs",
-            "recursive-gobuster",
-            "searchsploit",
-            "subjack",
-            "gobuster",
-            "webanalyze",
-            "waybackurls",
-        ]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
+    requirements = [
+        "amass",
+        "aquatone",
+        "masscan",
+        "tko-subs",
+        "recursive-gobuster",
+        "searchsploit",
+        "subjack",
+        "gobuster",
+        "webanalyze",
+        "waybackurls",
+        "go",
+    ]
+    exception = True
 
     def requires(self):
         """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,
@@ -111,17 +107,12 @@ class HTBScan(luigi.WrapperTask):
         results_dir: specifes the directory on disk to which all Task results are written
     """
 
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["aquatone", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
+    requirements = ["aquatone", "go", "masscan", "recursive-gobuster", "searchsploit", "gobuster", "webanalyze"]
+    exception = True
 
     def requires(self):
         """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
+        meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
             "rate": self.rate,

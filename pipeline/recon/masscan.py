@@ -14,7 +14,7 @@ from .amass import ParseAmassOutput
 from ..models.port_model import Port
 from ..models.ip_address_model import IPAddress
 
-from .helpers import get_tool_state
+from .helpers import meets_requirements
 from .config import top_tcp_ports, top_udp_ports, defaults, web_ports
 
 
@@ -58,20 +58,13 @@ class MasscanScan(luigi.Task):
     interface = luigi.Parameter(default=defaults.get("masscan-iface"))
     top_ports = luigi.IntParameter(default=0)  # IntParameter -> top_ports expected as int
     ports = luigi.Parameter(default="")
+    requirements = ["masscan"]
+    exception = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
-
-    @staticmethod
-    def meets_requirements():
-        """ Reports whether or not this scan's needed tool(s) are installed or not """
-        needs = ["masscan"]
-        tools = get_tool_state()
-
-        if tools:
-            return all([tools.get(x).get("installed") is True for x in needs])
 
     def output(self):
         """ Returns the target output for this task.
@@ -91,6 +84,7 @@ class MasscanScan(luigi.Task):
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
         """
+        meets_requirements(self.requirements, self.exception)
         if not self.ports and not self.top_ports:
             # need at least one, can't be put into argparse scanner because things like amass don't require ports option
             logging.error("Must specify either --top-ports or --ports.")
