@@ -303,7 +303,9 @@ class ReconShell(cmd2.Cmd):
         try:
             command = ["luigi", "--module", scans.get(args.scantype)[0]]
         except TypeError:
-            return self.poutput(style(f"[!] {args.scantype} not installed", fg="bright_red"))
+            return self.poutput(
+                style(f"[!] {args.scantype} or one of its dependencies is not installed", fg="bright_red")
+            )
 
         tgt_file_path = None
         if args.target:
