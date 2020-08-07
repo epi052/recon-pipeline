@@ -81,3 +81,53 @@ for the auto installer to function:
 With the above requirements met, following the installation steps above starting with ``pipenv install`` should be sufficient.
 
 The alternative would be to manually install each tool.
+
+Docker
+######
+
+If you have Docker installed, you can run the recon-pipeline in a container with the following commands:
+
+.. code-block:: console
+
+        git clone https://github.com/epi052/recon-pipeline.git
+        cd recon-pipeline
+        docker build -t recon-pipeline .
+        docker run -d \
+            -v ~/docker/recon-pipeline:/root/.local/recon-pipeline \
+            -p 8082:8082 \
+            --name recon-pipeline \
+            recon-pipeline
+
+
+It is important to note that you should not lose any data during an update because all important information is saved to the ``~/docker/recon-pipeline`` location as specified by the ``-v`` option in the ``docker run`` command. If this portion of the command was not executed, data will not persist across container installations.
+
+At this point the container should be running and you scan enter the shell with the following command:
+
+.. code-block:: console
+
+        docker exec -it recon-pipeline pipeline
+
+Starting & Stopping
+-------------------
+
+In the event that you need to start or stop the container, you can do so with the following commands after having run the installation commands above once:
+
+.. code-block:: console
+
+    docker start recon-pipeline
+    docker stop recon-pipeline
+
+This is useful knowledge because Docker containers do not normally start on their own and executing the ``docker run`` command above again will result in an error if it is already installed.
+
+Update
+------
+
+To update, you can run the following commands from inside the ``recon-pipeline`` folder cloned in the installation:
+
+.. code-block:: console
+
+    git pull
+    docker stop recon-pipeline
+    docker rm recon-pipeline
+
+When complete, execute the inital installation commands again starting with ``docker build``.
