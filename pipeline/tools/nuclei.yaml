@@ -1,0 +1,11 @@
+installed: false
+dependencies: [go]
+go: &gotool !get_tool_path "{go[path]}"
+path: &path !join_path [!get_default "{gopath}", bin/nuclei]
+environ: {"GO111MODULE": "on", "GOPATH": !get_default "{gopath}"}
+
+install_commands:
+- !join [*gotool, "get", "-u", "github.com/projectdiscovery/nuclei/v2/cmd/nuclei"]
+
+uninstall_commands:
+- !join [rm, *path]
