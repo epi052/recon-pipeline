@@ -108,7 +108,7 @@ class SelectorThread(threading.Thread):
 
         # close any fds that were registered and still haven't been unregistered
         for key in selector.get_map():
-            selector.get_key(key).fileobj.close()
+            selector.get_key(key).fileobj.close()  # pragma: no cover
 
     def stopped(self):
         """ Helper to determine whether the SelectorThread's Event is set or not. """
@@ -116,7 +116,7 @@ class SelectorThread(threading.Thread):
 
     def run(self):
         """ Run thread that executes a select loop; handles async stdout/stderr processing of subprocesses. """
-        while not self.stopped():
+        while not self.stopped():  # pragma: no cover
             for k, mask in selector.select():
                 callback = k.data
                 callback(k.fileobj)

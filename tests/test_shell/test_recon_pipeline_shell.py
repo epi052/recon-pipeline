@@ -481,14 +481,15 @@ class TestReconShell:
 
         subfile.touch()
         assert subfile.exists()
+        old_loop = recon_shell.ReconShell.cmdloop
 
-        recon_shell.ReconShell = MagicMock()
+        recon_shell.ReconShell.cmdloop = MagicMock()
         recon_shell.cmd2.Cmd.select = MagicMock(return_value=test_input)
         with patch("sys.exit"):
             recon_shell.main(
                 name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict, old_searchsploit_rc=searchsploit_rc
             )
-
+        recon_shell.ReconShell.cmdloop = old_loop
         for file in [subfile, tooldir, tooldict, searchsploit_rc]:
             if test_input == "Yes":
                 assert not file.exists()
@@ -506,11 +507,12 @@ class TestReconShell:
 
         recon_shell.cmd2.Cmd.select = MagicMock(return_value=answer)
 
+        print(list(tmp_path.iterdir()), new_tmp)
         self.shell.check_scan_directory(str(new_tmp))
 
         assert new_tmp.exists() == exists
+        print(list(tmp_path.iterdir()), new_tmp)
         assert len(list(tmp_path.iterdir())) == numdirs
-
         if answer == "Save":
             assert (
                 re.search(r"check_scan_directory_test-3-Save-[0-9]{6,8}-[0-9]+", str(list(tmp_path.iterdir())[0]))

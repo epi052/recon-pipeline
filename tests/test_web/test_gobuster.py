@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -41,7 +42,8 @@ class TestGobusterScan:
             assert mocked_run.called
             assert self.scan.parse_results.called
 
-    def test_scan_recursive_run(self):
+    def test_scan_recursive_run(self, tmp_path):
+        os.chdir(tmp_path)
         with patch("concurrent.futures.ThreadPoolExecutor.map") as mocked_run:
             self.scan.parse_results = MagicMock()
             self.scan.db_mgr.get_all_web_targets = MagicMock()
