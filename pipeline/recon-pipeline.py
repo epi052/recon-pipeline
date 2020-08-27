@@ -5,7 +5,6 @@ import sys
 import time
 import shlex
 import shutil
-import pickle
 import tempfile
 import textwrap
 import selectors
@@ -346,15 +345,6 @@ class ReconShell(cmd2.Cmd):
 
     def _get_dict(self):
         """Retrieves tool dict if available"""
-
-        # imported tools variable is in global scope, and we reassign over it later
-        global tools
-
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-
-        if persistent_tool_dict.exists():
-            tools = pickle.loads(persistent_tool_dict.read_bytes())
-
         return tools
 
     def _finalize_tool_action(self, tool: str, tool_dict: dict, return_values: List[int], action: ToolActions):
@@ -387,15 +377,8 @@ class ReconShell(cmd2.Cmd):
                 )
             )
 
-        # store any tool installs/failures (back) to disk
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-
-        pickle.dump(tool_dict, persistent_tool_dict.open("wb"))
-
     def tools_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
-
-        tools = self._get_dict()
 
         if args.tool == "all":
             # show all tools have been queued for installation
@@ -423,16 +406,6 @@ class ReconShell(cmd2.Cmd):
 
                 # install the dependency before continuing with installation
                 self.do_tools(f"install {dependency}")
-
-        # this prevents a stale copy of tools when dependency installs alter the state
-        # ex.
-        #   amass (which depends on go) grabs copy of tools (go installed false)
-        #   amass calls install with go as the arg
-        #   go grabs a copy of tools
-        #   go is installed and state is saved (go installed true)
-        #   recursion goes back to amass call (go installed false due to stale tools data)
-        #   amass installs and re-saves go's state as installed=false
-        tools = self._get_dict()
 
         if tools.get(args.tool).get("installed"):
             return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
@@ -478,7 +451,6 @@ class ReconShell(cmd2.Cmd):
 
     def tools_uninstall(self, args):
         """ Uninstall any/all of the libraries/tools used by recon-pipeline"""
-        tools = self._get_dict()
 
         if args.tool == "all":
             # show all tools have been queued for installation
@@ -525,7 +497,7 @@ class ReconShell(cmd2.Cmd):
 
     def tools_list(self, args):
         """ List status of pipeline tools """
-        for key, value in self._get_dict().items():
+        for key, value in tools.items():
             status = [style(":Missing:", fg="bright_magenta"), style("Installed", fg="bright_green")]
             self.poutput(style(f"[{status[value.get('installed')]}] - {value.get('path') or key}"))
 

@@ -482,8 +482,9 @@ class TestReconShell:
         subfile.touch()
         assert subfile.exists()
 
-        with patch("cmd2.Cmd.cmdloop"), patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
-            mocked_select.return_value = test_input
+        recon_shell.ReconShell = MagicMock()
+        recon_shell.cmd2.Cmd.select = MagicMock(return_value=test_input)
+        with patch("sys.exit"):
             recon_shell.main(
                 name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict, old_searchsploit_rc=searchsploit_rc
             )
@@ -503,16 +504,15 @@ class TestReconShell:
         new_tmp = tmp_path / f"check_scan_directory_test-{user_input}-{answer}"
         new_tmp.mkdir()
 
-        with patch("cmd2.Cmd.select") as mocked_select:
-            mocked_select.return_value = answer
+        recon_shell.cmd2.Cmd.select = MagicMock(return_value=answer)
 
-            self.shell.check_scan_directory(str(new_tmp))
+        self.shell.check_scan_directory(str(new_tmp))
 
-            assert new_tmp.exists() == exists
-            assert len(list(tmp_path.iterdir())) == numdirs
+        assert new_tmp.exists() == exists
+        assert len(list(tmp_path.iterdir())) == numdirs
 
-            if answer == "Save":
-                assert (
-                    re.search(r"check_scan_directory_test-3-Save-[0-9]{6,8}-[0-9]+", str(list(tmp_path.iterdir())[0]))
-                    is not None
-                )
+        if answer == "Save":
+            assert (
+                re.search(r"check_scan_directory_test-3-Save-[0-9]{6,8}-[0-9]+", str(list(tmp_path.iterdir())[0]))
+                is not None
+            )
