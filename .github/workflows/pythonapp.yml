@@ -24,9 +24,9 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         pipenv run flake8 . --count
     - name: Check code formatting with black
-      uses: lgeiger/black-action@master
-      with:
-        args: ". --check -l 120"
+      run: |
+        pipenv install black
+        pipenv run black -l 120 --check . 
 
   test-shell:
 
