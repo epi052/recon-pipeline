@@ -59,7 +59,7 @@ A simple ``tools install all`` will handle all installation steps.  Installation
 Individual tools may be installed by running ``tools install TOOLNAME`` where ``TOOLNAME`` is one of the known tools that make
 up the pipeline.
 
-The installer maintains a (naive) list of installed tools at ``~/.local/recon-pipeline/tools/.tool-dict.pkl``.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
+The installer does not maintain state.  In order to determine whether a tool is installed or not, it checks the `path` variable defined in the tool's .yaml file.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
 like Jon Snow, **it knows nothing**.
 
 Current tool status can be viewed using ``tools list``. Tools can also be uninstalled using the ``tools uninstall all`` command. It is also possible to individually uninstall them in the same manner as shown above.

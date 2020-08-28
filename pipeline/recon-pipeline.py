@@ -5,7 +5,6 @@ import sys
 import time
 import shlex
 import shutil
-import pickle
 import tempfile
 import textwrap
 import selectors
@@ -109,7 +108,7 @@ class SelectorThread(threading.Thread):
 
         # close any fds that were registered and still haven't been unregistered
         for key in selector.get_map():
-            selector.get_key(key).fileobj.close()
+            selector.get_key(key).fileobj.close()  # pragma: no cover
 
     def stopped(self):
         """ Helper to determine whether the SelectorThread's Event is set or not. """
@@ -117,7 +116,7 @@ class SelectorThread(threading.Thread):
 
     def run(self):
         """ Run thread that executes a select loop; handles async stdout/stderr processing of subprocesses. """
-        while not self.stopped():
+        while not self.stopped():  # pragma: no cover
             for k, mask in selector.select():
                 callback = k.data
                 callback(k.fileobj)
@@ -346,15 +345,6 @@ class ReconShell(cmd2.Cmd):
 
     def _get_dict(self):
         """Retrieves tool dict if available"""
-
-        # imported tools variable is in global scope, and we reassign over it later
-        global tools
-
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-
-        if persistent_tool_dict.exists():
-            tools = pickle.loads(persistent_tool_dict.read_bytes())
-
         return tools
 
     def _finalize_tool_action(self, tool: str, tool_dict: dict, return_values: List[int], action: ToolActions):
@@ -387,15 +377,8 @@ class ReconShell(cmd2.Cmd):
                 )
             )
 
-        # store any tool installs/failures (back) to disk
-        persistent_tool_dict = self.tools_dir / ".tool-dict.pkl"
-
-        pickle.dump(tool_dict, persistent_tool_dict.open("wb"))
-
     def tools_install(self, args):
         """ Install any/all of the libraries/tools necessary to make the recon-pipeline function. """
-
-        tools = self._get_dict()
 
         if args.tool == "all":
             # show all tools have been queued for installation
@@ -424,16 +407,6 @@ class ReconShell(cmd2.Cmd):
                 # install the dependency before continuing with installation
                 self.do_tools(f"install {dependency}")
 
-        # this prevents a stale copy of tools when dependency installs alter the state
-        # ex.
-        #   amass (which depends on go) grabs copy of tools (go installed false)
-        #   amass calls install with go as the arg
-        #   go grabs a copy of tools
-        #   go is installed and state is saved (go installed true)
-        #   recursion goes back to amass call (go installed false due to stale tools data)
-        #   amass installs and re-saves go's state as installed=false
-        tools = self._get_dict()
-
         if tools.get(args.tool).get("installed"):
             return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
@@ -448,7 +421,7 @@ class ReconShell(cmd2.Cmd):
             if addl_env_vars is not None:
                 addl_env_vars.update(dict(os.environ))
 
-            for command in tools.get(args.tool).get("install_commands"):
+            for command in tools.get(args.tool, {}).get("install_commands", []):
                 # run all commands required to install the tool
 
                 # print each command being run
@@ -478,7 +451,6 @@ class ReconShell(cmd2.Cmd):
 
     def tools_uninstall(self, args):
         """ Uninstall any/all of the libraries/tools used by recon-pipeline"""
-        tools = self._get_dict()
 
         if args.tool == "all":
             # show all tools have been queued for installation
@@ -525,7 +497,7 @@ class ReconShell(cmd2.Cmd):
 
     def tools_list(self, args):
         """ List status of pipeline tools """
-        for key, value in self._get_dict().items():
+        for key, value in tools.items():
             status = [style(":Missing:", fg="bright_magenta"), style("Installed", fg="bright_green")]
             self.poutput(style(f"[{status[value.get('installed')]}] - {value.get('path') or key}"))
 

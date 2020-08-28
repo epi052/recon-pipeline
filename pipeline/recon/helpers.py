@@ -1,6 +1,4 @@
 import sys
-import pickle
-import typing
 import inspect
 import pkgutil
 import importlib
@@ -10,13 +8,12 @@ from cmd2.ansi import style
 
 from collections import defaultdict
 
-from ..recon.config import defaults
+from ..tools import tools
 
 
 def meets_requirements(requirements, exception):
     """ Determine if tools required to perform task are installed. """
-    tools = get_tool_state()
-
+    print(tools.items())
     for tool in requirements:
         if not tools.get(tool).get("installed"):
             if exception:
@@ -27,14 +24,6 @@ def meets_requirements(requirements, exception):
                 return False
 
     return True
-
-
-def get_tool_state() -> typing.Union[dict, None]:
-    """ Load current tool state from disk. """
-    tools = Path(defaults.get("tools-dir")) / ".tool-dict.pkl"
-
-    if tools.exists():
-        return pickle.loads(tools.read_bytes())
 
 
 def get_scans():

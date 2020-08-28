@@ -16,8 +16,9 @@ repos:
 -   repo: local
     hooks:
     - id: tests
+      pass_filenames: false
       name: run tests
-      entry: pytest
+      entry: python
       language: system
       types: [python]
-      args: ['tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']
+      args: ['-m', 'pytest', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']

@@ -1,4 +1,3 @@
-installed: false
 dependencies: [go]
 go: &gotool !get_tool_path "{go[path]}"
 path: &path !join_path [!get_default "{gopath}", bin/webanalyze]
