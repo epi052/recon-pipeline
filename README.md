@@ -86,7 +86,8 @@ After installing the python dependencies, the `recon-pipeline` shell provides it
 Individual tools may be installed by running `tools install TOOLNAME` where `TOOLNAME` is one of the known tools that make
 up the pipeline.
 
-The installer maintains a (naive) list of installed tools at `~/.local/recon-pipeline/tools/.tool-dict.pkl`.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's like Jon Snow, **it knows nothing**.
+The installer does not maintain state.  In order to determine whether a tool is installed or not, it checks the `path` variable defined in the tool's .yaml file.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
+like Jon Snow, **it knows nothing**.
 
 [![asciicast](https://asciinema.org/a/343745.svg)](https://asciinema.org/a/343745)
 
