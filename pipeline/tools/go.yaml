@@ -1,6 +1,6 @@
 bashrc: &bashrc !join_path [!get_default "{home}", .bashrc]
 path: &gotool !join_path [!get_default "{goroot}", go/bin/go]
-dlpath: &dlpath !join_empty ["https://dl.google.com/go/go1.14.6.linux-", !get_default "{arch}", ".tar.gz"]
+dlpath: &dlpath !join_empty ["https://dl.google.com/go/go1.14.7.linux-", !get_default "{arch}", ".tar.gz"]
 
 install_commands:
 - !join ["wget -q", *dlpath, "-O /tmp/go.tar.gz"]
