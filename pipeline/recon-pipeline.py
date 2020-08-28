@@ -421,7 +421,7 @@ class ReconShell(cmd2.Cmd):
             if addl_env_vars is not None:
                 addl_env_vars.update(dict(os.environ))
 
-            for command in tools.get(args.tool).get("install_commands"):
+            for command in tools.get(args.tool, {}).get("install_commands", []):
                 # run all commands required to install the tool
 
                 # print each command being run
