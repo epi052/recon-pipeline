@@ -1,3 +1,4 @@
+from .nuclei import NucleiScan
 from .aquatone import AquatoneScan
 from .gobuster import GobusterScan
 from .targets import GatherWebTargets

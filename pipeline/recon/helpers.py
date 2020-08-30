@@ -13,7 +13,6 @@ from ..tools import tools
 
 def meets_requirements(requirements, exception):
     """ Determine if tools required to perform task are installed. """
-    print(tools.items())
     for tool in requirements:
         if not tools.get(tool).get("installed"):
             if exception:
