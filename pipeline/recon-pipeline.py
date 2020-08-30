@@ -163,6 +163,16 @@ class ReconShell(cmd2.Cmd):
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
+        if tools.get("nuclei").get("installed"):
+            subprocess.run(
+                [
+                    tools.get("nuclei").get("path"),
+                    "-update-templates",
+                    "-update-directory",
+                    tools.get("nuclei").get("update_directory"),
+                ],
+                capture_output=True,
+            )
         self.selectorloop = SelectorThread(daemon=True)
         self.selectorloop.start()
 
@@ -363,11 +373,11 @@ class ReconShell(cmd2.Cmd):
 
             self.poutput(style(f"[+] {tool} {verb}ed!", fg="bright_green"))
 
-            tool_dict[tool]["installed"] = True if action == ToolAction.INSTALL else False
+            tool_dict.get(tool, {})["installed"] = True if action == ToolAction.INSTALL else False
         else:
             # unsuccessful tool action
 
-            tool_dict[tool]["installed"] = False if action == ToolAction.INSTALL else True
+            tool_dict.get(tool, {})["installed"] = False if action == ToolAction.INSTALL else True
 
             self.poutput(
                 style(
@@ -393,7 +403,7 @@ class ReconShell(cmd2.Cmd):
 
             return
 
-        if tools.get(args.tool).get("dependencies"):
+        if tools.get(args.tool, {}).get("dependencies"):
             # get all of the requested tools dependencies
             for dependency in tools.get(args.tool).get("dependencies"):
                 if tools.get(dependency).get("installed"):
@@ -407,7 +417,7 @@ class ReconShell(cmd2.Cmd):
                 # install the dependency before continuing with installation
                 self.do_tools(f"install {dependency}")
 
-        if tools.get(args.tool).get("installed"):
+        if tools.get(args.tool, {}).get("installed"):
             return self.poutput(style(f"[!] {args.tool} is already installed.", fg="yellow"))
         else:
             # list of return values from commands run during each tool installation
@@ -416,7 +426,7 @@ class ReconShell(cmd2.Cmd):
 
             self.poutput(style(f"[*] Installing {args.tool}...", fg="bright_yellow"))
 
-            addl_env_vars = tools.get(args.tool).get("environ")
+            addl_env_vars = tools.get(args.tool, {}).get("environ")
 
             if addl_env_vars is not None:
                 addl_env_vars.update(dict(os.environ))
