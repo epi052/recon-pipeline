@@ -163,7 +163,7 @@ class ReconShell(cmd2.Cmd):
 
     def _preloop_hook(self) -> None:
         """ Hook function that runs prior to the cmdloop function starting; starts the selector loop. """
-        if tools.get("nuclei").get("installed"):
+        if tools.get("nuclei", {}).get("installed"):
             subprocess.run(
                 [
                     tools.get("nuclei").get("path"),
