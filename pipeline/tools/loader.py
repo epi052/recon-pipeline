@@ -1,3 +1,4 @@
+import uuid
 import yaml
 from pathlib import Path
 
@@ -59,3 +60,6 @@ def load_yaml(file):
 for file in definitions.iterdir():
     if file.name.endswith(".yaml") and file.name.replace(".yaml", "") not in tools:
         load_yaml(file)
+
+for tool_name, tool_definition in tools.items():
+    tool_definition["installed"] = Path(tool_definition.get("path", f"/{uuid.uuid4()}")).exists()

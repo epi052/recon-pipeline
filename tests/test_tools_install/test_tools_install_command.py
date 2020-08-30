@@ -55,7 +55,7 @@ class TestUnmockedToolsInstall:
         tool_dict.get(dependency)["path"] = dependency_path
         tool_dict.get(dependency).get("install_commands")[
             0
-        ] = f"wget -q https://dl.google.com/go/go1.14.6.linux-amd64.tar.gz -O {tmp_path}/go.tar.gz"
+        ] = f"wget -q https://dl.google.com/go/go1.14.7.linux-amd64.tar.gz -O {tmp_path}/go.tar.gz"
         tool_dict.get(dependency).get("install_commands")[
             1
         ] = f"tar -C {self.shell.tools_dir} -xvf {tmp_path}/go.tar.gz"

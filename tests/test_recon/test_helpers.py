@@ -32,30 +32,18 @@ def test_get_scans():
 
 
 @pytest.mark.parametrize(
-    "requirements, exception",
-    [
-        (["amass"], True),
-        (["masscan"], True),
-        (
-            [
-                "amass",
-                "aquatone",
-                "masscan",
-                "tko-subs",
-                "recursive-gobuster",
-                "searchsploit",
-                "subjack",
-                "gobuster",
-                "webanalyze",
-                "waybackurls",
-            ],
-            False,
-        ),
-    ],
+    "requirements, exception, expected",
+    [(["amass"], True, None), (["amass"], False, False), (["aquatone"], False, True)],
 )
-def test_meets_requirements(requirements, exception):
-    with patch("pipeline.recon.helpers.get_tool_state"):
-        assert meets_requirements(requirements, exception)
+def test_meets_requirements(requirements, exception, expected):
+    mdict = {"amass": {"installed": False}, "aquatone": {"installed": True}}
+    with patch("pipeline.recon.helpers.tools", autospec=dict) as mtools:
+        mtools.get.return_value = mdict.get(requirements[0])
+        if exception:
+            with pytest.raises(RuntimeError):
+                meets_requirements(requirements, exception)
+        else:
+            assert meets_requirements(requirements, exception) is expected
 
 
 @pytest.mark.parametrize(
