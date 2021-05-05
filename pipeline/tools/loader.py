@@ -41,7 +41,7 @@ def get_tool_path(loader, node):
     return py_str.format(**tools)
 
 
-def get_go_version(loader, node):
+def get_go_version(loader=None, node=None):
     """ download latest version of golang """
     arch = defaults.get("arch")
     err_msg = "Could not find latest go version download url"
