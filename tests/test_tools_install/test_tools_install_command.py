@@ -52,7 +52,9 @@ class TestUnmockedToolsInstall:
         dependency_path = f"{self.shell.tools_dir}/go/bin/go"
         tmp_path = tempfile.mkdtemp()
 
-        go_download = tool_dict.get(dependency).get("install_commands")[0].replace("/tmp", tmp_path)
+        go_download = tool_dict.get(dependency).get("install_commands")[0].split()
+        go_download[4] = f"{tmp_path}/go.tar.gz"
+        go_download = " ".join(go_download)
 
         tool_dict.get(dependency)["path"] = dependency_path
         tool_dict.get(dependency).get("install_commands")[0] = go_download
