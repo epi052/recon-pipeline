@@ -1,6 +1,9 @@
+import re
 import uuid
-import yaml
+from http import client
 from pathlib import Path
+
+import yaml
 
 from ..recon.config import defaults
 
@@ -38,11 +41,30 @@ def get_tool_path(loader, node):
     return py_str.format(**tools)
 
 
+def get_go_version(loader, node):
+    """ download latest version of golang """
+    arch = defaults.get("arch")
+    err_msg = "Could not find latest go version download url"
+
+    conn = client.HTTPSConnection("golang.org")
+    conn.request("GET", "/dl/")
+    response = conn.getresponse().read().decode()
+
+    for line in response.splitlines():
+        if "linux-amd64.tar.gz" in line:
+            match = re.search(rf"href=./dl/(go.*\.linux-{arch}\.tar\.gz).>", line)
+            if not match:
+                return err_msg.replace("find", "parse")
+            return match.group(1)  # go1.16.3.linux-
+    return err_msg
+
+
 yaml.add_constructor("!join", join)
 yaml.add_constructor("!join_empty", join_empty)
 yaml.add_constructor("!join_path", join_path)
 yaml.add_constructor("!get_default", get_default)
 yaml.add_constructor("!get_tool_path", get_tool_path)
+yaml.add_constructor("!get_go_version,", get_go_version)
 
 
 def load_yaml(file):
