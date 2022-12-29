@@ -46,7 +46,7 @@ def get_go_version(loader=None, node=None):
     arch = defaults.get("arch")
     err_msg = "Could not find latest go version download url"
 
-    conn = client.HTTPSConnection("golang.org")
+    conn = client.HTTPSConnection("go.dev")
     conn.request("GET", "/dl/")
     response = conn.getresponse().read().decode()
 
