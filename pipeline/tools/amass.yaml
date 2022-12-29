@@ -4,7 +4,7 @@ path: &path !join_path [!get_default "{gopath}", "bin/amass"]
 environ: {"GO111MODULE": "on", "GOPATH": !get_default "{gopath}"}
 
 install_commands:
-- !join [*gotool, get github.com/OWASP/Amass/v3/...]
+- !join [*gotool, install -v github.com/OWASP/Amass/v3/...@master]
 
 uninstall_commands:
 - !join [rm, *path]
