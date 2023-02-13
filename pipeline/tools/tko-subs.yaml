@@ -5,7 +5,7 @@ environ: {"GOPATH": !get_default "{gopath}"}
 providers: !join_path [!get_default "{gopath}", src/github.com/anshumanbh/tko-subs/providers-data.csv]
 
 install_commands:
-- !join [*gotool, get, github.com/anshumanbh/tko-subs]
+- !join [*gotool, install, github.com/anshumanbh/tko-subs@latest]
 
 uninstall_commands:
 - !join [rm, *path]

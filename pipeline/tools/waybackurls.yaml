@@ -4,7 +4,7 @@ path: &path !join_path [!get_default "{gopath}", bin/waybackurls]
 environ: {"GOPATH": !get_default "{gopath}"}
 
 install_commands:
-- !join [*gotool, get, github.com/tomnomnom/waybackurls]
+- !join [*gotool, install, github.com/tomnomnom/waybackurls@latest]
 
 uninstall_commands:
 - !join [rm, *path]

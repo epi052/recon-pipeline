@@ -6,7 +6,7 @@ environ: {"GOPATH": !get_default "{gopath}"}
 fingerprints: !join_path [!get_default "{gopath}", src/github.com/haccer/subjack/fingerprints.json]
 
 install_commands:
-- !join [*gotool, get github.com/haccer/subjack]
+- !join [*gotool, install github.com/haccer/subjack@latest]
 
 uninstall_commands:
 - !join [rm, *path]

@@ -5,7 +5,7 @@ environ: {"GOPATH": !get_default "{gopath}"}
 home: &home !get_default "{home}"
 
 install_commands:
-- !join [*gotool, get github.com/OJ/gobuster]
+- !join [*gotool, install github.com/OJ/gobuster@latest]
 
 uninstall_commands:
 - !join [rm, *path]
