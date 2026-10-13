@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = ">=8,<9"
+black = ">=24,<27"
+flake8 = ">=7,<9"
+coverage = ">=7,<9"
+
+[packages]
+# Experimental migration targets for Python 3.13.
+# cmd2 3.x/4.x contain breaking changes. Integration tests are required.
+cmd2 = ">=2.6.2,<3"
+luigi = ">=3.8.1,<4"
+sqlalchemy = ">=1.4.54,<2"
+python-libnmap = ">=0.7.0,<1"
+pyyaml = ">=6.0.2,<7"
+
+[requires]
+python_version = "3.13"

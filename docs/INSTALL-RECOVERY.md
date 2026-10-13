@@ -1,72 +1,51 @@
-# Installation recovery and compatibility notes (October 2026)
+# Installation recovery (October 2026)
 
-This repository contains a **legacy Python reconnaissance framework**. Its original CI targeted Python 3.7, the lockfile pins older packages (including `cmd2==1.0.1`, `luigi==2.8.12`, and `pyyaml==5.4.0`), and the original instructions were tested on old Kali/Ubuntu releases. **Do not assume that it installs or runs on Python 3.13 or current Ubuntu/macOS/Termux.** Never run an unreviewed `tools install all` or an active scan as an installation test.
+This fork's **default `Pipfile` targets Python 3.13** and uses modern dependencies. In GitHub Actions, the current profile passed dependency installation, application import, interactive `ReconShell` initialisation and a Docker startup smoke test. The full external native scanner suite and Termux have **not** been certified. See [INSTALL-MODERN.md](INSTALL-MODERN.md) for the primary installation guide.
 
-## 1. Separate network failure from package failure
+The historical dependencies (`cmd2==1.0.1`, `luigi==2.8.12`, `PyYAML==5.4.0`, etc.) are preserved in `Pipfile.legacy` and `Pipfile.legacy.lock`. These are not the default installation; do not select them as a remedy for current Python errors.
 
-The diagnostic `git ls-remote` should succeed before attempting a clone:
+## 1. Diagnose network access
 
 ```bash
-getent hosts github.com || true  # Linux: inspect DNS lookup
+python3 scripts/doctor.py
 git ls-remote https://github.com/jamietatebenger-lab/recon-pipeline.git HEAD
 ```
 
-If this prints `Could not resolve host: github.com`, cloning and package downloads cannot be fixed by editing `Pipfile`. Check that the device has internet, DNS and proxy configuration are correct, and no workplace firewall/VPN is blocking GitHub. Don't disable TLS verification or install from unofficial mirrors to bypass failures. On macOS or Termux, use the system's relevant DNS diagnostics if `getent` is unavailable.
+The diagnostic checks local Python, package state and DNS resolution for GitHub and PyPI; it does not make authenticated requests, scan hosts, or install software. If `Could not resolve host: github.com` appears, resolve device/network DNS and proxy configuration before retrying. GitHub clone/DNS connectivity depends on **the machine running the command**; passing GitHub Actions on a cloud runner does not repair the user's local network.
 
-## 2. Install Pipenv outside the system Python
+Never disable TLS verification or change to unauthorised mirrors to bypass network errors.
 
-`python3 -m pip install --user pipenv` may fail with `Can not perform a '--user' install. User site-packages are not visible in this virtualenv.` or an externally-managed-environment error. A dedicated, isolated environment is safer:
+## 2. Fix virtual-environment / Pipenv errors
+
+When `pip install --user pipenv` fails inside a virtual environment, create a separate environment for the Pipenv launcher:
 
 ```bash
+python3 --version
 python3 -m venv "$HOME/.pipenv-venv"
 "$HOME/.pipenv-venv/bin/python" -m pip install --upgrade pip
 "$HOME/.pipenv-venv/bin/python" -m pip install pipenv
-"$HOME/.pipenv-venv/bin/pipenv" --version
-```
-
-This *only installs Pipenv itself*; it does not make the legacy project packages compatible with modern Python. Requires working DNS and a Python installation with `venv` support. Never use `sudo pip`, `--break-system-packages`, or `--trusted-host` as a workaround.
-
-## 3. Check interpreter compatibility before installing legacy requirements
-
-```bash
-python3 --version
-command -v python3
 git clone https://github.com/jamietatebenger-lab/recon-pipeline.git
 cd recon-pipeline
-cat Pipfile
-```
-
-The `Pipfile` specifies only `python_version = "3"`, which is **not** evidence of compatibility with every Python 3 release. If an isolated test environment has a compatible interpreter available, explicitly select it instead of silently using Python 3.13:
-
-```bash
 export PIPENV_IGNORE_VIRTUALENVS=1
 export PIPENV_VENV_IN_PROJECT=1
-"$HOME/.pipenv-venv/bin/pipenv" --python /path/to/compatible/python3
 "$HOME/.pipenv-venv/bin/pipenv" install
-"$HOME/.pipenv-venv/bin/pipenv" run python -c "import cmd2, luigi, yaml, sqlalchemy; print('Python imports OK')"
+"$HOME/.pipenv-venv/bin/pipenv" run python scripts/doctor.py --offline
 "$HOME/.pipenv-venv/bin/pipenv" run python pipeline/recon-pipeline.py
 ```
 
-Replace `/path/to/compatible/python3` with an interpreter you actually have and have tested against these pins. No Python version newer than the historical CI target has been verified here. If `Pipfile.lock` cannot resolve/install for that interpreter, preserve the error log; dependency modernization requires targeted package upgrades and the existing test suite, not automatic unpinned upgrades. Use an isolated test machine/container for obsolete runtimes; do not expose outdated runtimes to untrusted networks.
+The default `Pipfile` currently requires **Python 3.13**. Verify this interpreter is installed. The default `Pipfile.lock` was removed during the upgrade so Pipenv resolves a new lock for this profile. Preserve locally generated lockfiles for reproducibility if needed; do not use `Pipfile.legacy.lock` with the default `Pipfile`.
 
-## 4. Important platform caveats
+Do not use `sudo pip`, `--break-system-packages`, `--trusted-host`, or `tools install all` to troubleshoot startup.
 
-- The upstream project originally targeted Kali Linux and Ubuntu, with native tools, executable discovery and system operations that can differ on newer Linux and Android **Termux**.
-- The repository's existing `Dockerfile` starts from mutable `python:latest`. It is **not** a verified compatibility fix; do not rely on it as a stable legacy build without testing and pinning a maintained base image.
-- Do not run `tools install all` to check whether the CLI works. Some installers and scanners require privileges or make network requests. In the CLI start with `help` or `tools list` only.
-- Only scan systems you own or are expressly authorized to assess. Do not use this framework to obtain private accommodation reservations or guest information.
+## 3. Docker-specific notes
 
-## 5. Report the *first* actual installation error
+The Dockerfile now starts from `python:3.13-slim-bookworm`, uses `requirements-modern.txt`, and adds `PYTHONPATH=/opt/recon-pipeline`. Docker builds and startup imports have passed GitHub Actions. The container sets `RECON_PIPELINE_MASSCAN_IFACE=eth0`; outside Docker, the default remains `tun0` unless overridden. This is *not* evidence that Masscan or Nmap scans work or that any target is authorised.
 
-If you encounter a failure, capture its full output:
+## 4. Collect first error, not repeated scans
 
 ```bash
-"$HOME/.pipenv-venv/bin/pipenv" --version
-python3 --version
 "$HOME/.pipenv-venv/bin/pipenv" install --verbose > pipenv-install.log 2>&1
 tail -n 80 pipenv-install.log
 ```
 
-Redact access tokens, paths containing personal identifiers and other secrets before sharing. Keep `pipenv-install.log` locally; do not commit it into a public repository.
-
-**Status:** Guidance only. No successful modern-Python installation is claimed; the environment used for the October 2026 review had Python 3.13.5 and could not resolve github.com through DNS. This document does not modify scan functionality or dependency versions.
+Remove secrets and personal identifiers from logs before sharing; do not upload sensitive logs to a public repository. Native scan tools are for systems you own or are expressly authorised to assess.

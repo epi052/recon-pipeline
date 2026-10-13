@@ -1,0 +1,31 @@
+name: Experimental runtime compatibility
+on:
+  push:
+    paths:
+      - 'requirements-modern.txt'
+      - 'Pipfile.modern'
+      - '.github/workflows/runtime-compat.yml'
+      - 'pipeline/**'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  runtime-import:
+    name: Import and initialise application on Python 3.13
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install experimental Python requirements
+        run: python -m pip install -r requirements-modern.txt
+      - name: Report resolved dependency versions
+        run: python -m pip freeze
+      - name: Test library imports without scanners
+        run: python -c "import cmd2, luigi, sqlalchemy, yaml; print('Library imports passed')"
+      - name: Test application imports without scanning
+        run: python -c "import importlib; importlib.import_module('pipeline.recon-pipeline'); print('Application import passed')"
+      - name: Initialise interactive shell without scanning
+        run: python -c "import importlib; s=importlib.import_module('pipeline.recon-pipeline').ReconShell(); print('Shell initialised')"

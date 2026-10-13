@@ -1,0 +1,21 @@
+name: Docker startup smoke
+on:
+  push:
+    paths:
+      - Dockerfile
+      - requirements-modern.txt
+      - .github/workflows/docker-smoke.yml
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build container without executing scanners
+        run: docker build --tag recon-pipeline:test .
+      - name: Verify container Python imports, interface and shell initialisation
+        run: |
+          docker run --rm --entrypoint python recon-pipeline:test -c "import importlib; from pipeline.recon.config import defaults; assert defaults['masscan-iface'] == 'eth0', defaults['masscan-iface']; s=importlib.import_module('pipeline.recon-pipeline').ReconShell(); print('Container shell initialised, default interface:', defaults['masscan-iface'])"

@@ -1,4 +1,5 @@
 # flake8: noqa E231
+import os
 import platform
 from pathlib import Path
 
@@ -7,7 +8,7 @@ defaults = {
     "proxy": "",
     "threads": "10",
     "masscan-rate": "1000",
-    "masscan-iface": "tun0",
+    "masscan-iface": os.environ.get("RECON_PIPELINE_MASSCAN_IFACE", "tun0"),
     "gobuster-extensions": "",
     "results-dir": "recon-results",
     "aquatone-scan-timeout": "900",
