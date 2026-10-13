@@ -1,0 +1,6 @@
+# Opt-in, passive OSINT and forensic utilities. Independent of legacy requirements-modern.txt.
+# Versions are bounded but not locked; GitHub Actions checks compatibility.
+requests>=2.32.3,<3
+dnspython>=2.7,<3
+beautifulsoup4>=4.12.3,<5
+ExifRead>=3.0.0,<4
