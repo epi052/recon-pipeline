@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
 
-from cmd2 import ansi
+from ..compat import style
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc, or_, create_engine
 from sqlalchemy.sql.expression import ClauseElement
@@ -46,7 +46,7 @@ class DBManager:
             self.session.add(item)
             self.session.commit()
         except (sqlite3.IntegrityError, exc.IntegrityError):
-            print(ansi.style("[-] unique key constraint handled, moving on...", fg="bright_white"))
+            print(style("[-] unique key constraint handled, moving on...", fg="bright_white"))
             self.session.rollback()
 
     def get_or_create_target_by_ip_or_hostname(self, ip_or_host):

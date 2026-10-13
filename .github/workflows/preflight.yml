@@ -1,0 +1,31 @@
+name: Installation preflight (no network scanning)
+on:
+  push:
+    paths:
+      - 'scripts/doctor.py'
+      - 'tests/test_doctor.py'
+      - '.github/workflows/preflight.yml'
+      - 'Pipfile.modern'
+      - 'requirements-modern.txt'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-doctor:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile local code without installing external tools
+        run: python -m compileall -q scripts/doctor.py tests/test_doctor.py
+      - name: Run pure-stdlib installation checks
+        run: python -m unittest discover -s tests -p test_doctor.py -v
+      - name: Run offline preflight
+        run: python scripts/doctor.py --offline --json

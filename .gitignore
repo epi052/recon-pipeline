@@ -104,3 +104,8 @@ venv.bak/
 .mypy_cache/
 
 .idea
+
+# Private local forensic evidence (never commit)
+evidence-private/
+evidence-reports/
+*.evidence-manifest.json

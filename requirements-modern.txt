@@ -1,0 +1,7 @@
+# Experimental migration path for Python 3.13; not an audited lockfile.
+# Upgrades may expose API incompatibilities in the legacy shell.
+cmd2>=2.6.2,<3
+luigi>=3.8.1,<4
+SQLAlchemy>=1.4.54,<2
+python-libnmap>=0.7.0,<1
+PyYAML>=6.0.2,<7

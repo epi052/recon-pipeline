@@ -425,15 +425,14 @@ class TestReconShell:
         process_mock.configure_mock(**attrs)
 
         with patch("subprocess.run", autospec=True) as mocked_popen, patch(
+            "subprocess.Popen", autospec=True
+        ) as mocked_pipe, patch(
             "webbrowser.open", autospec=True
-        ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector, patch(
-            "cmd2.Cmd.select"
-        ) as mocked_select, patch(
-            "pipeline.recon-pipeline.get_scans"
-        ) as mocked_scans:
-
-            mocked_select.return_value = "Resume"
+        ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector, patch.object(
+            recon_shell.cmd2.Cmd, "select", lambda self, choices: "Resume"
+        ), patch.object(recon_shell, "get_scans") as mocked_scans:
             mocked_popen.return_value = process_mock
+            mocked_pipe.return_value = process_mock
 
             test_input += f" --results-dir {tmp_path / 'mostuff'}"
 
@@ -457,10 +456,14 @@ class TestReconShell:
         assert len(sys.path) > pathlen
 
     def test_main(self):
-        with patch("cmd2.Cmd.cmdloop") as mocked_loop, patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
-            mocked_select.return_value = "No"
+        called = []
+        def fake_cmdloop(*args, **kwargs):
+            called.append(True)
+        with patch.object(recon_shell.cmd2.Cmd, "cmdloop", fake_cmdloop), patch.object(
+            recon_shell.cmd2.Cmd, "select", lambda self, choices: "No"
+        ), patch("sys.exit"):
             recon_shell.main(name="__main__")
-            assert mocked_loop.called
+        assert called
 
     @pytest.mark.parametrize("test_input", ["Yes", "No"])
     def test_remove_old_recon_tools(self, test_input, tmp_path):
@@ -481,15 +484,12 @@ class TestReconShell:
 
         subfile.touch()
         assert subfile.exists()
-        old_loop = recon_shell.ReconShell.cmdloop
-
-        recon_shell.ReconShell.cmdloop = MagicMock()
-        recon_shell.cmd2.Cmd.select = MagicMock(return_value=test_input)
-        with patch("sys.exit"):
+        with patch.object(recon_shell.ReconShell, "cmdloop", lambda self: None), patch.object(
+            recon_shell.cmd2.Cmd, "select", lambda self, choices: test_input
+        ), patch("sys.exit"):
             recon_shell.main(
                 name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict, old_searchsploit_rc=searchsploit_rc
             )
-        recon_shell.ReconShell.cmdloop = old_loop
         for file in [subfile, tooldir, tooldict, searchsploit_rc]:
             if test_input == "Yes":
                 assert not file.exists()
@@ -505,10 +505,9 @@ class TestReconShell:
         new_tmp = tmp_path / f"check_scan_directory_test-{user_input}-{answer}"
         new_tmp.mkdir()
 
-        recon_shell.cmd2.Cmd.select = MagicMock(return_value=answer)
-
         print(list(tmp_path.iterdir()), new_tmp)
-        self.shell.check_scan_directory(str(new_tmp))
+        with patch.object(recon_shell.cmd2.Cmd, "select", lambda self, choices: answer):
+            self.shell.check_scan_directory(str(new_tmp))
 
         assert new_tmp.exists() == exists
         print(list(tmp_path.iterdir()), new_tmp)

@@ -4,7 +4,7 @@ import subprocess
 import concurrent.futures
 from pathlib import Path
 from shutil import which
-from cmd2.ansi import style
+from ..compat import style
 
 import luigi
 import sqlalchemy
