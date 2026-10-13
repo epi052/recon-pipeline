@@ -1,0 +1,29 @@
+name: Pipenv install verification
+on:
+  push:
+    paths:
+      - 'Pipfile'
+      - 'Pipfile.lock'
+      - '.github/workflows/pipenv-compat.yml'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-pipenv-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Pipenv into isolated runner interpreter
+        run: python -m pip install pipenv
+      - name: Resolve and install default Pipfile
+        env:
+          PIPENV_VENV_IN_PROJECT: '1'
+          PIPENV_IGNORE_VIRTUALENVS: '1'
+        run: |
+          pipenv install
+          pipenv run python -c "import cmd2, luigi, sqlalchemy, yaml; print('Pipenv dependency installation OK')"
+          pipenv run python -c "import importlib; s=importlib.import_module('pipeline.recon-pipeline').ReconShell(); print('Pipenv shell initialised')"

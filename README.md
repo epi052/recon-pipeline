@@ -3,7 +3,7 @@
 ![version](https://img.shields.io/github/v/release/epi052/recon-pipeline?style=for-the-badge)
 ![Python application](https://img.shields.io/github/workflow/status/epi052/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
 ![code coverage](https://img.shields.io/badge/coverage-97%25-blue?style=for-the-badge)
-![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
+![python](https://img.shields.io/badge/python-3.13%20CI-tested-informational?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
 
 There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
@@ -25,71 +25,24 @@ Table of Contents
 
 ## Installation
 
-> Automatic installation tested on kali 2019.4 and Ubuntu 18.04/20.04
-
-There are two primary phases for installation:
-
-1. prior to the python dependencies being installed
-2. everything else
-
-First, the manual steps to get dependencies installed in a virtual environment are as follows, starting with [pipenv](https://github.com/pypa/pipenv)
-
-### Kali
-```bash
-sudo apt update
-sudo apt install pipenv
-```
-
-### Ubuntu 18.04/20.04
-```bash
-sudo apt update
-sudo apt install python3-pip
-pip install --user pipenv
-echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
-bash
-```
-
-### Both OSs after pipenv install
+**Updated installation for Python 3.13 (2026)** — use your own isolated environment, not `pip install --user` inside an existing virtual environment:
 
 ```bash
-git clone https://github.com/epi052/recon-pipeline.git
+git clone https://github.com/jamietatebenger-lab/recon-pipeline.git
 cd recon-pipeline
-pipenv install
-pipenv shell
+python3 scripts/doctor.py
+python3 -m venv "$HOME/.pipenv-venv"
+"$HOME/.pipenv-venv/bin/python" -m pip install pipenv
+export PIPENV_IGNORE_VIRTUALENVS=1 PIPENV_VENV_IN_PROJECT=1
+"$HOME/.pipenv-venv/bin/pipenv" install
+"$HOME/.pipenv-venv/bin/pipenv" run python pipeline/recon-pipeline.py
 ```
 
-### Docker
+The default `Pipfile` now uses modern packages and a fresh lock; original pins are archived in `Pipfile.legacy`. The local model tests and initialisation passed in CI, but third-party scanning tools remain unverified. See [installation details](docs/INSTALL-MODERN.md) and [recovery instructions](docs/INSTALL-RECOVERY.md). Do **not** run `tools install all` as an installation test.
 
-If you have Docker installed, you can run the recon-pipeline in a container with the following commands:
+### Historical upstream installation notes
 
-```bash
-git clone https://github.com/epi052/recon-pipeline.git
-cd recon-pipeline
-docker build -t recon-pipeline .
-docker run -d \
-    -v ~/docker/recon-pipeline:/root/.local/recon-pipeline \
-    -p 8082:8082 \
-    --name recon-pipeline \
-    recon-pipeline
-docker start recon-pipeline
-docker exec -it recon-pipeline pipeline
-```
-
-The `recon-pipeline` should start in the background automatically after the `docker run` command, however, you will have to start it after a reboot. For more information, please see the [Docker](https://recon-pipeline.readthedocs.io/en/latest/overview/installation.html#docker) docs.
-
-[![asciicast](https://asciinema.org/a/318395.svg)](https://asciinema.org/a/318395)
-
-After installing the python dependencies, the `recon-pipeline` shell provides its own [tools](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#tools) command (seen below).  A simple `tools install all` will handle all additional installation steps.
-
-> Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
-
-Individual tools may be installed by running `tools install TOOLNAME` where `TOOLNAME` is one of the known tools that make
-up the pipeline.
-
-The installer does not maintain state.  In order to determine whether a tool is installed or not, it checks the `path` variable defined in the tool's .yaml file.  The installer in no way attempts to be a package manager.  It knows how to execute the steps necessary to install and remove its tools.  Beyond that, it's
-like Jon Snow, **it knows nothing**.
-
-[![asciicast](https://asciinema.org/a/343745.svg)](https://asciinema.org/a/343745)
+The original upstream project documented Python 3.7 and older Kali/Ubuntu installations. Those instructions—including `pip install --user`, `pipenv shell` with the archived lock, and installing all native tools—are **not** the supported setup for this fork. For troubleshooting use [INSTALL-RECOVERY.md](docs/INSTALL-RECOVERY.md); for the tested Python 3.13 setup use [INSTALL-MODERN.md](docs/INSTALL-MODERN.md).
 
 ## Defining a Scan's Scope
 

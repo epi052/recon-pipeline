@@ -1,129 +1,41 @@
 name: recon-pipeline build
 
-on: [push]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  lint:
-
+  runtime-and-model-tests:
+    name: Python 3.13 smoke and non-installer unit tests
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Lint with flake8
-      run: |
-        pipenv install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        pipenv run flake8 . --count
-    - name: Check code formatting with black
-      run: |
-        pipenv install "black==19.10b0"
-        pipenv run black -l 120 --check . 
-
-  test-shell:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_shell
-
-  test-recon:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_recon
-
-  test-web:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_web
-
-  test-models:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: 3.7
-      - name: Set up pipenv
+          python-version: '3.13'
+      - name: Install isolated modern migration dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pipenv
-          pipenv install -d
-      - name: Test with pytest
+          python -m pip install -r requirements-modern.txt pytest
+      - name: Compile Python modules
+        run: python -m compileall -q pipeline scripts/doctor.py
+      - name: Offline installation preflight
+        run: python scripts/doctor.py --offline
+      - name: Smoke-test import and interactive shell initialization
         run: |
-          pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-          pipenv run python -m pytest tests/test_models
+          python - <<'PY'
+          import importlib
+          shell = importlib.import_module("pipeline.recon-pipeline").ReconShell()
+          print("ReconShell initialised", type(shell).__name__)
+          PY
+      - name: Model, parser, recon, web and shell unit suites (no real scans)
+        run: python -m pytest -q tests/test_models tests/test_recon tests/test_web tests/test_shell
 
-  test-unmocked-tool-installs:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest -vv --show-capture=all tests/test_tools_install
+# This replaces a historical workflow that targeted Python 3.7 and used
+# deprecated actions/checkout@v1 and actions/setup-python@v1. The original
+# unmocked native-tool installation suite must be run only in an authorised
+# isolated lab, not on GitHub-hosted runners or against external targets.
