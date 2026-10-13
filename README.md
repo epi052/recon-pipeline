@@ -25,6 +25,8 @@ Table of Contents
 
 ## Installation
 
+> **Installation troubleshooting (2026):** If `git clone` fails due to DNS, `pip install --user pipenv` fails inside a virtual environment, or Python 3.13 cannot install the historical pinned dependencies, read the [installation recovery guide](docs/INSTALL-RECOVERY.md). This project's original CI targeted Python 3.7; modern-Python compatibility has **not** been established.
+
 > Automatic installation tested on kali 2019.4 and Ubuntu 18.04/20.04
 
 There are two primary phases for installation:
